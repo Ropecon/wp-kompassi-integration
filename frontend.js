@@ -1,3 +1,5 @@
+__ = wp.i18n.__;
+_x = wp.i18n._x;
 var display_type = ''; // default
 jQuery( function( e ) {
 	// Change display type

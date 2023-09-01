@@ -21,15 +21,6 @@ class WP_Plugin_Kompassi_Integration {
 		load_plugin_textdomain( 'kompassi-integration', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 		register_block_type(
-			'kompassi-integration/program-map',
-			array(
-				'editor_script' => 'kompassi-integration-blocks',
-				'render_callback' => array( &$this, 'block_program_map' ),
-				'attributes' => array(
-				)
-			)
-		);
-		register_block_type(
 			'kompassi-integration/programme',
 			array(
 				'editor_script' => 'kompassi-integration-blocks',
@@ -41,7 +32,8 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function wp_enqueue_scripts( ) {
-		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery' ) );
+		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n' ) );
+		wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ) );
 	}
 
