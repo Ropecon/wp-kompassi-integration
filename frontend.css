@@ -17,7 +17,7 @@
  *
  */
 
-#display-style a {
+#kompassi_programme_display a {
 	display: inline-block;
 	background-color: #222;
 	color: #fff;
@@ -29,12 +29,35 @@
 	background-repeat: no-repeat;
 	background-size: 24px;
 }
-	#display-style a.table { background-image: url(images/icon_table.svg); }
-	#display-style a.list { background-image: url(images/icon_list.svg); }
-	#display-style a.expanded { background-image: url(images/icon_expanded.svg); }
-	#display-style a.timeline { background-image: url(images/icon_timeline.svg); }
+	#kompassi_programme_display a.active {
+		background-color: blue;
+	}
+	#kompassi_programme_display a.table { background-image: url(images/icon_table.svg); }
+	#kompassi_programme_display a.list { background-image: url(images/icon_list.svg); }
+	#kompassi_programme_display a.expanded { background-image: url(images/icon_expanded.svg); }
+	#kompassi_programme_display a.timeline { background-image: url(images/icon_timeline.svg); }
 
-.programme-list.table article.program {
+/*
+ *  Filters
+ *
+ */
+
+#kompassi_programme_filters {
+	margin-bottom: 1em;
+}
+	#kompassi_programme_filters span {
+		display: inline-block;
+		margin-right: 0.75em;
+		font-weight: 600;
+		font-size: 120%;
+	}
+	#kompassi_programme_filters input,
+	#kompassi_programme_filters select {
+		padding: 0.5em;
+		margin-right: 0.5em;
+	}
+
+/* ? */
 
 #kompassi_programme.table article {
 	padding: 0.5em 0;
@@ -48,6 +71,29 @@
 	background-color: var(--kompassi-programme-bg);
 	border: 1px solid var(--kompassi-programme-border);
 	padding: 1em;
+}
+
+#kompassi_programme_modal {
+	position: fixed;
+	width: 80%;
+	max-width: 800px;
+	top: 20%;
+	left: max( 20%, calc( ( 100vw - 800px ) / 2 ) );
+	bottom: 20%;
+	z-index: 100000;
+
+	background-color: #fff;
+	padding: 2em;
+	box-shadow: 1em 1em 2em rgba(0,0,0,0.2);
+}
+	#kompassi_programme_modal > * {
+		display: block;
+	}
+
+/* */
+#kompassi_programme article.hidden {
+	display: none !important;
+/*	filter: opacity(0.1); */
 }
 
 /*  Programme list  */
@@ -132,9 +178,20 @@
 		overflow: hidden;
 		padding-top: var(--kompassi-programme-timeline-row-height);
 	}
-		.programme-list.timeline .ruler {
+		#kompassi_programme.timeline .day_hint {
+			position: absolute;
+			border-left: 1px solid var(--kompassi-programme-timeline-ruler);
+			height: var(--kompassi-programme-timeline-row-height);
+			padding: 3px;
+		}
+			#kompassi_programme.timeline .day_hint:first-of-type {
+				border-left: 1px solid transparent;
+			}
+
+		#kompassi_programme.timeline .ruler {
 			width: auto;
 			height: 100%;
+			border-top: 1px solid var(--kompassi-programme-timeline-ruler);
 			border-left: 1px solid var(--kompassi-programme-timeline-ruler);
 			padding: 3px;
 			color: var(--kompassi-programme-timeline-time);
