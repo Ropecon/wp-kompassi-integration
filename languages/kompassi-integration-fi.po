@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2023-09-01T13:41:39+03:00\n"
-"PO-Revision-Date: 2023-09-01 13:44+0300\n"
+"POT-Creation-Date: 2023-09-01T23:20:56+03:00\n"
+"PO-Revision-Date: 2023-09-01 23:21+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -25,38 +25,22 @@ msgstr "Kompassi-integraatio"
 msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
-#: blocks/program_map.php:120
-msgid "Day"
-msgstr "Päivä"
-
-#: blocks/program_map.php:122
-msgid "All"
-msgstr "Kaikki"
-
-#: blocks/program_map.php:142
-msgid "Scale"
-msgstr "Skaala"
-
-#: blocks/program_map.php:143
-msgid "Screen"
-msgstr "Näyttö"
-
-#: kompassi-integration.php:75
+#: kompassi-integration.php:67
 msgctxt "display style"
 msgid "Table"
 msgstr "Taulukko"
 
-#: kompassi-integration.php:76
+#: kompassi-integration.php:68
 msgctxt "display style"
 msgid "Compact List"
 msgstr "Tiivis lista"
 
-#: kompassi-integration.php:77
+#: kompassi-integration.php:69
 msgctxt "display style"
 msgid "Expanded List"
 msgstr "Laajennettu lista"
 
-#: kompassi-integration.php:78
+#: kompassi-integration.php:70
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
@@ -68,3 +52,62 @@ msgstr "Ohjelmakartta"
 #: blocks.js:33 blocks.js:42
 msgid "Programme"
 msgstr "Ohjelma"
+
+#: frontend.js:10
+msgctxt "day abbreviation"
+msgid "Sun"
+msgstr "su"
+
+#: frontend.js:11
+msgctxt "day abbreviation"
+msgid "Mon"
+msgstr "ma"
+
+#: frontend.js:12
+msgctxt "day abbreviation"
+msgid "Tue"
+msgstr "ti"
+
+#: frontend.js:13
+msgctxt "day abbreviation"
+msgid "Wed"
+msgstr "ke"
+
+#: frontend.js:14
+msgctxt "day abbreviation"
+msgid "Thu"
+msgstr "to"
+
+#: frontend.js:15
+msgctxt "day abbreviation"
+msgid "Fri"
+msgstr "pe"
+
+#: frontend.js:16
+msgctxt "day abbreviation"
+msgid "Sat"
+msgstr "la"
+
+#: frontend.js:76
+msgid "Room name"
+msgstr "Tilan nimi"
+
+#: frontend.js:81
+msgctxt "verb (shown before filters)"
+msgid "Filter"
+msgstr "Suodata"
+
+#~ msgid "Show all"
+#~ msgstr "Näytä kaikki"
+
+#~ msgid "Day"
+#~ msgstr "Päivä"
+
+#~ msgid "All"
+#~ msgstr "Kaikki"
+
+#~ msgid "Scale"
+#~ msgstr "Skaala"
+
+#~ msgid "Screen"
+#~ msgstr "Näyttö"
