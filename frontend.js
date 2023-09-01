@@ -33,9 +33,8 @@ function setup_timeline_layout( ) {
 
 	prev_group = '';
 	var grouping_row = 1;
-//	jQuery( '.programme-list article' );
 
-	jQuery( '.programme-list article' ).sort( sort_by_group ).each( function( index ) {
+	jQuery( '#kompassi_programme article' ).sort( sort_by_group ).each( function( index ) {
 		p = jQuery( this );
 
 		// TODO: Do not show events that would start after or end before visible area
@@ -55,7 +54,7 @@ function setup_timeline_layout( ) {
 			group = jQuery( '<p class="group-name">' + p.attr( grouping ) + '</p>' );
 			grouping_row = rows.length - 1;
 			group.css( 'top', 'calc( ' + grouping_row + ' * var(--kompassi-programme-timeline-row-height)' );
-			jQuery( '.programme-list' ).append( group );
+			jQuery( '#kompassi_programme' ).append( group );
 		}
 
 		current_row = grouping_row;
@@ -84,12 +83,22 @@ function setup_timeline_layout( ) {
 		prev_group = p.attr( 'data-room-name' );
 	} );
 
-	jQuery( '.programme-list' ).css( 'height', 'calc( var(--kompassi-programme-timeline-row-height) * ' + ( rows.length ) + ' )' )
+	jQuery( '#kompassi_programme' ).css( 'height', 'calc( var(--kompassi-programme-timeline-row-height) * ' + ( rows.length ) + ' )' )
+
 
 	for( i = 0; i < hours; i++ ) {
 		offset = 100 / ( hours )
 		jQuery( '.programme-list' ).append( '<div class="ruler" style="left: calc( ' + offset + ' * ' + i + '% );">' + i + '</div>' );
+function get_display_type( ) {
+	if( display_type !== '' ) {
+		return display_type;
+	} else {
+		if( jQuery( '#kompassi_programme' ).hasClass( 'table' ) ) { display_type = 'table'; }
+		if( jQuery( '#kompassi_programme' ).hasClass( 'list' ) ) { display_type = 'list'; }
+		if( jQuery( '#kompassi_programme' ).hasClass( 'expanded' ) ) { display_type = 'expanded'; }
+		if( jQuery( '#kompassi_programme' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
 	}
+	return display_type;
 }
 
 function sort_by_group( a, b ) {
@@ -101,6 +110,7 @@ function sort_by_group( a, b ) {
 }
 
 function revert_timeline_layout( ) {
-	jQuery( '.programme-list article' ).css( 'width', 'auto' ).css( 'min-width', 'auto' ).css( 'visibility', 'visible' );
-	jQuery( '.programme-list .ruler, .programme-list .group-name' ).remove( );
+	jQuery( '#kompassi_programme' ).css( 'height', 'auto' );
+	jQuery( '#kompassi_programme article' ).attr( 'style', '' );
+	jQuery( '#kompassi_programme .day_hint, #kompassi_programme .ruler, #kompassi_programme .group-name' ).remove( );
 }
