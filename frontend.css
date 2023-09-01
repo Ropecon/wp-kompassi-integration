@@ -1,0 +1,245 @@
+/*
+ *  Main layout
+ *
+ */
+
+/*  Sticky header  */
+body > header#TODO {
+	position: sticky;
+	top: 0;
+	z-index: 200;
+
+	width: calc(100vw - (100vw - 100%));
+	background-color: #fff;
+}
+
+
+/*
+ */
+
+table.kompassi {
+	font-size: max(12px, 90%);
+	margin-bottom: 0;
+}
+	table.kompassi tr {
+		background-color: transparent;
+	}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+	#filters,
+	body table {
+		width: 400%; /* fallback */
+		width: calc(100vw - (100vw - 100%));
+	}
+tr {
+	height: 2.4em;
+}
+tr.prog {
+	background-color: rgba(205,205,225,0.5);
+}
+th {
+	text-align: left;
+	color: #555;
+	font-size: 75%;
+	font-weight: 400;
+}
+	th span {
+		background-color: #eee;
+		padding: 0.5em;
+		margin-left: 2px;
+	}
+th,
+td {
+	position: relative;
+	height: 1.5em;
+}
+
+/* Event blocks */
+#programme {
+	margin-top: -100vh; /* Why */
+}
+
+.event {
+	background-color: #ddd;
+	border: 1px solid rgba(0,0,0,0.25);
+	font-size: 80%;
+	padding: 0.4em;
+
+	position: absolute;
+}
+
+.event {
+	white-space: nowrap;
+	overflow: hidden;
+	top: 0.1em;
+	transition: 200ms all;
+}
+	.event:hover {
+		width: auto !important;
+		z-index: 100;
+		top: -0.2em;
+		filter: contrast( 150% );
+		box-shadow: 0 0 1em rgba(0,0,0,0.75);
+		cursor: pointer;
+	}
+	.event.continues-before {
+		padding-left: 2em;
+	}
+		.event.continues-before:before {
+			content: "⏪";
+			position: absolute;
+			left: 0.5em;
+		}
+		.event.continues:after {
+			content: "⏩";
+			position: absolute;
+			right: 0.5em;
+		}
+
+
+/* Tag colors */
+.event { background-color: #47474d; color: #fff; }
+.event[class*='Esitysohjelma'] { background-color: #ef4d35; }
+.event[class*='Figupelit'], .event.tag_Figut { background-color: #00b3bd; }
+.event[class*='Kokemuspiste'], .event.tag_Kokemuspiste { background-color: #dcc169; color: #000; }
+.event[class*='LARP'], .event.tag_Larpit { background-color: #939; }
+.event[class*='Miitti'] { background-color: #5fcc29; }
+.event[class*='Puheohjelma'], .event.tag_Esitelmä, .event.tag_Keskustelu, .event.tag_Paneeli { background-color: #f47921; }
+.event[class*='Roolipeli'] { background-color: #b12fd1; }
+.event[class*='Tanssiohjelma'], .event.tag_Tanssiohjelma { background-color: #ee3689; }
+.event[class*='Turnaukset'] { background-color: #8a6aae; }
+.event[class*='Työpaja'], .event.tag_Työpaja { background-color: #60bb46; }
+.event[class*='Muu peliohjelma'] { background-color: #00a8e4; }
+
+
+/* Event information dialogs */
+.info {
+	display: none;
+	position: fixed;
+	z-index: 300;
+	overflow-y: scroll;
+
+	/* TODO: Pad from edge */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	background-color: #eee;
+}
+	.info header,
+	.info main {
+		padding: 1.5em;
+	}
+		.info header {
+			background-color: #fff;
+			border-bottom: 1px solid rgba(0,0,0,0.4);
+		}
+		.info main {
+			line-height: 1.7em;
+		}
+	.info h2 {
+		margin: 0;
+		font-size: 160%;
+		font-weight: 400;
+	}
+	.info h3 {
+		font-size: 110%;
+		font-weight: 400;
+		margin-top: 0.5em;
+	}
+	.info .meta {
+		font-size: 88%;
+		color: #555;
+		line-height: 1.4em;
+		text-transform: uppercase;
+	}
+
+/* Filters */
+#filters {
+	height: 46px;
+	line-height: 18px;
+}
+	#filters > * {
+		float: left;
+		padding: 5px;
+		margin-right: 1em;
+	}
+	#filters div:last-child {
+		margin-right: 5px;
+	}
+	#filters a {
+		color: #222;
+		text-decoration: none;
+		padding-bottom: 3px;
+		margin-right: 0.5em;
+	}
+		#filters a:hover {
+			border-bottom: 2px solid #222;
+		}
+		#filters a.current {
+			border-bottom: 2px solid #888;
+		}
+
+/* Date/hour labels */
+#times {
+	background-color: #fff;
+	border-top: 1px solid rgba(0,0,0,0.25);
+}
+	#times th {
+		padding: 0.25em;
+		font-size: 90%;
+		vertical-align: top;
+		border-left: 1px solid rgba(0,0,0,0.25);
+		border-bottom: 1px solid rgba(0,0,0,0.25);
+		border-bottom: none;
+	}
+		#times th:first-child { border-left: none; }
+	#times td strong {
+		font-size: 80%;
+	}
+
+/* Hour lines */
+#lines {
+	position: sticky;
+	height: 100vh;
+	top: 0;
+	z-index: -1;
+}
+	#lines tr {
+		height: auto;
+	}
+		#lines td {
+			border-left: 1px solid rgba(0,0,0,0.25);
+		}
+
+/*
+ */
+
+#times,
+#lines {
+	table-layout: fixed;
+}
+
+#times th,
+#lines td {
+	padding: 3px 3px;
+	overflow: hidden;
+}
+	#times th:first-child,
+	#lines td:first-child {
+		border-left: none;
+	}
+
+/* Current time */
+#now {
+	position: fixed;
+	top: 0;
+	z-index: 150;
+	width: 1px;
+	height: 100vh;
+	border-left: 1px dashed red;
+}

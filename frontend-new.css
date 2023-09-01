@@ -1,0 +1,182 @@
+:root {
+	--kompassi-programme-bg: #fff;
+	--kompassi-programme-border: rgba(0,0,0,0.2);
+	--kompassi-programme-padding: 1em;
+	--kompassi-programme-timeline-bg: #ddd;
+ 	--kompassi-programme-timeline-row-height: 2em;
+	--kompassi-programme-timeline-ruler: rgba(0,0,0,0.2);
+	--kompassi-programme-timeline-time: rgba(0,0,0,0.4);
+}
+
+.wp-block-kompassi-integration-programme {
+	font-family: 'Lato';
+}
+
+/*
+ *  Display style selection
+ *
+ */
+
+#display-style a {
+	display: inline-block;
+	background-color: #222;
+	color: #fff;
+	border-radius: 9999px;
+	padding: 1em 1em 1em calc( 2.5em + 24px );
+	margin-right: 0.5em;
+	margin-bottom: 1em;
+	background-position: 1.5em 50%;
+	background-repeat: no-repeat;
+	background-size: 24px;
+}
+	#display-style a.table { background-image: url(images/icon_table.svg); }
+	#display-style a.list { background-image: url(images/icon_list.svg); }
+	#display-style a.expanded { background-image: url(images/icon_expanded.svg); }
+	#display-style a.timeline { background-image: url(images/icon_timeline.svg); }
+
+.programme-list.table article.program {
+	padding: 0.5em 0;
+}
+	.programme-list.table article.program:not(:last-child) {
+		border-bottom: 1px solid var(--kompassi-programme-border);
+	}
+
+.programme-list.list article.program,
+.programme-list.expanded article.program {
+	background-color: var(--kompassi-programme-bg);
+	border: 1px solid var(--kompassi-programme-border);
+	padding: 1em;
+}
+
+/*  Programme list  */
+
+.programme-list article.program .entry {
+	/*  Hide all data by default  */
+	display: none;
+}
+	/*  Table  */
+	.programme-list.table {
+	}
+		.programme-list.table article.program {
+			display: grid;
+			grid-template-columns: auto max-content 12em;
+			grid-template-areas:
+				"title room_name start_time";
+		}
+			.programme-list.table article.program :is(.title,.room_name,.start_time) {
+				display: block;
+			}
+			.programme-list.table article.program .start_time {
+				text-align: right;
+			}
+
+	/*  List  */
+	.programme-list.list {
+		display: grid;
+		grid-template-columns: repeat(1,1fr);
+		grid-gap: 0.5em;
+	}
+
+		.programme-list.list article.program {
+			display: grid;
+			grid-template-columns: repeat(2,1fr);
+			grid-template-areas:
+				"title title"
+				"start_time room_name";
+		}
+			.programme-list.list article.program :is(.title,.room_name,.start_time) {
+				display: block;
+			}
+			.programme-list.list article.program .title {
+				margin-bottom: 0.5em;
+			}
+			.programme-list.list article.program .room_name {
+				text-align: right;
+			}
+
+	/*  Expanded  */
+	.programme-list.expanded {
+		display: grid;
+		grid-template-columns: repeat(2,1fr);
+		grid-gap: 1em;
+	}
+		.programme-list.expanded article.program {
+			display: grid;
+			grid-template-columns: repeat(2,1fr);
+			grid-template-areas:
+				"img img"
+				"title title"
+				"start_time room_name";
+		}
+			.programme-list.expanded article.program :is(.img,.title,.room_name,.start_time) {
+				display: block;
+			}
+			.programme-list.expanded article.program .entry.img {
+				margin: -1em -1em 1em -1em;
+				min-height: 100px;
+				background-color: #777;
+			}
+			.programme-list.expanded article.program .room_name {
+				text-align: right;
+			}
+
+	/*  Timeline  */
+	.programme-list.timeline {
+		position: relative;
+		border: 1px solid var(--kompassi-programme-border);
+		background-color: var(--kompassi-programme-timeline-bg);
+		overflow: hidden;
+		padding-top: var(--kompassi-programme-timeline-row-height);
+	}
+		.programme-list.timeline .ruler {
+			width: auto;
+			height: 100%;
+			border-left: 1px solid var(--kompassi-programme-timeline-ruler);
+			padding: 3px;
+			color: var(--kompassi-programme-timeline-time);
+			position: absolute;
+			top: 0;
+			bottom: 0;
+		}
+			.programme-list.timeline .ruler:first-of-type {
+				border-left: 1px solid transparent;
+			}
+
+		.programme-list.timeline article.program {
+			display: inline-block;
+			padding: 0.2em;
+			background-color: #164B7F;
+			color: rgba(255,255,255,0.8);
+			height: calc( var(--kompassi-programme-timeline-row-height) - 3px );
+
+			position: absolute;
+			z-index: 1;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+			.programme-list.timeline article.program :is(.title) {
+				display: block;
+			}
+			.programme-list.timeline article.program:hover {
+				background-color: #fff;
+				color: #222;
+				width: auto !important;
+				height: auto !important;
+				z-index: 20;
+			}
+				.programme-list.timeline article.program:hover :is(.room_name,.start_time) {
+					overflow: visible;
+					display: block;
+				}
+		.programme-list.timeline .group-name {
+			display: block;
+			padding: 0.2em;
+			background-color: #fff;
+			border-top: 1px solid var(--kompassi-programme-border);
+			position: absolute;
+			left: 1px;
+			right: 1px;
+			z-index: 3;
+			height: calc( var(--kompassi-programme-timeline-row-height) - 3px );
+
+		}
