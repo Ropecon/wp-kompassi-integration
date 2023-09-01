@@ -35,14 +35,16 @@
 	#display-style a.timeline { background-image: url(images/icon_timeline.svg); }
 
 .programme-list.table article.program {
+
+#kompassi_programme.table article {
 	padding: 0.5em 0;
 }
-	.programme-list.table article.program:not(:last-child) {
+	#kompassi_programme.table article:not(:last-child) {
 		border-bottom: 1px solid var(--kompassi-programme-border);
 	}
 
-.programme-list.list article.program,
-.programme-list.expanded article.program {
+#kompassi_programme.list article,
+#kompassi_programme.expanded article {
 	background-color: var(--kompassi-programme-bg);
 	border: 1px solid var(--kompassi-programme-border);
 	padding: 1em;
@@ -50,57 +52,59 @@
 
 /*  Programme list  */
 
-.programme-list article.program .entry {
+#kompassi_programme article .entry {
 	/*  Hide all data by default  */
 	display: none;
 }
+
 	/*  Table  */
-	.programme-list.table {
+	#kompassi_programme.table {
+		width: 100%;
 	}
-		.programme-list.table article.program {
+		#kompassi_programme.table article {
 			display: grid;
 			grid-template-columns: auto max-content 12em;
 			grid-template-areas:
 				"title room_name start_time";
 		}
-			.programme-list.table article.program :is(.title,.room_name,.start_time) {
+			#kompassi_programme.table article :is(.title,.room_name,.start_time) {
 				display: block;
 			}
-			.programme-list.table article.program .start_time {
+			#kompassi_programme.table article .start_time {
 				text-align: right;
 			}
 
 	/*  List  */
-	.programme-list.list {
+	#kompassi_programme.list {
 		display: grid;
 		grid-template-columns: repeat(1,1fr);
 		grid-gap: 0.5em;
 	}
 
-		.programme-list.list article.program {
+		#kompassi_programme.list article {
 			display: grid;
 			grid-template-columns: repeat(2,1fr);
 			grid-template-areas:
 				"title title"
 				"start_time room_name";
 		}
-			.programme-list.list article.program :is(.title,.room_name,.start_time) {
+			#kompassi_programme.list article :is(.title,.room_name,.start_time) {
 				display: block;
 			}
-			.programme-list.list article.program .title {
+			#kompassi_programme.list article .title {
 				margin-bottom: 0.5em;
 			}
-			.programme-list.list article.program .room_name {
+			#kompassi_programme.list article .room_name {
 				text-align: right;
 			}
 
 	/*  Expanded  */
-	.programme-list.expanded {
+	#kompassi_programme.expanded {
 		display: grid;
 		grid-template-columns: repeat(2,1fr);
 		grid-gap: 1em;
 	}
-		.programme-list.expanded article.program {
+		#kompassi_programme.expanded article {
 			display: grid;
 			grid-template-columns: repeat(2,1fr);
 			grid-template-areas:
@@ -108,20 +112,20 @@
 				"title title"
 				"start_time room_name";
 		}
-			.programme-list.expanded article.program :is(.img,.title,.room_name,.start_time) {
+			#kompassi_programme.expanded article :is(.img,.title,.room_name,.start_time) {
 				display: block;
 			}
-			.programme-list.expanded article.program .entry.img {
+			#kompassi_programme.expanded article .entry.img {
 				margin: -1em -1em 1em -1em;
 				min-height: 100px;
 				background-color: #777;
 			}
-			.programme-list.expanded article.program .room_name {
+			#kompassi_programme.expanded article .room_name {
 				text-align: right;
 			}
 
 	/*  Timeline  */
-	.programme-list.timeline {
+	#kompassi_programme.timeline {
 		position: relative;
 		border: 1px solid var(--kompassi-programme-border);
 		background-color: var(--kompassi-programme-timeline-bg);
@@ -138,11 +142,11 @@
 			top: 0;
 			bottom: 0;
 		}
-			.programme-list.timeline .ruler:first-of-type {
+			#kompassi_programme.timeline .ruler:first-of-type {
 				border-left: 1px solid transparent;
 			}
 
-		.programme-list.timeline article.program {
+		#kompassi_programme.timeline article {
 			display: inline-block;
 			padding: 0.2em;
 			background-color: #164B7F;
@@ -154,21 +158,21 @@
 			white-space: nowrap;
 			overflow: hidden;
 		}
-			.programme-list.timeline article.program :is(.title) {
+			#kompassi_programme.timeline article :is(.title) {
 				display: block;
 			}
-			.programme-list.timeline article.program:hover {
+			#kompassi_programme.timeline article:hover {
 				background-color: #fff;
 				color: #222;
 				width: auto !important;
 				height: auto !important;
 				z-index: 20;
 			}
-				.programme-list.timeline article.program:hover :is(.room_name,.start_time) {
+				#kompassi_programme.timeline article:hover :is(.room_name,.start_time) {
 					overflow: visible;
 					display: block;
 				}
-		.programme-list.timeline .group-name {
+		#kompassi_programme.timeline .group-name {
 			display: block;
 			padding: 0.2em;
 			background-color: #fff;

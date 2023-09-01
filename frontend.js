@@ -1,15 +1,18 @@
+var display_type = ''; // default
 jQuery( function( e ) {
-	//
-	jQuery( '#display-style a' ).on( 'click', function( ) {
-		jQuery( '.programme-list' ).removeClass( 'table list expanded timeline' ).addClass( jQuery( this ).attr( 'class' ) );
-		if( 'timeline' == jQuery( this ).attr( 'class' ) ) {
+	// Change display type
+	jQuery( '#kompassi_programme_display a' ).on( 'click', function( ) {
+		display_type = jQuery( this ).attr( 'class' );
+		jQuery( '#kompassi_programme' ).removeClass( 'table list expanded timeline' ).addClass( jQuery( this ).attr( 'class' ) );
+		revert_timeline_layout( );
+		if( get_display_type( ) == 'timeline' ) {
 			setup_timeline_layout( );
-		} else {
-			revert_timeline_layout( );
 		}
 	} );
 
-	if( jQuery( '.programme-list' ).first( ).hasClass( 'timeline' ) ) {
+
+	//  On first load, if timeline is the display type, trigger setup
+	if( get_display_type( ) == 'timeline' ) {
 		setup_timeline_layout( );
 	}
 } );

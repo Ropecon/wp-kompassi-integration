@@ -70,7 +70,7 @@ class WP_Plugin_Kompassi_Integration {
 		$prog = $this->get_data( );
 
 		/*  Display styles  */
-		$out .= '<section id="display-style">';
+		$out .= '<section id="kompassi_programme_display">';
 		$display_styles = array(
 			'table' => _x( 'Table', 'display style', 'kompassi-integration' ),
 			'list' => _x( 'Compact List', 'display style', 'kompassi-integration' ),
@@ -82,8 +82,11 @@ class WP_Plugin_Kompassi_Integration {
 		}
 		$out .= '</section>';
 
+		/*  Filters  */
+		$out .= '<section id="kompassi_programme_filters"></section>';
+
 		/*  Programme  */
-		$out .= '<section class="programme-list timeline">';
+		$out .= '<section id="kompassi_programme" class="programme-list timeline">';
 		foreach( array_slice( $prog, 0, $this->programmes_to_show, true ) as $p ) {
 			$out .= $this->markup_program( $p );
 		}
@@ -134,7 +137,7 @@ class WP_Plugin_Kompassi_Integration {
 			$html_attrs .= ' data-' . $attr . '="' . $value . '"';
 		}
 		?>
-			<article class="program" id="<?php echo $programme['identifier']; ?>" <?php echo $html_attrs; ?>>
+			<article id="<?php echo $programme['identifier']; ?>" <?php echo $html_attrs; ?>>
 				<?php
 					$show_keys = array(
 							'title' => '<strong>%s</strong>',
@@ -155,6 +158,7 @@ class WP_Plugin_Kompassi_Integration {
 						}
 					}
 					echo '<div class="entry img" style="grid-area: img;"></div>';
+					// echo '<div class="entry favorite" style="grid-area: favorite;"></div>';
 				?>
 			</article>
 		<?php
