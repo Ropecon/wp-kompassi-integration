@@ -1,26 +1,101 @@
 jQuery( function( e ) {
-	jQuery( '.event' ).on( 'click', function( e ) {
-		var event_id = jQuery( this ).attr( 'id' );
-		jQuery( '#info-' + event_id ).show( );
-		jQuery( 'body' ).css( 'overflow', 'hidden' );
+	//
+	jQuery( '#display-style a' ).on( 'click', function( ) {
+		jQuery( '.programme-list' ).removeClass( 'table list expanded timeline' ).addClass( jQuery( this ).attr( 'class' ) );
+		if( 'timeline' == jQuery( this ).attr( 'class' ) ) {
+			setup_timeline_layout( );
+		} else {
+			revert_timeline_layout( );
+		}
 	} );
 
-	jQuery( '.info' ).on( 'click', hide_info );
-	jQuery( document ).on( 'keyup', hide_info );
-
-	// TODO: When pressing Esc, close info window
-
-	setInterval( function( ) {
-		var time = Date.now( ) / 1000;
-		var offset = ( parseInt( time ) - begin ) * 100 / ( end - begin );
-
-		jQuery( '#now' ).css( 'left', 'calc( ' + offset + '% - 1px )' );
-	}, 30 * 1000 );
-
-
+	if( jQuery( '.programme-list' ).first( ).hasClass( 'timeline' ) ) {
+		setup_timeline_layout( );
+	}
 } );
 
-function hide_info( ) {
-	jQuery( '.info' ).hide( );
-	jQuery( 'body' ).css( 'overflow', 'auto' );
+// TODO: Get this value from filters
+var grouping = 'data-room-name';
+
+function setup_timeline_layout( ) {
+	hours = 24;
+
+	time_total_min = 60 * hours;
+	time_start = 1690491600 + 60 * 60 * 24;
+	time_duration = time_total_min * 60;
+	time_end = time_start + time_duration;
+	rows = [ 'time hints' ];
+
+	prev_group = '';
+	var grouping_row = 1;
+//	jQuery( '.programme-list article' );
+
+	jQuery( '.programme-list article' ).sort( sort_by_group ).each( function( index ) {
+		p = jQuery( this );
+
+		// TODO: Do not show events that would start after or end before visible area
+		if( p.attr( 'data-end-timestamp' ) < time_start || p.attr( 'data-start-timestamp' ) > time_end ) {
+			p.css( 'visibility', 'hidden' );
+			return;
+		}
+
+		added = false;
+
+		per =  p.attr( 'data-length' ) / time_total_min * 100;
+		offset = ( ( p.attr( 'data-start-timestamp' ) - time_start ) / time_duration ) * 100;
+
+		//
+		if( p.attr( grouping ) != prev_group ) {
+			rows.push( 'group: ' + p.attr( grouping ) );
+			group = jQuery( '<p class="group-name">' + p.attr( grouping ) + '</p>' );
+			grouping_row = rows.length - 1;
+			group.css( 'top', 'calc( ' + grouping_row + ' * var(--kompassi-programme-timeline-row-height)' );
+			jQuery( '.programme-list' ).append( group );
+		}
+
+		current_row = grouping_row;
+
+		while( added == false ) {
+			if( typeof rows[current_row] === 'undefined' ) {
+				// Row does not exist, create new
+				rows.push( p.attr( 'data-end-timestamp' ) );
+				rownum = rows.length - 1;
+				added = true;
+			}
+			if( rows[current_row] <= p.attr( 'data-start-timestamp' ) ) {
+				// Rows last event ends before or at the same time as this one starts
+				rows[current_row] = p.attr( 'data-end-timestamp' );
+				rownum = current_row;
+				added = true;
+			}
+			current_row = current_row + 1;
+		}
+
+		p.css( 'width', 'calc( ' + per + '% - 5px )' );
+		p.css( 'min-width', 'calc( ' + per + '% - 5px )' );
+		p.css( 'left', 'calc( ' + offset + '% + 3px )' );
+		p.css( 'top', 'calc( ' + rownum + ' * var(--kompassi-programme-timeline-row-height)' );
+
+		prev_group = p.attr( 'data-room-name' );
+	} );
+
+	jQuery( '.programme-list' ).css( 'height', 'calc( var(--kompassi-programme-timeline-row-height) * ' + ( rows.length ) + ' )' )
+
+	for( i = 0; i < hours; i++ ) {
+		offset = 100 / ( hours )
+		jQuery( '.programme-list' ).append( '<div class="ruler" style="left: calc( ' + offset + ' * ' + i + '% );">' + i + '</div>' );
+	}
+}
+
+function sort_by_group( a, b ) {
+	// TODO: return -1 if attrs are not found
+	if( jQuery( a ).attr( grouping ) > jQuery( b ).attr( grouping ) ) {
+		return 1;
+	}
+	return -1;
+}
+
+function revert_timeline_layout( ) {
+	jQuery( '.programme-list article' ).css( 'width', 'auto' ).css( 'min-width', 'auto' ).css( 'visibility', 'visible' );
+	jQuery( '.programme-list .ruler, .programme-list .group-name' ).remove( );
 }

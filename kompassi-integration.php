@@ -42,9 +42,7 @@ class WP_Plugin_Kompassi_Integration {
 
 	function wp_enqueue_scripts( ) {
 		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery' ) );
-		wp_enqueue_script( 'kompassi-integration-frontend-new', plugins_url( 'frontend-new.js', __FILE__ ), array( 'jquery' ) );
 		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ) );
-		wp_enqueue_style( 'kompassi-integration-frontend-new', plugins_url( 'frontend-new.css', __FILE__ ) );
 	}
 
 	function enqueue_block_editor_assets( ) {
@@ -91,17 +89,6 @@ class WP_Plugin_Kompassi_Integration {
 		}
 		$out .= '</section>';
 
-		$out .= '</div>';
-		return $out;
-	}
-
-	function block_program_map( $attributes ) {
-		$class = '';
-		if( isset( $attributes['align'] ) ) { $class .= 'align' . $attributes['align']; }
-		$out = '<div ' . get_block_wrapper_attributes( array( 'class' => $class ) ) . '>';
-		ob_start( );
-		require_once plugin_dir_path( __FILE__ ) . 'blocks/program_map.php';
-		$out .= ob_get_clean( );
 		$out .= '</div>';
 		return $out;
 	}
@@ -168,24 +155,11 @@ class WP_Plugin_Kompassi_Integration {
 						}
 					}
 					echo '<div class="entry img" style="grid-area: img;"></div>';
-					/*
-					foreach( $programme as $key => $value ) {
-						if( !in_array( $key, array_keys( $show_keys ) ) || empty( $value ) ) {
-							continue;
-						}
-						if( is_array( $value ) ) {
-							$value = implode( ', ', $value );
-						}
-						echo '<div class="entry ' . $key . '" style="grid-area: ' . $key . ';">' . sprintf( $show_keys[$key], $value ) . '</div>';
-					}
-					*/
 				?>
 			</article>
 		<?php
 		return ob_get_clean( );
 	}
 }
-
-require_once 'init.php';
 
 new WP_Plugin_Kompassi_Integration( );
