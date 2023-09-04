@@ -4,6 +4,7 @@ var display_type = '';
 var time_start = 0;
 var time_end = 0;
 var time_total = 0;
+var popover_timeout = '';
 
 jQuery( function( e ) {
 	// Change display type
@@ -84,6 +85,18 @@ jQuery( function( e ) {
 	jQuery( '#kompassi_programme_filters' ).on( 'change', '.filter-tag, .filter-date', kompassi_apply_filters );
 	jQuery( '#kompassi_programme_filters' ).on( 'keyup', '.filter-text', kompassi_apply_filters );
 
+	// Popover
+	jQuery( '#kompassi_programme article' ).on( 'mouseover', function( e ) {
+		if( !jQuery( '#kompassi_programme' ).hasClass( 'timeline' ) ) {
+			return;
+		}
+		clearTimeout( popover_timeout );
+		popover_timeout = setTimeout( kompassi_popover, 300, this, e.pageX );
+	} );
+	jQuery( '#kompassi_programme article' ).on( 'mouseout', function( e ) {
+		clearTimeout( popover_timeout );
+		jQuery( '#kompassi_programme_popover' ).remove( );
+	} );
 
 	// Show modal
 	jQuery( '#kompassi_programme article' ).on( 'click', function( ) {
@@ -273,3 +286,13 @@ function kompassi_get_date_formatted( datetime_obj ) {
 	return dayNames[datetime_obj.getDay( )] + ' ' + datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
 }
 
+function kompassi_popover( program, posX ) {
+	popover = jQuery( '<div id="kompassi_programme_popover" />' );
+	markup = jQuery( program ).find( '.title' ).prop( 'outerHTML' );
+	markup += jQuery( program ).find( '.times' ).prop( 'outerHTML' );
+	popover.html( markup );
+	jQuery( 'body' ).append( popover );
+	offset_top = parseInt( jQuery( program ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) );
+	popover.css( 'top', 'calc( ' + offset_top + 'px - ' + popover.outerHeight( ) + 'px - 0.5em )' );
+	popover.css( 'left', 'calc( ' + posX + 'px - ' + popover.outerWidth( ) / 2  + 'px )');
+}
