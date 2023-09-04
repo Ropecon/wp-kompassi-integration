@@ -4,6 +4,8 @@ var display_type = '';
 var time_start = 0;
 var time_end = 0;
 var time_total = 0;
+var dates = {};
+var date_filtered = false;
 var popover_timeout = '';
 
 jQuery( function( e ) {
@@ -56,6 +58,20 @@ jQuery( function( e ) {
 
 	time_total = time_end - time_start;
 
+	// Get list of dates
+	i = ts.setHours( 0 ).valueOf( ) / 1000;
+	while( i < time_end ) {
+		dates[i] = kompassi_get_date_formatted( new Date( i * 1000 ) );
+		i += 24 * 60 * 60;
+	}
+
+	//  Show filters
+	jQuery( '#kompassi_programme_filters' ).append( jQuery( '<span>' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '</span>' ) );
+
+	//  Show text filter
+	jQuery( '#kompassi_programme_filters' ).append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Search title and description', 'kompassi-integration' ) + '" />' ) );
+
+	//  Show tag filters
 	// TODO
 	delete tags['data-length'];
 	delete tags['data-start-timestamp'];
@@ -64,14 +80,6 @@ jQuery( function( e ) {
 		'data-room-name': __( 'Room name', 'kompassi-integration' )
 	};
 	// TODO END
-
-	//  Show filters
-	jQuery( '#kompassi_programme_filters' ).append( jQuery( '<span>' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '</span>' ) );
-
-	//  Show text filter
-	jQuery( '#kompassi_programme_filters' ).append( jQuery( '<input class="filter filter-text" name="filter_text" />' ) );
-
-	//  Show tag filters
 	jQuery.each( tags, function( tag, values ) {
 		select = jQuery( '<select class="filter filter-tag" name="filter_' + tag + '" data-attr="' + tag + '" />' );
 		select.append( jQuery( '<option value="0">-- ' + tagnames[tag] + ' --</option>' ) );
@@ -80,6 +88,14 @@ jQuery( function( e ) {
 		} );
 		jQuery( '#kompassi_programme_filters' ).append( select );
 	} );
+
+	// Show date filter
+	select = jQuery( '<select class="filter filter-date" name="filter_date" />' );
+	select.append( jQuery( '<option value="0">-- ' + __( 'All dates', 'kompassi-integration' ) + ' --</option>' ) );
+	jQuery.each( dates, function( timestamp, label ) {
+		select.append( jQuery( '<option value="' + timestamp + '">' + label + '</option>' ) );
+	} );
+	jQuery( '#kompassi_programme_filters' ).append( select );
 
 	// Handle filtering
 	jQuery( '#kompassi_programme_filters' ).on( 'change', '.filter-tag, .filter-date', kompassi_apply_filters );
@@ -136,20 +152,39 @@ function kompassi_setup_timeline_layout( ) {
 
 	jQuery( '#kompassi_programme article' ).sort( kompassi_sort_by_group ).each( function( index ) {
 		p = jQuery( this );
-
-		// TODO: Do not show events that would start after or end before visible area
-		if( p.attr( 'data-end-timestamp' ) < time_start || p.attr( 'data-start-timestamp' ) > time_end ) {
-			p.css( 'visibility', 'hidden' );
-			return;
-		}
 		if( p.hasClass( 'hidden' ) ) {
 			return;
 		}
 
 		added = false;
 
-		per = p.attr( 'data-length' ) / time_total_min * 100;
-		offset = ( ( p.attr( 'data-start-timestamp' ) - time_start ) / time_total ) * 100;
+		if( date_filtered ) {
+			time_start_filtered = jQuery( '[name="filter_date"]' ).val( );
+			if( time_start_filtered < time_start ) {
+				time_start_filtered = time_start;
+				tsf = new Date( time_start_filtered * 1000 );
+				time_total_filtered = ( 24 - tsf.getHours( ) ) * 60 * 60;
+			} else if( parseInt( time_start_filtered ) + ( 24 * 60 * 60 ) > time_end ) {
+				tef = new Date( time_end * 1000 );
+				time_total_filtered = tef.getHours( ) * 60 * 60;
+			} else {
+				time_total_filtered = 24 * 60 * 60;
+			}
+		} else {
+			time_start_filtered = time_start;
+			time_total_filtered = time_total;
+		}
+
+		if( options.timeline_earliest_hour > 0 ) {
+			tsf = new Date( time_start_filtered * 1000 );
+			if( tsf.getHours( ) < options.timeline_earliest_hour ) {
+				time_start_filtered = parseInt( time_start_filtered ) + ( options.timeline_earliest_hour * 60 * 60 );
+				time_total_filtered = parseInt( time_total_filtered ) - ( options.timeline_earliest_hour * 60 * 60 );
+			}
+		}
+
+		per = p.attr( 'data-length' ) / ( time_total_filtered / 60 ) * 100;
+		offset = ( ( p.attr( 'data-start-timestamp' ) - time_start_filtered ) / time_total_filtered ) * 100;
 
 		//
 		if( p.attr( grouping ) != prev_group ) {
@@ -182,25 +217,27 @@ function kompassi_setup_timeline_layout( ) {
 		p.css( 'min-width', 'calc( ' + per + '% - 5px )' );
 		p.css( 'left', 'calc( ' + offset + '% + 3px )' );
 		p.css( 'top', 'calc( ' + rownum + ' * var(--kompassi-programme-timeline-row-height)' );
+		if( offset < 0 ) {
+			p.find( '.title' ).css( 'position', 'absolute' ).css( 'left', ( ( -1 * p.position( ).left ) + 6 ) + 'px' );
+		}
 
 		prev_group = p.attr( grouping );
 	} );
 
 	jQuery( '#kompassi_programme' ).css( 'height', 'calc( var(--kompassi-programme-timeline-row-height) * ' + ( rows.length ) + ' )' )
 
-	first_hour = new Date( time_start * 1000 ).getHours( );
-	for( i = 0; i < time_total_hours; i++ ) {
-		offset = 100 / ( time_total_hours );
+	first_hour = new Date( time_start_filtered * 1000 ).getHours( );
+	for( i = 0; i < Math.ceil( time_total_filtered / 60 / 60 ); i++ ) {
+		offset = 100 / Math.ceil( time_total_filtered / 60 / 60 );
 		label = i + first_hour;
 		label = label % 24;
 		if( label < 10 ) {
 			label = '0' + label;
 		}
-		jQuery( '#kompassi_programme' ).append( '<div class="ruler" style="top: var(--kompassi-programme-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% );">' + label + '</div>' );
+		jQuery( '#kompassi_programme' ).append( '<div class="ruler" style="top: var(--kompassi-programme-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% )">' + label + '</div>' );
 		if( label == '00' || i == 0 ) {
-			d = new Date( time_start * 1000 + i * 60 * 60 * 1000 );
-			day_label = dayNames[d.getDay()] + ' ' + d.getDate( ) + '.' + ( d.getMonth( ) + 1 ) + '.';
-			jQuery( '#kompassi_programme' ).append( '<strong class="day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% );">' + day_label + '</div>' );
+			d = new Date( time_start_filtered * 1000 + i * 60 * 60 * 1000 );
+			jQuery( '#kompassi_programme' ).append( '<strong class="day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% );">' + kompassi_get_date_formatted( d ) + '</div>' );
 		}
 	}
 }
@@ -237,7 +274,21 @@ function kompassi_apply_filters( ) {
 		}
 
 		// Date filter
-
+		if( filter.hasClass( 'filter-date' ) ) {
+			if( filter.val( ) !== '0' ) {
+				time_start_filtered = parseInt( filter.val( ) );
+				time_end_filtered = parseInt( filter.val( ) ) + ( 24 * 60 * 60 );
+				jQuery( '#kompassi_programme article' ).each( function( index ) {
+					program = jQuery( this );
+					if( parseInt( program.attr( 'data-start-timestamp' ) ) > time_end_filtered || parseInt( program.attr( 'data-end-timestamp' ) ) <= time_start_filtered ) {
+						program.addClass( 'hidden' );
+					}
+				} );
+				date_filtered = true;
+			} else {
+				date_filtered = false;
+			}
+		}
 	} );
 
 	//  If on timeline, refresh the layout
@@ -270,6 +321,7 @@ function kompassi_sort_by_group( a, b ) {
 function kompassi_revert_timeline_layout( ) {
 	jQuery( '#kompassi_programme' ).css( 'height', 'auto' );
 	jQuery( '#kompassi_programme article' ).attr( 'style', '' );
+	jQuery( '#kompassi_programme .title' ).css( 'left', '' ).css( 'position', '' );
 	jQuery( '#kompassi_programme .day_hint, #kompassi_programme .ruler, #kompassi_programme .group-name' ).remove( );
 }
 
