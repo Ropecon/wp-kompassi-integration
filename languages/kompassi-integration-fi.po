@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2023-09-01T23:20:56+03:00\n"
-"PO-Revision-Date: 2023-09-01 23:21+0300\n"
+"POT-Creation-Date: 2023-09-04T19:18:50+03:00\n"
+"PO-Revision-Date: 2023-09-04 19:19+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -18,6 +18,7 @@ msgstr ""
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
+#: kompassi-integration.php:53 kompassi-integration.php:58
 msgid "Kompassi Integration"
 msgstr "Kompassi-integraatio"
 
@@ -25,22 +26,36 @@ msgstr "Kompassi-integraatio"
 msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
-#: kompassi-integration.php:67
+#: kompassi-integration.php:39
+msgid "Earliest hour on timeline"
+msgstr "Aikaisin tunti aikajanalla"
+
+#: kompassi-integration.php:40
+msgid "Earliest hour to show on the timeline, when a single day is selected."
+msgstr ""
+"Aikaisin tunti joka näytetään aikajanalla yksittäisen päivän ollessa "
+"valittuna."
+
+#: kompassi-integration.php:61
+msgid "Save Changes"
+msgstr "Tallenna muutokset"
+
+#: kompassi-integration.php:109
 msgctxt "display style"
 msgid "Table"
 msgstr "Taulukko"
 
-#: kompassi-integration.php:68
+#: kompassi-integration.php:110
 msgctxt "display style"
 msgid "Compact List"
 msgstr "Tiivis lista"
 
-#: kompassi-integration.php:69
+#: kompassi-integration.php:111
 msgctxt "display style"
 msgid "Expanded List"
 msgstr "Laajennettu lista"
 
-#: kompassi-integration.php:70
+#: kompassi-integration.php:112
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
@@ -53,49 +68,57 @@ msgstr "Ohjelmakartta"
 msgid "Programme"
 msgstr "Ohjelma"
 
-#: frontend.js:10
+#: frontend.js:69
+msgctxt "verb (shown before filters)"
+msgid "Filter"
+msgstr "Suodata"
+
+#: frontend.js:72
+msgid "Search title and description"
+msgstr "Etsi otsikosta ja kuvauksesta"
+
+#: frontend.js:80
+msgid "Room name"
+msgstr "Tilan nimi"
+
+#: frontend.js:94
+msgid "All dates"
+msgstr "Kaikki päivät"
+
+#: frontend.js:330
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr "su"
 
-#: frontend.js:11
+#: frontend.js:331
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr "ma"
 
-#: frontend.js:12
+#: frontend.js:332
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr "ti"
 
-#: frontend.js:13
+#: frontend.js:333
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr "ke"
 
-#: frontend.js:14
+#: frontend.js:334
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr "to"
 
-#: frontend.js:15
+#: frontend.js:335
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr "pe"
 
-#: frontend.js:16
+#: frontend.js:336
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr "la"
-
-#: frontend.js:76
-msgid "Room name"
-msgstr "Tilan nimi"
-
-#: frontend.js:81
-msgctxt "verb (shown before filters)"
-msgid "Filter"
-msgstr "Suodata"
 
 #~ msgid "Show all"
 #~ msgstr "Näytä kaikki"

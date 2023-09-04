@@ -9,12 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-01T23:20:56+03:00\n"
+"POT-Creation-Date: 2023-09-04T19:18:50+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
+#: kompassi-integration.php:53
+#: kompassi-integration.php:58
 msgid "Kompassi Integration"
 msgstr ""
 
@@ -22,22 +24,34 @@ msgstr ""
 msgid "Pasi Lallinaho"
 msgstr ""
 
-#: kompassi-integration.php:67
+#: kompassi-integration.php:39
+msgid "Earliest hour on timeline"
+msgstr ""
+
+#: kompassi-integration.php:40
+msgid "Earliest hour to show on the timeline, when a single day is selected."
+msgstr ""
+
+#: kompassi-integration.php:61
+msgid "Save Changes"
+msgstr ""
+
+#: kompassi-integration.php:109
 msgctxt "display style"
 msgid "Table"
 msgstr ""
 
-#: kompassi-integration.php:68
+#: kompassi-integration.php:110
 msgctxt "display style"
 msgid "Compact List"
 msgstr ""
 
-#: kompassi-integration.php:69
+#: kompassi-integration.php:111
 msgctxt "display style"
 msgid "Expanded List"
 msgstr ""
 
-#: kompassi-integration.php:70
+#: kompassi-integration.php:112
 msgctxt "display style"
 msgid "Timeline"
 msgstr ""
@@ -52,46 +66,54 @@ msgstr ""
 msgid "Programme"
 msgstr ""
 
-#: frontend.js:10
+#: frontend.js:69
+msgctxt "verb (shown before filters)"
+msgid "Filter"
+msgstr ""
+
+#: frontend.js:72
+msgid "Search title and description"
+msgstr ""
+
+#: frontend.js:80
+msgid "Room name"
+msgstr ""
+
+#: frontend.js:94
+msgid "All dates"
+msgstr ""
+
+#: frontend.js:330
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr ""
 
-#: frontend.js:11
+#: frontend.js:331
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr ""
 
-#: frontend.js:12
+#: frontend.js:332
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr ""
 
-#: frontend.js:13
+#: frontend.js:333
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr ""
 
-#: frontend.js:14
+#: frontend.js:334
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr ""
 
-#: frontend.js:15
+#: frontend.js:335
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr ""
 
-#: frontend.js:16
+#: frontend.js:336
 msgctxt "day abbreviation"
 msgid "Sat"
-msgstr ""
-
-#: frontend.js:76
-msgid "Room name"
-msgstr ""
-
-#: frontend.js:81
-msgctxt "verb (shown before filters)"
-msgid "Filter"
 msgstr ""
