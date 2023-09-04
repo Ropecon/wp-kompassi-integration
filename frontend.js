@@ -1,29 +1,18 @@
 __ = wp.i18n.__;
 _x = wp.i18n._x;
-var display_type = ''; // default
+var display_type = '';
 var time_start = 0;
 var time_end = 0;
 var time_total = 0;
-var time_total_min = 0;
-var time_total_hours = 0;
-const dayNames = [
-	_x( 'Sun', 'day abbreviation', 'kompassi-integration' ),
-	_x( 'Mon', 'day abbreviation', 'kompassi-integration' ),
-	_x( 'Tue', 'day abbreviation', 'kompassi-integration' ),
-	_x( 'Wed', 'day abbreviation', 'kompassi-integration' ),
-	_x( 'Thu', 'day abbreviation', 'kompassi-integration' ),
-	_x( 'Fri', 'day abbreviation', 'kompassi-integration' ),
-	_x( 'Sat', 'day abbreviation', 'kompassi-integration' )
-];
 
 jQuery( function( e ) {
 	// Change display type
 	jQuery( '#kompassi_programme_display a' ).on( 'click', function( ) {
 		display_type = jQuery( this ).attr( 'class' );
 		jQuery( '#kompassi_programme' ).removeClass( 'table list expanded timeline' ).addClass( jQuery( this ).attr( 'class' ) );
-		revert_timeline_layout( );
-		if( get_display_type( ) == 'timeline' ) {
-			setup_timeline_layout( );
+		kompassi_revert_timeline_layout( );
+		if( kompassi_get_display_type( ) == 'timeline' ) {
+			kompassi_setup_timeline_layout( );
 		}
 	} );
 
@@ -65,8 +54,6 @@ jQuery( function( e ) {
 	}
 
 	time_total = time_end - time_start;
-	time_total_min = time_total / 60;
-	time_total_hours = Math.ceil( time_total_min / 60 );
 
 	// TODO
 	delete tags['data-length'];
@@ -94,35 +81,47 @@ jQuery( function( e ) {
 	} );
 
 	// Handle filtering
-	jQuery( '#kompassi_programme_filters' ).on( 'change', '.filter-tag', apply_filters );
-	jQuery( '#kompassi_programme_filters' ).on( 'keyup', '.filter-text', apply_filters );
+	jQuery( '#kompassi_programme_filters' ).on( 'change', '.filter-tag, .filter-date', kompassi_apply_filters );
+	jQuery( '#kompassi_programme_filters' ).on( 'keyup', '.filter-text', kompassi_apply_filters );
+
 
 	// Show modal
 	jQuery( '#kompassi_programme article' ).on( 'click', function( ) {
 		clone = jQuery( this ).clone( );
 		clone.attr( 'id', 'kompassi_programme_modal' ).attr( 'style', '' );
-		clone.appendTo( 'body' );
+		clone.appendTo( jQuery( 'body' ) );
+		jQuery( 'body' ).append( '<div id="kompassi_programme_modal_bg" />' ).css( 'overflow', 'hidden' );
 	} );
-	jQuery( 'body' ).on( 'click', '#kompassi_programme_modal', function( ) {
-		jQuery( '#kompassi_programme_modal' ).remove( );
+
+	// Close modals when clicking on modal, modal bg or pressing Esc
+	jQuery( 'body' ).on( 'click', '#kompassi_programme_modal_bg, #kompassi_programme_modal', kompassi_close_modal );
+	jQuery( 'body' ).on( 'keyup', function( e ) {
+		if( e.keyCode == 27 ) {
+			kompassi_close_modal( e );
+		}
 	} );
 
 	//  On first load, if timeline is the display type, trigger setup
-	if( get_display_type( ) == 'timeline' ) {
-		setup_timeline_layout( );
+	if( kompassi_get_display_type( ) == 'timeline' ) {
+		kompassi_setup_timeline_layout( );
 	}
 } );
+
+function kompassi_close_modal( ) {
+	jQuery( '#kompassi_programme_modal_bg, #kompassi_programme_modal' ).remove( );
+	jQuery( 'body' ).css( 'overflow', 'auto' );
+}
 
 // TODO: Get this value from filters
 var grouping = 'data-room-name';
 
-function setup_timeline_layout( ) {
+function kompassi_setup_timeline_layout( ) {
 	rows = [ 'day hints', 'time hints' ];
 
 	prev_group = '';
 	var grouping_row = 1;
 
-	jQuery( '#kompassi_programme article' ).sort( sort_by_group ).each( function( index ) {
+	jQuery( '#kompassi_programme article' ).sort( kompassi_sort_by_group ).each( function( index ) {
 		p = jQuery( this );
 
 		// TODO: Do not show events that would start after or end before visible area
@@ -171,7 +170,7 @@ function setup_timeline_layout( ) {
 		p.css( 'left', 'calc( ' + offset + '% + 3px )' );
 		p.css( 'top', 'calc( ' + rownum + ' * var(--kompassi-programme-timeline-row-height)' );
 
-		prev_group = p.attr( 'data-room-name' );
+		prev_group = p.attr( grouping );
 	} );
 
 	jQuery( '#kompassi_programme' ).css( 'height', 'calc( var(--kompassi-programme-timeline-row-height) * ' + ( rows.length ) + ' )' )
@@ -193,13 +192,14 @@ function setup_timeline_layout( ) {
 	}
 }
 
-function apply_filters( ) {
+function kompassi_apply_filters( ) {
 	//  Show all
 	jQuery( '#kompassi_programme article' ).removeClass( 'hidden' );
 
 	//  Iterate through each filter
 	jQuery( '#kompassi_programme_filters .filter' ).each( function( index ) {
 		filter = jQuery( this );
+
 		// Tag filters
 		if( filter.hasClass( 'filter-tag' ) ) {
 			if( filter.val( ) !== '0' ) {
@@ -212,8 +212,8 @@ function apply_filters( ) {
 				jQuery( '#kompassi_programme article' ).each( function( index ) {
 					program = jQuery( this );
 					words = filter.val( ).toLowerCase( ).split( ' ' );
-					text = jQuery( this ).find( '.title' ).first( ).text( ).toLowerCase( );
-					text += ' ' + jQuery( this ).find( '.description' ).first( ).text( ).toLowerCase( );
+					text = program.find( '.title' ).first( ).text( ).toLowerCase( );
+					text += ' ' + program.find( '.description' ).first( ).text( ).toLowerCase( );
 					jQuery.each( words, function( ) {
 						if( !text.includes( this ) ) {
 							program.addClass( 'hidden' );
@@ -228,13 +228,13 @@ function apply_filters( ) {
 	} );
 
 	//  If on timeline, refresh the layout
-	if( get_display_type( ) == 'timeline' ) {
-		revert_timeline_layout( );
-		setup_timeline_layout( );
+	if( kompassi_get_display_type( ) == 'timeline' ) {
+		kompassi_revert_timeline_layout( );
+		kompassi_setup_timeline_layout( );
 	}
 }
 
-function get_display_type( ) {
+function kompassi_get_display_type( ) {
 	if( display_type !== '' ) {
 		return display_type;
 	} else {
@@ -246,7 +246,7 @@ function get_display_type( ) {
 	return display_type;
 }
 
-function sort_by_group( a, b ) {
+function kompassi_sort_by_group( a, b ) {
 	// TODO: return -1 if attrs are not found
 	if( jQuery( a ).attr( grouping ) > jQuery( b ).attr( grouping ) ) {
 		return 1;
@@ -254,8 +254,22 @@ function sort_by_group( a, b ) {
 	return -1;
 }
 
-function revert_timeline_layout( ) {
+function kompassi_revert_timeline_layout( ) {
 	jQuery( '#kompassi_programme' ).css( 'height', 'auto' );
 	jQuery( '#kompassi_programme article' ).attr( 'style', '' );
 	jQuery( '#kompassi_programme .day_hint, #kompassi_programme .ruler, #kompassi_programme .group-name' ).remove( );
 }
+
+function kompassi_get_date_formatted( datetime_obj ) {
+	const dayNames = [
+		_x( 'Sun', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Mon', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Tue', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Wed', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Thu', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Fri', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Sat', 'day abbreviation', 'kompassi-integration' )
+	];
+	return dayNames[datetime_obj.getDay( )] + ' ' + datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
+}
+
