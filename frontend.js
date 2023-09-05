@@ -310,14 +310,6 @@ function kompassi_get_display_type( ) {
 	return display_type;
 }
 
-function kompassi_sort_by_group( a, b ) {
-	// TODO: return -1 if attrs are not found
-	if( jQuery( a ).attr( grouping ) > jQuery( b ).attr( grouping ) ) {
-		return 1;
-	}
-	return -1;
-}
-
 function kompassi_revert_timeline_layout( ) {
 	jQuery( '#kompassi_programme' ).css( 'height', 'auto' );
 	jQuery( '#kompassi_programme article' ).attr( 'style', '' );
@@ -325,6 +317,18 @@ function kompassi_revert_timeline_layout( ) {
 	jQuery( '#kompassi_programme .day_hint, #kompassi_programme .ruler, #kompassi_programme .group-name' ).remove( );
 }
 
+function kompassi_popover( program, posX ) {
+	popover = jQuery( '<div id="kompassi_programme_popover" />' );
+	markup = '<div class="title">' + jQuery( program ).find( '.title' ).html( ) + '</div>';
+	markup += jQuery( program ).find( '.times' ).prop( 'outerHTML' );
+	popover.html( markup );
+	jQuery( 'body' ).append( popover );
+	offset_top = parseInt( jQuery( program ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) );
+	popover.css( 'top', 'calc( ' + offset_top + 'px - ' + popover.outerHeight( ) + 'px - 0.5em )' );
+	popover.css( 'left', 'calc( ' + posX + 'px - ' + popover.outerWidth( ) / 2  + 'px )');
+}
+
+//  Helper functions
 function kompassi_get_date_formatted( datetime_obj ) {
 	const dayNames = [
 		_x( 'Sun', 'day abbreviation', 'kompassi-integration' ),
@@ -338,13 +342,14 @@ function kompassi_get_date_formatted( datetime_obj ) {
 	return dayNames[datetime_obj.getDay( )] + ' ' + datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
 }
 
-function kompassi_popover( program, posX ) {
-	popover = jQuery( '<div id="kompassi_programme_popover" />' );
-	markup = jQuery( program ).find( '.title' ).prop( 'outerHTML' );
-	markup += jQuery( program ).find( '.times' ).prop( 'outerHTML' );
-	popover.html( markup );
-	jQuery( 'body' ).append( popover );
-	offset_top = parseInt( jQuery( program ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) );
-	popover.css( 'top', 'calc( ' + offset_top + 'px - ' + popover.outerHeight( ) + 'px - 0.5em )' );
-	popover.css( 'left', 'calc( ' + posX + 'px - ' + popover.outerWidth( ) / 2  + 'px )');
+function kompassi_sort_by_group( a, b ) {
+	// TODO: return -1 if attrs are not found
+	if( jQuery( a ).attr( grouping ) > jQuery( b ).attr( grouping ) ) {
+		return 1;
+	}
+	return -1;
+}
+
+function filter_unique( value, index, array ) {
+  return array.indexOf( value ) === index;
 }

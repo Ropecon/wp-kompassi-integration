@@ -160,20 +160,10 @@ class WP_Plugin_Kompassi_Integration {
 		return $out;
 	}
 
-	/**
-	 *  Sorts programme by event starting time
-	 *  Callable function for usort()
+	/*
+	 *  Return markup for a single program event
+	 *
 	 */
-
-	function sort_by_starting_time( $a, $b ) {
-		if( $a['start_time'] > $b['start_time'] ) {
-			return 1;
-		} elseif( $b['start_time'] > $a['start_time'] ) {
-			return -1;
-		} else {
-			return 0;
-		}
-	}
 
 	function markup_program( $programme ) {
 		ob_start( );
@@ -233,6 +223,21 @@ class WP_Plugin_Kompassi_Integration {
 			</article>
 		<?php
 		return ob_get_clean( );
+	}
+
+	/**
+	 *  Sorts programme by event starting time
+	 *  Callable function for usort()
+	 */
+
+	function sort_by_starting_time( $a, $b ) {
+		if( $a['start_time'] > $b['start_time'] ) {
+			return 1;
+		} elseif( $b['start_time'] > $a['start_time'] ) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 }
 
