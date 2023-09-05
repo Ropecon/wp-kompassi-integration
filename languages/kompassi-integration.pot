@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-04T19:18:50+03:00\n"
+"POT-Creation-Date: 2023-09-05T14:32:39+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:53
-#: kompassi-integration.php:58
+#: kompassi-integration.php:62
+#: kompassi-integration.php:67
 msgid "Kompassi Integration"
 msgstr ""
 
@@ -24,96 +24,119 @@ msgstr ""
 msgid "Pasi Lallinaho"
 msgstr ""
 
-#: kompassi-integration.php:39
+#: kompassi-integration.php:44
+msgid "Feed URL"
+msgstr ""
+
+#: kompassi-integration.php:45
+msgid "Feed URL where programme data is loaded from."
+msgstr ""
+
+#: kompassi-integration.php:48
 msgid "Earliest hour on timeline"
 msgstr ""
 
-#: kompassi-integration.php:40
+#: kompassi-integration.php:49
 msgid "Earliest hour to show on the timeline, when a single day is selected."
 msgstr ""
 
-#: kompassi-integration.php:61
+#: kompassi-integration.php:70
 msgid "Save Changes"
 msgstr ""
 
-#: kompassi-integration.php:109
+#: blocks.js:13
+#: blocks.js:25
+msgid "Programme"
+msgstr ""
+
+#: blocks.js:27
+msgid "Options"
+msgstr ""
+
+#: blocks.js:29
+msgid "Default Display"
+msgstr ""
+
+#: blocks.js:31
+#: frontend.js:93
 msgctxt "display style"
 msgid "Table"
 msgstr ""
 
-#: kompassi-integration.php:110
+#: blocks.js:32
+#: frontend.js:94
 msgctxt "display style"
 msgid "Compact List"
 msgstr ""
 
-#: kompassi-integration.php:111
+#: blocks.js:33
+#: frontend.js:95
 msgctxt "display style"
 msgid "Expanded List"
 msgstr ""
 
-#: kompassi-integration.php:112
+#: blocks.js:34
+#: frontend.js:96
 msgctxt "display style"
 msgid "Timeline"
 msgstr ""
 
-#: blocks.js:12
-#: blocks.js:21
-msgid "Program Map"
+#: blocks.js:43
+msgid "Show Filters"
 msgstr ""
 
-#: blocks.js:33
-#: blocks.js:42
-msgid "Programme"
+#: blocks.js:52
+msgid "Show Display Styles"
 msgstr ""
 
-#: frontend.js:69
+#: frontend.js:17
+msgid "Room name"
+msgstr ""
+
+#: frontend.js:62
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr ""
 
-#: frontend.js:72
+#: frontend.js:65
 msgid "Search title and description"
 msgstr ""
 
-#: frontend.js:80
-msgid "Room name"
-msgstr ""
-
-#: frontend.js:94
+#: frontend.js:79
 msgid "All dates"
 msgstr ""
 
-#: frontend.js:330
+#: frontend.js:350
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr ""
 
-#: frontend.js:331
+#: frontend.js:351
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr ""
 
-#: frontend.js:332
+#: frontend.js:352
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr ""
 
-#: frontend.js:333
+#: frontend.js:353
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr ""
 
-#: frontend.js:334
+#: frontend.js:354
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr ""
 
-#: frontend.js:335
+#: frontend.js:355
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr ""
 
-#: frontend.js:336
+#: frontend.js:356
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr ""
