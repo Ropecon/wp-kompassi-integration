@@ -8,6 +8,9 @@
 	--kompassi-programme-timeline-ruler: rgba(0,0,0,0.2);
 	--kompassi-programme-timeline-time: rgba(0,0,0,0.4);
 	--kompassi-programme-modal-max-width: 1000px;
+
+	--kompassi-programme-favorite-icon-size: 1.4em;
+	--kompassi-programme-line-height: 1.4em;
 }
 
 .wp-block-kompassi-integration-programme {
@@ -79,11 +82,32 @@
 
 
 /*
+ *  Favorite
+ *
+ */
+
+#kompassi_programme_modal .favorite,
+#kompassi_programme article .favorite {
+	width: var(--kompassi-programme-favorite-icon-size);
+	height: var(--kompassi-programme-favorite-icon-size);
+	background-image: url(images/icon_favorite.svg);
+	background-position: 100% 0;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+	#kompassi_programme_modal.is-favorite .favorite,
+	#kompassi_programme article.is-favorite .favorite {
+		background-image: url(images/icon_is_favorite.svg);
+	}
+
+/*
  *  Modals
  *
  */
 
 #kompassi_programme_modal {
+	--kompassi-programme-favorite-icon-size: 3em;
+
 	position: fixed;
 	width: calc( 100% - 4em );
 	left: 2em;
@@ -96,7 +120,7 @@
 	box-shadow: 1em 1em 2em rgba(0,0,0,0.2);
 
 	overflow: scroll;
-	line-height: 1.4em;
+	line-height: var(--kompassi-programme-line-height);
 }
 	#kompassi_programme_modal > * {
 		display: block;
@@ -104,13 +128,18 @@
 	}
 		#kompassi_programme_modal .title {
 			font-size: 150%;
-			line-height: 1.4em;
+			line-height: var(--kompassi-programme-line-height);
 		}
 		#kompassi_programme_modal .description {
 			margin: 1em -2em;
 			padding: 2em;
 			border-top: 1px solid var(--kompassi-programme-border);
 			border-bottom: 1px solid var(--kompassi-programme-border);
+		}
+		#kompassi_programme_modal .favorite {
+			position: absolute;
+			top: 2em;
+			right: 2em;
 		}
 
 @media screen and (min-width:900px) {
@@ -151,21 +180,25 @@
  *
  */
 
+#kompassi_programme {
+	line-height: var(--kompassi-programme-line-height);
+}
+
 /*  Common definitions  */
-	#kompassi_programme article .entry {
-		/*  Hide all data by default  */
-		display: none;
-	}
+#kompassi_programme article > * {
+	/*  Hide all data by default  */
+	display: none;
+}
 
-	#kompassi_programme article.hidden {
-		/*  Hidden programme  */
-		display: none !important;
-	}
+#kompassi_programme article.hidden {
+	/*  Hidden programme  */
+	display: none !important;
+}
 
-	#kompassi_programme article:hover {
-		/*  Hover cursor  */
-		cursor: pointer;
-	}
+#kompassi_programme article:hover {
+	/*  Hover cursor  */
+	cursor: pointer;
+}
 
 /*  Table  */
 #kompassi_programme.table {
@@ -173,23 +206,29 @@
 }
 	#kompassi_programme.table article {
 		display: grid;
-		grid-template-columns: auto max-content 15em;
+		grid-template-columns: auto max-content 15em var(--kompassi-programme-favorite-icon-size);
 		grid-template-areas:
-			"title room_name times";
-		padding: 0.5em 0;
+			"title room_name times favorite";
+		grid-gap: 0.5em;
+		padding: 0.3em 0;
 	}
 		#kompassi_programme.table article:not(:last-child) {
 			border-bottom: 1px solid var(--kompassi-programme-border);
 		}
-		#kompassi_programme.table article :is(.title,.room_name,.times) {
+		#kompassi_programme.table article :is(.title,.room_name,.times,.favorite) {
 			display: block;
 		}
 		#kompassi_programme.table article .times {
 			text-align: right;
 		}
+		#kompassi_programme.table article .favorite {
+			margin-top: -0.15em;
+		}
 
 /*  List  */
 #kompassi_programme.list {
+	--kompassi-programme-favorite-icon-size: 1.8em;
+
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
 	grid-gap: 0.5em;
@@ -197,15 +236,15 @@
 
 	#kompassi_programme.list article {
 		display: grid;
-		grid-template-columns: repeat(2,1fr);
+		grid-template-columns: 50% calc( 50% - var(--kompassi-programme-favorite-icon-size) ) var(--kompassi-programme-favorite-icon-size);
 		grid-template-areas:
-			"title title"
-			"times room_name";
+			"title title favorite"
+			"times room_name room_name";
 		background-color: var(--kompassi-programme-bg);
 		border: 1px solid var(--kompassi-programme-border);
 		padding: 1em;
 	}
-		#kompassi_programme.list article :is(.title,.room_name,.times) {
+		#kompassi_programme.list article :is(.title,.room_name,.times,.favorite) {
 			display: block;
 		}
 		#kompassi_programme.list article .title {
@@ -214,9 +253,14 @@
 		#kompassi_programme.list article .room_name {
 			text-align: right;
 		}
+		#kompassi_programme.list article .favorite {
+			margin-top: -0.3em;
+		}
 
 /*  Expanded  */
 #kompassi_programme.expanded {
+	--kompassi-programme-favorite-icon-size: 2.4em;
+
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
 	grid-gap: 1em;
@@ -243,16 +287,19 @@
 		border: 1px solid var(--kompassi-programme-border);
 		padding: 1em;
 	}
-		#kompassi_programme.expanded article :is(.img,.title,.room_name,.times) {
+		#kompassi_programme.expanded article :is(.img,.title,.room_name,.times,.favorite) {
 			display: block;
 		}
-		#kompassi_programme.expanded article .entry.img {
+		#kompassi_programme.expanded article .img {
 			margin: -1em -1em 1em -1em;
 			min-height: 100px;
 			background-color: var(--kompassi-programme-default-bg);
 		}
 		#kompassi_programme.expanded article .room_name {
 			text-align: right;
+		}
+		#kompassi_programme.expanded article .favorite {
+			grid-area: img !important;
 		}
 
 /*  Timeline  */
@@ -311,6 +358,10 @@
 		white-space: nowrap;
 		overflow: hidden;
 	}
+		#kompassi_programme.timeline article .favorite {
+			display: none;
+		}
+
 		#kompassi_programme.timeline article:hover {
 			margin-top: -2px;
 			box-shadow: 0 0 1em rgba(0,0,0,0.2);

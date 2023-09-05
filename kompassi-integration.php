@@ -79,7 +79,8 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function wp_enqueue_scripts( ) {
-		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n' ), $this->ver );
+		wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
+		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
 		wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 		$js_strings = array(
 			'timeline_earliest_hour' => get_option( 'kompassi_integration_timeline_earliest_hour', 8 )
@@ -157,10 +158,10 @@ class WP_Plugin_Kompassi_Integration {
 	function markup_program( $programme ) {
 		ob_start( );
 		$attrs = array(
+			'id' => $programme['identifier'],
 			'length' => $programme['length'],
 			'start-timestamp' => strtotime( $programme['start_time'] ),
 			'end-timestamp' => strtotime( $programme['end_time'] ),
-			'room-name' => $programme['room_name']
 		);
 		$html_attrs = '';
 		foreach( $attrs as $attr => $value ) {
@@ -168,7 +169,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 		$programme['description'] = nl2br( $programme['description'] );
 		?>
-			<article id="<?php echo $programme['identifier']; ?>" <?php echo $html_attrs; ?>>
+			<article id="<?php echo $programme['identifier']; ?>" class="kompassi-programme" <?php echo $html_attrs; ?>>
 				<?php
 					$show_keys = array(
 							'title' => '<strong>%s</strong>',
@@ -203,11 +204,10 @@ class WP_Plugin_Kompassi_Integration {
 							}
 						}
 						if( isset( $value ) ) {
-							echo '<div class="entry ' . $key . '" style="grid-area: ' . $key . ';">' . sprintf( $format, $value ) . '</div>';
+							echo '<div class="' . $key . '" style="grid-area: ' . $key . ';">' . sprintf( $format, $value ) . '</div>';
 						}
 					}
-					echo '<div class="entry img" style="grid-area: img;"></div>';
-					// echo '<div class="entry favorite" style="grid-area: favorite;"></div>';
+					echo '<div class="img" style="grid-area: img;"></div>';
 				?>
 			</article>
 		<?php
