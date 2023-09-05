@@ -62,7 +62,7 @@ jQuery( function( e ) {
 		jQuery( '#kompassi_programme_filters' ).append( jQuery( '<span>' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '</span>' ) );
 
 		//  Show text filter
-		jQuery( '#kompassi_programme_filters' ).append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Search title and description', 'kompassi-integration' ) + '" />' ) );
+		jQuery( '#kompassi_programme_filters' ).append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Search (title, description)', 'kompassi-integration' ) + '" />' ) );
 
 		//  Show single attribute filters
 		jQuery.each( attribute_filters, function( ) {
