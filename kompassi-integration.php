@@ -28,6 +28,9 @@ class WP_Plugin_Kompassi_Integration {
 				'editor_script' => 'kompassi-integration-blocks',
 				'render_callback' => array( &$this, 'block_programme' ),
 				'attributes' => array(
+					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
+					'show_filters' => array( 'type' => 'boolean', 'default' => true ),
+					'show_display_styles' => array( 'type' => 'boolean', 'default' => true )
 				)
 			)
 		);
@@ -128,30 +131,16 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function block_programme( $attributes ) {
-		$class = '';
-		if( isset( $attributes['align'] ) ) { $class .= 'align' . $attributes['align']; }
-		$out = '<div ' . get_block_wrapper_attributes( array( 'class' => $class ) ) . '>';
-		$prog = $this->get_data( );
+		$html_attrs = array( 'class' => '' );
+		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
+		if( $attributes['show_filters'] ) { $html_attrs['data-show-filters'] = 'true'; }
+		if( $attributes['show_display_styles'] ) { $html_attrs['data-show-display-styles'] = 'true'; }
 
-		/*  Display styles  */
-		$out .= '<section id="kompassi_programme_display">';
-		$display_styles = array(
-			'table' => _x( 'Table', 'display style', 'kompassi-integration' ),
-			'list' => _x( 'Compact List', 'display style', 'kompassi-integration' ),
-			'expanded' => _x( 'Expanded List', 'display style', 'kompassi-integration' ),
-			'timeline' => _x( 'Timeline', 'display style', 'kompassi-integration' )
-		);
-		foreach( $display_styles as $slug => $label ) {
-			$out .= '<a class="' . $slug . '">' . $label . '</a>';
-		}
-		$out .= '</section>';
-
-		/*  Filters  */
-		$out .= '<section id="kompassi_programme_filters"></section>';
+		$out = '<div ' . get_block_wrapper_attributes( $html_attrs ) . '>';
 
 		/*  Programme  */
-		$out .= '<section id="kompassi_programme" class="programme-list timeline">';
-		foreach( $prog as $p ) {
+		$out .= '<section id="kompassi_programme" class="programme-list ' . $attributes['default_display'] . '">';
+		foreach( $this->get_data( ) as $p ) {
 			$out .= $this->markup_program( $p );
 		}
 		$out .= '</section>';
