@@ -15,6 +15,8 @@ class WP_Plugin_Kompassi_Integration {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
 		add_action( 'enqueue_block_editor_assets', array( &$this, 'enqueue_block_editor_assets' ) );
 		add_filter( 'block_categories_all', array( &$this, 'block_categories_all' ), 10, 2 );
+
+		$this->ver = time( );
 	}
 
 	function init( ) {
@@ -35,6 +37,10 @@ class WP_Plugin_Kompassi_Integration {
 		add_settings_section( 'kompassi-integration-general', '', '', 'kompassi_integration_settings' );
 
 		$fields = array(
+			'feed_url' => array(
+				'label' =>  __( 'Feed URL', 'kompassi-integration' ),
+				'description' => __( 'Feed URL where programme data is loaded from.', 'kompassi-integration' )
+			),
 			'timeline_earliest_hour' => array(
 				'label' =>  __( 'Earliest hour on timeline', 'kompassi-integration' ),
 				'description' => __( 'Earliest hour to show on the timeline, when a single day is selected.', 'kompassi-integration' )
@@ -70,17 +76,17 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function wp_enqueue_scripts( ) {
-		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n' ) );
+		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n' ), $this->ver );
 		wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 		$js_strings = array(
 			'timeline_earliest_hour' => get_option( 'kompassi_integration_timeline_earliest_hour', 8 )
 		);
 		wp_localize_script( 'kompassi-integration-frontend', 'options', $js_strings );
-		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ) );
+		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ), array( ), $this->ver );
 	}
 
 	function enqueue_block_editor_assets( ) {
-		wp_register_script( 'kompassi-integration-blocks', plugins_url( 'blocks.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n' ) );
+		wp_register_script( 'kompassi-integration-blocks', plugins_url( 'blocks.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n' ), $this->ver );
 		wp_set_script_translations( 'kompassi-integration-blocks', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 	}
 
@@ -96,6 +102,30 @@ class WP_Plugin_Kompassi_Integration {
 
 		return $categories;
 	}
+
+	/*
+	 *  Fetch data from the feed URL
+	 *  TODO: Caching?
+	 *
+	 */
+
+	function get_data( ) {
+		// Get programme JSON and convert it into array
+		// TODO: Only allow specific format, eg. only ask for the event slug?
+		$json = file_get_contents( get_option( 'kompassi_integration_feed_url' ) );
+		$programme = json_decode( $json, true );
+
+		// Sort programme by event starting time
+		// TODO: Is this required?
+		usort( $programme, array( &$this, 'sort_by_starting_time' ) );
+
+		return $programme;
+	}
+
+	/*
+	 *  Show the Programme block
+	 *
+	 */
 
 	function block_programme( $attributes ) {
 		$class = '';
@@ -130,19 +160,6 @@ class WP_Plugin_Kompassi_Integration {
 		return $out;
 	}
 
-	function get_data( ) {
-		// Get programme JSON and convert it into array
-		$json = file_get_contents( plugin_dir_url( __FILE__ ) . 'data/2023.json' );
-//		$json = str_replace( '\r\n', '<br />', $json ); // TODO: Why here?
-		$programme = json_decode( $json, true );
-
-		// Sort programme by event starting time
-		// TODO: Is this required?
-		usort( $programme, array( &$this, 'sort_by_starting_time' ) );
-
-		return $programme;
-	}
-
 	/**
 	 *  Sorts programme by event starting time
 	 *  Callable function for usort()
@@ -170,6 +187,7 @@ class WP_Plugin_Kompassi_Integration {
 		foreach( $attrs as $attr => $value ) {
 			$html_attrs .= ' data-' . $attr . '="' . $value . '"';
 		}
+		$programme['description'] = nl2br( $programme['description'] );
 		?>
 			<article id="<?php echo $programme['identifier']; ?>" <?php echo $html_attrs; ?>>
 				<?php
