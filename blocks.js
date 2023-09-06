@@ -19,6 +19,7 @@ wp.blocks.registerBlockType(
 		  default_display: { type: 'string', default: 'list' },
         show_filters: { type: 'boolean', default: true },
         show_display_styles: { type: 'boolean', default: true },
+        show_favorites_only: { type: 'boolean', default: false }
 	  },
 	  edit: function( props ) {
 		  return( [
@@ -53,6 +54,15 @@ wp.blocks.registerBlockType(
                   		checked: props.attributes.show_display_styles,
                   		onChange: function( value ) {
                   			props.setAttributes( { show_display_styles: !props.attributes.show_display_styles } );
+                  		}
+                  	} )
+                  ),
+                  el( wp.components.PanelRow, null,
+                  	el( wp.components.ToggleControl, {
+                  		label: __( 'Show Favorites Only', 'kompassi-integration' ),
+                  		checked: props.attributes.show_favorites_only,
+                  		onChange: function( value ) {
+                  			props.setAttributes( { show_favorites_only: !props.attributes.show_favorites_only } );
                   		}
                   	} )
                   ),

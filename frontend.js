@@ -134,6 +134,17 @@ jQuery( function( e ) {
 		} );
 	}
 
+	// FAVORITES
+	jQuery( 'body' ).on( 'click', 'article.kompassi-programme .favorite', kompassi_toggle_favorite );
+	if( block.attr( 'data-show-favorites-only' ) == 'true' ) {
+		if( block.find( '.filter-favorite' ).length > 0 ) {
+			block.find( '.filter-favorite' ).attr( 'checked', 'checked' ).trigger( 'change' );
+		} else {
+			// When filters are not enabled...
+			jQuery( '#kompassi_programme article:not(.is-favorite)' ).addClass( 'hidden' );
+		}
+	}
+
 	// Popover
 	jQuery( '#kompassi_programme article' ).on( 'mouseover', function( e ) {
 		if( !jQuery( '#kompassi_programme' ).hasClass( 'timeline' ) ) {
