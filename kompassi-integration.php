@@ -30,7 +30,8 @@ class WP_Plugin_Kompassi_Integration {
 				'attributes' => array(
 					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
 					'show_filters' => array( 'type' => 'boolean', 'default' => true ),
-					'show_display_styles' => array( 'type' => 'boolean', 'default' => true )
+					'show_display_styles' => array( 'type' => 'boolean', 'default' => true ),
+					'show_favorites_only' => array( 'type' => 'boolean', 'default' => false )
 				)
 			)
 		);
@@ -134,6 +135,7 @@ class WP_Plugin_Kompassi_Integration {
 		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
 		if( $attributes['show_filters'] ) { $html_attrs['data-show-filters'] = 'true'; }
 		if( $attributes['show_display_styles'] ) { $html_attrs['data-show-display-styles'] = 'true'; }
+		if( $attributes['show_favorites_only'] ) { $html_attrs['data-show-favorites-only'] = 'true'; }
 
 		$out = '<div ' . get_block_wrapper_attributes( $html_attrs ) . '>';
 

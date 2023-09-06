@@ -27,14 +27,15 @@ jQuery( function( e ) {
 
 	//  Populate attribute filter data
 	attribute_filters = [
-		{ key: 'room_name', label: __( 'Room name', 'kompassi-integration' ) }
+		{ key: 'room_name', label: __( 'Room name', 'kompassi-integration' ) },
+		{ key: 'category_title', label: __( 'Category', 'kompassi-integration' ) }
 	];
 	jQuery( attribute_filters ).each( function( index ) {
 		values = [];
 		jQuery( '#kompassi_programme article .' + this.key ).each( function( ) {
 			values.push( jQuery( this ).text( ) );
 		} );
-		attribute_filters[index]['values'] = values.filter( filter_unique );
+		attribute_filters[index]['values'] = values.filter( filter_unique ).sort( );
 	} );
 
 	//  Get earliest and latest timestamps
@@ -70,16 +71,21 @@ jQuery( function( e ) {
 		i += 24 * 60 * 60;
 	}
 
-	// FAVORITES
-	jQuery( 'body' ).on( 'click', 'article.kompassi-programme .favorite', kompassi_toggle_favorite );
+	toolbar = jQuery( '<section id="kompassi_programme_toolbar" />' );
+	toolbar.prependTo( block );
 
 	// FILTERS
 	if( block.attr( 'data-show-filters' ) == 'true' ) {
+		filters_toggle = jQuery( '<section id="kompassi_programme_filter_toggle"><a class="filters-toggle">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '</a></section>' ).appendTo( toolbar );
+		jQuery( '.filters-toggle' ).on( 'click', function( ) {
+			jQuery( this ).toggleClass( 'active' );
+			jQuery( '#kompassi_programme_filters' ).toggle( );
+		} );
+
 		filters = jQuery( '<section id="kompassi_programme_filters" />' );
-		filters.append( jQuery( '<span>' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '</span>' ) );
 
 		//  Text filter
-		filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Search (title, description)', 'kompassi-integration' ) + '" />' ) );
+		filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text search (title, description)', 'kompassi-integration' ) + '" />' ) );
 
 		//  Single attribute filters
 		jQuery.each( attribute_filters, function( ) {
@@ -115,7 +121,7 @@ jQuery( function( e ) {
 		filters.append( '<label><input class="filter filter-favorite" type="checkbox" name="filter_favorite" />' + __( 'Favorites only', 'kompassi-integration' ) + '</label>' );
 
 		//  Show filters
-		block.prepend( filters );
+		filters.insertAfter( toolbar );
 
 		// Handle filtering
 		filters.on( 'change', 'select.filter, .filter[type="checkbox"]', kompassi_apply_filters );
@@ -132,8 +138,13 @@ jQuery( function( e ) {
 		};
 		ds = jQuery( '<section id="kompassi_programme_display" />' );
 		jQuery.each( styles, function( style, label ) {
+			link = jQuery( '<a class="' + style + '">&nbsp;<span>' + label + '</span></a>' );
+			ds.append( link );
+			if( jQuery( '#kompassi_programme' ).hasClass( style ) ) {
+				link.addClass( 'active' );
+			}
 		} );
-		block.prepend( ds );
+		toolbar.prepend( ds );
 
 		// Change display type
 		jQuery( '#kompassi_programme_display' ).on( 'click', 'a', function( ) {
@@ -143,6 +154,9 @@ jQuery( function( e ) {
 			if( kompassi_get_display_type( ) == 'timeline' ) {
 				kompassi_setup_timeline_layout( );
 			}
+
+			jQuery( this ).addClass( 'active' );
+			jQuery( '#kompassi_programme_display a:not(.' + display_type + ')' ).removeClass( 'active' );
 		} );
 	}
 

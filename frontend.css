@@ -1,4 +1,5 @@
 :root {
+	--kompassi-programme-font: 'Lato', Helvetica, Arial, sans-serif;
 	--kompassi-programme-bg: #fff;
 	--kompassi-programme-border: rgba(0,0,0,0.2);
 	--kompassi-programme-padding: 1em;
@@ -11,6 +12,9 @@
 
 	--kompassi-programme-favorite-icon-size: 1.4em;
 	--kompassi-programme-line-height: 1.4em;
+
+	--kompassi-toolbar-bg: #10324f;
+	--kompassi-toolbar-bg-filters: #648fb5;
 }
 
 .wp-block-kompassi-integration-programme {
@@ -18,68 +22,116 @@
 	container-type: inline-size;
 }
 
-/*  TODO: Copy to Ropecon theme?  */
 .wp-block-kompassi-integration-programme,
 #kompassi_programme_modal,
 #kompassi_programme_popover {
-	font-family: 'Lato';
-}
-
-#kompassi_programme article .img {
-	background-image: url(images/kompassi_faded.svg);
-	background-size: auto calc( 100% - 3em );
-	background-position: 1.5em 50%;
-	background-repeat: no-repeat;
+	font-family: var(--kompassi-programme-font);
 }
 
 /*
- *  Display style selection
+ *  Toolbar
  *
  */
 
-#kompassi_programme_display a {
-	display: inline-block;
-	background-color: #222;
-	color: #fff;
-	border-radius: 9999px;
-	padding: 1em 1em 1em calc( 2.5em + 24px );
-	margin-right: 0.5em;
-	margin-bottom: 1em;
-	background-position: 1.5em 50%;
-	background-repeat: no-repeat;
-	background-size: 24px;
+#kompassi_programme_toolbar {
 }
-	#kompassi_programme_display a.active {
-		background-color: blue;
+	#kompassi_programme_toolbar section {
+		display: inline-block;
+		margin: 0 1em 1em 0;
+		border-radius: 9999em;
+
+		background-color: var(--kompassi-toolbar-bg);
 	}
-	#kompassi_programme_display a.table { background-image: url(images/icon_table.svg); }
-	#kompassi_programme_display a.list { background-image: url(images/icon_list.svg); }
-	#kompassi_programme_display a.expanded { background-image: url(images/icon_expanded.svg); }
-	#kompassi_programme_display a.timeline { background-image: url(images/icon_timeline.svg); }
+		#kompassi_programme_toolbar section a {
+			display: inline-block;
+			color: #fff;
+			padding: 1em 1em 1em calc( 2em + 21px );
+			background-position: 1em 50%;
+			background-repeat: no-repeat;
+			background-size: 21px;
+			border-right: 1px solid rgba(255,255,255,0.2);
+		}
+			#kompassi_programme_toolbar section a.active {
+				background-color: rgba(255,255,255,0.1);
+			}
+			#kompassi_programme_toolbar section a:last-child {
+				border: none;
+			}
+
+/*  Toolbar icons  */
+
+#kompassi_programme_toolbar a.table { background-image: url(images/icon_table.svg); }
+#kompassi_programme_toolbar a.list { background-image: url(images/icon_list.svg); }
+#kompassi_programme_toolbar a.expanded { background-image: url(images/icon_expanded.svg); }
+#kompassi_programme_toolbar a.timeline { background-image: url(images/icon_timeline.svg); }
+#kompassi_programme_toolbar a.filters-toggle { background-image: url(images/icon_filter.svg); position: relative; }
+
+/*
+ *  Display Styles
+ *
+ */
+
+@container kompassi-integration (max-width: 600px) {
+	#kompassi_programme_display a {
+		width: calc( 2em + 19px ) !important;
+		padding: 1em 0 !important;
+	}
+	#kompassi_programme_display a span {
+		display: none;
+	}
+}
 
 /*
  *  Filters
  *
  */
 
-#kompassi_programme_filters {
-	margin-bottom: 1em;
+#kompassi_programme_toolbar a.filters-toggle.active {
 }
-	#kompassi_programme_filters span {
-		display: inline-block;
-		margin-right: 0.75em;
-		font-weight: 600;
-		font-size: 120%;
+	#kompassi_programme_toolbar a.filters-toggle.active::after {
+		content: '';
+		transform: rotate(45deg);
+		display: block;
+
+		position: absolute;
+		z-index: -1;
+		bottom: -2em;
+		left: calc( 50% - 0.75em );
+		height: 1.5em;
+		width: 1.5em;
+		background-color: var(--kompassi-toolbar-bg-filters);
 	}
+
+#kompassi_programme_filters {
+	display: none;
+	margin-bottom: 1em;
+	background-color: var(--kompassi-toolbar-bg-filters);
+	color: #fff;
+	padding: 1em;
+	border-radius: 0.3em;
+}
+	#kompassi_programme_filters > * {
+		display: inline-block;
+		width: 100%;
+	}
+
 	#kompassi_programme_filters input,
 	#kompassi_programme_filters select {
 		padding: 0.5em;
-		margin-right: 0.5em;
-	}
-	#kompassi_programme_filters .filter-text {
-		width: 16em;
+		margin-bottom: 0.3em;
 	}
 
+@container kompassi-integration (min-width: 700px) {
+	#kompassi_programme_filters > * {
+		margin-right: 0.5em;
+		width: auto;
+		max-width: 16em;
+	}
+	#kompassi_programme_filters .filter-text {
+		width: 20em;
+		max-width: 20em;
+	}
+}
 
 /*
  *  Favorite
@@ -184,7 +236,6 @@
 	line-height: var(--kompassi-programme-line-height);
 }
 
-/*  Common definitions  */
 #kompassi_programme article > * {
 	/*  Hide all data by default  */
 	display: none;
