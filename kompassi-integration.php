@@ -196,8 +196,10 @@ class WP_Plugin_Kompassi_Integration {
 							}
 						} else {
 							$format = '%s';
-							// TODO: Get directly from Kompassi?
+							// TODO: #11 - Get directly from Kompassi?
 							if( 'times' == $key ) {
+								$value = date_i18n( 'D j.n. k\l\o H.i', strtotime( $programme['start_time'] ) );
+								/*
 								$start_date = date_i18n( 'j.n.Y', strtotime( $programme['start_time'] ) );
 								$end_date = date_i18n( 'j.n.Y', strtotime( $programme['end_time'] ) );
 
@@ -208,6 +210,7 @@ class WP_Plugin_Kompassi_Integration {
 								} else {
 									$value .= date_i18n( 'D j.n. H.i', strtotime( $programme['end_time'] ) );
 								}
+								*/
 							}
 						}
 						if( isset( $value ) ) {
