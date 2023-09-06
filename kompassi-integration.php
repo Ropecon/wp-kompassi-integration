@@ -86,7 +86,9 @@ class WP_Plugin_Kompassi_Integration {
 			'timeline_earliest_hour' => get_option( 'kompassi_integration_timeline_earliest_hour', 8 )
 		);
 		wp_localize_script( 'kompassi-integration-frontend', 'options', $js_strings );
+
 		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ), array( ), $this->ver );
+		wp_enqueue_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
 	}
 
 	function enqueue_block_editor_assets( ) {
