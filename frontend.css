@@ -28,7 +28,7 @@
 #kompassi_programme article .img {
 	background-image: url(images/kompassi_faded.svg);
 	background-size: auto calc( 100% - 3em );
-	background-position: calc( 100% - 1.5em ) 50%;
+	background-position: 1.5em 50%;
 	background-repeat: no-repeat;
 }
 
@@ -277,6 +277,7 @@
 	}
 }
 	#kompassi_programme.expanded article {
+		position: relative;
 		display: grid;
 		grid-template-columns: repeat(2,1fr);
 		grid-template-areas:
@@ -300,7 +301,12 @@
 		}
 		#kompassi_programme.expanded article .favorite {
 			grid-area: img !important;
+			position: absolute;
+			right: 0;
 		}
+			#kompassi_programme.expanded article:not(.is-favorite) .favorite {
+				filter: invert(1);
+			}
 
 /*  Timeline  */
 #kompassi_programme.timeline {
