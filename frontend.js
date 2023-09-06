@@ -17,7 +17,7 @@ jQuery( function( e ) {
 	cookie = Cookies.get( 'kompassi_integration' );
 	if( cookie == undefined ) {
 		cookie = { favorites: [] };
-		Cookies.set( 'kompassi_integration', JSON.stringify( cookie ), { sameSite: 'strict', secure: true } );
+		Cookies.set( 'kompassi_integration', JSON.stringify( cookie ), { expires: 365, sameSite: 'strict', secure: true } );
 	} else {
 		cookie = JSON.parse( cookie );
 		jQuery.each( cookie.favorites, function( ) {
@@ -203,7 +203,7 @@ function kompassi_toggle_favorite( ) {
 	} else {
 		cookie.favorites.push( art_id );
 	}
-	Cookies.set( 'kompassi_integration', JSON.stringify( cookie ), { sameSite: 'strict', secure: true } );
+	Cookies.set( 'kompassi_integration', JSON.stringify( cookie ), { expires: 365, sameSite: 'strict', secure: true } );
 }
 
 function kompassi_close_modal( ) {
