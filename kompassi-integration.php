@@ -111,19 +111,15 @@ class WP_Plugin_Kompassi_Integration {
 
 	/*
 	 *  Fetch data from the feed URL
-	 *  TODO: Caching?
+	 *  TODO: #9 - Caching?
 	 *
 	 */
 
 	function get_data( ) {
 		// Get programme JSON and convert it into array
-		// TODO: Only allow specific format, eg. only ask for the event slug?
+		// TODO: #10 - Only allow specific format, eg. only ask for the event slug?
 		$json = file_get_contents( get_option( 'kompassi_integration_feed_url' ) );
 		$programme = json_decode( $json, true );
-
-		// Sort programme by event starting time
-		// TODO: Is this required?
-		usort( $programme, array( &$this, 'sort_by_starting_time' ) );
 
 		return $programme;
 	}

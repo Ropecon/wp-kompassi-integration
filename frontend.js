@@ -10,7 +10,7 @@ var popover_timeout = '';
 var cookie;
 
 jQuery( function( e ) {
-	// TODO
+	// TODO: #5
 	block = jQuery( '.wp-block-kompassi-integration-programme' ).first( );
 
 	// Set up cookie for favorites
@@ -89,6 +89,18 @@ jQuery( function( e ) {
 				select.append( jQuery( '<option value="' + value + '">' + value + '</option>' ) );
 			} );
 			filters.append( select );
+
+			// Datalist approach
+			/*
+			input = jQuery( '<input class="filter datalist filter-attribute list="filter_' + this.key + '" list="filter_' + this.key + '" data-attribute="' + this.key + '" />' );
+			datalist = jQuery( '<datalist id="filter_' + this.key + '" />' );
+			datalist.append( jQuery( '<option value="0">-- ' + this.label + ' --</option>' ) );
+			jQuery.each( this.values, function( index, value ) {
+				datalist.append( jQuery( '<option value="' + value + '" />' ) );
+			} );
+			filters.append( input );
+			filters.append( datalist );
+			*/
 		} );
 
 		//  Date filter
@@ -99,6 +111,7 @@ jQuery( function( e ) {
 		} );
 		filters.append( select );
 
+		//  Favorite
 		filters.append( '<label><input class="filter filter-favorite" type="checkbox" name="filter_favorite" />' + __( 'Favorites only', 'kompassi-integration' ) + '</label>' );
 
 		//  Show filters
@@ -113,13 +126,12 @@ jQuery( function( e ) {
 	if( block.attr( 'data-show-display-styles' ) == 'true' ) {
 		styles = {
 			'table': _x( 'Table', 'display style', 'kompassi-integration' ),
-			'list': _x( 'Compact List', 'display style', 'kompassi-integration' ),
+			'list': _x( 'List', 'display style', 'kompassi-integration' ),
 			'expanded': _x( 'Expanded List', 'display style', 'kompassi-integration' ),
 			'timeline': _x( 'Timeline', 'display style', 'kompassi-integration' )
 		};
 		ds = jQuery( '<section id="kompassi_programme_display" />' );
 		jQuery.each( styles, function( style, label ) {
-			ds.append( '<a class="' + style + '">' + label + '</a>' );
 		} );
 		block.prepend( ds );
 
@@ -199,7 +211,7 @@ function kompassi_close_modal( ) {
 	jQuery( 'body' ).css( 'overflow', 'auto' );
 }
 
-// TODO: Get this value from filters
+// TODO: #6 - Get this value from filters?
 var grouping = 'room_name';
 
 function kompassi_setup_timeline_layout( ) {
@@ -232,7 +244,7 @@ function kompassi_setup_timeline_layout( ) {
 			time_start_filtered = time_start;
 			time_total_filtered = time_total;
 		}
-		// TODO: If favorites enabled...
+		// TODO: #7 – If favorites enabled...
 
 		if( options.timeline_earliest_hour > 0 ) {
 			tsf = new Date( time_start_filtered * 1000 );
@@ -318,7 +330,7 @@ function kompassi_apply_filters( ) {
 		}
 
 		// Tag filters
-		// TODO
+		// TODO: #8
 
 		// Text filter
 		if( filter.hasClass( 'filter-text' ) ) {
@@ -414,7 +426,6 @@ function kompassi_get_date_formatted( datetime_obj ) {
 }
 
 function kompassi_sort_by_group( a, b ) {
-	// TODO: return -1 if attrs are not found
 	if( jQuery( a ).find( '.' + grouping ).text( ) > jQuery( b ).find( '.' + grouping ).text( ) ) {
 		return 1;
 	}

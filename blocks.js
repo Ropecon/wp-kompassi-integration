@@ -30,7 +30,7 @@ wp.blocks.registerBlockType(
 						  label: __( 'Default Display', 'kompassi-integration' ),
 						  options: [
 							  { label: _x( 'Table', 'display style', 'kompassi-integration' ), value: 'table' },
-							  { label: _x( 'Compact List', 'display style', 'kompassi-integration' ), value: 'list' },
+							  { label: _x( 'List', 'display style', 'kompassi-integration' ), value: 'list' },
 							  { label: _x( 'Expanded List', 'display style', 'kompassi-integration' ), value: 'expanded' },
 							  { label: _x( 'Timeline', 'display style', 'kompassi-integration' ), value: 'timeline' }
 						  ],
