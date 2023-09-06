@@ -141,10 +141,16 @@ class WP_Plugin_Kompassi_Integration {
 
 		/*  Programme  */
 		$out .= '<section id="kompassi_programme" class="programme-list ' . $attributes['default_display'] . '">';
-		foreach( $this->get_data( ) as $p ) {
+		$this->data = $this->get_data( );
+		foreach( $this->data['programmes'] as $p ) {
 			$out .= $this->markup_program( $p );
 		}
 		$out .= '</section>';
+		$out .= '<style>';
+		foreach( $this->data['categories'] as $cat => $data ) {
+			$out .= '#kompassi_programme article[data-category="' . $cat . '"] { --kompassi-category-color: ' . $data['color'] . '; }' . PHP_EOL;
+		}
+		$out .= '</style>';
 
 		$out .= '</div>';
 		return $out;
@@ -162,6 +168,7 @@ class WP_Plugin_Kompassi_Integration {
 			'length' => $programme['length'],
 			'start-timestamp' => strtotime( $programme['start_time'] ),
 			'end-timestamp' => strtotime( $programme['end_time'] ),
+			'category' => $programme['category_title']
 		);
 		$html_attrs = '';
 		foreach( $attrs as $attr => $value ) {

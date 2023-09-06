@@ -262,6 +262,7 @@
 			"title room_name times favorite";
 		grid-gap: 0.5em;
 		padding: 0.3em 0;
+		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 	}
 		#kompassi_programme.table article:not(:last-child) {
 			border-bottom: 1px solid var(--kompassi-programme-border);
@@ -294,6 +295,7 @@
 		background-color: var(--kompassi-programme-bg);
 		border: 1px solid var(--kompassi-programme-border);
 		padding: 1em;
+		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 	}
 		#kompassi_programme.list article :is(.title,.room_name,.times,.favorite) {
 			display: block;
@@ -345,7 +347,7 @@
 		#kompassi_programme.expanded article .img {
 			margin: -1em -1em 1em -1em;
 			min-height: 100px;
-			background-color: var(--kompassi-programme-default-bg);
+			background-color: var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 		}
 		#kompassi_programme.expanded article .room_name {
 			text-align: right;
@@ -406,7 +408,7 @@
 	#kompassi_programme.timeline article {
 		display: inline-block;
 		padding: 0.2em;
-		background-color: var(--kompassi-programme-default-bg);
+		background-color: var(--kompassi-category-color,var(--kompassi-programme-default-bg));
 		color: rgba(255,255,255,0.8);
 		height: calc( var(--kompassi-programme-timeline-row-height) - 3px );
 
