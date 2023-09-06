@@ -5,17 +5,15 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2023-09-05T14:35:27+03:00\n"
-"PO-Revision-Date: 2023-09-05 14:35+0300\n"
+"POT-Creation-Date: 2023-09-06T03:02:04+03:00\n"
+"PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
-"X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
 #: kompassi-integration.php:62 kompassi-integration.php:67
@@ -60,22 +58,22 @@ msgstr "Asetukset"
 msgid "Default Display"
 msgstr "Oletusnäyttötyyli"
 
-#: blocks.js:31 frontend.js:93
+#: blocks.js:31 frontend.js:115
 msgctxt "display style"
 msgid "Table"
 msgstr "Taulukko"
 
-#: blocks.js:32 frontend.js:94
+#: blocks.js:32 frontend.js:116
 msgctxt "display style"
 msgid "Compact List"
 msgstr "Tiivis lista"
 
-#: blocks.js:33 frontend.js:95
+#: blocks.js:33 frontend.js:117
 msgctxt "display style"
 msgid "Expanded List"
 msgstr "Laajennettu lista"
 
-#: blocks.js:34 frontend.js:96
+#: blocks.js:34 frontend.js:118
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
@@ -88,57 +86,64 @@ msgstr "Näytä suodattimet"
 msgid "Show Display Styles"
 msgstr "Näytä näyttötyylit"
 
-#: frontend.js:17
+#: frontend.js:30
 msgid "Room name"
 msgstr "Tilan nimi"
 
-#: frontend.js:62
+#: frontend.js:79
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: frontend.js:65
+#: frontend.js:82
 msgid "Search (title, description)"
 msgstr "Hae (otsikko, kuvaus)"
 
-#: frontend.js:79
+#: frontend.js:96
 msgid "All dates"
 msgstr "Kaikki päivät"
 
-#: frontend.js:350
+#: frontend.js:102
+msgid "Favorites only"
+msgstr "Vain suosikit"
+
+#: frontend.js:393
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr "su"
 
-#: frontend.js:351
+#: frontend.js:394
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr "ma"
 
-#: frontend.js:352
+#: frontend.js:395
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr "ti"
 
-#: frontend.js:353
+#: frontend.js:396
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr "ke"
 
-#: frontend.js:354
+#: frontend.js:397
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr "to"
 
-#: frontend.js:355
+#: frontend.js:398
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr "pe"
 
-#: frontend.js:356
+#: frontend.js:399
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr "la"
+
+#~ msgid "Search title and description"
+#~ msgstr "Etsi otsikosta ja kuvauksesta"
 
 #~ msgid "Program Map"
 #~ msgstr "Ohjelmakartta"
