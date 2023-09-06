@@ -251,17 +251,26 @@
 	cursor: pointer;
 }
 
+#kompassi_programme article .img {
+	background-image: url(images/kompassi_faded.svg);
+	background-size: auto calc( 100% - 3em );
+	background-position: 1.5em 50%;
+	background-repeat: no-repeat;
+}
+
 /*  Table  */
 #kompassi_programme.table {
 	width: 100%;
+	background-color: #fff;
+	border: 1px solid var(--kompassi-programme-border);
+	border-right: none;
 }
 	#kompassi_programme.table article {
 		display: grid;
-		grid-template-columns: auto max-content 15em var(--kompassi-programme-favorite-icon-size);
+		grid-template-columns: auto 15em 15em calc( var(--kompassi-programme-favorite-icon-size) + 0.6em);
 		grid-template-areas:
 			"title room_name times favorite";
-		grid-gap: 0.5em;
-		padding: 0.3em 0;
+		grid-gap: 0;
 		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 	}
 		#kompassi_programme.table article:not(:last-child) {
@@ -269,12 +278,14 @@
 		}
 		#kompassi_programme.table article :is(.title,.room_name,.times,.favorite) {
 			display: block;
-		}
-		#kompassi_programme.table article .times {
-			text-align: right;
+			height: 100%;
+			padding: 0.3em 0.5em;
+			border-right: 1px solid var(--kompassi-programme-border);
 		}
 		#kompassi_programme.table article .favorite {
-			margin-top: -0.15em;
+			width: calc( var(--kompassi-programme-favorite-icon-size) + 0.6em);
+			background-size: var(--kompassi-programme-favorite-icon-size);
+			background-position: 50% 50%;
 		}
 
 /*  List  */
@@ -294,14 +305,15 @@
 			"times room_name room_name";
 		background-color: var(--kompassi-programme-bg);
 		border: 1px solid var(--kompassi-programme-border);
-		padding: 1em;
+		padding: 0.6em;
+
 		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 	}
 		#kompassi_programme.list article :is(.title,.room_name,.times,.favorite) {
 			display: block;
 		}
 		#kompassi_programme.list article .title {
-			margin-bottom: 0.5em;
+			margin-bottom: 0.25em;
 		}
 		#kompassi_programme.list article .room_name {
 			text-align: right;
@@ -332,7 +344,7 @@
 	#kompassi_programme.expanded article {
 		position: relative;
 		display: grid;
-		grid-template-columns: repeat(2,1fr);
+		grid-template-columns: 2fr 3fr;
 		grid-template-areas:
 			"img img"
 			"title title"
@@ -349,6 +361,13 @@
 			min-height: 100px;
 			background-color: var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 		}
+			#kompassi_programme.expanded article .img::before {
+				content: ' ';
+				display: block;
+				width: 100%;
+				height: 100%;
+				background-image: linear-gradient(to bottom,rgba(0,0,0,0.15),transparent);
+			}
 		#kompassi_programme.expanded article .room_name {
 			text-align: right;
 		}
