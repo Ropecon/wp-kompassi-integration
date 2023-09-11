@@ -26,12 +26,13 @@
 	--kompassi-programme-indicator-color: rgba(200,0,0,1);
 }
 
-.wp-block-kompassi-integration-programme {
+#kompassi_block_programme.wp-block-kompassi-integration-programme {
 	container-name: kompassi-integration;
 	container-type: inline-size;
 }
 
-#kompassi_block_programme {
+#kompassi_block_programme,
+.kompassi_block_programme {
 	font-family: var(--kompassi-programme-font);
 	line-height: var(--kompassi-programme-line-height);
 }

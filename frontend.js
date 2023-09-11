@@ -224,7 +224,7 @@ jQuery( function( e ) {
 	}
 
 	// FAVORITES
-	jQuery( 'body' ).on( 'click', 'article.kompassi-programme .favorite', kompassi_toggle_favorite );
+	block.on( 'click', 'article.kompassi-programme .favorite', kompassi_toggle_favorite );
 	if( block.attr( 'data-show-favorites-only' ) == 'true' ) {
 		if( block.find( '.favorites-toggle' ) ) {
 			block.find( '.favorites-toggle' ).addClass( 'active' ).trigger( 'click' );
@@ -253,7 +253,7 @@ jQuery( function( e ) {
 			return;
 		}
 		clone = jQuery( this ).clone( );
-		clone.attr( 'id', 'kompassi_programme_modal' ).attr( 'style', '' );
+		clone.attr( 'id', 'kompassi_programme_modal' ).attr( 'style', '' ).addClass( 'kompassi_block_programme' );
 		clone.appendTo( jQuery( 'body' ) );
 		jQuery( 'body' ).append( '<div id="kompassi_programme_modal_bg" />' ).css( 'overflow', 'hidden' );
 	} );
@@ -384,7 +384,7 @@ function kompassi_setup_timeline_layout( ) {
 		}
 		jQuery( '#kompassi_programme' ).append( '<div class="ruler" style="top: var(--kompassi-programme-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% )">' + label + '</div>' );
 		if( label == '00' || i == 0 ) {
-			d = time_start_filtered + ( i * 60 * 60 );
+			d = parseInt( time_start_filtered ) + ( i * 60 * 60 );
 			jQuery( '#kompassi_programme' ).append( '<strong class="day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% );">' + kompassi_get_date_formatted( d ) + '</div>' );
 		}
 	}
@@ -460,7 +460,7 @@ function kompassi_apply_filters( ) {
 	}
 
 	// Favorite filter
-	if( jQuery( '#kompassi_block_programme .favorites-toggle' ).hasClass( 'active' ) ) {
+	if( block.find( '.favorites-toggle' ).hasClass( 'active' ) ) {
 		jQuery( '#kompassi_programme article:not(.is-favorite)' ).addClass( 'hidden' );
 	}
 
@@ -491,7 +491,7 @@ function kompassi_revert_timeline_layout( ) {
 }
 
 function kompassi_popover( program, posX ) {
-	popover = jQuery( '<div id="kompassi_programme_popover" />' );
+	popover = jQuery( '<div id="kompassi_programme_popover" class="kompassi_block_programme" />' );
 	markup = '<div class="title">' + jQuery( program ).find( '.title' ).html( ) + '</div>';
 	markup += jQuery( program ).find( '.times' ).prop( 'outerHTML' );
 	popover.html( markup );
