@@ -32,7 +32,7 @@ class WP_Plugin_Kompassi_Integration {
 					'show_filters' => array( 'type' => 'boolean', 'default' => true ),
 					'show_display_styles' => array( 'type' => 'boolean', 'default' => true ),
 					'show_favorites_only' => array( 'type' => 'boolean', 'default' => false )
-				)
+				),
 			)
 		);
 	}
@@ -121,6 +121,14 @@ class WP_Plugin_Kompassi_Integration {
 		// TODO: #10 - Only allow specific format, eg. only ask for the event slug?
 		$json = file_get_contents( get_option( 'kompassi_integration_feed_url' ) );
 		$programme = json_decode( $json, true );
+		foreach( $programme['programmes'] as $index => $prog ) {
+			if( isset( $prog['start_time'] ) ) {
+				$programme['programmes'][$index]['start_timestamp'] = strtotime( $prog['start_time'] );
+			}
+			if( isset( $prog['end_time'] ) ) {
+				$programme['programmes'][$index]['end_timestamp'] = strtotime( $prog['end_time'] );
+			}
+		}
 
 		return $programme;
 	}
@@ -137,7 +145,7 @@ class WP_Plugin_Kompassi_Integration {
 		if( $attributes['show_display_styles'] ) { $html_attrs['data-show-display-styles'] = 'true'; }
 		if( $attributes['show_favorites_only'] ) { $html_attrs['data-show-favorites-only'] = 'true'; }
 
-		$out = '<div ' . get_block_wrapper_attributes( $html_attrs ) . '>';
+		$out = '<div id="kompassi_block_programme" ' . get_block_wrapper_attributes( $html_attrs ) . '>';
 
 		/*  Programme  */
 		$out .= '<section id="kompassi_programme" class="programme-list ' . $attributes['default_display'] . '">';
@@ -166,8 +174,8 @@ class WP_Plugin_Kompassi_Integration {
 		$attrs = array(
 			'id' => $programme['identifier'],
 			'length' => $programme['length'],
-			'start-timestamp' => strtotime( $programme['start_time'] ),
-			'end-timestamp' => strtotime( $programme['end_time'] ),
+			'start-timestamp' => $programme['start_timestamp'], // strtotime( $programme['start_time'] ),
+			'end-timestamp' => $programme['end_timestamp'], // strtotime( $programme['end_time'] ),
 			'category' => $programme['category_title']
 		);
 		$html_attrs = '';
@@ -181,8 +189,8 @@ class WP_Plugin_Kompassi_Integration {
 					$show_keys = array(
 							'title' => '<strong>%s</strong>',
 							'room_name' => '%s',
-//							'start_time' => '%s',
-//							'end_time' => '%s',
+//							'start_timestamp' => '%s',
+//							'end_timestamp' => '%s',
 							'times' => '',
 							'description' => '%s',
 							'category_title' => '%s',
@@ -198,19 +206,8 @@ class WP_Plugin_Kompassi_Integration {
 							$format = '%s';
 							// TODO: #11 - Get directly from Kompassi?
 							if( 'times' == $key ) {
-								$value = date_i18n( 'D j.n. k\l\o H.i', strtotime( $programme['start_time'] ) );
-								/*
-								$start_date = date_i18n( 'j.n.Y', strtotime( $programme['start_time'] ) );
-								$end_date = date_i18n( 'j.n.Y', strtotime( $programme['end_time'] ) );
-
-								$value = date_i18n( 'D j.n. H.i', strtotime( $programme['start_time'] ) );
-								$value .= ' – ';
-								if( $start_date == $end_date ) {
-									$value .= date_i18n( 'H.i', strtotime( $programme['end_time'] ) );
-								} else {
-									$value .= date_i18n( 'D j.n. H.i', strtotime( $programme['end_time'] ) );
-								}
-								*/
+								$value = date_i18n( 'D j.n. k\l\o H.i', $programme['start_timestamp'] + ( get_option( 'gmt_offset' ) * 60 * 60 ) );
+								// If multiday, show both days
 							}
 						}
 						if( isset( $value ) ) {
@@ -230,9 +227,9 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function sort_by_starting_time( $a, $b ) {
-		if( $a['start_time'] > $b['start_time'] ) {
+		if( $a['start_timestamp'] > $b['start_timestamp'] ) {
 			return 1;
-		} elseif( $b['start_time'] > $a['start_time'] ) {
+		} elseif( $b['start_timestamp'] > $a['start_timestamp'] ) {
 			return -1;
 		} else {
 			return 0;

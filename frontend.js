@@ -12,8 +12,11 @@ var cookie;
 jQuery( function( e ) {
 	block = jQuery( '#kompassi_block_programme' );
 
+	/*
+	 *  Set up cookie for user preferences, including favorites
+	 *
+	 */
 
-	// Set up cookie for favorites
 	cookie = Cookies.get( 'kompassi_integration' );
 	if( cookie == undefined ) {
 		cookie = { favorites: [] };
@@ -25,7 +28,12 @@ jQuery( function( e ) {
 		} );
 	}
 
-	//  Populate attribute filter data
+	/*
+	 *  Populate attribute filter data
+	 *  - Get every single unique value for specified attributes
+	 *
+	 */
+
 	attribute_filters = [
 		{ key: 'room_name', label: __( 'Room name', 'kompassi-integration' ) },
 		{ key: 'category_title', label: __( 'Category', 'kompassi-integration' ) }
@@ -38,8 +46,25 @@ jQuery( function( e ) {
 		attribute_filters[index]['values'] = values.filter( filter_unique ).sort( );
 	} );
 
-	//  Get earliest and latest timestamps
-	//  Add favorite markup
+	/*
+	 *  Add actions markup for items
+	 *
+	 */
+
+	jQuery( '#kompassi_programme article' ).each( function( ) {
+		actions = jQuery( '<div class="actions" style="grid-area: actions;" />' );
+		actions.append( '<button class="favorite" />' );
+		jQuery( this ).find( '.description' ).before( actions );
+	} );
+
+	/*
+	 *  Get date/time related information about programme
+	 *  - Earliest starting time for programme
+	 *  - Latest ending time for programme
+	 *  - List of dates the programme spans through
+	 *
+	 */
+
 	jQuery( '#kompassi_programme article' ).each( function( ) {
 		if( time_start == 0 ) {
 			time_start = jQuery( this ).attr( 'data-start-timestamp' );
@@ -47,7 +72,6 @@ jQuery( function( e ) {
 		if( time_end < jQuery( this ).attr( 'data-end-timestamp' ) ) {
 			time_end = jQuery( this ).attr( 'data-end-timestamp' );
 		}
-		jQuery( this ).append( '<div class="favorite" style="grid-area: favorite;" />' );
 	} );
 
 	//  Always start and end with even hours
@@ -67,22 +91,71 @@ jQuery( function( e ) {
 	// Get list of dates
 	i = ts.setHours( 0 ).valueOf( ) / 1000;
 	while( i < time_end ) {
-		dates[i] = kompassi_get_date_formatted( new Date( i * 1000 ) );
+		dates[i] = kompassi_get_date_formatted( i, false );
 		i += 24 * 60 * 60;
 	}
+
+	/*
+	 *  Generate toolbar markup
+	 *
+	 */
 
 	toolbar = jQuery( '<section id="kompassi_programme_toolbar" />' );
 	toolbar.prependTo( block );
 
-	// FILTERS
-	if( block.attr( 'data-show-filters' ) == 'true' ) {
-		filters_toggle = jQuery( '<section id="kompassi_programme_filter_toggle"><a class="filters-toggle">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '</a></section>' ).appendTo( toolbar );
-		jQuery( '.filters-toggle' ).on( 'click', function( ) {
-			jQuery( this ).toggleClass( 'active' );
-			jQuery( '#kompassi_programme_filters' ).toggle( );
-		} );
+	/*  Date filter  */
+	/*  TODO: Only if multiday event  */
+	select = jQuery( '<select class="filter filter-date" name="filter_date" />' );
+	select.append( jQuery( '<option value="0">-- ' + __( 'All dates', 'kompassi-integration' ) + ' --</option>' ) );
+	jQuery.each( dates, function( timestamp, label ) {
+		select.append( jQuery( '<option value="' + timestamp + '">' + label + '</option>' ) );
+	} );
+	// toolbar.append( select );
 
-		filters = jQuery( '<section id="kompassi_programme_filters" />' );
+	date_section = jQuery( '<section id="kompassi_programme_dates" />' );
+	jQuery.each( dates, function( timestamp, label ) {
+		timestamp_start = parseInt( timestamp );
+		timestamp_end = timestamp_start + ( 24 * 60 * 60 );
+		date_toggle = jQuery( '<a class="date-toggle no-icon" data-start-timestamp="' + timestamp_start + '" data-end-timestamp="' + timestamp_end + '">' + label + '</a>' );
+		date_toggle.on( 'click', function( ) {
+			if( jQuery( this ).hasClass( 'active' ) ) {
+				jQuery( this ).removeClass( 'active' );
+			} else {
+				date_section.find( '.date-toggle' ).removeClass( 'active' );
+				jQuery( this ).addClass( 'active' );
+			}
+			kompassi_apply_filters( );
+		} );
+		date_section.append( date_toggle );
+	} );
+
+	date_section.appendTo( toolbar );
+
+	/*  Filter section  */
+
+	filters_section = jQuery( '<section id="kompassi_programme_filters" />' );
+	toggle_favorites = jQuery( '<a class="favorites-toggle">' + __( 'Favorites', 'kompassi-integration' ) + '</a>' ).appendTo( filters_section );
+	toggle_filters = jQuery( '<a class="filters-toggle">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="indicator"></span></a>' ).appendTo( filters_section );
+	filters_section.appendTo( toolbar );
+
+	toggle_favorites.on( 'click', function( ) {
+		jQuery( this ).toggleClass( 'active' );
+		kompassi_apply_filters( );
+	} );
+
+	toggle_filters.on( 'click', function( ) {
+		jQuery( this ).toggleClass( 'active' );
+		jQuery( '#kompassi_programme_filter' ).toggle( );
+	} );
+
+	/*
+	 *  Generate filter area markup
+	 *  - Shown when filters toggle is active
+	 *
+	 */
+
+	if( block.attr( 'data-show-filters' ) == 'true' ) {
+		filters = jQuery( '<section id="kompassi_programme_filter" />' );
 
 		//  Text filter
 		filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text search (title, description)', 'kompassi-integration' ) + '" />' ) );
@@ -109,17 +182,6 @@ jQuery( function( e ) {
 			*/
 		} );
 
-		//  Date filter
-		select = jQuery( '<select class="filter filter-date" name="filter_date" />' );
-		select.append( jQuery( '<option value="0">-- ' + __( 'All dates', 'kompassi-integration' ) + ' --</option>' ) );
-		jQuery.each( dates, function( timestamp, label ) {
-			select.append( jQuery( '<option value="' + timestamp + '">' + label + '</option>' ) );
-		} );
-		filters.append( select );
-
-		//  Favorite
-		filters.append( '<label><input class="filter filter-favorite" type="checkbox" name="filter_favorite" />' + __( 'Favorites only', 'kompassi-integration' ) + '</label>' );
-
 		//  Show filters
 		filters.insertAfter( toolbar );
 
@@ -128,7 +190,8 @@ jQuery( function( e ) {
 		filters.on( 'keyup', '.filter-text', kompassi_apply_filters );
 	}
 
-	// DISPLAY STYLES
+ 	/*  Display style section  */
+
 	if( block.attr( 'data-show-display-styles' ) == 'true' ) {
 		styles = {
 			'table': _x( 'Table', 'display style', 'kompassi-integration' ),
@@ -144,7 +207,7 @@ jQuery( function( e ) {
 				link.addClass( 'active' );
 			}
 		} );
-		toolbar.prepend( ds );
+		toolbar.append( ds );
 
 		// Change display type
 		jQuery( '#kompassi_programme_display' ).on( 'click', 'a', function( ) {
@@ -163,8 +226,8 @@ jQuery( function( e ) {
 	// FAVORITES
 	jQuery( 'body' ).on( 'click', 'article.kompassi-programme .favorite', kompassi_toggle_favorite );
 	if( block.attr( 'data-show-favorites-only' ) == 'true' ) {
-		if( block.find( '.filter-favorite' ).length > 0 ) {
-			block.find( '.filter-favorite' ).attr( 'checked', 'checked' ).trigger( 'change' );
+		if( block.find( '.favorites-toggle' ) ) {
+			block.find( '.favorites-toggle' ).addClass( 'active' ).trigger( 'click' );
 		} else {
 			// When filters are not enabled...
 			jQuery( '#kompassi_programme article:not(.is-favorite)' ).addClass( 'hidden' );
@@ -243,7 +306,7 @@ function kompassi_setup_timeline_layout( ) {
 		added = false;
 
 		if( date_filtered ) {
-			time_start_filtered = jQuery( '[name="filter_date"]' ).val( );
+			// time_start_filtered = jQuery( '[name="filter_date"]' ).val( );
 			if( time_start_filtered < time_start ) {
 				time_start_filtered = time_start;
 				tsf = new Date( time_start_filtered * 1000 );
@@ -321,7 +384,7 @@ function kompassi_setup_timeline_layout( ) {
 		}
 		jQuery( '#kompassi_programme' ).append( '<div class="ruler" style="top: var(--kompassi-programme-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% )">' + label + '</div>' );
 		if( label == '00' || i == 0 ) {
-			d = new Date( time_start_filtered * 1000 + i * 60 * 60 * 1000 );
+			d = time_start_filtered + ( i * 60 * 60 );
 			jQuery( '#kompassi_programme' ).append( '<strong class="day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% );">' + kompassi_get_date_formatted( d ) + '</div>' );
 		}
 	}
@@ -329,10 +392,12 @@ function kompassi_setup_timeline_layout( ) {
 
 function kompassi_apply_filters( ) {
 	//  Show all
-	jQuery( '#kompassi_programme article' ).removeClass( 'hidden' );
+	jQuery( '#kompassi_programme article' ).removeClass( 'hidden multiday-overlap' );
+
+	filter_count = 0;
 
 	//  Iterate through each filter
-	jQuery( '#kompassi_programme_filters .filter' ).each( function( index ) {
+	jQuery( '#kompassi_programme_filter .filter' ).each( function( index ) {
 		filter = jQuery( this );
 
 		// Attribute filters
@@ -340,6 +405,7 @@ function kompassi_apply_filters( ) {
 			if( filter.val( ) !== '0' ) {
 				jQuery( '#kompassi_programme article' ).filter( function( ) { return jQuery( this ).find( '.' + filter.attr( 'data-attribute' ) ).text( ) !== filter.val( ); } ).addClass( 'hidden' );
 				// jQuery( '#kompassi_programme article:not([' + jQuery( this ).attr( 'data-attr' ) + '="' + this.value + '"])' ).addClass( 'hidden' );
+				filter_count += 1;
 			}
 		}
 
@@ -360,33 +426,43 @@ function kompassi_apply_filters( ) {
 						}
 					} );
 				} );
-			}
-		}
-
-		// Date filter
-		if( filter.hasClass( 'filter-date' ) ) {
-			if( filter.val( ) !== '0' ) {
-				time_start_filtered = parseInt( filter.val( ) );
-				time_end_filtered = parseInt( filter.val( ) ) + ( 24 * 60 * 60 );
-				jQuery( '#kompassi_programme article' ).each( function( index ) {
-					program = jQuery( this );
-					if( parseInt( program.attr( 'data-start-timestamp' ) ) > time_end_filtered || parseInt( program.attr( 'data-end-timestamp' ) ) <= time_start_filtered ) {
-						program.addClass( 'hidden' );
-					}
-				} );
-				date_filtered = true;
-			} else {
-				date_filtered = false;
-			}
-		}
-
-		// Favorite filter
-		if( filter.hasClass( 'filter-favorite' ) ) {
-			if( filter.prop( 'checked' ) ) {
-				jQuery( '#kompassi_programme article:not(.is-favorite)' ).addClass( 'hidden' );
+				filter_count += 1;
 			}
 		}
 	} );
+
+	// Date filter
+	if( block.find( '.date-toggle.active' ).length > 0 ) {
+		time_start_filtered = parseInt( block.find( '.date-toggle.active' ).first( ).attr( 'data-start-timestamp' ) );
+		time_end_filtered = parseInt( block.find( '.date-toggle.active' ).first( ).attr( 'data-end-timestamp' ) );
+		console.log( time_start_filtered, time_end_filtered );
+		jQuery( '#kompassi_programme article' ).each( function( index ) {
+			program = jQuery( this );
+			program_start = parseInt( program.attr( 'data-start-timestamp' ) );
+			program_end = parseInt( program.attr( 'data-end-timestamp' ) );
+			if( program_start > time_end_filtered || program_end <= time_start_filtered ) {
+				program.addClass( 'hidden' );
+			}
+			if( program_start < time_start_filtered && program_end > time_start_filtered ) {
+				program.addClass( 'multiday-overlap' );
+			}
+			// TODO: When not on the timeline display, do not show multiday programmes?
+		} );
+		date_filtered = true;
+	} else {
+		date_filtered = false;
+	}
+
+	if( filter_count > 0 ) {
+		block.find( '.filters-toggle .indicator' ).text( filter_count );
+	} else {
+		block.find( '.filters-toggle .indicator' ).empty( );
+	}
+
+	// Favorite filter
+	if( jQuery( '#kompassi_block_programme .favorites-toggle' ).hasClass( 'active' ) ) {
+		jQuery( '#kompassi_programme article:not(.is-favorite)' ).addClass( 'hidden' );
+	}
 
 	//  If on timeline, refresh the layout
 	if( kompassi_get_display_type( ) == 'timeline' ) {
@@ -426,7 +502,8 @@ function kompassi_popover( program, posX ) {
 }
 
 //  Helper functions
-function kompassi_get_date_formatted( datetime_obj ) {
+function kompassi_get_date_formatted( timestamp, weekday = true ) {
+	datetime_obj = new Date( timestamp * 1000 );
 	const dayNames = [
 		_x( 'Sun', 'day abbreviation', 'kompassi-integration' ),
 		_x( 'Mon', 'day abbreviation', 'kompassi-integration' ),
@@ -436,7 +513,11 @@ function kompassi_get_date_formatted( datetime_obj ) {
 		_x( 'Fri', 'day abbreviation', 'kompassi-integration' ),
 		_x( 'Sat', 'day abbreviation', 'kompassi-integration' )
 	];
-	return dayNames[datetime_obj.getDay( )] + ' ' + datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
+	if( weekday == true ) {
+		return dayNames[datetime_obj.getDay( )] + ' ' + datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
+	} else {
+		return datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
+	}
 }
 
 function kompassi_sort_by_group( a, b ) {

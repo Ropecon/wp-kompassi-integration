@@ -10,11 +10,20 @@
 	--kompassi-programme-timeline-time: rgba(0,0,0,0.4);
 	--kompassi-programme-modal-max-width: 1000px;
 
-	--kompassi-programme-favorite-icon-size: 1.4em;
+	--kompassi-programme-action-icon-size: 1.4em;
 	--kompassi-programme-line-height: 1.4em;
 
-	--kompassi-toolbar-bg: #10324f;
-	--kompassi-toolbar-bg-filters: #648fb5;
+	--kompassi-toolbar-button-fg: #222;
+	--kompassi-toolbar-button-bg: #dadada linear-gradient(to bottom, #fafafa, transparent);
+	--kompassi-toolbar-button-bg-active: #fff;
+	--kompassi-button-border: rgba(0,0,0,0.2);
+	--kompassi-toolbar-button-padding: 0.6em;
+	--kompassi-toolbar-button-radius: 0.3em;
+	--kompassi-toolbar-icon-size: 21px;
+
+	--kompassi-toolbar-button-bg-filters: #648fb5;
+
+	--kompassi-programme-indicator-color: rgba(200,0,0,1);
 }
 
 .wp-block-kompassi-integration-programme {
@@ -22,10 +31,9 @@
 	container-type: inline-size;
 }
 
-.wp-block-kompassi-integration-programme,
-#kompassi_programme_modal,
-#kompassi_programme_popover {
+#kompassi_block_programme {
 	font-family: var(--kompassi-programme-font);
+	line-height: var(--kompassi-programme-line-height);
 }
 
 /*
@@ -34,44 +42,102 @@
  */
 
 #kompassi_programme_toolbar {
+	position: relative;
 }
 	#kompassi_programme_toolbar section {
-		display: inline-block;
-		margin: 0 1em 1em 0;
-		border-radius: 9999em;
-
-		background-color: var(--kompassi-toolbar-bg);
+		display: block;
 	}
 		#kompassi_programme_toolbar section a {
+			position: relative;
 			display: inline-block;
-			color: #fff;
-			padding: 1em 1em 1em calc( 2em + 21px );
-			background-position: 1em 50%;
-			background-repeat: no-repeat;
-			background-size: 21px;
-			border-right: 1px solid rgba(255,255,255,0.2);
+			color: var(--kompassi-toolbar-button-fg);
+			padding: var(--kompassi-toolbar-button-padding);
+			background: var(--kompassi-toolbar-button-bg);
+			border: 1px solid var(--kompassi-button-border);
+			border-radius: var(--kompassi-toolbar-button-radius);
+			margin-right: var(--kompassi-toolbar-button-padding);
+			margin-bottom: var(--kompassi-toolbar-button-padding);
 		}
 			#kompassi_programme_toolbar section a.active {
-				background-color: rgba(255,255,255,0.1);
+				background: var(--kompassi-toolbar-button-bg-active);
 			}
-			#kompassi_programme_toolbar section a:last-child {
-				border: none;
+			#kompassi_programme_toolbar section a .indicator:not(:empty) {
+				display: inline-block;
+				margin-left: var(--kompassi-toolbar-button-padding);
+				width: var(--kompassi-programme-line-height);
+				height: var(--kompassi-programme-line-height);
+				background-color: var(--kompassi-programme-indicator-color);
+				text-align: center;
+				color: #fff;
+				border-radius: 9999px;
 			}
+
 
 /*  Toolbar icons  */
 
-#kompassi_programme_toolbar a.table { background-image: url(images/icon_table.svg); }
-#kompassi_programme_toolbar a.list { background-image: url(images/icon_list.svg); }
-#kompassi_programme_toolbar a.expanded { background-image: url(images/icon_expanded.svg); }
-#kompassi_programme_toolbar a.timeline { background-image: url(images/icon_timeline.svg); }
-#kompassi_programme_toolbar a.filters-toggle { background-image: url(images/icon_filter.svg); position: relative; }
+#kompassi_programme_toolbar section a:not(.no-icon) {
+	padding-left: calc( ( var(--kompassi-toolbar-button-padding) * 2 ) + var(--kompassi-toolbar-icon-size) );
+}
+
+#kompassi_programme_toolbar section a:not(.no-icon)::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: var(--kompassi-toolbar-button-padding);
+	width: var(--kompassi-toolbar-icon-size);
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: contain;
+	opacity: 0.5;
+}
+	#kompassi_programme_toolbar a.table::before { background-image: url(images/icon_table.svg); }
+	#kompassi_programme_toolbar a.list::before { background-image: url(images/icon_list.svg); }
+	#kompassi_programme_toolbar a.expanded::before { background-image: url(images/icon_expanded.svg); }
+	#kompassi_programme_toolbar a.timeline::before { background-image: url(images/icon_timeline.svg); }
+	#kompassi_programme_toolbar a.filters-toggle::before { background-image: url(images/icon_filter.svg); }
+	#kompassi_programme_toolbar a.favorites-toggle::before { background-image: url(images/icon_favorite.svg); }
+	#kompassi_programme_toolbar a.favorites-toggle.active::before { background-image: url(images/icon_is_favorite.svg); opacity: 1; }
+
+@container kompassi-integration (min-width: 600px) {
+	#kompassi_programme_toolbar section {
+		display: inline-block;
+		margin-right: var(--kompassi-toolbar-button-padding);
+		margin-bottom: var(--kompassi-toolbar-button-padding);
+	}
+		#kompassi_programme_toolbar section a {
+			border-radius: 0;
+			margin-right: 0;
+			margin-bottom: 0;
+		}
+			#kompassi_programme_toolbar section a:not(:last-child) {
+				border-right: 1px solid rgba(255,255,255,0.2);
+			}
+			#kompassi_programme_toolbar section a:first-child {
+				border-bottom-left-radius: var(--kompassi-toolbar-button-radius);
+				border-top-left-radius: var(--kompassi-toolbar-button-radius);
+			}
+			#kompassi_programme_toolbar section a:last-child {
+				border-top-right-radius: var(--kompassi-toolbar-button-radius);
+				border-bottom-right-radius: var(--kompassi-toolbar-button-radius);
+			}
+}
+
+@container kompassi-integration (min-width: 900px) {
+	#kompassi_programme_toolbar section#kompassi_programme_display {
+		position: absolute;
+		right: 0;
+		margin-right: 0;
+	}
+}
 
 /*
  *  Display Styles
  *
  */
 
-@container kompassi-integration (max-width: 600px) {
+@container poop-kompassi-integration (max-width: 600px) {
 	#kompassi_programme_display a {
 		width: calc( 2em + 19px ) !important;
 		padding: 1em 0 !important;
@@ -102,50 +168,60 @@
 		background-color: var(--kompassi-toolbar-bg-filters);
 	}
 
-#kompassi_programme_filters {
+#kompassi_programme_filter {
 	display: none;
 	margin-bottom: 1em;
-	background-color: var(--kompassi-toolbar-bg-filters);
-	color: #fff;
-	padding: 1em;
-	border-radius: 0.3em;
+	background-color: #fff;
+	padding: var(--kompassi-toolbar-button-padding);
+	border-radius: var(--kompassi-toolbar-button-radius);
+	border: 1px solid var(--kompassi-button-border);
 }
-	#kompassi_programme_filters > * {
+	#kompassi_programme_filter > * {
 		display: inline-block;
 		width: 100%;
 	}
 
-	#kompassi_programme_filters input,
-	#kompassi_programme_filters select {
+	#kompassi_programme_filter input,
+	#kompassi_programme_filter select {
 		padding: 0.5em;
 		margin-bottom: 0.3em;
 	}
 
 @container kompassi-integration (min-width: 700px) {
-	#kompassi_programme_filters > * {
+	#kompassi_programme_filter > * {
 		margin-right: 0.5em;
 		width: auto;
 		max-width: 16em;
 	}
-	#kompassi_programme_filters .filter-text {
+	#kompassi_programme_filter .filter-text {
 		width: 20em;
 		max-width: 20em;
 	}
 }
 
 /*
- *  Favorite
+ *  Actions
+ *  - Favorite
  *
  */
 
-#kompassi_programme_modal .favorite,
-#kompassi_programme article .favorite {
-	width: var(--kompassi-programme-favorite-icon-size);
-	height: var(--kompassi-programme-favorite-icon-size);
-	background-image: url(images/icon_favorite.svg);
+#kompassi_programme_modal .actions > *,
+#kompassi_programme article .actions > * {
+	width: var(--kompassi-programme-action-icon-size);
+	height: var(--kompassi-programme-action-icon-size);
 	background-position: 100% 0;
 	background-repeat: no-repeat;
 	background-size: contain;
+
+	border: none;
+	background-color: transparent;
+	padding: 0;
+	margin: 0;
+}
+
+#kompassi_programme_modal .favorite,
+#kompassi_programme article .favorite {
+	background-image: url(images/icon_favorite.svg);
 }
 	#kompassi_programme_modal.is-favorite .favorite,
 	#kompassi_programme article.is-favorite .favorite {
@@ -158,7 +234,7 @@
  */
 
 #kompassi_programme_modal {
-	--kompassi-programme-favorite-icon-size: 3em;
+	--kompassi-programme-action-icon-size: 1.5em;
 
 	position: fixed;
 	width: calc( 100% - 4em );
@@ -188,17 +264,21 @@
 			border-top: 1px solid var(--kompassi-programme-border);
 			border-bottom: 1px solid var(--kompassi-programme-border);
 		}
-		#kompassi_programme_modal .favorite {
-			position: absolute;
-			top: 2em;
-			right: 2em;
-		}
 
 @media screen and (min-width:900px) {
 	#kompassi_programme_modal {
+		--kompassi-programme-action-icon-size: 3em;
+
+		width: auto;
 		max-width: var(--kompassi-programme-modal-max-width);
-		right: max( 20%, calc( ( 100vw - var(--kompassi-programme-modal-max-width) ) / 2 ) );
-		left: max( 20%, calc( ( 100vw - var(--kompassi-programme-modal-max-width) ) / 2 ) );
+		right: max( 4em, calc( ( 100vw - var(--kompassi-programme-modal-max-width) ) / 2 ) );
+		left: max( 4em, calc( ( 100vw - var(--kompassi-programme-modal-max-width) ) / 2 ) );
+	}
+
+	#kompassi_programme_modal .actions {
+		position: absolute;
+		top: 2em;
+		right: 2em;
 	}
 }
 
@@ -267,41 +347,40 @@
 }
 	#kompassi_programme.table article {
 		display: grid;
-		grid-template-columns: auto 15em 15em calc( var(--kompassi-programme-favorite-icon-size) + 0.6em);
+		grid-template-columns: auto 15em 15em calc( var(--kompassi-programme-action-icon-size) + 0.6em);
 		grid-template-areas:
-			"title room_name times favorite";
+			"title room_name times actions";
 		grid-gap: 0;
 		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 	}
 		#kompassi_programme.table article:not(:last-child) {
 			border-bottom: 1px solid var(--kompassi-programme-border);
 		}
-		#kompassi_programme.table article :is(.title,.room_name,.times,.favorite) {
+		#kompassi_programme.table article :is(.title,.room_name,.times,.actions) {
 			display: block;
 			height: 100%;
 			padding: 0.3em 0.5em;
 			border-right: 1px solid var(--kompassi-programme-border);
 		}
-		#kompassi_programme.table article .favorite {
-			width: calc( var(--kompassi-programme-favorite-icon-size) + 0.6em);
-			background-size: var(--kompassi-programme-favorite-icon-size);
+		#kompassi_programme.table article .actions {
+			width: calc( var(--kompassi-programme-action-icon-size) + 0.6em);
+			background-size: var(--kompassi-programme-action-icon-size);
 			background-position: 50% 50%;
 		}
 
 /*  List  */
 #kompassi_programme.list {
-	--kompassi-programme-favorite-icon-size: 1.8em;
+	--kompassi-programme-action-icon-size: 1.8em;
 
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
 	grid-gap: 0.5em;
 }
-
 	#kompassi_programme.list article {
 		display: grid;
-		grid-template-columns: 50% calc( 50% - var(--kompassi-programme-favorite-icon-size) ) var(--kompassi-programme-favorite-icon-size);
+		grid-template-columns: 50% auto fit-content;
 		grid-template-areas:
-			"title title favorite"
+			"title title actions"
 			"times room_name room_name";
 		background-color: var(--kompassi-programme-bg);
 		border: 1px solid var(--kompassi-programme-border);
@@ -309,7 +388,7 @@
 
 		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
 	}
-		#kompassi_programme.list article :is(.title,.room_name,.times,.favorite) {
+		#kompassi_programme.list article :is(.title,.room_name,.times,.actions) {
 			display: block;
 		}
 		#kompassi_programme.list article .title {
@@ -318,13 +397,22 @@
 		#kompassi_programme.list article .room_name {
 			text-align: right;
 		}
-		#kompassi_programme.list article .favorite {
+		#kompassi_programme.list article .actions {
+			text-align: right;
 			margin-top: -0.3em;
 		}
+		#kompassi_programme.list article.multiday-overlap {
+			opacity: 0.5;
+		}
+	#kompassi_programme.list article.multiday-overlap .times::before {
+		content: "! ";
+		font-weight: bold;
+		color: red;
+	}
 
 /*  Expanded  */
 #kompassi_programme.expanded {
-	--kompassi-programme-favorite-icon-size: 2.4em;
+	--kompassi-programme-action-icon-size: 2.4em;
 
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
@@ -353,7 +441,7 @@
 		border: 1px solid var(--kompassi-programme-border);
 		padding: 1em;
 	}
-		#kompassi_programme.expanded article :is(.img,.title,.room_name,.times,.favorite) {
+		#kompassi_programme.expanded article :is(.img,.title,.room_name,.times,.actions) {
 			display: block;
 		}
 		#kompassi_programme.expanded article .img {
@@ -371,12 +459,12 @@
 		#kompassi_programme.expanded article .room_name {
 			text-align: right;
 		}
-		#kompassi_programme.expanded article .favorite {
+		#kompassi_programme.expanded article .actions {
 			grid-area: img !important;
 			position: absolute;
 			right: 0;
 		}
-			#kompassi_programme.expanded article:not(.is-favorite) .favorite {
+			#kompassi_programme.expanded article:not(.is-favorite) .actions {
 				filter: invert(1);
 			}
 
@@ -436,7 +524,7 @@
 		white-space: nowrap;
 		overflow: hidden;
 	}
-		#kompassi_programme.timeline article .favorite {
+		#kompassi_programme.timeline article .actions {
 			display: none;
 		}
 
