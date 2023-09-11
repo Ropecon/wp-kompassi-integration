@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2023-09-06T15:36:11+03:00\n"
+"POT-Creation-Date: 2023-09-11T13:40:41+03:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -46,106 +46,106 @@ msgstr ""
 msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
-#: blocks.js:13 blocks.js:26
+#: blocks.js:13 blocks.js:27
 msgid "Programme"
 msgstr "Ohjelma"
 
-#: blocks.js:28
+#: blocks.js:29
 msgid "Options"
 msgstr "Asetukset"
 
-#: blocks.js:30
+#: blocks.js:31
 msgid "Default Display"
 msgstr "Oletusnäyttötyyli"
 
-#: blocks.js:32 frontend.js:134
+#: blocks.js:33 frontend.js:197
 msgctxt "display style"
 msgid "Table"
 msgstr "Taulukko"
 
-#: blocks.js:33 frontend.js:135
+#: blocks.js:34 frontend.js:198
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: blocks.js:34 frontend.js:136
+#: blocks.js:35 frontend.js:199
 msgctxt "display style"
 msgid "Expanded List"
 msgstr "Laajennettu lista"
 
-#: blocks.js:35 frontend.js:137
+#: blocks.js:36 frontend.js:200
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
-#: blocks.js:44
+#: blocks.js:45
 msgid "Show Filters"
 msgstr "Näytä suodattimet"
 
-#: blocks.js:53
+#: blocks.js:54
 msgid "Show Display Styles"
 msgstr "Näytä näyttötyylit"
 
-#: blocks.js:62
+#: blocks.js:63
 msgid "Show Favorites Only"
 msgstr "Näytä vain suosikit"
 
-#: frontend.js:30
+#: frontend.js:38
 msgid "Room name"
 msgstr "Tilan nimi"
 
-#: frontend.js:31
+#: frontend.js:39
 msgid "Category"
 msgstr "Kategoria"
 
-#: frontend.js:79
+#: frontend.js:109
+msgid "All dates"
+msgstr "Kaikki päivät"
+
+#: frontend.js:137
+msgid "Favorites"
+msgstr "Suosikit"
+
+#: frontend.js:138
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: frontend.js:88
+#: frontend.js:161
 msgid "Text search (title, description)"
 msgstr "Tekstihaku (otsikko, kuvaus)"
 
-#: frontend.js:114
-msgid "All dates"
-msgstr "Kaikki päivät"
-
-#: frontend.js:121
-msgid "Favorites only"
-msgstr "Vain suosikit"
-
-#: frontend.js:431
+#: frontend.js:508
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr "su"
 
-#: frontend.js:432
+#: frontend.js:509
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr "ma"
 
-#: frontend.js:433
+#: frontend.js:510
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr "ti"
 
-#: frontend.js:434
+#: frontend.js:511
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr "ke"
 
-#: frontend.js:435
+#: frontend.js:512
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr "to"
 
-#: frontend.js:436
+#: frontend.js:513
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr "pe"
 
-#: frontend.js:437
+#: frontend.js:514
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr "la"
