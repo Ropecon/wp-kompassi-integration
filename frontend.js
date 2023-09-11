@@ -10,8 +10,8 @@ var popover_timeout = '';
 var cookie;
 
 jQuery( function( e ) {
-	// TODO: #5
-	block = jQuery( '.wp-block-kompassi-integration-programme' ).first( );
+	block = jQuery( '#kompassi_block_programme' );
+
 
 	// Set up cookie for favorites
 	cookie = Cookies.get( 'kompassi_integration' );

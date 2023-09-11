@@ -13,7 +13,8 @@ wp.blocks.registerBlockType(
 	  title: __( 'Programme', 'kompassi-integration' ),
 	  category: 'kompassi',
 	  supports: {
-		  align: true
+		  align: true,
+        multiple: false
 	  },
 	  attributes: {
 		  default_display: { type: 'string', default: 'list' },
