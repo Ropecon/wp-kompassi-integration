@@ -17,8 +17,6 @@ foreach( json_decode( file_get_contents( 'v1_ropecon.json' ), true ) as $index =
 	$prog['identifier'] = $row['identifier'];
 	$prog['short_blurb'] = $row['short_blurb'];
 
-	$json['unique'][] = $row['ropecon2023_language'];
-
 	// Convert categories and tags to 2024 dimensions
 	$prog['dimensions'] = ropecon2023_to_2024_dimensions( $row );
 
@@ -35,7 +33,6 @@ foreach( json_decode( file_get_contents( 'v1_ropecon.json' ), true ) as $index =
 	$programs[$index] = $prog;
 }
 
-$json['unique'] = array_unique( $json['unique'] );
 $json['programs'] = $programs;
 
 header( 'Content-Type: application/json' );
