@@ -209,7 +209,7 @@ jQuery( function( e ) {
 			block.find( '.favorites-toggle' ).addClass( 'active' ).trigger( 'click' );
 		} else {
 			// When filters are not enabled...
-			jQuery( '#kompassi_schedule article:not(.is-favorite)' ).addClass( 'hidden' );
+			jQuery( '#kompassi_schedule article:not(.is-favorite)' ).addClass( 'filtered' );
 		}
 	}
 
@@ -289,7 +289,7 @@ function kompassi_toggle_favorite( ) {
  */
 
 function kompassi_update_event_count( ) {
-	event_count = jQuery( '#kompassi_schedule article:not(.hidden)' ).length;
+	event_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
 	if( filter_count_total > 0 ) {
 		// translators: count of programmes visible
 		event_count_label = _n( '%s programme visible', '%s programmes visible', event_count, 'kompassi-integration' );
@@ -337,7 +337,7 @@ function kompassi_setup_timeline_layout( ) {
 
 	jQuery( '#kompassi_schedule article' ).sort( kompassi_sort_by_group ).each( function( index ) {
 		p = jQuery( this );
-		if( p.hasClass( 'hidden' ) ) {
+		if( p.hasClass( 'filtered' ) ) {
 			return;
 		}
 
@@ -447,7 +447,7 @@ function kompassi_revert_timeline_layout( ) {
 
 function kompassi_apply_filters( ) {
 	//  Show all and remove notification if exists
-	jQuery( '#kompassi_schedule article' ).removeClass( 'hidden multiday-overlap' );
+	jQuery( '#kompassi_schedule article' ).removeClass( 'filtered multiday-overlap' );
 	jQuery( '.kompassi-filter-note' ).remove( );
 
 	filter_count = 0;
@@ -456,6 +456,7 @@ function kompassi_apply_filters( ) {
 	//  Iterate through each filter
 	jQuery( '#kompassi_schedule_filter .filter' ).each( function( index ) {
 		filter = jQuery( this );
+		console.log( 'filter: ' + filter.attr( 'data-dimension' ) );
 
 		// Dimension filters
 		if( filter.hasClass( 'filter-dimension' ) ) {
@@ -467,7 +468,7 @@ function kompassi_apply_filters( ) {
 					} else {
 						return prog_dimension !== filter.val( );
 					}
-				} ).addClass( 'hidden' );
+				} ).addClass( 'filtered' );
 				filter_count += 1;
 			}
 		}
@@ -496,7 +497,7 @@ function kompassi_apply_filters( ) {
 						} );
 					} );
 				} );
-				jQuery( '#kompassi_schedule article:not(.has-text-match)' ).addClass( 'hidden' );
+				jQuery( '#kompassi_schedule article:not(.has-text-match)' ).addClass( 'filtered' );
 				if( jQuery( '#kompassi_schedule article.has-text-match' ).length > 0 ) {
 					jQuery( '#kompassi_schedule' ).before( '<div class="kompassi-filter-note not-timeline">' + __( 'Search results are sorted by relevance, not chronologically, when using text search.', 'kompassi-integration' ) + '</div>' );
 				}
@@ -523,7 +524,7 @@ function kompassi_apply_filters( ) {
 			program_start = parseInt( program.attr( 'data-start-timestamp' ) );
 			program_end = parseInt( program.attr( 'data-end-timestamp' ) );
 			if( program_start > time_end_filtered || program_end <= time_start_filtered ) {
-				program.addClass( 'hidden' );
+				program.addClass( 'filtered' );
 			}
 			if( program_start < time_start_filtered && program_end > time_start_filtered ) {
 				program.addClass( 'multiday-overlap' );
@@ -537,7 +538,7 @@ function kompassi_apply_filters( ) {
 
 	// Favorite filter
 	if( block.find( '.favorites-toggle' ).hasClass( 'active' ) ) {
-		jQuery( '#kompassi_schedule article:not(.is-favorite)' ).addClass( 'hidden' );
+		jQuery( '#kompassi_schedule article:not(.is-favorite)' ).addClass( 'filtered' );
 		filter_count_total += 1;
 	}
 
@@ -548,7 +549,7 @@ function kompassi_apply_filters( ) {
 	}
 
 	// If there is no program that matches the search, show notification
-	if( jQuery( '#kompassi_schedule article:not(.hidden)' ).length == 0 ) {
+	if( jQuery( '#kompassi_schedule article:not(.filtered)' ).length == 0 ) {
 		jQuery( '#kompassi_schedule' ).before( '<div class="kompassi-filter-note">' + __( 'Nothing matched your search!', 'kompassi-integration' ) + '</div>' );
 	}
 

@@ -238,7 +238,7 @@ class WP_Plugin_Kompassi_Integration {
 						}
 						echo '</div>';
 					}
-					echo '<div class="visual" style="grid-area: visual;"></div>';
+					//echo '<div class="visual" style="grid-area: visual;"></div>';
 				?>
 			</article>
 		<?php

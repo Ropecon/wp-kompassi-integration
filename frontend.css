@@ -398,8 +398,8 @@ div.kompassi-filter-note {
 	display: none;
 }
 
-#kompassi_schedule article.hidden {
-	/*  Hidden program  */
+#kompassi_schedule article.filtered {
+	/*  Filtered program  */
 	display: none !important;
 }
 
@@ -412,8 +412,8 @@ div.kompassi-filter-note {
 #kompassi_schedule article .title {
 	font-weight: bold;
 }
-#kompassi_schedule article .visual {
-	background-image: url(images/kompassi_faded.svg);
+#kompassi_schedule article::before {
+	background-image: url(images/kompassi.svg);
 	background-size: auto calc( 100% - 3em );
 	background-position: 1.5em 50%;
 	background-repeat: no-repeat;
@@ -434,22 +434,24 @@ div.kompassi-filter-note {
 #kompassi_schedule.list {
 	--kompassi-program-action-icon-size: 1.8em;
 	--kompassi-program-list-padding: 0.6em;
-	--kompassi-program-list-visual-width: 6em;
+	--kompassi-program-list-visual-width: 5.5em;
 
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
 	grid-gap: 0.5em;
 }
 	#kompassi_schedule.list article {
+		position: relative;
 		display: grid;
-		grid-template-columns: var(--kompassi-program-list-visual-width) 50% auto auto;
+		grid-template-columns: 50% auto auto;
 		grid-template-areas:
-			"visual title title actions"
-			"visual times room_name room_name";
+			"title title actions"
+			"times room_name room_name";
 		background-color: var(--kompassi-program-bg);
 		border: 1px solid var(--kompassi-program-border);
+		padding-left: calc( var(--kompassi-program-list-visual-width) + 0.5em );
 	}
-		#kompassi_schedule.list article :is(.title,.room_name,.times,.actions,.visual) {
+		#kompassi_schedule.list article :is(.title,.room_name,.times,.actions) {
 			display: block;
 			margin: var(--kompassi-program-list-padding);
 		}
@@ -467,8 +469,13 @@ div.kompassi-filter-note {
 		#kompassi_schedule.list article .actions {
 			text-align: right;
 		}
-		#kompassi_schedule.list article .visual {
-			margin: 0 0.5em 0 0;
+		#kompassi_schedule.list article::before {
+			content: '';
+			position: absolute;
+			display: block;
+			width: var(--kompassi-program-list-visual-width);
+			top: 0;
+			bottom: 0;
 			background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
 			background-size: auto calc( 100% - 2em );
 		}
