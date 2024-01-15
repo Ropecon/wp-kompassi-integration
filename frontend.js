@@ -10,6 +10,7 @@ var date_filtered = false;
 var popover_timeout = '';
 var cookie;
 var filter_count_total = 0;
+var timeline_grouping = 'room_name';
 
 jQuery( function( e ) {
 	block = jQuery( '#kompassi_block_schedule' );
@@ -88,14 +89,7 @@ jQuery( function( e ) {
 	toolbar.prependTo( block );
 
 	/*  Date filter  */
-	/*  TODO: Only if multiday event  */
-	select = jQuery( '<select class="filter filter-date" name="filter_date" />' );
-	select.append( jQuery( '<option value="0">-- ' + __( 'All dates', 'kompassi-integration' ) + ' --</option>' ) );
-	jQuery.each( dates, function( timestamp, label ) {
-		select.append( jQuery( '<option value="' + timestamp + '">' + label + '</option>' ) );
-	} );
-	// toolbar.append( select );
-
+	/*  TODO: Now #17  */
 	date_section = jQuery( '<section id="kompassi_schedule_dates" />' );
 	jQuery.each( dates, function( timestamp, label ) {
 		timestamp_start = parseInt( timestamp );
@@ -116,7 +110,6 @@ jQuery( function( e ) {
 	date_section.appendTo( toolbar );
 
 	/*  Filter section  */
-
 	filters_section = jQuery( '<section id="kompassi_schedule_filters" />' );
 	toggle_favorites = jQuery( '<a class="favorites-toggle">' + __( 'Favorites', 'kompassi-integration' ) + '</a>' ).appendTo( filters_section );
 	toggle_filters = jQuery( '<a class="filters-toggle">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="indicator"></span></a>' ).appendTo( filters_section );
@@ -133,7 +126,7 @@ jQuery( function( e ) {
 	} );
 
 	/*
-	 *  Generate filter area markup
+	 *  Generate filter popup
 	 *  - Shown when filters toggle is active
 	 *
 	 */
@@ -155,11 +148,27 @@ jQuery( function( e ) {
 			filters.append( select );
 		} );
 
+		// Clear filters
+		clear_filters = jQuery( '<a href="#" class="clear-filters">' + __( 'Clear filters', 'kompassi-integration' ) + '</button>' );
+		clear_filters.hide( );
+		clear_filters.on( 'click', function( ) {
+			jQuery( filters ).children( ).each( function( index ) {
+				if( jQuery( this ).hasClass( 'filter-dimension' ) ) {
+					jQuery( this ).val( '0' );
+				}
+				if( jQuery( this ).hasClass( 'filter-text' ) ) {
+					jQuery( this ).val( '' );
+				}
+			} );
+			kompassi_apply_filters( );
+		} );
+		filters.append( clear_filters );
+
 		//  Show filters
 		filters.insertAfter( toolbar );
 
 		//  Handle filtering
-		filters.on( 'change', 'select.filter, .filter[type="checkbox"]', kompassi_apply_filters );
+		filters.on( 'change', '.filter-dimension', kompassi_apply_filters );
 		filters.on( 'keyup', '.filter-text', kompassi_apply_filters );
 	}
 
@@ -170,9 +179,7 @@ jQuery( function( e ) {
  	/*  Display style section  */
 	if( block.attr( 'data-show-display-styles' ) == 'true' ) {
 		styles = {
-			// 'table': _x( 'Table', 'display style', 'kompassi-integration' ),
 			'list': _x( 'List', 'display style', 'kompassi-integration' ),
-			// 'expanded': _x( 'Expanded List', 'display style', 'kompassi-integration' ),
 			'timeline': _x( 'Timeline', 'display style', 'kompassi-integration' )
 		};
 		ds = jQuery( '<section id="kompassi_schedule_display" />' );
@@ -206,7 +213,11 @@ jQuery( function( e ) {
 		}
 	}
 
-	// Popover
+	/*
+	 *  Popover for program
+	 *
+	 */
+
 	jQuery( '#kompassi_schedule article' ).on( 'mouseover', function( e ) {
 		if( !jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) {
 			return;
@@ -219,7 +230,11 @@ jQuery( function( e ) {
 		jQuery( '#kompassi_program_popover' ).remove( );
 	} );
 
-	// Show modal
+	/*
+	 *  Modal for program
+	 *
+	 */
+
 	jQuery( '#kompassi_schedule article' ).on( 'click', function( e ) {
 		if( jQuery( e.target ).hasClass( 'favorite' ) ) {
 			return;
@@ -252,6 +267,11 @@ jQuery( function( e ) {
 	kompassi_setup_display( );
 } );
 
+/*
+ *  Filter: Toggle Favorites
+ *
+ */
+
 function kompassi_toggle_favorite( ) {
 	art_id = jQuery( this ).closest( 'article.kompassi-program' ).attr( 'data-id' );
 	jQuery( 'article.kompassi-program[data-id="' + art_id + '"]' ).toggleClass( 'is-favorite' );
@@ -262,6 +282,11 @@ function kompassi_toggle_favorite( ) {
 	}
 	Cookies.set( 'kompassi_integration', JSON.stringify( cookie ), { expires: 365, sameSite: 'strict', secure: true } );
 }
+
+/*
+ *  Get and show (visible) event count
+ *
+ */
 
 function kompassi_update_event_count( ) {
 	event_count = jQuery( '#kompassi_schedule article:not(.hidden)' ).length;
@@ -276,13 +301,10 @@ function kompassi_update_event_count( ) {
 	jQuery( '#kompassi_schedule_toolbar #kompassi_event_count' ).html( event_count_label );
 }
 
-function kompassi_close_modal( ) {
-	jQuery( '#kompassi_modal_bg, #kompassi_modal' ).remove( );
-	jQuery( 'body' ).css( 'overflow', 'auto' );
-}
-
-// TODO: #6 - Get this value from filters?
-var grouping = 'room_name';
+/*
+ *  Setup display
+ *
+ */
 
 function kompassi_setup_display( display_type = false ) {
 	if( display_type === false ) {
@@ -301,6 +323,11 @@ function kompassi_setup_display( display_type = false ) {
 	jQuery( '#kompassi_schedule_display a' ).removeClass( 'active' );
 	jQuery( '#kompassi_schedule_display a.' + display_type ).addClass( 'active' );
 }
+
+/*
+ *  Timeline: Setup layout
+ *
+ */
 
 function kompassi_setup_timeline_layout( ) {
 	rows = [ 'day hints', 'time hints' ];
@@ -346,9 +373,9 @@ function kompassi_setup_timeline_layout( ) {
 		offset = ( ( p.attr( 'data-start-timestamp' ) - time_start_filtered ) / time_total_filtered ) * 100;
 
 		//
-		if( p.find( '.' + grouping ).text( ) != prev_group ) {
-			rows.push( 'group: ' + p.find( '.' + grouping ).text( ) );
-			group = jQuery( '<p class="group-name">' + p.find( '.' + grouping ).text( ) + '</p>' );
+		if( p.find( '.' + timeline_grouping ).text( ) != prev_group ) {
+			rows.push( 'group: ' + p.find( '.' + timeline_grouping ).text( ) );
+			group = jQuery( '<p class="group-name">' + p.find( '.' + timeline_grouping ).text( ) + '</p>' );
 			grouping_row = rows.length - 1;
 			group.css( 'top', 'calc( ' + grouping_row + ' * var(--kompassi-program-timeline-row-height)' );
 			jQuery( '#kompassi_schedule' ).append( group );
@@ -380,7 +407,7 @@ function kompassi_setup_timeline_layout( ) {
 			p.find( '.title' ).css( 'position', 'absolute' ).css( 'left', ( ( -1 * p.position( ).left ) + 6 ) + 'px' );
 		}
 
-		prev_group = p.find( '.' + grouping ).text( );
+		prev_group = p.find( '.' + timeline_grouping ).text( );
 	} );
 
 	jQuery( '#kompassi_schedule' ).css( 'height', 'calc( var(--kompassi-program-timeline-row-height) * ' + ( rows.length ) + ' )' )
@@ -401,17 +428,22 @@ function kompassi_setup_timeline_layout( ) {
 	}
 }
 
-function kompassi_setup_modal_layout( ) {
-	modal = jQuery( '#kompassi_modal' );
-	head = modal.children( '.modal_header' );
-	foot = modal.children( '.modal_footer' );
-	desc = modal.children( '.description' );
-	head.css( 'width', modal.width( ) );
-	foot.css( 'bottom', '0' ).css( 'width', modal.width( ) );
-	desc.css( 'margin-top', head.outerHeight( ) );
-	desc.css( 'margin-bottom', foot.outerHeight( ) );
-	desc.css( 'height', modal.outerHeight( ) - head.outerHeight( ) - foot.outerHeight( ) );
+/*
+ *  Timeline: Revert layout
+ *
+ */
+
+function kompassi_revert_timeline_layout( ) {
+	jQuery( '#kompassi_schedule' ).css( 'height', 'auto' );
+	jQuery( '#kompassi_schedule article' ).attr( 'style', '' );
+	jQuery( '#kompassi_schedule .title' ).css( 'left', '' ).css( 'position', '' );
+	jQuery( '#kompassi_schedule .day_hint, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
 }
+
+/*
+ *  Filters: Apply
+ *
+ */
 
 function kompassi_apply_filters( ) {
 	//  Show all and remove notification if exists
@@ -529,27 +561,47 @@ function kompassi_apply_filters( ) {
 		// TODO: Show how many programmes from other days are not shown?
 	}
 
+	//
+	if( filter_count_total > 0 ) {
+		jQuery( '#kompassi_schedule_filter .clear-filters' ).show( );
+	} else {
+		jQuery( '#kompassi_schedule_filter .clear-filters' ).hide( );
+	}
+
 	kompassi_update_event_count( );
 }
 
-function kompassi_get_display_type( display_type = '' ) {
-	if( display_type !== '' ) {
-		return display_type;
-	} else {
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'table' ) ) { display_type = 'table'; }
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'list' ) ) { display_type = 'list'; }
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'expanded' ) ) { display_type = 'expanded'; }
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
-	}
-	return display_type;
+/*
+ *  Modal
+ *
+ */
+
+function kompassi_setup_modal_layout( ) {
+	modal = jQuery( '#kompassi_modal' );
+	head = modal.children( '.modal_header' );
+	foot = modal.children( '.modal_footer' );
+	desc = modal.children( '.description' );
+	head.css( 'width', modal.width( ) );
+	foot.css( 'bottom', '0' ).css( 'width', modal.width( ) );
+	desc.css( 'margin-top', head.outerHeight( ) );
+	desc.css( 'margin-bottom', foot.outerHeight( ) );
+	desc.css( 'height', modal.outerHeight( ) - head.outerHeight( ) - foot.outerHeight( ) );
 }
 
-function kompassi_revert_timeline_layout( ) {
-	jQuery( '#kompassi_schedule' ).css( 'height', 'auto' );
-	jQuery( '#kompassi_schedule article' ).attr( 'style', '' );
-	jQuery( '#kompassi_schedule .title' ).css( 'left', '' ).css( 'position', '' );
-	jQuery( '#kompassi_schedule .day_hint, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
+/*
+ *  Modal: Close
+ *
+ */
+
+function kompassi_close_modal( ) {
+	jQuery( '#kompassi_modal_bg, #kompassi_modal' ).remove( );
+	jQuery( 'body' ).css( 'overflow', 'auto' );
 }
+
+/*
+ *  Show popover
+ *
+ */
 
 function kompassi_popover( program, posX ) {
 	popover = jQuery( '<div id="kompassi_program_popover" class="kompassi_block_schedule" />' );
@@ -566,6 +618,18 @@ function kompassi_popover( program, posX ) {
 }
 
 //  Helper functions
+function kompassi_get_display_type( display_type = '' ) {
+	if( display_type !== '' ) {
+		return display_type;
+	} else {
+		if( jQuery( '#kompassi_schedule' ).hasClass( 'table' ) ) { display_type = 'table'; }
+		if( jQuery( '#kompassi_schedule' ).hasClass( 'list' ) ) { display_type = 'list'; }
+		if( jQuery( '#kompassi_schedule' ).hasClass( 'expanded' ) ) { display_type = 'expanded'; }
+		if( jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
+	}
+	return display_type;
+}
+
 function kompassi_get_date_formatted( timestamp, weekday = true ) {
 	datetime_obj = new Date( timestamp * 1000 );
 	const dayNames = [
@@ -585,7 +649,7 @@ function kompassi_get_date_formatted( timestamp, weekday = true ) {
 }
 
 function kompassi_sort_by_group( a, b ) {
-	if( jQuery( a ).find( '.' + grouping ).text( ) > jQuery( b ).find( '.' + grouping ).text( ) ) {
+	if( jQuery( a ).find( '.' + timeline_grouping ).text( ) > jQuery( b ).find( '.' + timeline_grouping ).text( ) ) {
 		return 1;
 	}
 	return -1;
