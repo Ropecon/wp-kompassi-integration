@@ -31,24 +31,6 @@ jQuery( function( e ) {
 	}
 
 	/*
-	 *  Populate attribute filter data
-	 *  - Get every single unique value for specified attributes
-	 *  TODO: Populate directly from dimensions, then remove attribute filters
-	 *
-	 */
-
-	attribute_filters = [
-		{ key: 'room_name', label: __( 'Room name', 'kompassi-integration' ) },
-	];
-	jQuery( attribute_filters ).each( function( index ) {
-		values = [];
-		jQuery( '#kompassi_schedule article .' + this.key ).each( function( ) {
-			values.push( jQuery( this ).text( ) );
-		} );
-		attribute_filters[index]['values'] = values.filter( filter_unique ).sort( );
-	} );
-
-	/*
 	 *  Add actions markup for items
 	 *
 	 */
@@ -173,34 +155,10 @@ jQuery( function( e ) {
 			filters.append( select );
 		} );
 
-
-		//  Single attribute filters
-		//  TODO: Deprecate.
-		jQuery.each( attribute_filters, function( ) {
-			select = jQuery( '<select class="filter filter-attribute" name="filter_' + this.key + '" data-attribute="' + this.key + '" />' );
-			select.append( jQuery( '<option value="0">-- ' + this.label + ' --</option>' ) );
-			jQuery.each( this.values, function( index, value ) {
-				select.append( jQuery( '<option value="' + value + '">' + value + '</option>' ) );
-			} );
-			filters.append( select );
-
-			// Datalist approach
-			/*
-			input = jQuery( '<input class="filter datalist filter-attribute list="filter_' + this.key + '" list="filter_' + this.key + '" data-attribute="' + this.key + '" />' );
-			datalist = jQuery( '<datalist id="filter_' + this.key + '" />' );
-			datalist.append( jQuery( '<option value="0">-- ' + this.label + ' --</option>' ) );
-			jQuery.each( this.values, function( index, value ) {
-				datalist.append( jQuery( '<option value="' + value + '" />' ) );
-			} );
-			filters.append( input );
-			filters.append( datalist );
-			*/
-		} );
-
 		//  Show filters
 		filters.insertAfter( toolbar );
 
-		// Handle filtering
+		//  Handle filtering
 		filters.on( 'change', 'select.filter, .filter[type="checkbox"]', kompassi_apply_filters );
 		filters.on( 'keyup', '.filter-text', kompassi_apply_filters );
 	}
@@ -478,15 +436,6 @@ function kompassi_apply_filters( ) {
 						return prog_dimension !== filter.val( );
 					}
 				} ).addClass( 'hidden' );
-				filter_count += 1;
-			}
-		}
-
-		// Attribute filters
-		if( filter.hasClass( 'filter-attribute' ) ) {
-			if( filter.val( ) !== '0' ) {
-				jQuery( '#kompassi_schedule article' ).filter( function( ) { return jQuery( this ).find( '.' + filter.attr( 'data-attribute' ) ).text( ) !== filter.val( ); } ).addClass( 'hidden' );
-				// jQuery( '#kompassi_schedule article:not([' + jQuery( this ).attr( 'data-attr' ) + '="' + this.value + '"])' ).addClass( 'hidden' );
 				filter_count += 1;
 			}
 		}
