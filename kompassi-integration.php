@@ -23,10 +23,10 @@ class WP_Plugin_Kompassi_Integration {
 		load_plugin_textdomain( 'kompassi-integration', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 		register_block_type(
-			'kompassi-integration/programme',
+			'kompassi-integration/schedule',
 			array(
 				'editor_script' => 'kompassi-integration-blocks',
-				'render_callback' => array( &$this, 'block_programme' ),
+				'render_callback' => array( &$this, 'block_schedule' ),
 				'attributes' => array(
 					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
 					'show_filters' => array( 'type' => 'boolean', 'default' => true ),
@@ -43,7 +43,7 @@ class WP_Plugin_Kompassi_Integration {
 		$fields = array(
 			'feed_url' => array(
 				'label' =>  __( 'Feed URL', 'kompassi-integration' ),
-				'description' => __( 'Feed URL where programme data is loaded from.', 'kompassi-integration' )
+				'description' => __( 'Feed URL where program data is loaded from.', 'kompassi-integration' )
 			),
 			'timeline_earliest_hour' => array(
 				'label' =>  __( 'Earliest hour on timeline', 'kompassi-integration' ),
@@ -117,46 +117,61 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function get_data( ) {
-		// Get programme JSON and convert it into array
+		// Get program JSON and convert it into array
 		// TODO: #10 - Only allow specific format, eg. only ask for the event slug?
 		$json = file_get_contents( get_option( 'kompassi_integration_feed_url' ) );
-		$programme = json_decode( $json, true );
-		foreach( $programme['programmes'] as $index => $prog ) {
+		$program = json_decode( $json, true );
+		foreach( $program['programs'] as $index => $prog ) {
 			if( isset( $prog['start_time'] ) ) {
-				$programme['programmes'][$index]['start_timestamp'] = strtotime( $prog['start_time'] );
+				$program['programs'][$index]['start_timestamp'] = strtotime( $prog['start_time'] );
 			}
 			if( isset( $prog['end_time'] ) ) {
-				$programme['programmes'][$index]['end_timestamp'] = strtotime( $prog['end_time'] );
+				$program['programs'][$index]['end_timestamp'] = strtotime( $prog['end_time'] );
 			}
 		}
 
-		return $programme;
+		return $program;
 	}
 
 	/*
-	 *  Show the Programme block
+	 *  Show the schedule block
 	 *
 	 */
 
-	function block_programme( $attributes ) {
+	function block_schedule( $attributes ) {
 		$html_attrs = array( 'class' => '' );
 		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
 		if( $attributes['show_filters'] ) { $html_attrs['data-show-filters'] = 'true'; }
 		if( $attributes['show_display_styles'] ) { $html_attrs['data-show-display-styles'] = 'true'; }
 		if( $attributes['show_favorites_only'] ) { $html_attrs['data-show-favorites-only'] = 'true'; }
 
-		$out = '<div id="kompassi_block_programme" ' . get_block_wrapper_attributes( $html_attrs ) . '>';
+		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . '>';
 
-		/*  Programme  */
-		$out .= '<section id="kompassi_programme" class="programme-list ' . $attributes['default_display'] . '">';
+		/*  Schedule  */
+		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
 		$this->data = $this->get_data( );
-		foreach( $this->data['programmes'] as $p ) {
-			$out .= $this->markup_program( $p );
+		foreach( $this->data['programs'] as $p ) {
+			$out .= $this->markup_program( $p, $this->data['dimensions'] );
 		}
 		$out .= '</section>';
+
+		/*  TODO: For now, output dimensions JSON with a script tag right here... */
+		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $this->data['dimensions'] ) . '</script>';
+
+		/*
+		 *  Program colors
+		 *  Color values from dimensions later in the data will override earlier values
+		 *  Philosophically, more specific tags should take precendence
+		 *  TODO: Possibility to order dimensions from Kompassi or implement in WP admin?
+		 *
+		 */
 		$out .= '<style>';
-		foreach( $this->data['categories'] as $cat => $data ) {
-			$out .= '#kompassi_programme article[data-category="' . $cat . '"] { --kompassi-category-color: ' . $data['color'] . '; }' . PHP_EOL;
+		foreach( $this->data['dimensions'] as $dimension_slug => $dimension ) {
+			foreach( $dimension['values'] as $value_slug => $value ) {
+				if( isset( $value['color'] ) ) {
+					$out .= '#kompassi_schedule article[data-' . $dimension_slug . '="' .  $value_slug . '"] { --kompassi-program-color: ' . $value['color'] . '; }';
+				}
+			}
 		}
 		$out .= '</style>';
 
@@ -169,52 +184,61 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function markup_program( $programme ) {
+	function markup_program( $program, $dimensions ) {
 		ob_start( );
 		$attrs = array(
-			'id' => $programme['identifier'],
-			'length' => $programme['length'],
-			'start-timestamp' => $programme['start_timestamp'], // strtotime( $programme['start_time'] ),
-			'end-timestamp' => $programme['end_timestamp'], // strtotime( $programme['end_time'] ),
-			'category' => $programme['category_title']
+			'id' => $program['identifier'],
+			'length' => $program['length'],
+			'start-timestamp' => $program['start_timestamp'], // strtotime( $program['start_time'] ),
+			'end-timestamp' => $program['end_timestamp'], // strtotime( $program['end_time'] ),
 		);
+		foreach( $program['dimensions'] as $dimension => $values ) {
+			if( count( $values ) > 0 ) {
+				$attrs[$dimension] = $values[0];
+			}
+		}
+
 		$html_attrs = '';
 		foreach( $attrs as $attr => $value ) {
 			$html_attrs .= ' data-' . $attr . '="' . $value . '"';
 		}
-		$programme['description'] = nl2br( $programme['description'] );
+		$program['description'] = nl2br( $program['description'] );
 		?>
-			<article id="<?php echo $programme['identifier']; ?>" class="kompassi-programme" <?php echo $html_attrs; ?>>
+			<article id="<?php echo $program['identifier']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 				<?php
-					$show_keys = array(
-							'title' => '<strong>%s</strong>',
-							'room_name' => '%s',
-//							'start_timestamp' => '%s',
-//							'end_timestamp' => '%s',
-							'times' => '',
-							'description' => '%s',
-							'category_title' => '%s',
-							'formatted_hosts' => '%s',
-					);
-					foreach( $show_keys as $key => $format ) {
-						if( isset( $programme[$key] ) ) {
-							$value = $programme[$key];
+					foreach( array( 'title', 'room_name', 'times', 'description', 'short_blurb', 'formatted_hosts' ) as $key ) {
+						$value = '';
+						if( isset( $program[$key] ) ) {
+							$value = $program[$key];
 							if( is_array( $value ) ) {
 								$value = implode( ',', $value );
 							}
 						} else {
-							$format = '%s';
 							// TODO: #11 - Get directly from Kompassi?
 							if( 'times' == $key ) {
-								$value = date_i18n( 'D j.n. k\l\o H.i', $programme['start_timestamp'] + ( get_option( 'gmt_offset' ) * 60 * 60 ) );
+								$value = date_i18n( 'D j.n. k\l\o H.i', $program['start_timestamp'] + ( get_option( 'gmt_offset' ) * 60 * 60 ) );
 								// If multiday, show both days
 							}
 						}
 						if( isset( $value ) ) {
-							echo '<div class="' . $key . '" style="grid-area: ' . $key . ';">' . sprintf( $format, $value ) . '</div>';
+							echo '<div class="' . $key . '" style="grid-area: ' . $key . ';">' . $value . '</div>';
 						}
 					}
-					echo '<div class="img" style="grid-area: img;"></div>';
+					// Traverse through dimensions
+					foreach( $program['dimensions'] as $dimension => $data ) {
+						echo '<div class="dimension ' . $dimension . '" style="grid-area: ' . $dimension . ';">';
+						foreach( $data as $slug ) {
+							if( $slug != 'ANY' && $slug != 'OTHER' ) {
+								if( isset( $dimensions[$dimension]['values'][$slug]['display_name'] ) ) {
+									echo '<span class="value">' . $dimensions[$dimension]['values'][$slug]['display_name'] . '</span> ';
+								} else {
+									echo '<span class="value">' . $slug . '</span> ';
+								}
+							}
+						}
+						echo '</div>';
+					}
+					echo '<div class="visual" style="grid-area: visual;"></div>';
 				?>
 			</article>
 		<?php
@@ -222,7 +246,7 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/**
-	 *  Sorts programme by event starting time
+	 *  Sorts program by event starting time
 	 *  Callable function for usort()
 	 */
 

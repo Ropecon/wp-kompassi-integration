@@ -8,9 +8,9 @@ var _x = wp.i18n._x;
  */
 
 wp.blocks.registerBlockType(
-  'kompassi-integration/programme',
+  'kompassi-integration/schedule',
   {
-	  title: __( 'Programme', 'kompassi-integration' ),
+	  title: __( 'Program Schedule', 'kompassi-integration' ),
 	  category: 'kompassi',
 	  supports: {
 		  align: true,
@@ -24,15 +24,15 @@ wp.blocks.registerBlockType(
 	  },
 	  edit: function( props ) {
 		  return( [
-			  el( 'div', { }, __( 'Programme', 'kompassi-integration' ) ),
+			  el( 'div', { }, __( 'Program Schedule', 'kompassi-integration' ) ),
 			  el( wp.blockEditor.InspectorControls, null,
 				  el( wp.components.PanelBody, { title: __( 'Options', 'kompassi-integration' ) },
 					  el( wp.components.SelectControl, {
 						  label: __( 'Default Display', 'kompassi-integration' ),
 						  options: [
-							  { label: _x( 'Table', 'display style', 'kompassi-integration' ), value: 'table' },
+/*							  { label: _x( 'Table', 'display style', 'kompassi-integration' ), value: 'table' }, */
 							  { label: _x( 'List', 'display style', 'kompassi-integration' ), value: 'list' },
-							  { label: _x( 'Expanded List', 'display style', 'kompassi-integration' ), value: 'expanded' },
+/*							  { label: _x( 'Expanded List', 'display style', 'kompassi-integration' ), value: 'expanded' }, */
 							  { label: _x( 'Timeline', 'display style', 'kompassi-integration' ), value: 'timeline' }
 						  ],
 						  value: props.attributes.default_display,

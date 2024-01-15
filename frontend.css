@@ -1,17 +1,17 @@
 :root {
-	--kompassi-programme-font: 'Lato', Helvetica, Arial, sans-serif;
-	--kompassi-programme-bg: #fff;
-	--kompassi-programme-border: rgba(0,0,0,0.2);
-	--kompassi-programme-padding: 1em;
-	--kompassi-programme-default-bg: #164b7f;
-	--kompassi-programme-timeline-bg: #ddd;
- 	--kompassi-programme-timeline-row-height: 2em;
-	--kompassi-programme-timeline-ruler: rgba(0,0,0,0.2);
-	--kompassi-programme-timeline-time: rgba(0,0,0,0.4);
-	--kompassi-programme-modal-max-width: 1000px;
+	/* TODO: variable names */
+	--kompassi-program-font: 'Lato', Helvetica, Arial, sans-serif;
+	--kompassi-program-bg: #fff;
+	--kompassi-program-border: rgba(0,0,0,0.2);
+	--kompassi-program-padding: 1em;
+	--kompassi-program-color-default: #164b7f;
+	--kompassi-program-timeline-bg: #ddd;
+ 	--kompassi-program-timeline-row-height: 2em;
+	--kompassi-program-timeline-ruler: rgba(0,0,0,0.2);
+	--kompassi-program-timeline-time: rgba(0,0,0,0.4);
 
-	--kompassi-programme-action-icon-size: 1.4em;
-	--kompassi-programme-line-height: 1.4em;
+	--kompassi-program-action-icon-size: 1.4em;
+	--kompassi-program-line-height: 1.4em;
 
 	--kompassi-toolbar-button-fg: #222;
 	--kompassi-toolbar-button-bg: #dadada linear-gradient(to bottom, #fafafa, transparent);
@@ -23,18 +23,22 @@
 
 	--kompassi-toolbar-button-bg-filters: #648fb5;
 
-	--kompassi-programme-indicator-color: rgba(200,0,0,1);
+	--kompassi-program-indicator-color: rgba(200,0,0,1);
+
+	/*  Modal  */
+	--kompassi-modal-max-width: 1000px;
+	--kompassi-modal-bg: #f7f7f7;
 }
 
-#kompassi_block_programme.wp-block-kompassi-integration-programme {
+#kompassi_block_schedule.wp-block-kompassi-integration-schedule {
 	container-name: kompassi-integration;
 	container-type: inline-size;
 }
 
-#kompassi_block_programme,
-.kompassi_block_programme {
-	font-family: var(--kompassi-programme-font);
-	line-height: var(--kompassi-programme-line-height);
+#kompassi_block_schedule,
+.kompassi_block_schedule {
+	font-family: var(--kompassi-program-font);
+	line-height: var(--kompassi-program-line-height);
 }
 
 /*
@@ -42,13 +46,13 @@
  *
  */
 
-#kompassi_programme_toolbar {
+#kompassi_schedule_toolbar {
 	position: relative;
 }
-	#kompassi_programme_toolbar section {
+	#kompassi_schedule_toolbar section {
 		display: block;
 	}
-		#kompassi_programme_toolbar section a {
+		#kompassi_schedule_toolbar section a {
 			position: relative;
 			display: inline-block;
 			color: var(--kompassi-toolbar-button-fg);
@@ -59,15 +63,15 @@
 			margin-right: var(--kompassi-toolbar-button-padding);
 			margin-bottom: var(--kompassi-toolbar-button-padding);
 		}
-			#kompassi_programme_toolbar section a.active {
+			#kompassi_schedule_toolbar section a.active {
 				background: var(--kompassi-toolbar-button-bg-active);
 			}
-			#kompassi_programme_toolbar section a .indicator:not(:empty) {
+			#kompassi_schedule_toolbar section a .indicator:not(:empty) {
 				display: inline-block;
 				margin-left: var(--kompassi-toolbar-button-padding);
-				width: var(--kompassi-programme-line-height);
-				height: var(--kompassi-programme-line-height);
-				background-color: var(--kompassi-programme-indicator-color);
+				width: var(--kompassi-program-line-height);
+				height: var(--kompassi-program-line-height);
+				background-color: var(--kompassi-program-indicator-color);
 				text-align: center;
 				color: #fff;
 				border-radius: 9999px;
@@ -76,11 +80,11 @@
 
 /*  Toolbar icons  */
 
-#kompassi_programme_toolbar section a:not(.no-icon) {
+#kompassi_schedule_toolbar section a:not(.no-icon) {
 	padding-left: calc( ( var(--kompassi-toolbar-button-padding) * 2 ) + var(--kompassi-toolbar-icon-size) );
 }
 
-#kompassi_programme_toolbar section a:not(.no-icon)::before {
+#kompassi_schedule_toolbar section a:not(.no-icon)::before {
 	content: '';
 	display: block;
 	position: absolute;
@@ -93,40 +97,41 @@
 	background-size: contain;
 	opacity: 0.5;
 }
-	#kompassi_programme_toolbar a.table::before { background-image: url(images/icon_table.svg); }
-	#kompassi_programme_toolbar a.list::before { background-image: url(images/icon_list.svg); }
-	#kompassi_programme_toolbar a.expanded::before { background-image: url(images/icon_expanded.svg); }
-	#kompassi_programme_toolbar a.timeline::before { background-image: url(images/icon_timeline.svg); }
-	#kompassi_programme_toolbar a.filters-toggle::before { background-image: url(images/icon_filter.svg); }
-	#kompassi_programme_toolbar a.favorites-toggle::before { background-image: url(images/icon_favorite.svg); }
-	#kompassi_programme_toolbar a.favorites-toggle.active::before { background-image: url(images/icon_is_favorite.svg); opacity: 1; }
+	#kompassi_schedule_toolbar a.table::before { background-image: url(images/icon_table.svg); }
+	#kompassi_schedule_toolbar a.list::before { background-image: url(images/icon_list.svg); }
+	#kompassi_schedule_toolbar a.expanded::before { background-image: url(images/icon_expanded.svg); }
+	#kompassi_schedule_toolbar a.timeline::before { background-image: url(images/icon_timeline.svg); }
+	#kompassi_schedule_toolbar a.filters-toggle::before { background-image: url(images/icon_filter.svg); }
+	#kompassi_schedule_toolbar a.favorites-toggle::before { background-image: url(images/icon_favorite.svg); }
+	#kompassi_schedule_toolbar a.favorites-toggle.active::before { background-image: url(images/icon_is_favorite.svg); opacity: 1; }
 
-@container kompassi-integration (min-width: 600px) {
-	#kompassi_programme_toolbar section {
+@container kompassi-integration (min-width: 0px) {
+	#kompassi_schedule_toolbar section {
 		display: inline-block;
 		margin-right: var(--kompassi-toolbar-button-padding);
 		margin-bottom: var(--kompassi-toolbar-button-padding);
 	}
-		#kompassi_programme_toolbar section a {
+		#kompassi_schedule_toolbar section a {
 			border-radius: 0;
 			margin-right: 0;
 			margin-bottom: 0;
+			cursor: pointer;
 		}
-			#kompassi_programme_toolbar section a:not(:last-child) {
+			#kompassi_schedule_toolbar section a:not(:last-child) {
 				border-right: 1px solid rgba(255,255,255,0.2);
 			}
-			#kompassi_programme_toolbar section a:first-child {
+			#kompassi_schedule_toolbar section a:first-child {
 				border-bottom-left-radius: var(--kompassi-toolbar-button-radius);
 				border-top-left-radius: var(--kompassi-toolbar-button-radius);
 			}
-			#kompassi_programme_toolbar section a:last-child {
+			#kompassi_schedule_toolbar section a:last-child {
 				border-top-right-radius: var(--kompassi-toolbar-button-radius);
 				border-bottom-right-radius: var(--kompassi-toolbar-button-radius);
 			}
 }
 
 @container kompassi-integration (min-width: 900px) {
-	#kompassi_programme_toolbar section#kompassi_programme_display {
+	#kompassi_schedule_toolbar section#kompassi_schedule_display {
 		position: absolute;
 		right: 0;
 		margin-right: 0;
@@ -138,12 +143,15 @@
  *
  */
 
-@container poop-kompassi-integration (max-width: 600px) {
-	#kompassi_programme_display a {
-		width: calc( 2em + 19px ) !important;
-		padding: 1em 0 !important;
+@container kompassi-integration (max-width: 600px) {
+	#kompassi_schedule_display a {
+		display: block;
+		height: 100%;
+		width: calc( var(--kompassi-toolbar-button-padding) * 2 + var(--kompassi-toolbar-icon-size) );
+		padding-left: calc( var(--kompassi-toolbar-button-padding) ) !important;
+		padding-right: calc( var(--kompassi-toolbar-button-padding) ) !important;
 	}
-	#kompassi_programme_display a span {
+	#kompassi_schedule_display a span {
 		display: none;
 	}
 }
@@ -153,9 +161,9 @@
  *
  */
 
-#kompassi_programme_toolbar a.filters-toggle.active {
+#kompassi_schedule_toolbar a.filters-toggle.active {
 }
-	#kompassi_programme_toolbar a.filters-toggle.active::after {
+	#kompassi_schedule_toolbar a.filters-toggle.active::after {
 		content: '';
 		transform: rotate(45deg);
 		display: block;
@@ -169,7 +177,7 @@
 		background-color: var(--kompassi-toolbar-bg-filters);
 	}
 
-#kompassi_programme_filter {
+#kompassi_schedule_filter {
 	display: none;
 	margin-bottom: 1em;
 	background-color: #fff;
@@ -177,24 +185,24 @@
 	border-radius: var(--kompassi-toolbar-button-radius);
 	border: 1px solid var(--kompassi-button-border);
 }
-	#kompassi_programme_filter > * {
+	#kompassi_schedule_filter > * {
 		display: inline-block;
 		width: 100%;
 	}
 
-	#kompassi_programme_filter input,
-	#kompassi_programme_filter select {
+	#kompassi_schedule_filter input,
+	#kompassi_schedule_filter select {
 		padding: 0.5em;
 		margin-bottom: 0.3em;
 	}
 
 @container kompassi-integration (min-width: 700px) {
-	#kompassi_programme_filter > * {
+	#kompassi_schedule_filter > * {
 		margin-right: 0.5em;
 		width: auto;
 		max-width: 16em;
 	}
-	#kompassi_programme_filter .filter-text {
+	#kompassi_schedule_filter .filter-text {
 		width: 20em;
 		max-width: 20em;
 	}
@@ -206,11 +214,11 @@
  *
  */
 
-#kompassi_programme_modal .actions > *,
-#kompassi_programme article .actions > * {
-	width: var(--kompassi-programme-action-icon-size);
-	height: var(--kompassi-programme-action-icon-size);
-	background-position: 100% 0;
+#kompassi_modal .actions > *,
+#kompassi_schedule article .actions > * {
+	width: var(--kompassi-program-action-icon-size);
+	height: var(--kompassi-program-action-icon-size);
+	background-position: 0 0;
 	background-repeat: no-repeat;
 	background-size: contain;
 
@@ -220,77 +228,122 @@
 	margin: 0;
 }
 
-#kompassi_programme_modal .favorite,
-#kompassi_programme article .favorite {
+#kompassi_modal .favorite,
+#kompassi_schedule article .favorite {
 	background-image: url(images/icon_favorite.svg);
 }
-	#kompassi_programme_modal.is-favorite .favorite,
-	#kompassi_programme article.is-favorite .favorite {
+	#kompassi_modal.is-favorite .favorite,
+	#kompassi_schedule article.is-favorite .favorite {
 		background-image: url(images/icon_is_favorite.svg);
 	}
+
+#kompassi_modal .close {
+	background-image: url(images/icon_close.svg);
+}
+
 
 /*
  *  Modals
  *
  */
 
-#kompassi_programme_modal {
-	--kompassi-programme-action-icon-size: 1.5em;
+#kompassi_modal {
+	--kompassi-program-action-icon-size: 1.5em;
 
 	position: fixed;
-	width: calc( 100% - 4em );
-	left: 2em;
-	top: 5em;
-	bottom: 5em;
+	width: 100vw;
+	height: 100vh;
+	left: 0;
+	top: 0;
+	bottom: 0;
 	z-index: 100000;
 
-	background-color: var(--kompassi-programme-bg);
-	padding: 2em;
+	background-color: #f7f7f7;
 	box-shadow: 1em 1em 2em rgba(0,0,0,0.2);
 
-	overflow: scroll;
-	line-height: var(--kompassi-programme-line-height);
+	overflow: hidden;
+	line-height: var(--kompassi-program-line-height);
 }
-	#kompassi_programme_modal > * {
+	#kompassi_modal > * {
 		display: block;
-		margin-bottom: 0.5em;
+		padding: 2em;
 	}
-		#kompassi_programme_modal .title {
-			font-size: 150%;
-			line-height: var(--kompassi-programme-line-height);
+		#kompassi_modal .modal_header {
+			position: absolute;
+			background-color: #fff;
+			border-bottom: 1px solid var(--kompassi-program-border);
 		}
-		#kompassi_programme_modal .description {
-			margin: 1em -2em;
-			padding: 2em;
-			border-top: 1px solid var(--kompassi-programme-border);
-			border-bottom: 1px solid var(--kompassi-programme-border);
+			#kompassi_modal .title {
+				font-size: 150%;
+				line-height: var(--kompassi-program-line-height);
+			}
+		#kompassi_modal .description {
+			overflow: scroll;
+			background:
+				/* Shadow covers */
+				linear-gradient(var(--kompassi-modal-bg) 30%, rgba(255,255,255,0)),
+				linear-gradient(rgba(255,255,255,0), var(--kompassi-modal-bg) 70%) 0 100%,
+
+				/* Shadows */
+				radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+				radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+
+			background-repeat: no-repeat;
+			background-color: var(--kompassi-modal-bg);
+			background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+			/* Opera doesn't support this in the shorthand */
+			background-attachment: local, local, scroll, scroll;
+		}
+
+		#kompassi_modal .modal_footer {
+			position: absolute;
+			background-color: #fff;
+			border-top: 1px solid var(--kompassi-program-border);
 		}
 
 @media screen and (min-width:900px) {
-	#kompassi_programme_modal {
-		--kompassi-programme-action-icon-size: 3em;
+	#kompassi_modal {
+		--kompassi-program-action-icon-size: 2em;
 
 		width: auto;
-		max-width: var(--kompassi-programme-modal-max-width);
-		right: max( 4em, calc( ( 100vw - var(--kompassi-programme-modal-max-width) ) / 2 ) );
-		left: max( 4em, calc( ( 100vw - var(--kompassi-programme-modal-max-width) ) / 2 ) );
+		height: calc( 100vh - 7em );
+		max-width: var(--kompassi-modal-max-width);
+		right: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
+		left: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
+		top: 3.5em;
+		bottom: 3.5em;
 	}
-
-	#kompassi_programme_modal .actions {
-		position: absolute;
-		top: 2em;
-		right: 2em;
-	}
+		#kompassi_modal .modal_header {
+			display: grid;
+			grid-template-columns: auto max-content;
+			grid-template-areas: 'title actions'
+				'room_name actions'
+				'times actions';
+		}
 }
 
-#kompassi_programme_modal_bg {
+/*  Dimensions in modals  */
+#kompassi_modal .dimension {
+	display: inline;
+	padding: 0.2em 0;
+}
+#kompassi_modal .dimension .value {
+	padding: 0.2em 0.6em;
+	background-color: #222;
+	color: #fff;
+	border-radius: 9999px;
+}
+
+
+#kompassi_modal_bg {
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: rgba(0,0,0,0.2);
-	z-index: 999;
+	background-color: rgba(0,0,0,0.75);
+	z-index: 10000;
 }
 
 /*
@@ -298,242 +351,199 @@
  *
  */
 
-#kompassi_programme_popover {
+#kompassi_program_popover {
 	position: fixed;
 	z-index: 100000;
 
 	padding: 0.5em;
 
-	background-color: var(--kompassi-programme-bg);
+	background-color: var(--kompassi-program-bg);
 	box-shadow: 0 0 1em rgba(0,0,0,0.2);
 }
+	#kompassi_program_popover .title {
+		font-weight: bold;
+	}
+	#kompassi_program_popover .short_blurb {
+		font-size: min( 90%, 10.75pt );
+		font-style: oblique;
+		color: rgba(0,0,0,0.6);
+		letter-spacing: 0.015em;
+	}
 
 /*
- *  Programme list
+ *  Filter note
  *
  */
 
-#kompassi_programme {
-	line-height: var(--kompassi-programme-line-height);
+div.kompassi-filter-note {
+	padding: 0.5em;
+	background-color: rgba(255,255,204,1);
+	border: 1px solid rgba(205,205,154,1);
+	border-radius: 3px;
+	color: #222;
+	margin-bottom: 0.5em;
 }
 
-#kompassi_programme article > * {
+/*
+ *  Program list
+ *
+ */
+
+#kompassi_schedule {
+	line-height: var(--kompassi-program-line-height);
+}
+
+#kompassi_schedule article > * {
 	/*  Hide all data by default  */
 	display: none;
 }
 
-#kompassi_programme article.hidden {
-	/*  Hidden programme  */
+#kompassi_schedule article.hidden {
+	/*  Hidden program  */
 	display: none !important;
 }
 
-#kompassi_programme article:hover {
+#kompassi_schedule article:hover {
 	/*  Hover cursor  */
 	cursor: pointer;
 }
 
-#kompassi_programme article .img {
+/*  Default/common styles  */
+#kompassi_schedule article .title {
+	font-weight: bold;
+}
+#kompassi_schedule article .visual {
 	background-image: url(images/kompassi_faded.svg);
 	background-size: auto calc( 100% - 3em );
 	background-position: 1.5em 50%;
 	background-repeat: no-repeat;
 }
 
-/*  Table  */
-#kompassi_programme.table {
-	width: 100%;
-	background-color: #fff;
-	border: 1px solid var(--kompassi-programme-border);
-	border-right: none;
+/*  Programs continuing  */
+#kompassi_schedule:not(.timeline) article.multiday-overlap {
+	order: 3;
 }
-	#kompassi_programme.table article {
-		display: grid;
-		grid-template-columns: auto 15em 15em calc( var(--kompassi-programme-action-icon-size) + 0.6em);
-		grid-template-areas:
-			"title room_name times actions";
-		grid-gap: 0;
-		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
+#kompassi_schedule:not(.timeline) #kompassi_programmes_still_continuing {
+	order: 2;
+}
+	#kompassi_schedule.timeline #kompassi_programmes_still_continuing {
+		display: none;
 	}
-		#kompassi_programme.table article:not(:last-child) {
-			border-bottom: 1px solid var(--kompassi-programme-border);
-		}
-		#kompassi_programme.table article :is(.title,.room_name,.times,.actions) {
-			display: block;
-			height: 100%;
-			padding: 0.3em 0.5em;
-			border-right: 1px solid var(--kompassi-programme-border);
-		}
-		#kompassi_programme.table article .actions {
-			width: calc( var(--kompassi-programme-action-icon-size) + 0.6em);
-			background-size: var(--kompassi-programme-action-icon-size);
-			background-position: 50% 50%;
-		}
 
 /*  List  */
-#kompassi_programme.list {
-	--kompassi-programme-action-icon-size: 1.8em;
+#kompassi_schedule.list {
+	--kompassi-program-action-icon-size: 1.8em;
+	--kompassi-program-list-padding: 0.6em;
+	--kompassi-program-list-visual-width: 6em;
 
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
 	grid-gap: 0.5em;
 }
-	#kompassi_programme.list article {
+	#kompassi_schedule.list article {
 		display: grid;
-		grid-template-columns: 50% auto fit-content;
+		grid-template-columns: var(--kompassi-program-list-visual-width) 50% auto auto;
 		grid-template-areas:
-			"title title actions"
-			"times room_name room_name";
-		background-color: var(--kompassi-programme-bg);
-		border: 1px solid var(--kompassi-programme-border);
-		padding: 0.6em;
-
-		border-left: 7px solid var(--kompassi-category-color, var(--kompassi-programme-default-bg));
+			"visual title title actions"
+			"visual times room_name room_name";
+		background-color: var(--kompassi-program-bg);
+		border: 1px solid var(--kompassi-program-border);
 	}
-		#kompassi_programme.list article :is(.title,.room_name,.times,.actions) {
+		#kompassi_schedule.list article :is(.title,.room_name,.times,.actions,.visual) {
 			display: block;
+			margin: var(--kompassi-program-list-padding);
 		}
-		#kompassi_programme.list article .title {
-			margin-bottom: 0.25em;
+		#kompassi_schedule.list article .title,
+		#kompassi_schedule.list article .actions {
+			margin-bottom: 0;
 		}
-		#kompassi_programme.list article .room_name {
+		#kompassi_schedule.list article .times,
+		#kompassi_schedule.list article .room_name {
+			margin-top: 0;
+		}
+		#kompassi_schedule.list article .room_name {
 			text-align: right;
 		}
-		#kompassi_programme.list article .actions {
-			text-align: right;
-			margin-top: -0.3em;
-		}
-		#kompassi_programme.list article.multiday-overlap {
-			opacity: 0.5;
-		}
-	#kompassi_programme.list article.multiday-overlap .times::before {
-		content: "! ";
-		font-weight: bold;
-		color: red;
-	}
-
-/*  Expanded  */
-#kompassi_programme.expanded {
-	--kompassi-programme-action-icon-size: 2.4em;
-
-	display: grid;
-	grid-template-columns: repeat(1,1fr);
-	grid-gap: 1em;
-}
-
-@container kompassi-integration (min-width: 700px) {
-	#kompassi_programme.expanded {
-		grid-template-columns: repeat(2,1fr);
-	}
-}
-@container kompassi-integration (min-width: 1050px) {
-	#kompassi_programme.expanded {
-		grid-template-columns: repeat(3,1fr);
-	}
-}
-	#kompassi_programme.expanded article {
-		position: relative;
-		display: grid;
-		grid-template-columns: 2fr 3fr;
-		grid-template-areas:
-			"img img"
-			"title title"
-			"times room_name";
-		background-color: var(--kompassi-programme-bg);
-		border: 1px solid var(--kompassi-programme-border);
-		padding: 1em;
-	}
-		#kompassi_programme.expanded article :is(.img,.title,.room_name,.times,.actions) {
-			display: block;
-		}
-		#kompassi_programme.expanded article .img {
-			margin: -1em -1em 1em -1em;
-			min-height: 100px;
-			background-color: var(--kompassi-category-color, var(--kompassi-programme-default-bg));
-		}
-			#kompassi_programme.expanded article .img::before {
-				content: ' ';
-				display: block;
-				width: 100%;
-				height: 100%;
-				background-image: linear-gradient(to bottom,rgba(0,0,0,0.15),transparent);
-			}
-		#kompassi_programme.expanded article .room_name {
+		#kompassi_schedule.list article .actions {
 			text-align: right;
 		}
-		#kompassi_programme.expanded article .actions {
-			grid-area: img !important;
-			position: absolute;
-			right: 0;
+		#kompassi_schedule.list article .visual {
+			margin: 0 0.5em 0 0;
+			background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
+			background-size: auto calc( 100% - 2em );
 		}
-			#kompassi_programme.expanded article:not(.is-favorite) .actions {
-				filter: invert(1);
-			}
 
 /*  Timeline  */
-#kompassi_programme.timeline {
+#kompassi_schedule.timeline {
 	position: relative;
-	border: 1px solid var(--kompassi-programme-border);
-	background-color: var(--kompassi-programme-timeline-bg);
+	border: 1px solid var(--kompassi-program-border);
+	background-color: var(--kompassi-program-timeline-bg);
 	overflow: hidden;
-	padding-top: var(--kompassi-programme-timeline-row-height);
+	padding-top: var(--kompassi-program-timeline-row-height);
 }
-	#kompassi_programme.timeline .day_hint {
+	#kompassi_schedule.timeline .day_hint {
 		position: absolute;
-		border-left: 1px solid var(--kompassi-programme-timeline-ruler);
-		height: var(--kompassi-programme-timeline-row-height);
+		border-left: 1px solid var(--kompassi-program-timeline-ruler);
+		height: var(--kompassi-program-timeline-row-height);
 		padding: 3px;
 	}
-		#kompassi_programme.timeline .day_hint:first-of-type {
+		#kompassi_schedule.timeline .day_hint:first-of-type {
 			border-left: 1px solid transparent;
 		}
 
-	#kompassi_programme.timeline .ruler {
+	#kompassi_schedule.timeline .ruler {
 		width: auto;
 		height: 100%;
-		border-top: 1px solid var(--kompassi-programme-timeline-ruler);
-		border-left: 1px solid var(--kompassi-programme-timeline-ruler);
+		border-top: 1px solid var(--kompassi-program-timeline-ruler);
+		border-left: 1px solid var(--kompassi-program-timeline-ruler);
 		padding: 3px;
-		color: var(--kompassi-programme-timeline-time);
+		color: var(--kompassi-program-timeline-time);
 		position: absolute;
 		top: 0;
 		bottom: 0;
 	}
-		#kompassi_programme.timeline .ruler:first-of-type {
+		#kompassi_schedule.timeline .ruler:first-of-type {
 			border-left: 1px solid transparent;
 		}
-	#kompassi_programme.timeline .group-name {
+	#kompassi_schedule.timeline .group-name {
 		display: block;
 		padding: 0.2em;
 		background-color: #fff;
-		border-top: 1px solid var(--kompassi-programme-border);
+		border-top: 1px solid var(--kompassi-program-border);
 		position: absolute;
 		left: 1px;
 		right: 1px;
 		z-index: 3;
-		height: calc( var(--kompassi-programme-timeline-row-height) - 3px );
+		height: calc( var(--kompassi-program-timeline-row-height) - 3px );
 	}
 
-	#kompassi_programme.timeline article {
+	#kompassi_schedule.timeline article {
+		order: 1 !important;
 		display: inline-block;
 		padding: 0.2em;
-		background-color: var(--kompassi-category-color,var(--kompassi-programme-default-bg));
-		color: rgba(255,255,255,0.8);
-		height: calc( var(--kompassi-programme-timeline-row-height) - 3px );
+		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
+		background-image: linear-gradient(to bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.15));
+		color: #fff;
+		height: calc( var(--kompassi-program-timeline-row-height) - 3px );
 
 		position: absolute;
 		z-index: 1;
 		white-space: nowrap;
 		overflow: hidden;
 	}
-		#kompassi_programme.timeline article .actions {
+
+		#kompassi_schedule.timeline article .actions {
 			display: none;
 		}
 
-		#kompassi_programme.timeline article:hover {
+		#kompassi_schedule.timeline article:hover {
 			margin-top: -2px;
 			box-shadow: 0 0 1em rgba(0,0,0,0.2);
-			filter: saturate(1.5) brightness(1.25);
+			text-shadow: 0.05em 0.05em 0.1em rgba(0,0,0,0.8);
+			filter: brightness(1.25);
+			min-width: min-content !important;
+			z-index: 2000;
 		}
-		#kompassi_programme.timeline article :is(.title) {
+		#kompassi_schedule.timeline article :is(.title) {
 			display: block;
 		}
