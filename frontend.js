@@ -532,7 +532,7 @@ function kompassi_apply_filters( ) {
 	kompassi_update_event_count( );
 }
 
-function kompassi_get_display_type( ) {
+function kompassi_get_display_type( display_type = '' ) {
 	if( display_type !== '' ) {
 		return display_type;
 	} else {
