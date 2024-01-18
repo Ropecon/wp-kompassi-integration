@@ -231,6 +231,7 @@
 #kompassi_modal .favorite,
 #kompassi_schedule article .favorite {
 	background-image: url(images/icon_favorite.svg);
+	cursor: pointer;
 }
 	#kompassi_modal.is-favorite .favorite,
 	#kompassi_schedule article.is-favorite .favorite {
@@ -239,6 +240,7 @@
 
 #kompassi_modal .close {
 	background-image: url(images/icon_close.svg);
+	cursor: pointer;
 }
 
 
