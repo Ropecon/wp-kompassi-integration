@@ -5,6 +5,7 @@
 	--kompassi-program-border: rgba(0,0,0,0.2);
 	--kompassi-program-padding: 1em;
 	--kompassi-program-color-default: #164b7f;
+	--kompassi-program-icon-default: url(images/kompassi.svg);
 	--kompassi-program-timeline-bg: #ddd;
  	--kompassi-program-timeline-row-height: 2em;
 	--kompassi-program-timeline-ruler: rgba(0,0,0,0.2);
@@ -415,7 +416,7 @@ div.kompassi-filter-note {
 	font-weight: bold;
 }
 #kompassi_schedule article::before {
-	background-image: url(images/kompassi.svg);
+	background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
 	background-size: auto calc( 100% - 3em );
 	background-position: 1.5em 50%;
 	background-repeat: no-repeat;
