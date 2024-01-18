@@ -157,6 +157,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		/*  TODO: For now, output dimensions JSON with a script tag right here... */
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $this->data['dimensions'] ) . '</script>';
+		$out .= '<script>kompassi_schedule_programs = ' . json_encode( $this->data['programs'] ) . '</script>';
 
 		/*
 		 *  Program colors
@@ -168,8 +169,16 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '<style>';
 		foreach( $this->data['dimensions'] as $dimension_slug => $dimension ) {
 			foreach( $dimension['values'] as $value_slug => $value ) {
-				if( isset( $value['color'] ) ) {
-					$out .= '#kompassi_schedule article[data-' . $dimension_slug . '="' .  $value_slug . '"] { --kompassi-program-color: ' . $value['color'] . '; }';
+				if( isset( $value['color'] ) || isset( $value['icon'] ) ) {
+					$out .= ' #kompassi_schedule article[data-' . $dimension_slug . '="' .  $value_slug . '"] {';
+					if( isset( $value['color'] ) ) {
+						$out .= '  --kompassi-program-color: ' . $value['color'] . '; ';
+					}
+					if( isset( $value['icon'] ) ) {
+						$icon = plugins_url( 'data/icons/' . $value['icon'] . '.svg', __FILE__ );
+						$out .= '  --kompassi-program-icon: url(' . $icon . '); ';
+					}
+					$out .= ' }';
 				}
 			}
 		}
@@ -186,6 +195,7 @@ class WP_Plugin_Kompassi_Integration {
 
 	function markup_program( $program, $dimensions ) {
 		ob_start( );
+		// TODO: Maybe start and end timestamps shouldn't be in the DOM...
 		$attrs = array(
 			'id' => $program['identifier'],
 			'length' => $program['length'],

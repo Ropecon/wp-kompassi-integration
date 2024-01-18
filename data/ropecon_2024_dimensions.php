@@ -11,7 +11,7 @@ function ropecon_2024_dimensions( ) {
 			'display_name' => 'Toimintamuoto',
 			'values' => array(
 				'performance' => array( 'display_name' => 'Esitys', 'color' => 'rgba(116, 27, 71, 1)' ),
-				'experience' => array( 'display_name' => 'Kokemus', 'color' => 'rgba(244, 227, 0, 1)' ),
+				'experience' => array( 'display_name' => 'Kokemus', 'color' => 'rgba(244, 227, 0, 1)', 'icon' => 'experience' ),
 				'meetup' => array( 'display_name' => 'Miitti', 'color' => 'rgba(144, 228, 93, 1)' ),
 				'gaming' => array( 'display_name' => 'Pelaaminen', 'color' => 'rgba(235, 152, 0, 1)' ),
 				'talk' => array( 'display_name' => 'Puheohjelma', 'color' => 'rgba(62, 40, 171, 1)' ),
@@ -24,18 +24,18 @@ function ropecon_2024_dimensions( ) {
 		'subject' => array(
 			'display_name' => 'Aihepiiri',
 			'values' => array(
-				'figures' => array( 'display_name' => 'Figuurit', 'color' => 'rgba(64, 224, 208, 1)' ),
-				'boardgames' => array( 'display_name' => 'Lautapelit' ),
-				'cardgames' => array( 'display_name' => 'Korttipelit' ),
+				'figures' => array( 'display_name' => 'Figuurit', 'color' => 'rgba(64, 224, 208, 1)', 'icon' => 'figures' ),
+				'boardgames' => array( 'display_name' => 'Lautapelit', 'icon' => 'boardgames' ),
+				'cardgames' => array( 'display_name' => 'Korttipelit', 'icon' => 'cardgames' ),
 				'crafts' => array( 'display_name' => 'Käsityö' ),
 				'dance' => array( 'display_name' => 'Tanssiohjelma' ),
 				'larp' => array( 'display_name' => 'Liveroolipelit', 'color' => 'rgba(11, 125, 9, 1)' ),
 				'music' => array( 'display_name' => 'Musiikki' ),
 				'rpg' => array( 'display_name' => 'Pöytäroolipelit', 'color' => 'rgba(171, 47, 169, 1)' ),
 				'boffer' => array( 'display_name' => 'Boffaus' ),
-        'OTHER' => array( 'display_name' => 'Muu aihepiiri' ),
-			)
-		  ),
+            'OTHER' => array( 'display_name' => 'Muu aihepiiri' ),
+         )
+      ),
 		'participation' => array(
 			'display_name' => 'Osallistumistapa',
 			'values' => array(
@@ -45,7 +45,7 @@ function ropecon_2024_dimensions( ) {
 				'presentation' => array( 'display_name' => 'Esitelmä' ),
 				'discussion' => array( 'display_name' => 'Keskustelu' ),
 				'panel' => array( 'display_name' => 'Paneeli' ),
-        'OTHER' => array( 'display_name' => 'Muu osallistumistapa' ),
+            'OTHER' => array( 'display_name' => 'Muu osallistumistapa' ),
 			)
 		),
     // 'space' => array(
@@ -102,8 +102,8 @@ function ropecon2023_to_2024_dimensions( $prog ) {
 	switch( $prog['category_title'] ) {
 		case 'Esitysohjelma / Performance programme':
 			$dimensions['mode'][] = 'performance';
-			$dimensions['subject'][] = 'ANY';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['subject'][] = 'OTHER';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Figupelit: avoin pelautus / Miniature wargames: Open game':
 			$dimensions['mode'][] = 'gaming';
@@ -117,7 +117,7 @@ function ropecon2023_to_2024_dimensions( $prog ) {
 			break;
 		case 'Kokemuspiste: avoin pelautus / Experience Point: Open game':
 			$dimensions['mode'][] = 'experience';
-			$dimensions['subject'][] = 'ANY';
+			$dimensions['subject'][] = 'OTHER';
 			$dimensions['participation'][] = 'open';
 			break;
 		case 'Kokemuspiste: demotus / Experience Point: Demo game':
@@ -133,12 +133,12 @@ function ropecon2023_to_2024_dimensions( $prog ) {
 		case 'LARP':
 			$dimensions['mode'][] = 'gaming';
 			$dimensions['subject'][] = 'larp';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Miitti / Meetup':
 			$dimensions['mode'][] = 'meetup';
-			$dimensions['subject'][] = 'ANY';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['subject'][] = 'OTHER';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Kokemuspiste: muu / Experience Point: Other':
 			$dimensions['mode'][] = 'experience';
@@ -168,12 +168,12 @@ function ropecon2023_to_2024_dimensions( $prog ) {
 		case 'Roolipeli / Pen & Paper RPG':
 			$dimensions['mode'][] = 'gaming';
 			$dimensions['subject'][] = 'rpg';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Tanssiohjelma / Dance programme':
 			$dimensions['mode'][] = 'sport';
 			$dimensions['subject'][] = 'dance';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Turnaukset: figupelit / Tournament: Miniature wargames':
 			$dimensions['mode'][] = 'gaming';
@@ -198,22 +198,22 @@ function ropecon2023_to_2024_dimensions( $prog ) {
 		case 'Työpaja: figut / Workshop: miniature figurines':
 			$dimensions['mode'][] = 'workshop';
 			$dimensions['subject'][] = 'figures';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Työpaja: käsityö / Workshop: crafts':
 			$dimensions['mode'][] = 'workshop';
 			$dimensions['subject'][] = 'crafts';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Työpaja: musiikki / Workshop: music':
 			$dimensions['mode'][] = 'workshop';
 			$dimensions['subject'][] = 'music';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		case 'Työpaja: muu / Workshop: other':
 			$dimensions['mode'][] = 'workshop';
 			$dimensions['subject'][] = 'OTHER';
-			$dimensions['participation'][] = 'ANY';
+			$dimensions['participation'][] = 'OTHER';
 			break;
 		default:
 			$dimensions['mode'][] = 'OTHER';
