@@ -456,18 +456,13 @@ function kompassi_apply_filters( ) {
 	//  Iterate through each filter
 	jQuery( '#kompassi_schedule_filter .filter' ).each( function( index ) {
 		filter = jQuery( this );
-		console.log( 'filter: ' + filter.attr( 'data-dimension' ) );
 
 		// Dimension filters
 		if( filter.hasClass( 'filter-dimension' ) ) {
 			if( filter.val( ) !== '0' ) {
-				jQuery( '#kompassi_schedule article' ).filter( function( ) {
+				jQuery( '#kompassi_schedule article:visible' ).filter( function( ) {
 					prog_dimension = jQuery( this ).attr( 'data-' + filter.attr( 'data-dimension' ) );
-					if( prog_dimension == 'ANY' && filter.val( ) !== 'OTHER' ) {
-						return false;
-					} else {
-						return prog_dimension !== filter.val( );
-					}
+					return prog_dimension !== filter.val( );
 				} ).addClass( 'filtered' );
 				filter_count += 1;
 			}
@@ -481,26 +476,25 @@ function kompassi_apply_filters( ) {
 		};
 		if( filter.hasClass( 'filter-text' ) ) {
 			if( filter.val( ) !== '' ) {
-				jQuery( '#kompassi_schedule article' ).each( function( index ) {
+				jQuery( '#kompassi_schedule article:visible' ).each( function( index ) {
 					program = jQuery( this );
-					program.attr( 'data-relevance-score', 0 ).removeClass( 'has-text-match' );
+					program_relevance = 0;
 					words = filter.val( ).toLowerCase( ).split( ' ' ); // words to look for
-					jQuery.each( search_targets, function( target, relevance_score ) {
+					jQuery.each( search_targets, function( target, target_relevance_score ) {
 						text = program.find( '.' + target ).first( ).text( ).toLowerCase( );
 						jQuery.each( words, function( ) {
 							if( text.includes( this ) ) {
-								score = parseInt( program.attr( 'data-relevance-score' ) ) + parseInt( relevance_score );
-								program.attr( 'data-relevance-score', score );
-								program.addClass( 'has-text-match' );
-								program.css( 'order', '-' + score ); // Sort text searches by relevance
+								program_relevance += target_relevance_score;
 							}
 						} );
 					} );
+					if( program_relevance > 0 ) {
+						program.css( 'order', '-' + program_relevance ); // Sort text searches by relevance
+					} else {
+						program.addClass( 'filtered' );
+					}
 				} );
-				jQuery( '#kompassi_schedule article:not(.has-text-match)' ).addClass( 'filtered' );
-				if( jQuery( '#kompassi_schedule article.has-text-match' ).length > 0 ) {
-					jQuery( '#kompassi_schedule' ).before( '<div class="kompassi-filter-note not-timeline">' + __( 'Search results are sorted by relevance, not chronologically, when using text search.', 'kompassi-integration' ) + '</div>' );
-				}
+				jQuery( '#kompassi_schedule' ).before( '<div class="kompassi-filter-note not-timeline">' + __( 'Search results are sorted by relevance, not chronologically, when using text search.', 'kompassi-integration' ) + '</div>' );
 				filter_count += 1;
 			}
 		}
