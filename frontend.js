@@ -61,20 +61,12 @@ jQuery( function( e ) {
 	} );
 
 	//  Always start and end with even hours
-	ts = new Date( time_start * 1000 );
-	if( ts.getMinutes( ) !== 0 ) {
-		ts.setMinutes( 0, 0, 0 );
-		time_start = ts.valueOf( ) / 1000;
-	}
-	te = new Date( time_end * 1000 );
-	if( te.getMinutes( ) > 0 ) {
-		te.setHours( te.getHours( ) + 1, 0, 0, 0 );
-		time_end = te.valueOf( ) / 1000;
-	}
-
+	time_start = kompassi_get_start_of_hour( time_start );
+	time_end = kompassi_get_start_of_hour( time_end );
 	time_total = time_end - time_start;
 
 	// Get list of dates
+	ts = new Date( time_start * 1000 );
 	i = ts.setHours( 0 ).valueOf( ) / 1000;
 	while( i < time_end ) {
 		dates[i] = kompassi_get_date_formatted( i, false );
@@ -92,20 +84,24 @@ jQuery( function( e ) {
 	/*  Date filter  */
 	/*  TODO: Now #17  */
 	date_section = jQuery( '<section id="kompassi_schedule_dates" />' );
+	//  TODO: Only show "now" if there is anything to show?
+	now_toggle = jQuery( '<a class="date-toggle no-icon" data-date="now">' + __( 'Now', 'kompassi-integration' ) + '</a>' );
+	date_section.append( now_toggle );
 	jQuery.each( dates, function( timestamp, label ) {
 		timestamp_start = parseInt( timestamp );
 		timestamp_end = timestamp_start + ( 24 * 60 * 60 );
-		date_toggle = jQuery( '<a class="date-toggle no-icon" data-start-timestamp="' + timestamp_start + '" data-end-timestamp="' + timestamp_end + '">' + label + '</a>' );
-		date_toggle.on( 'click', function( ) {
-			if( jQuery( this ).hasClass( 'active' ) ) {
-				jQuery( this ).removeClass( 'active' );
-			} else {
-				date_section.find( '.date-toggle' ).removeClass( 'active' );
-				jQuery( this ).addClass( 'active' );
-			}
-			kompassi_apply_filters( );
-		} );
+		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + timestamp_start + '">' + label + '</a>' );
 		date_section.append( date_toggle );
+	} );
+
+	jQuery( date_section ).on( 'click', '.date-toggle', function( ) {
+		if( jQuery( this ).hasClass( 'active' ) ) {
+			jQuery( this ).removeClass( 'active' );
+		} else {
+			date_section.find( '.date-toggle' ).removeClass( 'active' );
+			jQuery( this ).addClass( 'active' );
+		}
+		kompassi_apply_filters( );
 	} );
 
 	date_section.appendTo( toolbar );
@@ -341,6 +337,7 @@ function kompassi_setup_display( display_type = false ) {
 
 /*
  *  Timeline: Setup layout
+ *  TODO: Is this doable one-time?
  *
  */
 
@@ -359,8 +356,12 @@ function kompassi_setup_timeline_layout( ) {
 		added = false;
 
 		if( date_filtered ) {
+			// TODO: calculate time_total_filtered
 			// time_start_filtered = jQuery( '[name="filter_date"]' ).val( );
-			if( time_start_filtered < time_start ) {
+			date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
+			if( date == 'now' ) {
+				time_total_filtered = 2 * 60 * 60;
+			} else if( time_start_filtered < time_start ) {
 				time_start_filtered = time_start;
 				tsf = new Date( time_start_filtered * 1000 );
 				time_total_filtered = ( 24 - tsf.getHours( ) ) * 60 * 60;
@@ -526,8 +527,21 @@ function kompassi_apply_filters( ) {
 
 	// Date filter
 	if( block.find( '.date-toggle.active' ).length > 0 ) {
-		time_start_filtered = parseInt( block.find( '.date-toggle.active' ).first( ).attr( 'data-start-timestamp' ) );
-		time_end_filtered = parseInt( block.find( '.date-toggle.active' ).first( ).attr( 'data-end-timestamp' ) );
+		// TODO: #17
+		date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
+		if( date == 'now' ) {
+			datetime_obj = new Date( );
+			// This is for debugging purposes...
+			if( url_opts.has( 'now' ) ) {
+				datetime_obj.setTime( kompassi_get_start_of_hour( url_opts.get( 'now' ) ) * 1000 );
+			}
+			time_start_filtered = datetime_obj.getTime( ) / 1000;
+			// TODO: Allow user to select how much program to show?
+			time_end_filtered = time_start_filtered + ( 2 * 60 * 60 );
+		} else {
+			time_start_filtered = parseInt( date );
+			time_end_filtered = time_start_filtered + ( 24 * 60 * 60 );
+		}
 		jQuery( '#kompassi_schedule article' ).each( function( index ) {
 			program = jQuery( this );
 			program_start = parseInt( program.attr( 'data-start-timestamp' ) );
@@ -656,6 +670,12 @@ function kompassi_get_date_formatted( timestamp, weekday = true ) {
 	} else {
 		return datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
 	}
+}
+
+function kompassi_get_start_of_hour( timestamp ) {
+	time = new Date( timestamp * 1000 );
+	time.setMinutes( 0, 0, 0 );
+	return time.valueOf( ) / 1000;
 }
 
 function kompassi_sort_by_group( a, b ) {
