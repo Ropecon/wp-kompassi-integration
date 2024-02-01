@@ -11,6 +11,7 @@ var popover_timeout = '';
 var cookie;
 var filter_count_total = 0;
 var timeline_grouping = 'room_name';
+var url_opts = new URLSearchParams( window.location.search );
 
 jQuery( function( e ) {
 	block = jQuery( '#kompassi_block_schedule' );
@@ -120,6 +121,13 @@ jQuery( function( e ) {
 		kompassi_apply_filters( );
 	} );
 
+	// Toggle favorites from URL options
+	if( url_opts.has( 'favorites' ) ) {
+		if( !jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
+			jQuery( '.favorites-toggle' ).trigger( 'click' );
+		}
+	}
+
 	toggle_filters.on( 'click', function( ) {
 		jQuery( this ).toggleClass( 'active' );
 		jQuery( '#kompassi_schedule_filter' ).toggle( );
@@ -176,7 +184,11 @@ jQuery( function( e ) {
 	jQuery( '<section id="kompassi_event_count" />' ).appendTo( toolbar );
 	kompassi_update_event_count( );
 
- 	/*  Display style section  */
+ 	/*
+ 	 *  Display styles
+ 	 *
+ 	 */
+
 	if( block.attr( 'data-show-display-styles' ) == 'true' ) {
 		styles = {
 			'list': _x( 'List', 'display style', 'kompassi-integration' ),
@@ -191,6 +203,9 @@ jQuery( function( e ) {
 			}
 		} );
 		toolbar.append( ds );
+		if( url_opts.has( 'display' ) && Object.keys( styles ).indexOf( url_opts.get( 'display' ) ) > -1 ) {
+			kompassi_setup_display( url_opts.get( 'display' ) );
+		}
 
 		// Change display type
 		jQuery( '#kompassi_schedule_display' ).on( 'click', 'a', function( ) {
@@ -617,9 +632,9 @@ function kompassi_get_display_type( display_type = '' ) {
 	if( display_type !== '' ) {
 		return display_type;
 	} else {
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'table' ) ) { display_type = 'table'; }
+//		if( jQuery( '#kompassi_schedule' ).hasClass( 'table' ) ) { display_type = 'table'; }
 		if( jQuery( '#kompassi_schedule' ).hasClass( 'list' ) ) { display_type = 'list'; }
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'expanded' ) ) { display_type = 'expanded'; }
+//		if( jQuery( '#kompassi_schedule' ).hasClass( 'expanded' ) ) { display_type = 'expanded'; }
 		if( jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
 	}
 	return display_type;
