@@ -1,159 +1,178 @@
 :root {
-	/* TODO: variable names */
-	--kompassi-program-font: 'Lato', Helvetica, Arial, sans-serif;
-	--kompassi-program-bg: #fff;
-	--kompassi-program-border: rgba(0,0,0,0.2);
-	--kompassi-program-padding: 1em;
-	--kompassi-program-color-default: #164b7f;
-	--kompassi-program-icon-default: url(images/kompassi.svg);
-	--kompassi-program-timeline-bg: #ddd;
- 	--kompassi-program-timeline-row-height: 2em;
-	--kompassi-program-timeline-ruler: rgba(0,0,0,0.2);
-	--kompassi-program-timeline-time: rgba(0,0,0,0.4);
+	/*  Kompassi brand colors  */
+	--kompassi-color-blue-dark: #033245;
+	--kompassi-color-blue-mid: #225f8c;
+	--kompassi-color-blue-light: #4fa8e3;
+	--kompassi-color-blue-bg: #edf8fa;
+	--kompassi-color-red: #ba3b28;
+	--kompassi-color-beige: #eba876;
 
-	--kompassi-program-action-icon-size: 1.4em;
+	/*  Common  */
+	--kompassi-box-shadow: 0 0 0.2em rgba(0,0,0,0.2);
+	--kompassi-box-shadow-hover: 0 0 0.2em rgba(0,0,0,0.4);
+	--kompassi-border-radius: 3px;
+
+	/*  Schedule  */
+	--kompassi-schedule-font: 'Lato', Helvetica, Arial, sans-serif;
+	/*  Timeline */
+	--kompassi-schedule-timeline-bg: #fff;
+	--kompassi-schedule-timeline-row-padding: 0.2em;
+	--kompassi-schedule-timeline-group-bg: var(--kompassi-color-blue-bg);
+	--kompassi-schedule-timeline-group-fg: #222;
+	--kompassi-schedule-timeline-row-height: 2em;
+	--kompassi-schedule-timeline-ruler: rgba(0,0,0,0.1);
+	--kompassi-schedule-timeline-time: rgba(0,0,0,0.4);
+
+	/*  Program guide  */
+	/* TODO: variable names? */
+	--kompassi-program-bg: #fff;
+	--kompassi-program-padding: 1em;
+	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
+	--kompassi-program-icon-default: url(images/kompassi.svg);
+
 	--kompassi-program-line-height: 1.4em;
 
-	--kompassi-toolbar-button-fg: #222;
-	--kompassi-toolbar-button-bg: #dadada linear-gradient(to bottom, #fafafa, transparent);
-	--kompassi-toolbar-button-bg-active: #fff;
-	--kompassi-button-border: rgba(0,0,0,0.2);
-	--kompassi-toolbar-button-padding: 0.6em;
-	--kompassi-toolbar-button-radius: 0.3em;
-	--kompassi-toolbar-icon-size: 21px;
+	/* Button groups */
+	--kompassi-button-fg: #222;
+	--kompassi-button-bg: #fff;
+	--kompassi-button-fg-active: #fff;
+	--kompassi-button-bg-active: var(--kompassi-color-blue-mid);
+	--kompassi-button-separator: rgba(0,0,0,0.1);
+	--kompassi-button-padding: 0.6em;
+	--kompassi-button-radius: 0.3em;
+	--kompassi-button-indicator-color: rgba(200,0,0,1);
+	--kompassi-button-icon-size: 21px;
+	/* ? */
+	--kompassi-button-bg-filters: #648fb5;
 
-	--kompassi-toolbar-button-bg-filters: #648fb5;
 
-	--kompassi-program-indicator-color: rgba(200,0,0,1);
-
-	/*  Modal  */
+	/*  Modals  */
 	--kompassi-modal-max-width: 1000px;
-	--kompassi-modal-bg: #f7f7f7;
+	--kompassi-modal-bg: #eee;
+
+	/*  Popovers  */
+	--kompassi-popover-bg: #fff;
 }
 
-#kompassi_block_schedule.wp-block-kompassi-integration-schedule {
+#kompassi_block_schedule.wp-block-kompassi-integration-schedule,
+#kompassi_modal {
 	container-name: kompassi-integration;
 	container-type: inline-size;
 }
 
 #kompassi_block_schedule,
 .kompassi_block_schedule {
-	font-family: var(--kompassi-program-font);
+	font-family: var(--kompassi-schedule-font);
 	line-height: var(--kompassi-program-line-height);
 }
 
 /*
- *  Toolbar
+ *  Button groups
  *
  */
 
 #kompassi_schedule_toolbar {
 	position: relative;
 }
-	#kompassi_schedule_toolbar section {
+	.kompassi-button-group {
 		display: block;
 	}
-		#kompassi_schedule_toolbar section a {
+		.kompassi-button-group a {
+			cursor: pointer;
 			position: relative;
 			display: inline-block;
-			color: var(--kompassi-toolbar-button-fg);
-			padding: var(--kompassi-toolbar-button-padding);
-			background: var(--kompassi-toolbar-button-bg);
-			border: 1px solid var(--kompassi-button-border);
-			border-radius: var(--kompassi-toolbar-button-radius);
-			margin-right: var(--kompassi-toolbar-button-padding);
-			margin-bottom: var(--kompassi-toolbar-button-padding);
+			color: var(--kompassi-button-fg);
+			padding: var(--kompassi-button-padding);
+			background: var(--kompassi-button-bg);
+			border-radius: var(--kompassi-button-radius);
+			margin-right: var(--kompassi-button-padding);
+			margin-bottom: var(--kompassi-button-padding);
+			box-shadow: var(--kompassi-box-shadow);
 		}
-			#kompassi_schedule_toolbar section a.active {
-				background: var(--kompassi-toolbar-button-bg-active);
+			.kompassi-button-group.has-icon-and-label a {
+				padding-left: calc( ( var(--kompassi-button-padding) * 2 ) + var(--kompassi-button-icon-size) );
 			}
-			#kompassi_schedule_toolbar section a .indicator:not(:empty) {
+				.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) a::before {
+					content: '';
+					display: inline-block;
+					position: absolute;
+					top: var(--kompassi-button-padding);
+					left: var(--kompassi-button-padding);
+					width: var(--kompassi-button-icon-size);
+					height: var(--kompassi-button-icon-size);
+					background-repeat: no-repeat;
+					background-position: 50% 50%;
+					background-size: contain;
+					opacity: 0.5;
+				}
+				.kompassi-button-group.has-icon-only a {
+					width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+					height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+				}
+
+			.kompassi-button-group a.active {
+				color: var(--kompassi-button-fg-active);
+				background: var(--kompassi-button-bg-active);
+			}
+			.kompassi-button-group .indicator:not(:empty) {
 				display: inline-block;
-				margin-left: var(--kompassi-toolbar-button-padding);
+				margin-left: var(--kompassi-button-padding);
 				width: var(--kompassi-program-line-height);
 				height: var(--kompassi-program-line-height);
-				background-color: var(--kompassi-program-indicator-color);
+				background-color: var(--kompassi-button-indicator-color);
 				text-align: center;
 				color: #fff;
 				border-radius: 9999px;
 			}
 
+/*  Icons  */
 
-/*  Toolbar icons  */
+.kompassi-icon-list::before { background-image: url(images/icon_list.svg); }
+.kompassi-icon-timeline::before { background-image: url(images/icon_timeline.svg); }
+.kompassi-icon-filter::before { background-image: url(images/icon_filter.svg); }
+.kompassi-icon-favorite::before { background-image: url(images/icon_favorite.svg); }
+.kompassi-icon-favorite.active::before,
+.is-favorite .kompassi-icon-favorite::before { background-image: url(images/icon_is_favorite.svg); }
+.kompassi-icon-close::before { background-image: url(images/icon_close.svg); }
 
-#kompassi_schedule_toolbar section a:not(.no-icon) {
-	padding-left: calc( ( var(--kompassi-toolbar-button-padding) * 2 ) + var(--kompassi-toolbar-icon-size) );
-}
+/*  Active button style is dark by defautl, make sure the icons are visible  */
+[class*="kompassi-icon"].active:not(.kompassi-icon-favorite)::before { filter: invert(); }
+[class*="kompassi-icon"].active::before { opacity: 1 !important; }
 
-#kompassi_schedule_toolbar section a:not(.no-icon)::before {
-	content: '';
-	display: block;
-	position: absolute;
-	top: 0;
-	left: var(--kompassi-toolbar-button-padding);
-	width: var(--kompassi-toolbar-icon-size);
-	height: 100%;
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
-	background-size: contain;
-	opacity: 0.5;
-}
-	#kompassi_schedule_toolbar a.table::before { background-image: url(images/icon_table.svg); }
-	#kompassi_schedule_toolbar a.list::before { background-image: url(images/icon_list.svg); }
-	#kompassi_schedule_toolbar a.expanded::before { background-image: url(images/icon_expanded.svg); }
-	#kompassi_schedule_toolbar a.timeline::before { background-image: url(images/icon_timeline.svg); }
-	#kompassi_schedule_toolbar a.filters-toggle::before { background-image: url(images/icon_filter.svg); }
-	#kompassi_schedule_toolbar a.favorites-toggle::before { background-image: url(images/icon_favorite.svg); }
-	#kompassi_schedule_toolbar a.favorites-toggle.active::before { background-image: url(images/icon_is_favorite.svg); opacity: 1; }
+
+/* */
 
 @container kompassi-integration (min-width: 0px) {
 	#kompassi_schedule_toolbar section {
 		display: inline-block;
-		margin-right: var(--kompassi-toolbar-button-padding);
-		margin-bottom: var(--kompassi-toolbar-button-padding);
 	}
-		#kompassi_schedule_toolbar section a {
+	.kompassi-button-group {
+		margin-right: var(--kompassi-button-padding);
+		margin-bottom: var(--kompassi-button-padding);
+	}
+		.kompassi-button-group a {
 			border-radius: 0;
 			margin-right: 0;
 			margin-bottom: 0;
-			cursor: pointer;
 		}
-			#kompassi_schedule_toolbar section a:not(:last-child) {
-				border-right: 1px solid rgba(255,255,255,0.2);
+			.kompassi-button-group a:not(:last-child) {
+				border-right: 1px solid var(--kompassi-button-separator);
 			}
-			#kompassi_schedule_toolbar section a:first-child {
-				border-bottom-left-radius: var(--kompassi-toolbar-button-radius);
-				border-top-left-radius: var(--kompassi-toolbar-button-radius);
+			.kompassi-button-group a:first-child {
+				border-bottom-left-radius: var(--kompassi-button-radius);
+				border-top-left-radius: var(--kompassi-button-radius);
 			}
-			#kompassi_schedule_toolbar section a:last-child {
-				border-top-right-radius: var(--kompassi-toolbar-button-radius);
-				border-bottom-right-radius: var(--kompassi-toolbar-button-radius);
+			.kompassi-button-group a:last-child {
+				border-top-right-radius: var(--kompassi-button-radius);
+				border-bottom-right-radius: var(--kompassi-button-radius);
 			}
 }
 
 @container kompassi-integration (min-width: 900px) {
-	#kompassi_schedule_toolbar section#kompassi_schedule_display {
+	#kompassi_schedule_toolbar #kompassi_schedule_display {
 		position: absolute;
 		right: 0;
 		margin-right: 0;
-	}
-}
-
-/*
- *  Display Styles
- *
- */
-
-@container kompassi-integration (max-width: 600px) {
-	#kompassi_schedule_display a {
-		display: block;
-		height: 100%;
-		width: calc( var(--kompassi-toolbar-button-padding) * 2 + var(--kompassi-toolbar-icon-size) );
-		padding-left: calc( var(--kompassi-toolbar-button-padding) ) !important;
-		padding-right: calc( var(--kompassi-toolbar-button-padding) ) !important;
-	}
-	#kompassi_schedule_display a span {
-		display: none;
 	}
 }
 
@@ -162,29 +181,13 @@
  *
  */
 
-#kompassi_schedule_toolbar a.filters-toggle.active {
-}
-	#kompassi_schedule_toolbar a.filters-toggle.active::after {
-		content: '';
-		transform: rotate(45deg);
-		display: block;
-
-		position: absolute;
-		z-index: -1;
-		bottom: -2em;
-		left: calc( 50% - 0.75em );
-		height: 1.5em;
-		width: 1.5em;
-		background-color: var(--kompassi-toolbar-bg-filters);
-	}
-
 #kompassi_schedule_filter {
 	display: none;
 	margin-bottom: 1em;
 	background-color: #fff;
-	padding: var(--kompassi-toolbar-button-padding);
-	border-radius: var(--kompassi-toolbar-button-radius);
-	border: 1px solid var(--kompassi-button-border);
+	padding: var(--kompassi-button-padding);
+	border-radius: var(--kompassi-button-radius);
+	box-shadow: var(--kompassi-box-shadow);
 }
 	#kompassi_schedule_filter > * {
 		display: inline-block;
@@ -215,11 +218,12 @@
  *
  */
 
-#kompassi_modal .actions > *,
+/*#kompassi_modal .actions > *, */
 #kompassi_schedule article .actions > * {
-	width: var(--kompassi-program-action-icon-size);
-	height: var(--kompassi-program-action-icon-size);
-	background-position: 0 0;
+	display: inline-block;
+	width: var(--kompassi-program-line-height);
+	height: var(--kompassi-program-line-height);
+	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	background-size: contain;
 
@@ -229,21 +233,13 @@
 	margin: 0;
 }
 
-#kompassi_modal .favorite,
 #kompassi_schedule article .favorite {
 	background-image: url(images/icon_favorite.svg);
 	cursor: pointer;
 }
-	#kompassi_modal.is-favorite .favorite,
 	#kompassi_schedule article.is-favorite .favorite {
 		background-image: url(images/icon_is_favorite.svg);
 	}
-
-#kompassi_modal .close {
-	background-image: url(images/icon_close.svg);
-	cursor: pointer;
-}
-
 
 /*
  *  Modals
@@ -251,8 +247,6 @@
  */
 
 #kompassi_modal {
-	--kompassi-program-action-icon-size: 1.5em;
-
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
@@ -262,26 +256,42 @@
 	z-index: 100000;
 
 	background-color: #f7f7f7;
-	box-shadow: 1em 1em 2em rgba(0,0,0,0.2);
+	box-shadow: var(--kompassi-box-shadow);
+	border-radius: var(--kompassi-border-radius);
 
 	overflow: hidden;
 	line-height: var(--kompassi-program-line-height);
 }
-	#kompassi_modal > * {
-		display: block;
-		padding: 2em;
+
+#kompassi_modal {
+	--kompassi-button-bg: #fafafa;
+	display: flex;
+	flex-direction: column;
+}
+	#kompassi_modal .header {
+		flex: 0 0 min-content;
+		padding: 1.5em;
+		background-color: #fff;
 	}
-		#kompassi_modal .modal_header {
-			position: absolute;
-			background-color: #fff;
-			border-bottom: 1px solid var(--kompassi-program-border);
+		#kompassi_modal .header .title {
+			font-size: 150%;
+			line-height: var(--kompassi-program-line-height);
 		}
-			#kompassi_modal .title {
-				font-size: 150%;
-				line-height: var(--kompassi-program-line-height);
+		#kompassi_modal .header .actions {
+			--kompassi-button-padding: 0.35em;
+			margin-right: 0;
+			margin-bottom: 0;
+			line-height: 0;
+		}
+			#kompassi_modal .header .actions a::before {
+				opacity: 1;
 			}
-		#kompassi_modal .description {
-			overflow: scroll;
+
+		#kompassi_modal .content {
+			display: flex;
+			flex-direction: column;
+			flex: auto;
+			overflow-y: auto;
 			background:
 				/* Shadow covers */
 				linear-gradient(var(--kompassi-modal-bg) 30%, rgba(255,255,255,0)),
@@ -298,17 +308,57 @@
 			/* Opera doesn't support this in the shorthand */
 			background-attachment: local, local, scroll, scroll;
 		}
+			#kompassi_modal .content .main,
+			#kompassi_modal .content .meta {
+				padding: 1.5em;
+			}
+				#kompassi_modal .content .main {
+					flex: auto;
+					display: flex;
+					flex-direction: column;
+				}
+					#kompassi_modal .content .main .short_blurb:not(:empty) {
+						order: -2;
+						font-style: oblique;
+						font-weight: bold;
+						letter-spacing: 0.015em;
+						margin-bottom: 1em;
+					}
+					#kompassi_modal .content .main .description {
+						order: -1;
+						margin-bottom: 1em;
+					}
+				#kompassi_modal .content .meta {
+					flex: 0 0 min-content;
+					background-color: #fff;
+				}
+					#kompassi_modal .meta .times .length::before { content: '('; }
+					#kompassi_modal .meta .times .length::after { content: ')'; }
+					#kompassi_modal .meta .dimensions {
+						margin-top: 0.5em;
+					}
 
-		#kompassi_modal .modal_footer {
-			position: absolute;
-			background-color: #fff;
-			border-top: 1px solid var(--kompassi-program-border);
-		}
+				/* TODO: These definitions are common? */
+				#kompassi_modal .dimension:empty {
+					display: none;
+				}
+				#kompassi_modal .dimension {
+					display: inline;
+				}
+					#kompassi_modal .dimension .value {
+						display: inline-block;
+						max-width: 100%;
+						padding: 0.2em 0.6em;
+						margin-bottom: 0.3em;
+						background-color: var(--dimension-bg-color, #222);
+						color: var(--dimension-fg-color, #fff);
+						border-radius: 9999px;
+						overflow-wrap: break-word;
+						line-height: 1.2em;
+					}
 
 @media screen and (min-width:900px) {
 	#kompassi_modal {
-		--kompassi-program-action-icon-size: 2em;
-
 		width: auto;
 		height: calc( 100vh - 7em );
 		max-width: var(--kompassi-modal-max-width);
@@ -317,27 +367,12 @@
 		top: 3.5em;
 		bottom: 3.5em;
 	}
-		#kompassi_modal .modal_header {
+		#kompassi_modal .header {
 			display: grid;
 			grid-template-columns: auto max-content;
-			grid-template-areas: 'title actions'
-				'room_name actions'
-				'times actions';
+			grid-template-areas: 'title actions';
 		}
 }
-
-/*  Dimensions in modals  */
-#kompassi_modal .dimension {
-	display: inline;
-	padding: 0.2em 0;
-}
-#kompassi_modal .dimension .value {
-	padding: 0.2em 0.6em;
-	background-color: #222;
-	color: #fff;
-	border-radius: 9999px;
-}
-
 
 #kompassi_modal_bg {
 	position: fixed;
@@ -360,8 +395,9 @@
 
 	padding: 0.5em;
 
-	background-color: var(--kompassi-program-bg);
-	box-shadow: 0 0 1em rgba(0,0,0,0.2);
+	background-color: var(--kompassi-popover-bg);
+	box-shadow: var(--kompassi-box-shadow);
+	border-radius: var(--kompassi-border-radius);
 }
 	#kompassi_program_popover .title {
 		font-weight: bold;
@@ -372,6 +408,9 @@
 		color: rgba(0,0,0,0.6);
 		letter-spacing: 0.015em;
 	}
+	#kompassi_program_popover .times .length::before { content: '('; }
+	#kompassi_program_popover .times .length::after { content: ')'; }
+
 
 /*
  *  Filter note
@@ -414,6 +453,12 @@ div.kompassi-filter-note {
 /*  Default/common styles  */
 #kompassi_schedule article .title {
 	font-weight: bold;
+	letter-spacing: 0.04em;
+}
+#kompassi_schedule article .times .length {
+	font-size: max(80%, 8pt);
+	color: rgba(0,0,0,0.5);
+	margin-left: 0.4em;
 }
 #kompassi_schedule article::before {
 	background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
@@ -435,9 +480,8 @@ div.kompassi-filter-note {
 
 /*  List  */
 #kompassi_schedule.list {
-	--kompassi-program-action-icon-size: 1.8em;
-	--kompassi-program-list-padding: 0.6em;
-	--kompassi-program-list-visual-width: 5.5em;
+	--kompassi-program-list-padding: 0.3em;
+	--kompassi-program-list-visual-width: 12px;
 
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
@@ -446,13 +490,12 @@ div.kompassi-filter-note {
 	#kompassi_schedule.list article {
 		position: relative;
 		display: grid;
-		grid-template-columns: 50% auto auto;
-		grid-template-areas:
-			"title title actions"
-			"times room_name room_name";
+		grid-template-columns: 1fr min-content;
+		grid-template-areas: "title actions" "times actions" "room_name actions";
 		background-color: var(--kompassi-program-bg);
-		border: 1px solid var(--kompassi-program-border);
-		padding-left: calc( var(--kompassi-program-list-visual-width) + 0.5em );
+		padding-left: calc( var(--kompassi-program-list-visual-width) + 0.25em );
+		box-shadow: var(--kompassi-box-shadow);
+		border-radius: var(--kompassi-border-radius);
 	}
 		#kompassi_schedule.list article :is(.title,.room_name,.times,.actions) {
 			display: block;
@@ -466,12 +509,6 @@ div.kompassi-filter-note {
 		#kompassi_schedule.list article .room_name {
 			margin-top: 0;
 		}
-		#kompassi_schedule.list article .room_name {
-			text-align: right;
-		}
-		#kompassi_schedule.list article .actions {
-			text-align: right;
-		}
 		#kompassi_schedule.list article::before {
 			content: '';
 			position: absolute;
@@ -480,21 +517,43 @@ div.kompassi-filter-note {
 			top: 0;
 			bottom: 0;
 			background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
-			background-size: auto calc( 100% - 2em );
+			background-size: calc( 100% - 2.5em ) auto;
+			background-position: 50% 50%;
+			border-top-left-radius: var(--kompassi-border-radius);
+			border-bottom-left-radius: var(--kompassi-border-radius);
 		}
+
+/*  Show icon  */
+@media screen and (min-width:600px) {
+	#kompassi_schedule.list {
+		--kompassi-program-list-padding: 0.6em;
+		--kompassi-program-list-visual-width: 5.5em;
+	}
+	#kompassi_schedule.list article {
+		padding-left: calc( var(--kompassi-program-list-visual-width) + 0.5em );
+		grid-template-columns: 50% auto auto;
+		grid-template-areas:
+			"title title actions"
+			"times room_name room_name";
+	}
+		#kompassi_schedule.list article :is(.actions,.room_name) {
+			text-align: right;
+		}
+}
 
 /*  Timeline  */
 #kompassi_schedule.timeline {
 	position: relative;
-	border: 1px solid var(--kompassi-program-border);
-	background-color: var(--kompassi-program-timeline-bg);
+	background-color: var(--kompassi-schedule-timeline-bg);
 	overflow: hidden;
-	padding-top: var(--kompassi-program-timeline-row-height);
+	padding-top: calc( var(--kompassi-schedule-timeline-row-height) + var(--kompassi-schedule-timeline-row-padding ) );
+	box-shadow: var(--kompassi-box-shadow);
+	border-radius: var(--kompassi-border-radius);
 }
 	#kompassi_schedule.timeline .day_hint {
 		position: absolute;
-		border-left: 1px solid var(--kompassi-program-timeline-ruler);
-		height: var(--kompassi-program-timeline-row-height);
+		border-left: 1px solid var(--kompassi-schedule-timeline-ruler);
+		height: var(--kompassi-schedule-timeline-row-height);
 		padding: 3px;
 	}
 		#kompassi_schedule.timeline .day_hint:first-of-type {
@@ -504,56 +563,55 @@ div.kompassi-filter-note {
 	#kompassi_schedule.timeline .ruler {
 		width: auto;
 		height: 100%;
-		border-top: 1px solid var(--kompassi-program-timeline-ruler);
-		border-left: 1px solid var(--kompassi-program-timeline-ruler);
+		border-top: 1px solid var(--kompassi-schedule-timeline-ruler);
+		border-left: 1px solid var(--kompassi-schedule-timeline-ruler);
 		padding: 3px;
-		color: var(--kompassi-program-timeline-time);
+		color: var(--kompassi-schedule-timeline-time);
 		position: absolute;
 		top: 0;
 		bottom: 0;
 	}
 		#kompassi_schedule.timeline .ruler:first-of-type {
-			border-left: 1px solid transparent;
+			border-left-color: transparent;
 		}
-	#kompassi_schedule.timeline .group-name {
-		display: block;
-		padding: 0.2em;
-		background-color: #fff;
-		border-top: 1px solid var(--kompassi-program-border);
+	#kompassi_schedule.timeline :is(.group-name,article) {
+		padding: var(--kompassi-schedule-timeline-row-padding);
+		height: calc( var(--kompassi-schedule-timeline-row-height) - 3px );
 		position: absolute;
-		left: 1px;
-		right: 1px;
-		z-index: 3;
-		height: calc( var(--kompassi-program-timeline-row-height) - 3px );
 	}
-
-	#kompassi_schedule.timeline article {
-		order: 1 !important;
-		display: inline-block;
-		padding: 0.2em;
-		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
-		background-image: linear-gradient(to bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.15));
-		color: #fff;
-		height: calc( var(--kompassi-program-timeline-row-height) - 3px );
-
-		position: absolute;
-		z-index: 1;
-		white-space: nowrap;
-		overflow: hidden;
-	}
-
-		#kompassi_schedule.timeline article .actions {
-			display: none;
-		}
-
-		#kompassi_schedule.timeline article:hover {
-			margin-top: -2px;
-			box-shadow: 0 0 1em rgba(0,0,0,0.2);
-			text-shadow: 0.05em 0.05em 0.1em rgba(0,0,0,0.8);
-			filter: brightness(1.25);
-			min-width: min-content !important;
-			z-index: 2000;
-		}
-		#kompassi_schedule.timeline article :is(.title) {
+		#kompassi_schedule.timeline .group-name {
 			display: block;
+			background-color: var(--kompassi-schedule-timeline-group-bg);
+			color: var(--kompassi-schedule-timeline-group-fg);
+			border-radius: var(--kompassi-border-radius);
+			position: absolute;
+			left: 3px;
+			right: 3px;
+			z-index: 3;
 		}
+		#kompassi_schedule.timeline article {
+			order: 1 !important;
+			display: inline-block;
+			background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
+			background-image: linear-gradient(to bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.15));
+			color: #fff;
+
+			z-index: 1;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+			#kompassi_schedule.timeline article .actions {
+				display: none;
+			}
+
+			#kompassi_schedule.timeline article:hover {
+				margin-top: -2px;
+				box-shadow: 0 0 1em rgba(0,0,0,0.2);
+				text-shadow: 0.05em 0.05em 0.1em rgba(0,0,0,0.8);
+				filter: brightness(1.25);
+				min-width: min-content !important;
+				z-index: 2000;
+			}
+			#kompassi_schedule.timeline article :is(.title) {
+				display: block;
+			}

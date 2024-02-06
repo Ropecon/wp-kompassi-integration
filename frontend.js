@@ -2,9 +2,6 @@ __ = wp.i18n.__;
 _x = wp.i18n._x;
 _n = wp.i18n._n;
 var display_type = '';
-var time_start = 0;
-var time_end = 0;
-var time_total = 0;
 var dates = {};
 var date_filtered = false;
 var popover_timeout = '';
@@ -13,8 +10,16 @@ var filter_count_total = 0;
 var timeline_grouping = 'room_name';
 var url_opts = new URLSearchParams( window.location.search );
 
+var kompassi_event = {};
+var kompassi_filters = {};
+
 jQuery( function( e ) {
 	block = jQuery( '#kompassi_block_schedule' );
+
+	/*
+	 *
+	 */
+
 
 	/*
 	 *  Set up cookie for user preferences, including favorites
@@ -33,13 +38,13 @@ jQuery( function( e ) {
 	}
 
 	/*
-	 *  Add actions markup for items
+	 *  Additional markup for items
 	 *
 	 */
 
 	jQuery( '#kompassi_schedule article' ).each( function( ) {
 		actions = jQuery( '<div class="actions" style="grid-area: actions;" />' );
-		actions.append( '<button class="favorite" />' );
+		actions.append( '<a class="favorite kompassi-icon-favorite" />' );
 		jQuery( this ).find( '.description' ).before( actions );
 	} );
 
@@ -51,26 +56,24 @@ jQuery( function( e ) {
 	 *
 	 */
 
+	kompassi_event.start = new Date( parseInt( jQuery( '#kompassi_schedule article' ).first( ).attr( 'data-start' ) ) * 1000 );
+	kompassi_event.end = new Date( kompassi_event.start );
 	jQuery( '#kompassi_schedule article' ).each( function( ) {
-		if( time_start == 0 ) {
-			time_start = jQuery( this ).attr( 'data-start-timestamp' );
-		}
-		if( time_end < jQuery( this ).attr( 'data-end-timestamp' ) ) {
-			time_end = jQuery( this ).attr( 'data-end-timestamp' );
+		if( kompassi_event.end / 1000 < jQuery( this ).attr( 'data-end' ) ) {
+			kompassi_event.end.setTime( parseInt( jQuery( this ).attr( 'data-end' ) * 1000 ) );
 		}
 	} );
 
 	//  Always start and end with even hours
-	time_start = kompassi_get_start_of_hour( time_start );
-	time_end = kompassi_get_start_of_hour( time_end );
-	time_total = time_end - time_start;
+	kompassi_event.start.setMinutes( 0, 0, 0 );
+	kompassi_event.end.setMinutes( 0, 0, 0 );
 
 	// Get list of dates
-	ts = new Date( time_start * 1000 );
-	i = ts.setHours( 0 ).valueOf( ) / 1000;
-	while( i < time_end ) {
-		dates[i] = kompassi_get_date_formatted( i, false );
-		i += 24 * 60 * 60;
+	dates_start = new Date( kompassi_event.start );
+	i = dates_start.setHours( 0 ).valueOf( );
+	while( i < kompassi_event.end ) {
+		dates[i] = kompassi_get_date_formatted( i / 1000, false );
+		i += 24 * 60 * 60 * 1000;
 	}
 
 	/*
@@ -83,14 +86,12 @@ jQuery( function( e ) {
 
 	/*  Date filter  */
 	/*  TODO: Now #17  */
-	date_section = jQuery( '<section id="kompassi_schedule_dates" />' );
+	date_section = jQuery( '<section id="kompassi_schedule_dates"  class="kompassi-button-group" />' );
 	//  TODO: Only show "now" if there is anything to show?
-	now_toggle = jQuery( '<a class="date-toggle no-icon" data-date="now">' + __( 'Now', 'kompassi-integration' ) + '</a>' );
-	date_section.append( now_toggle );
+	date_now_toggle = jQuery( '<a class="date-toggle no-icon" data-date="now">' + __( 'Now', 'kompassi-integration' ) + '</a>' );
+	date_section.append( date_now_toggle );
 	jQuery.each( dates, function( timestamp, label ) {
-		timestamp_start = parseInt( timestamp );
-		timestamp_end = timestamp_start + ( 24 * 60 * 60 );
-		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + timestamp_start + '">' + label + '</a>' );
+		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + timestamp + '">' + label + '</a>' );
 		date_section.append( date_toggle );
 	} );
 
@@ -107,9 +108,9 @@ jQuery( function( e ) {
 	date_section.appendTo( toolbar );
 
 	/*  Filter section  */
-	filters_section = jQuery( '<section id="kompassi_schedule_filters" />' );
-	toggle_favorites = jQuery( '<a class="favorites-toggle">' + __( 'Favorites', 'kompassi-integration' ) + '</a>' ).appendTo( filters_section );
-	toggle_filters = jQuery( '<a class="filters-toggle">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="indicator"></span></a>' ).appendTo( filters_section );
+	filters_section = jQuery( '<section id="kompassi_schedule_filters" class="kompassi-button-group has-icon-and-label" />' );
+	toggle_favorites = jQuery( '<a class="favorites-toggle kompassi-icon-favorite">' + __( 'Favorites', 'kompassi-integration' ) + '</a>' ).appendTo( filters_section );
+	toggle_filters = jQuery( '<a class="filters-toggle kompassi-icon-filter">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="indicator"></span></a>' ).appendTo( filters_section );
 	filters_section.appendTo( toolbar );
 
 	toggle_favorites.on( 'click', function( ) {
@@ -190,11 +191,11 @@ jQuery( function( e ) {
 			'list': _x( 'List', 'display style', 'kompassi-integration' ),
 			'timeline': _x( 'Timeline', 'display style', 'kompassi-integration' )
 		};
-		ds = jQuery( '<section id="kompassi_schedule_display" />' );
+		ds = jQuery( '<section id="kompassi_schedule_display" class="kompassi-button-group has-icon-and-label" />' );
 		jQuery.each( styles, function( style, label ) {
-			link = jQuery( '<a class="' + style + '">&nbsp;<span>' + label + '</span></a>' );
+			link = jQuery( '<a class="kompassi-icon-' + style + '" data-display="' + style + '">' + label + '</a>' );
 			ds.append( link );
-			if( jQuery( '#kompassi_schedule' ).hasClass( style ) ) {
+			if( jQuery( '#kompassi_schedule' ).attr( 'data-display' ) == style ) {
 				link.addClass( 'active' );
 			}
 		} );
@@ -209,7 +210,7 @@ jQuery( function( e ) {
 				return;
 			}
 
-			kompassi_setup_display( jQuery( this ).attr( 'class' ) );
+			kompassi_setup_display( jQuery( this ).attr( 'data-display' ) );
 		} );
 	}
 
@@ -252,20 +253,24 @@ jQuery( function( e ) {
 		}
 		modal = jQuery( this ).clone( );
 		modal.attr( 'id', 'kompassi_modal' ).attr( 'style', '' ).addClass( 'kompassi_block_schedule' );
-		modal.find( '.actions' ).append( '<button class="close" />' );
+		modal.children( '.title' ).css( 'position', '' );
+		modal.find( '.actions' ).addClass( 'kompassi-button-group has-icon-only' ).append( '<a class="close kompassi-icon-close" />' );
 
-		modal.children( '.short_blurb, .visual' ).remove( );
-		modal.children( '.title, .room_name, .times, .actions' ).wrapAll( '<div class="modal_header" />' );
-		modal.children( ':not(.modal_header, .description)' ).wrapAll( '<div class="modal_footer" />' );
+		// Modal header
+		modal.children( '.title, .actions' ).wrapAll( '<div class="header" />' );
+		// Modal content
+		content = jQuery( '<div class="content" />' ).appendTo( modal );
+		modal.children( ':not(.header)' ).detach( ).appendTo( content );
+		content.children( '.short_blurb, .description' ).wrapAll( '<div class="main" />' );
+		meta = jQuery( '<div class="meta" />' );
+		content.children( '.dimension' ).wrapAll( '<div class="dimensions" />' );
+		content.children( ':not(.main)' ).detach( ).appendTo( meta );
+		meta.appendTo( content );
+		content.appendTo( modal );
 
 		modal.appendTo( jQuery( 'body' ) );
 		jQuery( 'body' ).append( '<div id="kompassi_modal_bg" />' ).css( 'overflow', 'hidden' );
-
-		kompassi_setup_modal_layout( );
 	} );
-
-	// Resetup modal layout on resize
-	jQuery( window ).on( 'resize', kompassi_setup_modal_layout );
 
 	// Close modals when clicking on modal bg or close button or when pressing Esc
 	jQuery( 'body' ).on( 'click', '#kompassi_schedule_modal_bg, #kompassi_modal .actions .close', kompassi_close_modal );
@@ -313,147 +318,63 @@ function kompassi_update_event_count( ) {
 }
 
 /*
- *  Setup display
+ *  Update date view parameters
  *
  */
 
-function kompassi_setup_display( display_type = false ) {
-	if( display_type === false ) {
-		display_type = kompassi_get_display_type( );
-	}
-
-	jQuery( '#kompassi_schedule' ).removeClass( 'table list expanded timeline' ).addClass( display_type );
-	if( display_type == 'timeline' ) {
-		kompassi_setup_timeline_layout( );
-		jQuery( '.kompassi-filter-note.not-timeline' ).hide( );
-	} else {
-		kompassi_revert_timeline_layout( );
-		jQuery( '.kompassi-filter-note.not-timeline' ).show( );
-	}
-
-	jQuery( '#kompassi_schedule_display a' ).removeClass( 'active' );
-	jQuery( '#kompassi_schedule_display a.' + display_type ).addClass( 'active' );
-}
-
-/*
- *  Timeline: Setup layout
- *  TODO: Is this doable one-time?
- *
- */
-
-function kompassi_setup_timeline_layout( ) {
-	rows = [ 'day hints', 'time hints' ];
-
-	prev_group = '';
-	var grouping_row = 1;
-
-	jQuery( '#kompassi_schedule article' ).sort( kompassi_sort_by_group ).each( function( index ) {
-		p = jQuery( this );
-		if( p.hasClass( 'filtered' ) ) {
-			return;
-		}
-
-		added = false;
-
-		if( date_filtered ) {
-			// TODO: calculate time_total_filtered
-			// time_start_filtered = jQuery( '[name="filter_date"]' ).val( );
-			date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
-			if( date == 'now' ) {
-				time_total_filtered = 2 * 60 * 60;
-			} else if( time_start_filtered < time_start ) {
-				time_start_filtered = time_start;
-				tsf = new Date( time_start_filtered * 1000 );
-				time_total_filtered = ( 24 - tsf.getHours( ) ) * 60 * 60;
-			} else if( parseInt( time_start_filtered ) + ( 24 * 60 * 60 ) > time_end ) {
-				tef = new Date( time_end * 1000 );
-				time_total_filtered = tef.getHours( ) * 60 * 60;
-			} else {
-				time_total_filtered = 24 * 60 * 60;
+function kompassi_update_date_view_parameters( ) {
+	kompassi_filters.date = { };
+	if( block.find( '.date-toggle.active' ).length > 0 ) {
+		// TODO: #17
+		date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
+		if( date == 'now' ) {
+			kompassi_filters.date.start = new Date( );
+			// This is for debugging purposes...
+			if( url_opts.has( 'now' ) ) {
+				kompassi_filters.date.start.setTime( url_opts.get( 'now' ) * 1000 ).setMinutes( 0, 0, 0 );
 			}
+			// TODO: Allow user to select how much program to show?
+			kompassi_filters.date.length_hours = 2;
 		} else {
-			time_start_filtered = time_start;
-			time_total_filtered = time_total;
-		}
-		// TODO: #7 – If favorites enabled...
+			start_of_day = parseInt( kompassi_options.schedule_start_of_day );
+			end_of_day = parseInt( kompassi_options.schedule_end_of_day );
 
-		if( options.timeline_earliest_hour > 0 ) {
-			tsf = new Date( time_start_filtered * 1000 );
-			if( tsf.getHours( ) < options.timeline_earliest_hour ) {
-				time_start_filtered = parseInt( time_start_filtered ) + ( options.timeline_earliest_hour * 60 * 60 );
-				time_total_filtered = parseInt( time_total_filtered ) - ( options.timeline_earliest_hour * 60 * 60 );
+			// Calculate Start of Day
+			kompassi_filters.date.start = new Date( parseInt( date ) + ( start_of_day * 3600 ) * 1000 );
+			if( kompassi_filters.date.start < kompassi_event.start ) {
+				// Never start before event start (be nice to timeline)
+				kompassi_filters.date.start = new Date( kompassi_event.start );
+				start_of_day = kompassi_filters.date.start.getHours( );
+			}
+
+			// Calculate Length of Day
+			if( end_of_day > start_of_day ) {
+				// During the same day
+				kompassi_filters.date.length_hours = end_of_day - start_of_day;
+			} else if( end_of_day < start_of_day ) {
+				// Wraps over to next date
+				kompassi_filters.date.length_hours = 24 - start_of_day + end_of_day;
+			} else {
+				// Exactly 24 hours
+				kompassi_filters.date.length_hours = 24;
+			}
+
+			// Calculate End of Day
+			kompassi_filters.date.end = new Date( kompassi_filters.date.start.valueOf( ) + ( kompassi_filters.date.length_hours * 3600 * 1000 ) );
+			if( kompassi_filters.date.end > kompassi_event.end ) {
+				// Never end after event end (be nice to timeline)
+				kompassi_filters.date.end = new Date( kompassi_event.end );
+				kompassi_filters.date.length_hours = kompassi_get_difference_in_hours( kompassi_filters.date.start, kompassi_filters.date.end );
 			}
 		}
 
-		per = p.attr( 'data-length' ) / ( time_total_filtered / 60 ) * 100;
-		offset = ( ( p.attr( 'data-start-timestamp' ) - time_start_filtered ) / time_total_filtered ) * 100;
-
-		//
-		if( p.find( '.' + timeline_grouping ).text( ) != prev_group ) {
-			rows.push( 'group: ' + p.find( '.' + timeline_grouping ).text( ) );
-			group = jQuery( '<p class="group-name">' + p.find( '.' + timeline_grouping ).text( ) + '</p>' );
-			grouping_row = rows.length - 1;
-			group.css( 'top', 'calc( ' + grouping_row + ' * var(--kompassi-program-timeline-row-height)' );
-			jQuery( '#kompassi_schedule' ).append( group );
-		}
-
-		current_row = grouping_row;
-
-		while( added == false ) {
-			if( typeof rows[current_row] === 'undefined' ) {
-				// Row does not exist, create new
-				rows.push( p.attr( 'data-end-timestamp' ) );
-				rownum = rows.length - 1;
-				added = true;
-			}
-			if( rows[current_row] <= p.attr( 'data-start-timestamp' ) ) {
-				// Rows last event ends before or at the same time as this one starts
-				rows[current_row] = p.attr( 'data-end-timestamp' );
-				rownum = current_row;
-				added = true;
-			}
-			current_row = current_row + 1;
-		}
-
-		p.css( 'width', 'calc( ' + per + '% - 5px )' );
-		p.css( 'min-width', 'calc( ' + per + '% - 5px )' );
-		p.css( 'left', 'calc( ' + offset + '% + 3px )' );
-		p.css( 'top', 'calc( ' + rownum + ' * var(--kompassi-program-timeline-row-height)' );
-		if( offset < 0 ) {
-			p.find( '.title' ).css( 'position', 'absolute' ).css( 'left', ( ( -1 * p.position( ).left ) + 6 ) + 'px' );
-		}
-
-		prev_group = p.find( '.' + timeline_grouping ).text( );
-	} );
-
-	jQuery( '#kompassi_schedule' ).css( 'height', 'calc( var(--kompassi-program-timeline-row-height) * ' + ( rows.length ) + ' )' )
-
-	first_hour = new Date( time_start_filtered * 1000 ).getHours( );
-	for( i = 0; i < Math.ceil( time_total_filtered / 60 / 60 ); i++ ) {
-		offset = 100 / Math.ceil( time_total_filtered / 60 / 60 );
-		label = i + first_hour;
-		label = label % 24;
-		if( label < 10 ) {
-			label = '0' + label;
-		}
-		jQuery( '#kompassi_schedule' ).append( '<div class="ruler" style="top: var(--kompassi-program-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% )">' + label + '</div>' );
-		if( label == '00' || i == 0 ) {
-			d = parseInt( time_start_filtered ) + ( i * 60 * 60 );
-			jQuery( '#kompassi_schedule' ).append( '<strong class="day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% );">' + kompassi_get_date_formatted( d ) + '</div>' );
-		}
+		kompassi_filters.date.filtered = true;
+		filter_count_total += 1;
+	} else {
+		kompassi_filters.date.start = new Date( kompassi_event.start );
+		kompassi_filters.date.end = new Date( kompassi_event.end );
+		kompassi_filters.date.length_hours = kompassi_get_difference_in_hours( kompassi_filters.date.start, kompassi_filters.date.end );
 	}
-}
-
-/*
- *  Timeline: Revert layout
- *
- */
-
-function kompassi_revert_timeline_layout( ) {
-	jQuery( '#kompassi_schedule' ).css( 'height', 'auto' );
-	jQuery( '#kompassi_schedule article' ).attr( 'style', '' );
-	jQuery( '#kompassi_schedule .title' ).css( 'left', '' ).css( 'position', '' );
-	jQuery( '#kompassi_schedule .day_hint, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
 }
 
 /*
@@ -465,6 +386,8 @@ function kompassi_apply_filters( ) {
 	//  Show all and remove notification if exists
 	jQuery( '#kompassi_schedule article' ).removeClass( 'filtered multiday-overlap' );
 	jQuery( '.kompassi-filter-note' ).remove( );
+
+	kompassi_filters = {};
 
 	filter_count = 0;
 	filter_count_total = 0;
@@ -526,38 +449,18 @@ function kompassi_apply_filters( ) {
 	filter_count_total = filter_count;
 
 	// Date filter
-	if( block.find( '.date-toggle.active' ).length > 0 ) {
-		// TODO: #17
-		date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
-		if( date == 'now' ) {
-			datetime_obj = new Date( );
-			// This is for debugging purposes...
-			if( url_opts.has( 'now' ) ) {
-				datetime_obj.setTime( kompassi_get_start_of_hour( url_opts.get( 'now' ) ) * 1000 );
-			}
-			time_start_filtered = datetime_obj.getTime( ) / 1000;
-			// TODO: Allow user to select how much program to show?
-			time_end_filtered = time_start_filtered + ( 2 * 60 * 60 );
-		} else {
-			time_start_filtered = parseInt( date );
-			time_end_filtered = time_start_filtered + ( 24 * 60 * 60 );
+	kompassi_update_date_view_parameters( );
+	jQuery( '#kompassi_schedule article:visible' ).each( function( index ) {
+		program = jQuery( this );
+		program_start = parseInt( program.attr( 'data-start' ) );
+		program_end = parseInt( program.attr( 'data-end' ) );
+		if( program_start > kompassi_filters.date.end / 1000 || program_end <= kompassi_filters.date.start / 1000 ) {
+			program.addClass( 'filtered' );
 		}
-		jQuery( '#kompassi_schedule article' ).each( function( index ) {
-			program = jQuery( this );
-			program_start = parseInt( program.attr( 'data-start-timestamp' ) );
-			program_end = parseInt( program.attr( 'data-end-timestamp' ) );
-			if( program_start > time_end_filtered || program_end <= time_start_filtered ) {
-				program.addClass( 'filtered' );
-			}
-			if( program_start < time_start_filtered && program_end > time_start_filtered ) {
-				program.addClass( 'multiday-overlap' );
-			}
-		} );
-		date_filtered = true;
-		filter_count_total += 1;
-	} else {
-		date_filtered = false;
-	}
+		if( program_start < kompassi_filters.date.start / 1000 && program_end > kompassi_filters.date.start / 1000 ) {
+			program.addClass( 'multiday-overlap' );
+		}
+	} );
 
 	// Favorite filter
 	if( block.find( '.favorites-toggle' ).hasClass( 'active' ) ) {
@@ -596,20 +499,118 @@ function kompassi_apply_filters( ) {
 }
 
 /*
- *  Modal
+ *  Setup display
  *
  */
 
-function kompassi_setup_modal_layout( ) {
-	modal = jQuery( '#kompassi_modal' );
-	head = modal.children( '.modal_header' );
-	foot = modal.children( '.modal_footer' );
-	desc = modal.children( '.description' );
-	head.css( 'width', modal.width( ) );
-	foot.css( 'bottom', '0' ).css( 'width', modal.width( ) );
-	desc.css( 'margin-top', head.outerHeight( ) );
-	desc.css( 'margin-bottom', foot.outerHeight( ) );
-	desc.css( 'height', modal.outerHeight( ) - head.outerHeight( ) - foot.outerHeight( ) );
+function kompassi_setup_display( display_type = false ) {
+	if( display_type === false ) {
+		display_type = kompassi_get_display_type( );
+	}
+
+	jQuery( '#kompassi_schedule' ).removeClass( 'list timeline' ).addClass( display_type );
+	if( display_type == 'timeline' ) {
+		kompassi_setup_timeline_layout( );
+		jQuery( '.kompassi-filter-note.not-timeline' ).hide( );
+	} else {
+		kompassi_revert_timeline_layout( );
+		jQuery( '.kompassi-filter-note.not-timeline' ).show( );
+	}
+
+	jQuery( '#kompassi_schedule_display a' ).removeClass( 'active' );
+	jQuery( '#kompassi_schedule_display [data-display="' + display_type + '"]' ).addClass( 'active' );
+}
+
+/*
+ *  Timeline: Setup layout
+ *
+ */
+
+function kompassi_setup_timeline_layout( ) {
+	rows = [ 'day hints', 'time hints' ];
+
+	kompassi_update_date_view_parameters( );
+
+	prev_group = '';
+	var grouping_row = 1;
+
+	length = kompassi_filters.date.length_hours * 60;
+
+	jQuery( '#kompassi_schedule article:visible' ).sort( kompassi_sort_by_group ).each( function( index ) {
+		program = jQuery( this );
+
+		// Count the width % and offset % for program
+		width = program.attr( 'data-length' ) / length * 100;
+		offset_in_s = program.attr( 'data-start' ) - ( kompassi_filters.date.start.valueOf( ) / 1000 );
+		offset_in_m = offset_in_s / 60;
+		offset = offset_in_m / length * 100;
+
+		// See if we need to add a group heading
+		if( program.find( '.' + timeline_grouping ).text( ) != prev_group ) {
+			rows.push( 'group: ' + program.find( '.' + timeline_grouping ).text( ) );
+			group = jQuery( '<p class="group-name">' + program.find( '.' + timeline_grouping ).text( ) + '</p>' );
+			grouping_row = rows.length - 1;
+			group.css( 'top', 'calc( ' + grouping_row + ' * var(--kompassi-schedule-timeline-row-height)' );
+			jQuery( '#kompassi_schedule' ).append( group );
+		}
+
+		current_row = grouping_row;
+
+		has_row = false;
+		while( has_row == false ) {
+			if( typeof rows[current_row] === 'undefined' ) {
+				// Row does not exist, create new
+				rows.push( program.attr( 'data-end' ) );
+				rownum = rows.length - 1;
+				has_row = true;
+			}
+			if( rows[current_row] <= program.attr( 'data-start' ) ) {
+				// Rows last event ends before or at the same time as this one starts
+				rows[current_row] = program.attr( 'data-end' );
+				rownum = current_row;
+				has_row = true;
+			}
+			current_row = current_row + 1;
+		}
+		// End grouping
+
+		program.css( 'width', 'calc( ' + width + '% - 5px )' );
+		program.css( 'min-width', 'calc( ' + width + '% - 5px )' );
+		program.css( 'left', 'calc( ' + offset + '% + 3px )' );
+		program.css( 'top', 'calc( ' + rownum + ' * var(--kompassi-schedule-timeline-row-height)' ); // Grouping
+		if( offset < 0 ) {
+			program.find( '.title' ).css( 'position', 'absolute' ).css( 'left', ( ( -1 * program.position( ).left ) + 6 ) + 'px' );
+		}
+
+		prev_group = program.find( '.' + timeline_grouping ).text( ); // Grouping
+	} );
+
+	// Make the schedule high enough to contain all rows
+	jQuery( '#kompassi_schedule' ).css( 'height', 'calc( var(--kompassi-schedule-timeline-row-height) * ' + ( rows.length ) + ' )' );
+
+	// Rulers
+	for( i = 0; i < Math.ceil( kompassi_filters.date.length_hours ); i++ ) {
+		offset = 100 / Math.ceil( kompassi_filters.date.length_hours );
+		label = ( kompassi_filters.date.start.getHours( ) + i ) % 24;
+		label.toString( ).padStart( 2, '0' );
+		jQuery( '#kompassi_schedule' ).append( '<div class="ruler ' + ( i % 2 == 0 ? 'even' : 'odd' ) + '" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% );">' + label + '</div>' );
+		if( label == '00' || i == 0 ) {
+			d = kompassi_filters.date.start.valueOf( ) / 1000 + ( i * 60 * 60 );
+			jQuery( '#kompassi_schedule' ).append( '<strong class="day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% );">' + kompassi_get_date_formatted( d ) + '</div>' );
+		}
+	}
+}
+
+/*
+ *  Timeline: Revert layout
+ *
+ */
+
+function kompassi_revert_timeline_layout( ) {
+	jQuery( '#kompassi_schedule' ).css( 'height', 'auto' );
+	jQuery( '#kompassi_schedule article' ).attr( 'style', '' );
+	jQuery( '#kompassi_schedule .title' ).css( 'left', '' ).css( 'position', '' );
+	jQuery( '#kompassi_schedule .day_hint, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
 }
 
 /*
@@ -646,13 +647,21 @@ function kompassi_get_display_type( display_type = '' ) {
 	if( display_type !== '' ) {
 		return display_type;
 	} else {
-//		if( jQuery( '#kompassi_schedule' ).hasClass( 'table' ) ) { display_type = 'table'; }
 		if( jQuery( '#kompassi_schedule' ).hasClass( 'list' ) ) { display_type = 'list'; }
-//		if( jQuery( '#kompassi_schedule' ).hasClass( 'expanded' ) ) { display_type = 'expanded'; }
 		if( jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
 	}
 	return display_type;
 }
+
+/**
+ *  Returns a date formatted in human readable format.
+ *
+ *  @param {int} timestamp Unix timestamp
+ *  @param {bool} weekday Whether to return the weekday name or not
+ *
+ *  @return {string} Formatted date
+ *
+ */
 
 function kompassi_get_date_formatted( timestamp, weekday = true ) {
 	datetime_obj = new Date( timestamp * 1000 );
@@ -672,11 +681,24 @@ function kompassi_get_date_formatted( timestamp, weekday = true ) {
 	}
 }
 
-function kompassi_get_start_of_hour( timestamp ) {
-	time = new Date( timestamp * 1000 );
-	time.setMinutes( 0, 0, 0 );
-	return time.valueOf( ) / 1000;
+/**
+ *  Returns difference of two timestamps in hours
+ *
+ *  @param {Date} a Date object
+ *  @param {Date} b Date object
+ *
+ *  @return {int} Difference of timestamps in hours
+ *
+ */
+
+function kompassi_get_difference_in_hours( a, b ) {
+	ms_to_hour = 1000 * 60 * 60;
+	difference = b - a;
+	return difference / ms_to_hour;
 }
+
+/**
+ */
 
 function kompassi_sort_by_group( a, b ) {
 	if( jQuery( a ).find( '.' + timeline_grouping ).text( ) > jQuery( b ).find( '.' + timeline_grouping ).text( ) ) {

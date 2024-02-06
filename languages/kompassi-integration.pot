@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-23T20:24:13+02:00\n"
+"POT-Creation-Date: 2024-02-03T00:20:32+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:63
-#: kompassi-integration.php:68
+#: kompassi-integration.php:67
+#: kompassi-integration.php:72
 msgid "Kompassi Integration"
 msgstr ""
 
@@ -33,14 +33,22 @@ msgid "Feed URL where program data is loaded from."
 msgstr ""
 
 #: kompassi-integration.php:49
-msgid "Earliest hour on timeline"
+msgid "Start of Day"
 msgstr ""
 
 #: kompassi-integration.php:50
-msgid "Earliest hour to show on the timeline, when a single day is selected."
+msgid "When a single day is filtered, show programs starting from this hour."
 msgstr ""
 
-#: kompassi-integration.php:71
+#: kompassi-integration.php:53
+msgid "End of Day"
+msgstr ""
+
+#: kompassi-integration.php:54
+msgid "When a single day is filtered, show programs ending up to this hour."
+msgstr ""
+
+#: kompassi-integration.php:75
 msgid "Save Changes"
 msgstr ""
 
@@ -58,13 +66,13 @@ msgid "Default Display"
 msgstr ""
 
 #: blocks.js:33
-#: frontend.js:212
+#: frontend.js:186
 msgctxt "display style"
 msgid "List"
 msgstr ""
 
 #: blocks.js:34
-#: frontend.js:213
+#: frontend.js:187
 msgctxt "display style"
 msgid "Timeline"
 msgstr ""
@@ -81,89 +89,93 @@ msgstr ""
 msgid "Show Favorites Only"
 msgstr ""
 
-#: frontend.js:144
+#: frontend.js:86
+msgid "Now"
+msgstr ""
+
+#: frontend.js:107
 msgid "Favorites"
 msgstr ""
 
-#: frontend.js:145
+#: frontend.js:108
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr ""
 
-#: frontend.js:168
+#: frontend.js:138
 msgid "Text search (title, description)"
 msgstr ""
 
-#: frontend.js:182
+#: frontend.js:152
 msgid "Clear filters"
 msgstr ""
 
 #. translators: count of programmes visible
-#: frontend.js:325
+#: frontend.js:305
 msgid "%s programme visible"
 msgid_plural "%s programmes visible"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: count of programmes
-#: frontend.js:328
+#: frontend.js:308
 msgid "%s programme"
 msgid_plural "%s programmes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: frontend.js:527
+#: frontend.js:430
 msgid "Search results are sorted by relevance, not chronologically, when using text search."
 msgstr ""
 
-#: frontend.js:577
+#: frontend.js:473
 msgid "Nothing matched your search!"
 msgstr ""
 
-#: frontend.js:583
+#: frontend.js:479
 msgid "Programmes which have started before the filtered timerange are listed at the end of the results."
 msgstr ""
 
-#: frontend.js:583
+#: frontend.js:479
 msgctxt "link to another position in the page"
 msgid "Jump there!"
 msgstr ""
 
-#: frontend.js:584
+#: frontend.js:480
 msgid "Programmes still continuing"
 msgstr ""
 
-#: frontend.js:661
+#: frontend.js:687
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr ""
 
-#: frontend.js:662
+#: frontend.js:688
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr ""
 
-#: frontend.js:663
+#: frontend.js:689
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr ""
 
-#: frontend.js:664
+#: frontend.js:690
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr ""
 
-#: frontend.js:665
+#: frontend.js:691
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr ""
 
-#: frontend.js:666
+#: frontend.js:692
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr ""
 
-#: frontend.js:667
+#: frontend.js:693
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr ""

@@ -45,9 +45,13 @@ class WP_Plugin_Kompassi_Integration {
 				'label' =>  __( 'Feed URL', 'kompassi-integration' ),
 				'description' => __( 'Feed URL where program data is loaded from.', 'kompassi-integration' )
 			),
-			'timeline_earliest_hour' => array(
-				'label' =>  __( 'Earliest hour on timeline', 'kompassi-integration' ),
-				'description' => __( 'Earliest hour to show on the timeline, when a single day is selected.', 'kompassi-integration' )
+			'schedule_start_of_day' => array(
+				'label' =>  __( 'Start of Day', 'kompassi-integration' ),
+				'description' => __( 'When a single day is filtered, show programs starting from this hour.', 'kompassi-integration' )
+			),
+			'schedule_end_of_day' => array(
+				'label' =>  __( 'End of Day', 'kompassi-integration' ),
+				'description' => __( 'When a single day is filtered, show programs ending up to this hour.', 'kompassi-integration' )
 			)
 		);
 
@@ -84,9 +88,10 @@ class WP_Plugin_Kompassi_Integration {
 		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
 		wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 		$js_strings = array(
-			'timeline_earliest_hour' => get_option( 'kompassi_integration_timeline_earliest_hour', 8 )
+			'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
+			'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 )
 		);
-		wp_localize_script( 'kompassi-integration-frontend', 'options', $js_strings );
+		wp_localize_script( 'kompassi-integration-frontend', 'kompassi_options', $js_strings );
 
 		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ), array( ), $this->ver );
 		wp_enqueue_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
@@ -195,12 +200,11 @@ class WP_Plugin_Kompassi_Integration {
 
 	function markup_program( $program, $dimensions ) {
 		ob_start( );
-		// TODO: Maybe start and end timestamps shouldn't be in the DOM...
 		$attrs = array(
 			'id' => $program['identifier'],
-			'length' => $program['length'],
-			'start-timestamp' => $program['start_timestamp'], // strtotime( $program['start_time'] ),
-			'end-timestamp' => $program['end_timestamp'], // strtotime( $program['end_time'] ),
+			'length' => $program['length'], // Required for timeline calculations
+			'start' => $program['start_timestamp'],
+			'end' => $program['end_timestamp'],
 		);
 		foreach( $program['dimensions'] as $dimension => $values ) {
 			if( count( $values ) > 0 ) {
@@ -226,8 +230,26 @@ class WP_Plugin_Kompassi_Integration {
 						} else {
 							// TODO: #11 - Get directly from Kompassi?
 							if( 'times' == $key ) {
-								$value = date_i18n( 'D j.n. k\l\o H.i', $program['start_timestamp'] + ( get_option( 'gmt_offset' ) * 60 * 60 ) );
-								// If multiday, show both days
+								$offset = get_option( 'gmt_offset' ) * 60 * 60;
+								$value = date_i18n( 'D j.n. k\l\o H.i', $program['start_timestamp'] + $offset );
+								$value .= ' – ';
+								if( date_i18n( 'Ymd', $program['start_timestamp'] + $offset ) == date_i18n( 'Ymd', $program['end_timestamp'] + $offset ) ) {
+									$value .= date_i18n( 'H.i', $program['end_timestamp'] + $offset );
+								} else {
+									// If multiday, show both days
+									$value .= date_i18n( 'D j.n. k\l\o H.i', $program['end_timestamp'] + $offset );
+								}
+								$value .= ' <span class="length">';
+								$h = $program['length'] / 60;
+								$min = $program['length'] % 60;
+								if( $h < 1 ) {
+									$value .= $min . 'min';
+								} elseif( $min == 0 ) {
+									$value .= floor( $h ) . 'h';
+								} else {
+									$value .= floor( $h ) . 'h ' . $min . 'min';
+								}
+								$value .= '</span>';
 							}
 						}
 						if( isset( $value ) ) {
@@ -248,7 +270,6 @@ class WP_Plugin_Kompassi_Integration {
 						}
 						echo '</div>';
 					}
-					//echo '<div class="visual" style="grid-area: visual;"></div>';
 				?>
 			</article>
 		<?php

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-01-23T20:24:13+02:00\n"
+"POT-Creation-Date: 2024-02-03T00:20:32+02:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:63 kompassi-integration.php:68
+#: kompassi-integration.php:67 kompassi-integration.php:72
 msgid "Kompassi Integration"
 msgstr "Kompassi-integraatio"
 
@@ -34,16 +34,24 @@ msgid "Feed URL where program data is loaded from."
 msgstr "Syötteen URL, josta ohjelmatiedot ladataan."
 
 #: kompassi-integration.php:49
-msgid "Earliest hour on timeline"
-msgstr "Aikaisin tunti aikajanalla"
+msgid "Start of Day"
+msgstr "Päivän alku"
 
 #: kompassi-integration.php:50
-msgid "Earliest hour to show on the timeline, when a single day is selected."
+msgid "When a single day is filtered, show programs starting from this hour."
 msgstr ""
-"Aikaisin tunti joka näytetään aikajanalla yksittäisen päivän ollessa "
-"valittuna."
+"Kun yksittäinen päivä on suodatettu, näytä ohjelmat alkaen tästä tunnista."
 
-#: kompassi-integration.php:71
+#: kompassi-integration.php:53
+msgid "End of Day"
+msgstr "Päivän loppu"
+
+#: kompassi-integration.php:54
+msgid "When a single day is filtered, show programs ending up to this hour."
+msgstr ""
+"Kun yksittäinen päivä on suodatettu, näytä ohjelmat päättyen tähän tuntiin."
+
+#: kompassi-integration.php:75
 msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
@@ -59,12 +67,12 @@ msgstr "Asetukset"
 msgid "Default Display"
 msgstr "Oletusnäyttötyyli"
 
-#: blocks.js:33 frontend.js:212
+#: blocks.js:33 frontend.js:186
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: blocks.js:34 frontend.js:213
+#: blocks.js:34 frontend.js:187
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
@@ -81,38 +89,42 @@ msgstr "Näytä näyttötyylit"
 msgid "Show Favorites Only"
 msgstr "Näytä vain suosikit"
 
-#: frontend.js:144
+#: frontend.js:86
+msgid "Now"
+msgstr "Nyt"
+
+#: frontend.js:107
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: frontend.js:145
+#: frontend.js:108
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: frontend.js:168
+#: frontend.js:138
 msgid "Text search (title, description)"
 msgstr "Tekstihaku (otsikko, kuvaus)"
 
-#: frontend.js:182
+#: frontend.js:152
 msgid "Clear filters"
 msgstr "Tyhjennä suodattimet"
 
 #. translators: count of programmes visible
-#: frontend.js:325
+#: frontend.js:305
 msgid "%s programme visible"
 msgid_plural "%s programmes visible"
 msgstr[0] "%s ohjelma näkyvissä"
 msgstr[1] "%s ohjelmaa näkyvissä"
 
 #. translators: count of programmes
-#: frontend.js:328
+#: frontend.js:308
 msgid "%s programme"
 msgid_plural "%s programmes"
 msgstr[0] "%s ohjelma"
 msgstr[1] "%s ohjelmaa"
 
-#: frontend.js:527
+#: frontend.js:430
 msgid ""
 "Search results are sorted by relevance, not chronologically, when using text "
 "search."
@@ -120,11 +132,11 @@ msgstr ""
 "Hakutulokset järjestetään relevanssin perusteella, ei aikajärjestyksessä, "
 "kun käytetään tekstihakua."
 
-#: frontend.js:577
+#: frontend.js:473
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
-#: frontend.js:583
+#: frontend.js:479
 msgid ""
 "Programmes which have started before the filtered timerange are listed at "
 "the end of the results."
@@ -132,49 +144,58 @@ msgstr ""
 "Ohjelmat jotka ovat alkaneet ennen suodatettua aikaikkunaa listataan "
 "tulosten lopussa."
 
-#: frontend.js:583
+#: frontend.js:479
 msgctxt "link to another position in the page"
 msgid "Jump there!"
 msgstr "Hyppää sinne!"
 
-#: frontend.js:584
+#: frontend.js:480
 msgid "Programmes still continuing"
 msgstr "Edelleen jatkuvat ohjelmat"
 
-#: frontend.js:661
+#: frontend.js:687
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr "su"
 
-#: frontend.js:662
+#: frontend.js:688
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr "ma"
 
-#: frontend.js:663
+#: frontend.js:689
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr "ti"
 
-#: frontend.js:664
+#: frontend.js:690
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr "ke"
 
-#: frontend.js:665
+#: frontend.js:691
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr "to"
 
-#: frontend.js:666
+#: frontend.js:692
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr "pe"
 
-#: frontend.js:667
+#: frontend.js:693
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr "la"
+
+#~ msgid "Earliest hour on timeline"
+#~ msgstr "Aikaisin tunti aikajanalla"
+
+#~ msgid ""
+#~ "Earliest hour to show on the timeline, when a single day is selected."
+#~ msgstr ""
+#~ "Aikaisin tunti joka näytetään aikajanalla yksittäisen päivän ollessa "
+#~ "valittuna."
 
 #~ msgctxt "display style"
 #~ msgid "Expanded List"

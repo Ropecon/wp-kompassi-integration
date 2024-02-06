@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="-85.862967"
-     inkscape:cy="45.456865"
+     inkscape:cx="2.0203051"
+     inkscape:cy="45.583133"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -62,10 +62,11 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-1.9843481,124.04949)">
+     transform="translate(-1.9843481,124.04949)"
+     style="opacity:0.5">
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:none;stroke:#0e0e0e;stroke-width:2.75827969;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;paint-order:stroke fill markers"
+       style="opacity:1;fill:#0e0e0e;fill-opacity:1;stroke:#0e0e0e;stroke-width:2.48749;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="path946"
        inkscape:flatsided="false"
        sodipodi:sides="5"
@@ -78,7 +79,7 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="M 30.1153,36.681291 15.785835,29.744107 4.3014111,40.769809 6.4710165,24.99797 -7.5639316,17.482763 8.1064239,14.672414 10.916773,-0.99794115 18.43198,13.037007 34.203819,10.867401 23.178117,22.351825 Z"
-       transform="matrix(-0.20351092,-0.20345725,0.20351092,-0.20345725,9.1147641,-107.77868)"
-       inkscape:transform-center-y="-0.61085539" />
+       transform="matrix(-0.22563059,-0.22564078,0.22563059,-0.22564078,8.9695266,-106.92777)"
+       inkscape:transform-center-y="-0.67746284" />
   </g>
 </svg>

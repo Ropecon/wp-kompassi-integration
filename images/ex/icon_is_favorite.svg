@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="-6.0609153"
-     inkscape:cy="33.776976"
+     inkscape:cx="1.2626907"
+     inkscape:cy="33.84011"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -63,7 +63,7 @@
      transform="translate(0,126.33331)">
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:#ffcc00;stroke:#ffcc00;stroke-width:3.2273;stroke-linecap:round;stroke-opacity:1;paint-order:markers fill stroke"
+       style="opacity:1;fill:#ffcc00;stroke:#e5b800;stroke-width:3.2273;stroke-linecap:round;stroke-opacity:1;paint-order:markers fill stroke"
        id="path946"
        inkscape:flatsided="false"
        sodipodi:sides="5"

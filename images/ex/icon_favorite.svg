@@ -4,10 +4,10 @@
 <svg
    width="64"
    height="64"
-   viewBox="0 0 16.933333 16.933334"
+   viewBox="0 0 16.933334 16.933333"
    version="1.1"
    id="svg8"
-   sodipodi:docname="icon_is_favorite.svg"
+   sodipodi:docname="icon_favorite.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9195959"
-     inkscape:cx="-6.0609153"
-     inkscape:cy="33.776976"
+     inkscape:zoom="3.959798"
+     inkscape:cx="-85.862967"
+     inkscape:cy="45.456865"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -43,7 +43,9 @@
      inkscape:bbox-nodes="true">
     <inkscape:grid
        type="xygrid"
-       id="grid1039" />
+       id="grid1039"
+       originx="-1.9843481"
+       originy="-2.2838177" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -60,23 +62,23 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,126.33331)">
+     transform="translate(-1.9843481,124.04949)">
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:#ffcc00;stroke:#ffcc00;stroke-width:3.2273;stroke-linecap:round;stroke-opacity:1;paint-order:markers fill stroke"
+       style="opacity:1;fill:none;stroke:#0e0e0e;stroke-width:2.75827969;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;paint-order:stroke fill markers"
        id="path946"
        inkscape:flatsided="false"
        sodipodi:sides="5"
        sodipodi:cx="14.394674"
        sodipodi:cy="20.960665"
        sodipodi:r1="22.232323"
-       sodipodi:r2="12.227778"
+       sodipodi:r2="8.8929291"
        sodipodi:arg1="0.78539816"
        sodipodi:arg2="1.4137167"
        inkscape:rounded="0"
        inkscape:randomized="0"
-       d="M 30.1153,36.681291 16.30752,33.037899 4.3014111,40.769809 3.4996439,26.51196 -7.5639316,17.482763 5.7483293,12.31432 10.916773,-0.99794115 19.94597,10.065634 l 14.257849,0.801767 -7.731911,12.00611 z"
-       transform="matrix(-0.23188288,-0.23188288,0.23188288,-0.23188288,6.944126,-108.81824)"
-       inkscape:transform-center-y="-0.69619442" />
+       d="M 30.1153,36.681291 15.785835,29.744107 4.3014111,40.769809 6.4710165,24.99797 -7.5639316,17.482763 8.1064239,14.672414 10.916773,-0.99794115 18.43198,13.037007 34.203819,10.867401 23.178117,22.351825 Z"
+       transform="matrix(-0.20351092,-0.20345725,0.20351092,-0.20345725,9.1147641,-107.77868)"
+       inkscape:transform-center-y="-0.61085539" />
   </g>
 </svg>
