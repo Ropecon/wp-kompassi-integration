@@ -60,63 +60,77 @@
 }
 
 /*
+ *  Data provided by Kompassi
+ *
+ */
+
+.kompassi_provided {
+	margin: 1em 0;
+	text-align: right;
+}
+	.kompassi_provided a {
+		text-decoration: none;
+	}
+	.kompassi_provided img {
+		height: 50px;
+		weidth: auto;
+	}
+
+/*
  *  Button groups
  *
  */
 
-#kompassi_schedule_toolbar {
-	position: relative;
+.kompassi-button-group {
+	display: block;
 }
-	.kompassi-button-group {
-		display: block;
+	.kompassi-button-group a {
+		cursor: pointer;
+		position: relative;
+		display: inline-block;
+		color: var(--kompassi-button-fg);
+		padding: var(--kompassi-button-padding);
+		background: var(--kompassi-button-bg);
+		border-radius: var(--kompassi-button-radius);
+		margin-right: var(--kompassi-button-padding);
+		margin-bottom: var(--kompassi-button-padding);
+		box-shadow: var(--kompassi-box-shadow);
 	}
-		.kompassi-button-group a {
-			cursor: pointer;
-			position: relative;
-			display: inline-block;
-			color: var(--kompassi-button-fg);
-			padding: var(--kompassi-button-padding);
-			background: var(--kompassi-button-bg);
-			border-radius: var(--kompassi-button-radius);
-			margin-right: var(--kompassi-button-padding);
-			margin-bottom: var(--kompassi-button-padding);
-			box-shadow: var(--kompassi-box-shadow);
+		.kompassi-button-group.has-icon-and-label a {
+			padding-left: calc( ( var(--kompassi-button-padding) * 2 ) + var(--kompassi-button-icon-size) );
 		}
-			.kompassi-button-group.has-icon-and-label a {
-				padding-left: calc( ( var(--kompassi-button-padding) * 2 ) + var(--kompassi-button-icon-size) );
-			}
-				.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) a::before {
-					content: '';
-					display: inline-block;
-					position: absolute;
-					top: var(--kompassi-button-padding);
-					left: var(--kompassi-button-padding);
-					width: var(--kompassi-button-icon-size);
-					height: var(--kompassi-button-icon-size);
-					background-repeat: no-repeat;
-					background-position: 50% 50%;
-					background-size: contain;
-					opacity: 0.5;
-				}
-				.kompassi-button-group.has-icon-only a {
-					width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
-					height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
-				}
-
-			.kompassi-button-group a.active {
-				color: var(--kompassi-button-fg-active);
-				background: var(--kompassi-button-bg-active);
-			}
-			.kompassi-button-group .indicator:not(:empty) {
+			.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) a::before {
+				content: '';
 				display: inline-block;
-				margin-left: var(--kompassi-button-padding);
+				position: absolute;
+				top: var(--kompassi-button-padding);
+				left: var(--kompassi-button-padding);
 				width: var(--kompassi-button-icon-size);
 				height: var(--kompassi-button-icon-size);
-				background-color: var(--kompassi-button-indicator-color);
-				text-align: center;
-				color: #fff;
-				border-radius: 9999px;
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				background-size: contain;
+				opacity: 0.5;
 			}
+			.kompassi-button-group.has-icon-only a {
+				width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+				height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+			}
+
+		.kompassi-button-group a.active {
+			color: var(--kompassi-button-fg-active);
+			background: var(--kompassi-button-bg-active);
+		}
+		.kompassi-button-group .indicator:not(:empty) {
+			display: inline-block;
+			margin-left: var(--kompassi-button-padding);
+			width: var(--kompassi-button-icon-size);
+			height: var(--kompassi-button-icon-size);
+			background-color: var(--kompassi-button-indicator-color);
+			text-align: center;
+			color: #fff;
+			border-radius: 9999px;
+		}
 
 @container kompassi-integration (min-width: 0px) {
 	.kompassi-button-group {
@@ -148,7 +162,8 @@
 .kompassi-icon-filter::before { background-image: url(images/icon_filter.svg); }
 .kompassi-icon-favorite::before { background-image: url(images/icon_favorite.svg); }
 .kompassi-icon-favorite.active::before,
-.is-favorite .kompassi-icon-favorite::before { background-image: url(images/icon_is_favorite.svg); }
+.is-favorite .kompassi-icon-favorite::before,
+#kompassi_schedule.timeline .is-favorite::after { background-image: url(images/icon_is_favorite.svg); }
 .kompassi-icon-close::before { background-image: url(images/icon_close.svg); }
 
 /*  Active button style is dark by default, make sure the icons are visible  */
@@ -159,6 +174,10 @@
  *  Toolbar
  *
  */
+
+#kompassi_schedule_toolbar {
+	position: relative;
+}
 
 @container kompassi-integration (min-width: 0px) {
 	#kompassi_schedule_toolbar section {
@@ -580,6 +599,7 @@
 			z-index: 3;
 		}
 		#kompassi_schedule.timeline article {
+			position: relative;
 			order: 1 !important;
 			display: inline-block;
 			background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
@@ -590,6 +610,21 @@
 			white-space: nowrap;
 			overflow: hidden;
 		}
+			#kompassi_schedule.timeline article.is-favorite {
+				padding-left: calc( 1em + 8px );
+			}
+				#kompassi_schedule.timeline article.is-favorite::after {
+					position: absolute;
+					display: inline-block;
+					content: '';
+					left: 4px;
+					top: 2px;
+					bottom: 2px;
+					width: 1em;
+					background-size: contain;
+					background-position: 50% 50%;
+					background-repeat: no-repeat;
+				}
 			#kompassi_schedule.timeline article .actions {
 				display: none;
 			}

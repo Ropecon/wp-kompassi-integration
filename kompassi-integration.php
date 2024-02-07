@@ -47,11 +47,11 @@ class WP_Plugin_Kompassi_Integration {
 			),
 			'schedule_start_of_day' => array(
 				'label' =>  __( 'Start of Day', 'kompassi-integration' ),
-				'description' => __( 'When a single day is filtered, show programs starting from this hour.', 'kompassi-integration' )
+				'description' => __( 'Start of Day when a single day is shown.', 'kompassi-integration' )
 			),
 			'schedule_end_of_day' => array(
 				'label' =>  __( 'End of Day', 'kompassi-integration' ),
-				'description' => __( 'When a single day is filtered, show programs ending up to this hour.', 'kompassi-integration' )
+				'description' => __( 'End of Day when a single day is shown.', 'kompassi-integration' )
 			)
 		);
 
@@ -168,7 +168,6 @@ class WP_Plugin_Kompassi_Integration {
 		 *  Program colors
 		 *  Color values from dimensions later in the data will override earlier values
 		 *  Philosophically, more specific tags should take precendence
-		 *  TODO: Possibility to order dimensions from Kompassi or implement in WP admin?
 		 *
 		 */
 		$out .= '<style>';
@@ -189,6 +188,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 		$out .= '</style>';
 
+		$out .= $this->data_provided_image( );
 		$out .= '</div>';
 		return $out;
 	}
@@ -289,6 +289,15 @@ class WP_Plugin_Kompassi_Integration {
 		} else {
 			return 0;
 		}
+	}
+
+	/**
+	 *  Returns a "Data provided by Kompassi" image
+	 *
+	 */
+
+	function data_provided_image( ) {
+		return '<div class="kompassi_provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
 	}
 }
 
