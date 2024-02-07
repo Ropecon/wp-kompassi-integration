@@ -1,25 +1,18 @@
 __ = wp.i18n.__;
 _x = wp.i18n._x;
 _n = wp.i18n._n;
-var display_type = '';
-var dates = {};
 var date_filtered = false;
-var popover_timeout = '';
 var cookie;
 var filter_count_total = 0;
 var timeline_grouping = 'room_name';
 var url_opts = new URLSearchParams( window.location.search );
 
+var kompassi_timeouts = {};
 var kompassi_event = {};
 var kompassi_filters = {};
 
 jQuery( function( e ) {
 	block = jQuery( '#kompassi_block_schedule' );
-
-	/*
-	 *
-	 */
-
 
 	/*
 	 *  Set up cookie for user preferences, including favorites
@@ -71,6 +64,7 @@ jQuery( function( e ) {
 	// Get list of dates
 	dates_start = new Date( kompassi_event.start );
 	i = dates_start.setHours( 0 ).valueOf( );
+	let dates = {};
 	while( i < kompassi_event.end ) {
 		dates[i] = kompassi_get_date_formatted( i / 1000, false );
 		i += 24 * 60 * 60 * 1000;
@@ -85,7 +79,6 @@ jQuery( function( e ) {
 	toolbar.prependTo( block );
 
 	/*  Date filter  */
-	/*  TODO: Now #17  */
 	date_section = jQuery( '<section id="kompassi_schedule_dates"  class="kompassi-button-group" />' );
 	//  TODO: Only show "now" if there is anything to show?
 	date_now_toggle = jQuery( '<a class="date-toggle no-icon" data-date="now">' + __( 'Now', 'kompassi-integration' ) + '</a>' );
@@ -174,7 +167,10 @@ jQuery( function( e ) {
 
 		//  Handle filtering
 		filters.on( 'change', '.filter-dimension', kompassi_apply_filters );
-		filters.on( 'keyup', '.filter-text', kompassi_apply_filters );
+		filters.on( 'keyup', '.filter-text', function( ) {
+			clearTimeout( kompassi_timeouts['text-filter'] );
+			kompassi_timeouts['text-filter'] = setTimeout( kompassi_apply_filters, 300 );
+		} );
 	}
 
 	/*  Show event count  */
@@ -214,7 +210,11 @@ jQuery( function( e ) {
 		} );
 	}
 
-	// FAVORITES
+	/*
+	 *  Toggle favorites
+	 *
+	 */
+
 	jQuery( 'body' ).on( 'click', 'article.kompassi-program .favorite', kompassi_toggle_favorite );
 	if( block.attr( 'data-show-favorites-only' ) == 'true' ) {
 		if( block.find( '.favorites-toggle' ) ) {
@@ -234,11 +234,11 @@ jQuery( function( e ) {
 		if( !jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) {
 			return;
 		}
-		clearTimeout( popover_timeout );
-		popover_timeout = setTimeout( kompassi_popover, 300, this, e.pageX );
+		clearTimeout( kompassi_timeouts['popover'] );
+		kompassi_timeouts['popover'] = setTimeout( kompassi_popover, 300, this, e.pageX );
 	} );
 	jQuery( '#kompassi_schedule article' ).on( 'mouseout', function( e ) {
-		clearTimeout( popover_timeout );
+		clearTimeout( kompassi_timeouts['popover'] );
 		jQuery( '#kompassi_program_popover' ).remove( );
 	} );
 
@@ -325,7 +325,6 @@ function kompassi_update_event_count( ) {
 function kompassi_update_date_view_parameters( ) {
 	kompassi_filters.date = { };
 	if( block.find( '.date-toggle.active' ).length > 0 ) {
-		// TODO: #17
 		date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
 		if( date == 'now' ) {
 			kompassi_filters.date.start = new Date( );
