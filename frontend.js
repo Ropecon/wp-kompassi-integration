@@ -107,11 +107,11 @@ jQuery( function( e ) {
 
 	date_section.appendTo( toolbar );
 
-	/*  Filter section  */
-	filters_section = jQuery( '<section id="kompassi_schedule_filters" class="kompassi-button-group has-icon-and-label" />' );
-	toggle_favorites = jQuery( '<a class="favorites-toggle kompassi-icon-favorite">' + __( 'Favorites', 'kompassi-integration' ) + '</a>' ).appendTo( filters_section );
-	toggle_filters = jQuery( '<a class="filters-toggle kompassi-icon-filter">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="indicator"></span></a>' ).appendTo( filters_section );
-	filters_section.appendTo( toolbar );
+	/*  Filtering section  */
+	filtering_section = jQuery( '<section id="kompassi_schedule_filtering" class="kompassi-button-group has-icon-and-label" />' );
+	toggle_favorites = jQuery( '<a class="favorites-toggle kompassi-icon-favorite">' + __( 'Favorites', 'kompassi-integration' ) + '</a>' ).appendTo( filtering_section );
+	toggle_filters = jQuery( '<a class="filters-toggle kompassi-icon-filter">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="indicator"></span></a>' ).appendTo( filtering_section );
+	filtering_section.appendTo( toolbar );
 
 	toggle_favorites.on( 'click', function( ) {
 		jQuery( this ).toggleClass( 'active' );
@@ -127,7 +127,7 @@ jQuery( function( e ) {
 
 	toggle_filters.on( 'click', function( ) {
 		jQuery( this ).toggleClass( 'active' );
-		jQuery( '#kompassi_schedule_filter' ).toggle( );
+		jQuery( '#kompassi_schedule_filters' ).toggleClass( 'visible' );
 	} );
 
 	/*
@@ -137,7 +137,7 @@ jQuery( function( e ) {
 	 */
 
 	if( block.attr( 'data-show-filters' ) == 'true' ) {
-		filters = jQuery( '<section id="kompassi_schedule_filter" />' );
+		filters = jQuery( '<section id="kompassi_schedule_filters" />' );
 
 		//  Text filter
 		filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text search (title, description)', 'kompassi-integration' ) + '" />' ) );
@@ -393,7 +393,7 @@ function kompassi_apply_filters( ) {
 	filter_count_total = 0;
 
 	//  Iterate through each filter
-	jQuery( '#kompassi_schedule_filter .filter' ).each( function( index ) {
+	jQuery( '#kompassi_schedule_filters .filter' ).each( function( index ) {
 		filter = jQuery( this );
 
 		// Dimension filters
@@ -481,7 +481,7 @@ function kompassi_apply_filters( ) {
 
 	// If there is no text search and there is a date search, and there is programmes that have started before the filtered timerange, show notification
 	if( date_filtered ) {
-		if( jQuery( '#kompassi_schedule_filter [name="filter_text"]' ).val( ).length < 1 && jQuery( '#kompassi_schedule article.multiday-overlap' ).length > 0 ) {
+		if( jQuery( '#kompassi_schedule_filters [name="filter_text"]' ).val( ).length < 1 && jQuery( '#kompassi_schedule article.multiday-overlap' ).length > 0 ) {
 			jQuery( '#kompassi_schedule' ).before( '<div class="kompassi-filter-note not-timeline">' + __( 'Programmes which have started before the filtered timerange are listed at the end of the results.', 'kompassi-integration' ) + '<a href="#kompassi_programmes_still_continuing">' + ' ' + _x( 'Jump there!', 'link to another position in the page', 'kompassi-integration') + '</a></div>' );
 			jQuery( '#kompassi_schedule article.multiday-overlap' ).first( ).before( '<h3 class="kompassi-filter-note not-timeline" id="kompassi_programmes_still_continuing"">' + __( 'Programmes still continuing', 'kompassi-integration' ) + '</h3>' );
 		}
@@ -490,9 +490,9 @@ function kompassi_apply_filters( ) {
 
 	//
 	if( filter_count_total > 0 ) {
-		jQuery( '#kompassi_schedule_filter .clear-filters' ).show( );
+		jQuery( '#kompassi_schedule_filters .clear-filters' ).show( );
 	} else {
-		jQuery( '#kompassi_schedule_filter .clear-filters' ).hide( );
+		jQuery( '#kompassi_schedule_filters .clear-filters' ).hide( );
 	}
 
 	kompassi_update_event_count( );

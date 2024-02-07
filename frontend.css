@@ -24,12 +24,10 @@
 	--kompassi-schedule-timeline-time: rgba(0,0,0,0.4);
 
 	/*  Program guide  */
-	/* TODO: variable names? */
 	--kompassi-program-bg: #fff;
 	--kompassi-program-padding: 1em;
 	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
 	--kompassi-program-icon-default: url(images/kompassi.svg);
-
 	--kompassi-program-line-height: 1.4em;
 
 	/* Button groups */
@@ -42,9 +40,6 @@
 	--kompassi-button-radius: 0.3em;
 	--kompassi-button-indicator-color: rgba(200,0,0,1);
 	--kompassi-button-icon-size: 21px;
-	/* ? */
-	--kompassi-button-bg-filters: #648fb5;
-
 
 	/*  Modals  */
 	--kompassi-modal-max-width: 1000px;
@@ -181,32 +176,44 @@
  *
  */
 
-#kompassi_schedule_filter {
+#kompassi_schedule_filters {
 	display: none;
 	margin-bottom: 1em;
-	background-color: #fff;
+	background-color: var(--kompassi-button-bg-active);
+	color: var(--kompassi-button-fg-active);
 	padding: var(--kompassi-button-padding);
 	border-radius: var(--kompassi-button-radius);
 	box-shadow: var(--kompassi-box-shadow);
 }
-	#kompassi_schedule_filter > * {
-		display: inline-block;
-		width: 100%;
+	#kompassi_schedule_filters.visible {
+		display: block;
 	}
+		#kompassi_schedule_filters > * {
+			display: inline-block;
+			width: 100%;
+		}
+			#kompassi_schedule_filters input,
+			#kompassi_schedule_filters select {
+				padding: 0.5em;
+				margin-bottom: 0.3em;
+				background-color: rgba(0,0,0,0.25);
+				color: var(--kompassi-button-fg-active);
+				border: 1px solid var(--kompassi-button-fg-active);
+				border-radius: var(--kompassi-border-radius);
+			}
+			#kompassi_schedule_filters a {
+				color: var(--kompassi-button-fg-active);
+				text-decoration: underline;
+			}
 
-	#kompassi_schedule_filter input,
-	#kompassi_schedule_filter select {
-		padding: 0.5em;
-		margin-bottom: 0.3em;
-	}
 
 @container kompassi-integration (min-width: 700px) {
-	#kompassi_schedule_filter > * {
+	#kompassi_schedule_filters > * {
 		margin-right: 0.5em;
 		width: auto;
 		max-width: 16em;
 	}
-	#kompassi_schedule_filter .filter-text {
+	#kompassi_schedule_filters .filter-text {
 		width: 20em;
 		max-width: 20em;
 	}
