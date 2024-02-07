@@ -28,9 +28,8 @@
 	--kompassi-program-padding: 1em;
 	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
 	--kompassi-program-icon-default: url(images/kompassi.svg);
-	--kompassi-program-line-height: 1.4em;
 
-	/* Button groups */
+	/*  Button groups  */
 	--kompassi-button-fg: #222;
 	--kompassi-button-bg: #fff;
 	--kompassi-button-fg-active: #fff;
@@ -58,7 +57,6 @@
 #kompassi_block_schedule,
 .kompassi_block_schedule {
 	font-family: var(--kompassi-schedule-font);
-	line-height: var(--kompassi-program-line-height);
 }
 
 /*
@@ -112,8 +110,8 @@
 			.kompassi-button-group .indicator:not(:empty) {
 				display: inline-block;
 				margin-left: var(--kompassi-button-padding);
-				width: var(--kompassi-program-line-height);
-				height: var(--kompassi-program-line-height);
+				width: var(--kompassi-button-icon-size);
+				height: var(--kompassi-button-icon-size);
 				background-color: var(--kompassi-button-indicator-color);
 				text-align: center;
 				color: #fff;
@@ -245,7 +243,6 @@
 	border-radius: var(--kompassi-border-radius);
 
 	overflow: hidden;
-	line-height: var(--kompassi-program-line-height);
 }
 
 #kompassi_modal {
@@ -260,7 +257,7 @@
 	}
 		#kompassi_modal .header .title {
 			font-size: 150%;
-			line-height: var(--kompassi-program-line-height);
+			align-self: center;
 		}
 		#kompassi_modal .header .actions {
 			--kompassi-button-padding: 0.35em;
@@ -398,15 +395,15 @@
 
 
 /*
- *  Filter note
+ *  Notes
  *
  */
 
-div.kompassi-filter-note {
+#kompassi_schedule_notes div {
 	padding: 0.5em;
 	background-color: rgba(255,255,204,1);
-	border: 1px solid rgba(205,205,154,1);
-	border-radius: 3px;
+	border-radius: var(--kompassi-border-radius);
+	box-shadow: var(--kompassi-box-shadow);
 	color: #222;
 	margin-bottom: 0.5em;
 }
@@ -415,10 +412,6 @@ div.kompassi-filter-note {
  *  Schedule
  *
  */
-
-#kompassi_schedule {
-	line-height: var(--kompassi-program-line-height);
-}
 
 #kompassi_schedule article > * {
 	display: none;
@@ -445,16 +438,15 @@ div.kompassi-filter-note {
 	letter-spacing: 0.04em;
 }
 
-#kompassi_schedule article .actions > * {
+#kompassi_schedule article .actions > ::before {
+	content: '';
 	display: inline-block;
-	width: var(--kompassi-program-line-height);
-	height: var(--kompassi-program-line-height);
+	width: var(--kompassi-button-icon-size);
+	height: var(--kompassi-button-icon-size);
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	background-size: contain;
 
-	border: none;
-	background-color: transparent;
 	padding: 0;
 	margin: 0;
 }
@@ -469,10 +461,10 @@ div.kompassi-filter-note {
 #kompassi_schedule:not(.timeline) article.multiday-overlap {
 	order: 3;
 }
-#kompassi_schedule:not(.timeline) #kompassi_programmes_still_continuing {
+#kompassi_schedule:not(.timeline) #kompassi_programs_continuing {
 	order: 2;
 }
-	#kompassi_schedule.timeline #kompassi_programmes_still_continuing {
+	#kompassi_schedule.timeline #kompassi_programs_continuing {
 		display: none;
 	}
 
