@@ -188,8 +188,7 @@ class WP_Plugin_Kompassi_Integration {
 						$out .= '  --kompassi-program-color: ' . $value['color'] . '; ';
 					}
 					if( isset( $value['icon'] ) ) {
-						$icon = 'https://wp.ropecon.fi/kompassi_test_data/icons/' . $value['icon'] . '.svg';
-						$out .= '  --kompassi-program-icon: url(' . $icon . '); ';
+						$out .= '  --kompassi-program-icon: url(' . $value['icon'] . '); ';
 					}
 					$out .= ' }';
 				}
