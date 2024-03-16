@@ -14,7 +14,7 @@
 	--kompassi-program-bg: #fff;
 	--kompassi-program-padding: 1em;
 	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
-	--kompassi-program-icon-default: url(images/kompassi.svg);
+	--kompassi-program-icon-default: url(images/kompassi_white.svg);
 
 	/*  Button groups  */
 	--kompassi-button-fg: #222;
@@ -169,6 +169,7 @@
 @container kompassi-integration (min-width: 0px) {
 	#kompassi_schedule_toolbar section {
 		display: inline-block;
+		margin-right: var(--kompassi-button-padding);
 	}
 }
 
@@ -458,7 +459,8 @@
 }
 
 #kompassi_schedule article .times .length {
-	font-size: max(80%, 8pt);
+	font-size: max(85%, 8pt);
+	text-transform: none;
 	color: rgba(0,0,0,0.5);
 	margin-left: 0.4em;
 }
@@ -554,6 +556,13 @@
 	}
 		#kompassi_schedule.timeline .day_hint:first-of-type {
 			border-left: 1px solid transparent;
+		}
+		#kompassi_schedule.timeline .day_hint.sticky {
+			background-color: var(--kompassi-schedule-timeline-bg);
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 3em;
 		}
 
 	#kompassi_schedule.timeline .ruler {

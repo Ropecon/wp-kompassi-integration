@@ -1,0 +1,22 @@
+.editor-styles-wrapper [data-type^='kompassi-integration'] .wp-block {
+   position: relative;
+   border-radius: var(--kompassi-border-radius);
+   box-shadow: var(--kompassi-box-shadow);
+   padding: 1em 3.5em 1em 1em;
+   min-height: 1.5em;
+}
+.editor-styles-wrapper [data-type^='kompassi-integration'] .wp-block::before {
+   content: '';
+   display: block;
+   position: absolute;
+   top: 0;
+   right: 0;
+   width: 3.5em;
+   height: 100%;
+   background-image: url(images/kompassi.svg);
+   background-position: 0.5em 0.5em;
+   background-size: 2.5em auto;
+   background-repeat: no-repeat;
+   border-top-left-radius: var(--kompassi-border-radius);
+   border-bottom-left-radius: var(--kompassi-border-radius);
+}

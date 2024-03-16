@@ -7,7 +7,10 @@
  *
  */
 
+
 class WP_Plugin_Kompassi_Integration {
+	private string $ver;
+
 	function __construct( ) {
 		add_action( 'init', array( &$this, 'init' ) );
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
@@ -26,12 +29,10 @@ class WP_Plugin_Kompassi_Integration {
 			'kompassi-integration/schedule',
 			array(
 				'editor_script' => 'kompassi-integration-blocks',
+				'is_dynamic' => true,
 				'render_callback' => array( &$this, 'block_schedule' ),
 				'attributes' => array(
 					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
-					'show_filters' => array( 'type' => 'boolean', 'default' => true ),
-					'show_display_styles' => array( 'type' => 'boolean', 'default' => true ),
-					'show_favorites_only' => array( 'type' => 'boolean', 'default' => false )
 				),
 			)
 		);
@@ -93,11 +94,15 @@ class WP_Plugin_Kompassi_Integration {
 		);
 		wp_localize_script( 'kompassi-integration-frontend', 'kompassi_options', $js_strings );
 
+		wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
 		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ), array( ), $this->ver );
 		wp_enqueue_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
 	}
 
 	function enqueue_block_editor_assets( ) {
+		wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
+		wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'editor.css', __FILE__ ), array( ), $this->ver );
+
 		wp_register_script( 'kompassi-integration-blocks', plugins_url( 'blocks.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n' ), $this->ver );
 		wp_set_script_translations( 'kompassi-integration-blocks', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 	}
@@ -124,6 +129,8 @@ class WP_Plugin_Kompassi_Integration {
 	function get_data( ) {
 		// Get program JSON and convert it into array
 		// TODO: #10 - Only allow specific format, eg. only ask for the event slug?
+		$data_url = get_option( 'kompassi_integration_feed_url' );
+
 		$json = file_get_contents( get_option( 'kompassi_integration_feed_url' ) );
 		$program = json_decode( $json, true );
 		foreach( $program['programs'] as $index => $prog ) {
@@ -146,23 +153,25 @@ class WP_Plugin_Kompassi_Integration {
 	function block_schedule( $attributes ) {
 		$html_attrs = array( 'class' => '' );
 		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
-		if( $attributes['show_filters'] ) { $html_attrs['data-show-filters'] = 'true'; }
-		if( $attributes['show_display_styles'] ) { $html_attrs['data-show-display-styles'] = 'true'; }
-		if( $attributes['show_favorites_only'] ) { $html_attrs['data-show-favorites-only'] = 'true'; }
 
 		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . '>';
 
 		/*  Schedule  */
 		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
-		$this->data = $this->get_data( );
-		foreach( $this->data['programs'] as $p ) {
-			$out .= $this->markup_program( $p, $this->data['dimensions'] );
+		$data = $this->get_data( );
+
+		if( !$data || count( $data ) < 1 ) {
+			return;
+		}
+
+		foreach( $data['programs'] as $p ) {
+			$out .= $this->markup_program( $p, $data['dimensions'] );
 		}
 		$out .= '</section>';
 
 		/*  TODO: For now, output dimensions JSON with a script tag right here... */
-		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $this->data['dimensions'] ) . '</script>';
-		$out .= '<script>kompassi_schedule_programs = ' . json_encode( $this->data['programs'] ) . '</script>';
+		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
+		$out .= '<script>kompassi_schedule_programs = ' . json_encode( $data['programs'] ) . '</script>';
 
 		/*
 		 *  Program colors
@@ -171,7 +180,7 @@ class WP_Plugin_Kompassi_Integration {
 		 *
 		 */
 		$out .= '<style>';
-		foreach( $this->data['dimensions'] as $dimension_slug => $dimension ) {
+		foreach( $data['dimensions'] as $dimension_slug => $dimension ) {
 			foreach( $dimension['values'] as $value_slug => $value ) {
 				if( isset( $value['color'] ) || isset( $value['icon'] ) ) {
 					$out .= ' #kompassi_schedule article[data-' . $dimension_slug . '="' .  $value_slug . '"] {';
@@ -179,7 +188,7 @@ class WP_Plugin_Kompassi_Integration {
 						$out .= '  --kompassi-program-color: ' . $value['color'] . '; ';
 					}
 					if( isset( $value['icon'] ) ) {
-						$icon = plugins_url( 'data/icons/' . $value['icon'] . '.svg', __FILE__ );
+						$icon = 'https://wp.ropecon.fi/kompassi_test_data/icons/' . $value['icon'] . '.svg';
 						$out .= '  --kompassi-program-icon: url(' . $icon . '); ';
 					}
 					$out .= ' }';
