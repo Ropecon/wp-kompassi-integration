@@ -66,7 +66,7 @@ jQuery( function( e ) {
 	i = dates_start.setHours( 0 ).valueOf( );
 	let dates = {};
 	while( i < kompassi_event.end ) {
-		dates[i] = kompassi_get_date_formatted( i / 1000, false );
+		dates[i] = kompassi_get_date_formatted( i / 1000, true, false );
 		i += 24 * 60 * 60 * 1000;
 	}
 
@@ -690,12 +690,13 @@ function kompassi_get_display_type( display_type = '' ) {
  *
  *  @param {int} timestamp Unix timestamp
  *  @param {bool} weekday Whether to return the weekday name or not
+ *  @param {bool} date Whether to return the date or not
  *
  *  @return {string} Formatted date
  *
  */
 
-function kompassi_get_date_formatted( timestamp, weekday = true ) {
+function kompassi_get_date_formatted( timestamp, weekday = true, date = true ) {
 	datetime_obj = new Date( timestamp * 1000 );
 	const dayNames = [
 		_x( 'Sun', 'day abbreviation', 'kompassi-integration' ),
@@ -706,11 +707,17 @@ function kompassi_get_date_formatted( timestamp, weekday = true ) {
 		_x( 'Fri', 'day abbreviation', 'kompassi-integration' ),
 		_x( 'Sat', 'day abbreviation', 'kompassi-integration' )
 	];
+	formatted = '';
 	if( weekday == true ) {
-		return dayNames[datetime_obj.getDay( )] + ' ' + datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
-	} else {
-		return datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
+		formatted += dayNames[datetime_obj.getDay( )];
 	}
+	if( weekday == true && date == true ) {
+		formatted += ' ';
+	}
+	if( date == true ) {
+		formatted += datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
+	}
+	return formatted;
 }
 
 /**
