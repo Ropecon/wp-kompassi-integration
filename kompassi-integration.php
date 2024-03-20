@@ -15,8 +15,7 @@ class WP_Plugin_Kompassi_Integration {
 		add_action( 'init', array( &$this, 'init' ) );
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
-		add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
-		add_action( 'enqueue_block_editor_assets', array( &$this, 'enqueue_block_editor_assets' ) );
+		add_action( 'enqueue_block_assets', array( &$this, 'enqueue_block_assets' ) );
 		add_filter( 'block_categories_all', array( &$this, 'block_categories_all' ), 10, 2 );
 
 		$this->ver = time( );
@@ -84,27 +83,28 @@ class WP_Plugin_Kompassi_Integration {
 		}
 	}
 
-	function wp_enqueue_scripts( ) {
-		wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
-		wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
-		wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
-		$js_strings = array(
-			'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
-			'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 )
-		);
-		wp_localize_script( 'kompassi-integration-frontend', 'kompassi_options', $js_strings );
-
-		wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
-		wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ), array( ), $this->ver );
-		wp_enqueue_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
-	}
-
-	function enqueue_block_editor_assets( ) {
-		wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
-		wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'editor.css', __FILE__ ), array( ), $this->ver );
-
+	function enqueue_block_assets( ) {
 		wp_register_script( 'kompassi-integration-blocks', plugins_url( 'blocks.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n' ), $this->ver );
 		wp_set_script_translations( 'kompassi-integration-blocks', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
+
+		if( !is_admin( ) && has_block( 'kompassi-integration/schedule' ) ) {
+			wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
+			wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
+
+			wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
+			wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
+			$js_strings = array(
+				'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
+				'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 )
+			);
+			wp_localize_script( 'kompassi-integration-frontend', 'kompassi_options', $js_strings );
+
+			wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ), array( ), $this->ver );
+			wp_enqueue_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
+		} else {
+			wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
+			wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'editor.css', __FILE__ ), array( ), $this->ver );
+		}
 	}
 
 	function block_categories_all( $categories, $editor_context ) {
