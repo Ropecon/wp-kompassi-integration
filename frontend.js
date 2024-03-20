@@ -248,6 +248,12 @@ jQuery( function( e ) {
 		kompassi_apply_filters( );
 	}
 
+	if( kompassi_user_options.prog ) {
+		if( jQuery( '#' + kompassi_user_options.prog ).length > 0 ) {
+			kompassi_show_modal( jQuery( '#' + kompassi_user_options.prog ) );
+		}
+	}
+
 	//  Display style
 	if( kompassi_user_options.display && Object.keys( styles ).indexOf( kompassi_user_options.display ) > -1 ) {
 		kompassi_setup_display( kompassi_user_options.display );
@@ -279,25 +285,7 @@ jQuery( function( e ) {
 		if( jQuery( e.target ).hasClass( 'favorite' ) ) {
 			return;
 		}
-		modal = jQuery( this ).clone( );
-		modal.attr( 'id', 'kompassi_modal' ).attr( 'style', '' ).addClass( 'kompassi_block_schedule' );
-		modal.children( '.title' ).css( 'position', '' );
-		modal.find( '.actions' ).addClass( 'kompassi-button-group has-icon-only' ).append( '<a class="close kompassi-icon-close" />' );
-
-		// Modal header
-		modal.children( '.title, .actions' ).wrapAll( '<div class="header" />' );
-		// Modal content
-		content = jQuery( '<div class="content" />' ).appendTo( modal );
-		modal.children( ':not(.header)' ).detach( ).appendTo( content );
-		content.children( '.short_blurb, .description' ).wrapAll( '<div class="main" />' );
-		meta = jQuery( '<div class="meta" />' );
-		content.children( '.dimension' ).wrapAll( '<div class="dimensions" />' );
-		content.children( ':not(.main)' ).detach( ).appendTo( meta );
-		meta.appendTo( content );
-		content.appendTo( modal );
-
-		modal.appendTo( jQuery( 'body' ) );
-		jQuery( 'body' ).append( '<div id="kompassi_modal_bg" />' ).css( 'overflow', 'hidden' );
+		kompassi_show_modal( jQuery( this ) );
 	} );
 
 	// Close modals when clicking on modal bg or close button or when pressing Esc
@@ -531,7 +519,7 @@ function kompassi_apply_filters( ) {
 		jQuery( '#kompassi_schedule_filters .clear-filters' ).hide( );
 	}
 
-	kompassi_update_url_with_filters( );
+	kompassi_update_url_hash( );
 	kompassi_update_event_count( );
 }
 
@@ -651,17 +639,47 @@ function kompassi_revert_timeline_layout( ) {
 }
 
 /*
- *  Modal: Close
+ *  Modal
  *
  */
+
+
+/*  Open  */
+
+function kompassi_show_modal( program ) {
+	modal = program.clone( );
+	modal.attr( 'id', 'kompassi_modal' ).attr( 'style', '' ).addClass( 'kompassi_block_schedule' );
+	modal.children( '.title' ).css( 'position', '' );
+	modal.find( '.actions' ).addClass( 'kompassi-button-group has-icon-only' ).append( '<a class="close kompassi-icon-close" />' );
+
+	// Modal header
+	modal.children( '.title, .actions' ).wrapAll( '<div class="header" />' );
+	// Modal content
+	content = jQuery( '<div class="content" />' ).appendTo( modal );
+	modal.children( ':not(.header)' ).detach( ).appendTo( content );
+	content.children( '.short_blurb, .description' ).wrapAll( '<div class="main" />' );
+	meta = jQuery( '<div class="meta" />' );
+	content.children( '.dimension' ).wrapAll( '<div class="dimensions" />' );
+	content.children( ':not(.main)' ).detach( ).appendTo( meta );
+	meta.appendTo( content );
+	content.appendTo( modal );
+
+	modal.appendTo( jQuery( 'body' ) );
+	jQuery( 'body' ).append( '<div id="kompassi_modal_bg" />' ).css( 'overflow', 'hidden' );
+
+	kompassi_update_url_hash( );
+}
+
+/*  Close  */
 
 function kompassi_close_modal( ) {
 	jQuery( '#kompassi_modal_bg, #kompassi_modal' ).remove( );
 	jQuery( 'body' ).css( 'overflow', 'auto' );
+	kompassi_update_url_hash( );
 }
 
 /*
- *  Show popover
+ *  Popover
  *
  */
 
@@ -685,6 +703,7 @@ function kompassi_popover( program, posX ) {
  */
 
 function kompassi_schedule_timeline_sticky_header( ) {
+	return; // TODO
 	jQuery( '#kompassi_schedule.timeline' ).each( function( ) {
 		var top = this.offsetTop;
 		var bottom = top + this.scrollHeight;
@@ -767,28 +786,33 @@ function kompassi_get_difference_in_hours( a, b ) {
  *
  */
 
-function kompassi_update_url_with_filters( ) {
+function kompassi_update_url_hash( ) {
 	opts = [];
-	// Favorites
-	if( jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
-		opts.push( 'favorites:1' );
-	}
 
-	// Filters
-	jQuery( '[name^="filter_"]' ).each( function( ) {
-		filter = jQuery( this );
-		opt_name = filter.attr( 'name' ).substring( 7 ); // Strip filter_
-		if( filter.prop( 'tagName' ) == 'SELECT' ) {
-			if( filter.val( ) != 0 ) {
-				opts.push( opt_name + ':' + filter.val( ) );
-			}
-		} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
-			console.log( filter );
-			if( filter.val( ) ) {
-				opts.push( opt_name + ':' + filter.val( ) );
-			}
+	// If program modal is open, dismiss other options
+	if( jQuery( '#kompassi_modal' ).length > 0 ) {
+		opts.push( 'prog:' + jQuery( '#kompassi_modal' ).attr( 'data-id' ) );
+	} else {
+		// Favorites
+		if( jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
+			opts.push( 'favorites:1' );
 		}
-	} );
+
+		// Filters
+		jQuery( '[name^="filter_"]' ).each( function( ) {
+			filter = jQuery( this );
+			opt_name = filter.attr( 'name' ).substring( 7 ); // Strip filter_
+			if( filter.prop( 'tagName' ) == 'SELECT' ) {
+				if( filter.val( ) != 0 ) {
+					opts.push( opt_name + ':' + filter.val( ) );
+				}
+			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
+				if( filter.val( ) ) {
+					opts.push( opt_name + ':' + filter.val( ) );
+				}
+			}
+		} );
+	}
 
 	window.location.hash = opts.join( '/' );
 }
