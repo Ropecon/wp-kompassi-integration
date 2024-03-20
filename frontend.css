@@ -456,7 +456,12 @@
 
 	padding: 0;
 	margin: 0;
+	transition: 100ms all;
 }
+	#kompassi_schedule article .actions > .favorite:hover::before {
+		margin: -2px;
+		padding: 2px;
+	}
 
 #kompassi_schedule article .times .length {
 	font-size: max(85%, 8pt);
