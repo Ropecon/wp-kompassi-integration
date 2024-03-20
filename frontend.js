@@ -206,6 +206,7 @@ jQuery( function( e ) {
 	 *
 	 */
 
+	filters_from_url = false;
 	hash = new URL( window.location ).hash.substring( 1 ).split( '/' );
 	jQuery( hash ).each( function( opt_pair ) {
 		opt = this.split( ':' );
@@ -214,18 +215,42 @@ jQuery( function( e ) {
 		} else {
 			kompassi_user_options[opt[0]] = opt[1];
 		}
+
+		// Filters
+		filter = jQuery( '[name="filter_' + opt[0] + '"]' );
+		if( filter.length > 0 ) {
+			if( filter.prop( 'tagName' ) == 'SELECT' ) {
+				filter.find( '[value="' + opt[1] + '"]').attr( 'selected', 'selected' );
+			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
+				filter.val( opt[1] );
+			}
+			filters_from_url = true;
+		}
 	} );
 
-	//  Favorites
-	if( kompassi_user_options['favorites'] ) {
-		if( !jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
-			jQuery( '.favorites-toggle' ).trigger( 'click' );
+	// If filters are set from URL, open filters toolbar
+	if( filters_from_url == true ) {
+		jQuery( '.filters-toggle' ).addClass( 'active' );
+		jQuery( '#kompassi_schedule_filters' ).toggleClass( 'visible' );
+	}
+
+	// TODO: Date
+
+	// Favorites
+	if( kompassi_user_options.favorites ) {
+		if( jQuery( '.favorites-toggle' ).addClass( 'active' ) ) {
+			filters_from_url = true;
 		}
 	}
 
+	// Apply filters
+	if( filters_from_url == true ) {
+		kompassi_apply_filters( );
+	}
+
 	//  Display style
-	if( kompassi_user_options['display'] && Object.keys( styles ).indexOf( kompassi_user_options['display'] ) > -1 ) {
-		kompassi_setup_display( kompassi_user_options['display'] );
+	if( kompassi_user_options.display && Object.keys( styles ).indexOf( kompassi_user_options.display ) > -1 ) {
+		kompassi_setup_display( kompassi_user_options.display );
 	}
 
 	/*
@@ -506,6 +531,7 @@ function kompassi_apply_filters( ) {
 		jQuery( '#kompassi_schedule_filters .clear-filters' ).hide( );
 	}
 
+	kompassi_update_url_with_filters( );
 	kompassi_update_event_count( );
 }
 
@@ -734,6 +760,37 @@ function kompassi_get_difference_in_hours( a, b ) {
 	ms_to_hour = 1000 * 60 * 60;
 	difference = b - a;
 	return difference / ms_to_hour;
+}
+
+/**
+ *
+ *
+ */
+
+function kompassi_update_url_with_filters( ) {
+	opts = [];
+	// Favorites
+	if( jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
+		opts.push( 'favorites:1' );
+	}
+
+	// Filters
+	jQuery( '[name^="filter_"]' ).each( function( ) {
+		filter = jQuery( this );
+		opt_name = filter.attr( 'name' ).substring( 7 ); // Strip filter_
+		if( filter.prop( 'tagName' ) == 'SELECT' ) {
+			if( filter.val( ) != 0 ) {
+				opts.push( opt_name + ':' + filter.val( ) );
+			}
+		} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
+			console.log( filter );
+			if( filter.val( ) ) {
+				opts.push( opt_name + ':' + filter.val( ) );
+			}
+		}
+	} );
+
+	window.location.hash = opts.join( '/' );
 }
 
 /**
