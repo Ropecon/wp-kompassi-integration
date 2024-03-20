@@ -80,9 +80,9 @@ jQuery( function( e ) {
 
 	/*  Date filter  */
 	date_section = jQuery( '<section id="kompassi_schedule_dates"  class="kompassi-button-group" />' );
-	//  TODO: Only show "now" if there is anything to show?
-	date_now_toggle = jQuery( '<a class="date-toggle no-icon" data-date="now">' + __( 'Now', 'kompassi-integration' ) + '</a>' );
-	date_section.append( date_now_toggle );
+	//  TODO: Only show "Next" if there is anything to show?
+	date_next_toggle = jQuery( '<a class="date-toggle no-icon" data-date="next">' + __( 'Next', 'kompassi-integration' ) + '</a>' );
+	date_section.append( date_next_toggle );
 	jQuery.each( dates, function( timestamp, label ) {
 		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + timestamp + '">' + label + '</a>' );
 		date_section.append( date_toggle );
@@ -332,7 +332,7 @@ function kompassi_update_date_view_parameters( ) {
 	kompassi_filters.date = { };
 	if( block.find( '.date-toggle.active' ).length > 0 ) {
 		date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
-		if( date == 'now' ) {
+		if( date == 'next' ) {
 			kompassi_filters.date.start = new Date( );
 			// This is for debugging purposes...
 			if( kompassi_user_options.now ) {
