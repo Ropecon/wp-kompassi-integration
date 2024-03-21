@@ -81,7 +81,7 @@ jQuery( function( e ) {
 	/*  Date filter  */
 	date_section = jQuery( '<section id="kompassi_schedule_dates"  class="kompassi-button-group" />' );
 	//  TODO: Only show "Next" if there is anything to show?
-	date_next_toggle = jQuery( '<a class="date-toggle no-icon" data-date="next">' + __( 'Next', 'kompassi-integration' ) + '</a>' );
+	date_next_toggle = jQuery( '<a class="date-toggle no-icon" data-date="next">' + _x( 'Next', 'date filter', 'kompassi-integration' ) + '</a>' );
 	date_section.append( date_next_toggle );
 	jQuery.each( dates, function( timestamp, label ) {
 		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + timestamp + '">' + label + '</a>' );

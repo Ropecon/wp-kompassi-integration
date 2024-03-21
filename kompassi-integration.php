@@ -4,6 +4,7 @@
  *  Description:
  *  Author: Pasi Lallinaho
  *  Version: 2023
+ *  Text Domain: kompassi-integration
  *
  */
 

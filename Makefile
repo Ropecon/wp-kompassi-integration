@@ -1,5 +1,5 @@
 pot:
-	wp i18n make-pot --exclude=.local . languages/kompassi-integration.pot
+	wp i18n make-pot . languages/kompassi-integration.pot
 
 json:
 	rm languages/*.json
