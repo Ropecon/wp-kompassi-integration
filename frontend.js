@@ -66,7 +66,11 @@ jQuery( function( e ) {
 	i = dates_start.setHours( 0 ).valueOf( );
 	let dates = {};
 	while( i < kompassi_event.end ) {
-		dates[i] = kompassi_get_date_formatted( i / 1000, true, false );
+		dates[i] = {
+			'long': kompassi_get_date_formatted( i / 1000, true, true ),
+			'short': kompassi_get_date_formatted( i / 1000, true, false ),
+			'ymd': dayjs( i ).format( 'YYYY-MM-DD' )
+		};
 		i += 24 * 60 * 60 * 1000;
 	}
 
@@ -83,8 +87,8 @@ jQuery( function( e ) {
 	//  TODO: Only show "Next" if there is anything to show?
 	date_next_toggle = jQuery( '<a class="date-toggle no-icon" data-date="next">' + _x( 'Next', 'date filter', 'kompassi-integration' ) + '</a>' );
 	date_section.append( date_next_toggle );
-	jQuery.each( dates, function( timestamp, label ) {
-		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + timestamp + '">' + label + '</a>' );
+	jQuery.each( dates, function( timestamp, labels ) {
+		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + labels.ymd + '" data-timestamp="' + timestamp + '" title="' + labels.long + '">' + labels.short + '</a>' );
 		date_section.append( date_toggle );
 	} );
 
@@ -234,13 +238,18 @@ jQuery( function( e ) {
 		jQuery( '#kompassi_schedule_filters' ).toggleClass( 'visible' );
 	}
 
-	// TODO: Date
+	// Date
+	if( kompassi_user_options.date ) {
+		if( jQuery( '.date-toggle[data-date="' + kompassi_user_options.date + '"]' ).length > 0 ) {
+		 	jQuery( '.date-toggle[data-date="' + kompassi_user_options.date + '"]' ).addClass( 'active' );
+			filters_from_url = true;
+		}
+	}
 
 	// Favorites
 	if( kompassi_user_options.favorites ) {
-		if( jQuery( '.favorites-toggle' ).addClass( 'active' ) ) {
-			filters_from_url = true;
-		}
+		jQuery( '.favorites-toggle' ).addClass( 'active' );
+		filters_from_url = true;
 	}
 
 	// Apply filters
@@ -344,8 +353,8 @@ function kompassi_update_event_count( ) {
 function kompassi_update_date_view_parameters( ) {
 	kompassi_filters.date = { };
 	if( block.find( '.date-toggle.active' ).length > 0 ) {
-		date = block.find( '.date-toggle.active' ).first( ).attr( 'data-date' );
-		if( date == 'next' ) {
+		selected_date = block.find( '.date-toggle.active' ).first( );
+		if( selected_date.attr( 'data-date' ) == 'next' ) {
 			kompassi_filters.date.start = new Date( );
 			// This is for debugging purposes...
 			if( kompassi_user_options.now ) {
@@ -354,11 +363,12 @@ function kompassi_update_date_view_parameters( ) {
 			// TODO: Allow user to select how much program to show?
 			kompassi_filters.date.length_hours = 2;
 		} else {
+			timestamp = selected_date.attr( 'data-timestamp' );
 			start_of_day = parseInt( kompassi_options.schedule_start_of_day );
 			end_of_day = parseInt( kompassi_options.schedule_end_of_day );
 
 			// Calculate Start of Day
-			kompassi_filters.date.start = new Date( parseInt( date ) + ( start_of_day * 3600 ) * 1000 );
+			kompassi_filters.date.start = new Date( parseInt( timestamp ) + ( start_of_day * 3600 ) * 1000 );
 			if( kompassi_filters.date.start < kompassi_event.start ) {
 				// Never start before event start (be nice to timeline)
 				kompassi_filters.date.start = new Date( kompassi_event.start );
@@ -793,6 +803,11 @@ function kompassi_update_url_hash( ) {
 	if( jQuery( '#kompassi_modal' ).length > 0 ) {
 		opts.push( 'prog:' + jQuery( '#kompassi_modal' ).attr( 'data-id' ) );
 	} else {
+		// Date
+		if( jQuery( '.date-toggle.active' ).length > 0 ) {
+			opts.push( 'date:' + jQuery( '.date-toggle.active' ).first( ).attr( 'data-date' ) );
+		}
+
 		// Favorites
 		if( jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
 			opts.push( 'favorites:1' );

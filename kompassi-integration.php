@@ -91,6 +91,7 @@ class WP_Plugin_Kompassi_Integration {
 		if( !is_admin( ) && has_block( 'kompassi-integration/schedule' ) ) {
 			wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
 			wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
+			wp_enqueue_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
 
 			wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
 			wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
