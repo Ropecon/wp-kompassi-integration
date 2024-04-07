@@ -46,10 +46,6 @@ class WP_Plugin_Kompassi_Integration {
 				'label' => __( 'Event Slug', 'kompassi-integration' ),
 				'description' => __( 'Event slug in Kompassi.', 'kompassi-integration' )
 			),
-			'feed_url' => array(
-				'label' =>  __( 'Feed URL', 'kompassi-integration' ),
-				'description' => __( 'Feed URL where program data is loaded from.', 'kompassi-integration' )
-			),
 			'schedule_start_of_day' => array(
 				'label' =>  __( 'Start of Day', 'kompassi-integration' ),
 				'description' => __( 'Start of Day when a single day is shown.', 'kompassi-integration' )
