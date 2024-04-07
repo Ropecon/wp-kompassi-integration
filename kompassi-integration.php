@@ -53,6 +53,10 @@ class WP_Plugin_Kompassi_Integration {
 			'schedule_end_of_day' => array(
 				'label' =>  __( 'End of Day', 'kompassi-integration' ),
 				'description' => __( 'End of Day when a single day is shown.', 'kompassi-integration' )
+			),
+			'hidden_dimensions' => array(
+				'label' => __( 'Hidden Dimensions', 'kompassi-integration' ),
+				'description' => __( 'Comma-separated list of dimension slugs that should be hidden from filters.', 'kompassi-integration' )
 			)
 		);
 
@@ -97,7 +101,8 @@ class WP_Plugin_Kompassi_Integration {
 			wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 			$js_strings = array(
 				'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
-				'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 )
+				'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 ),
+				'hidden_dimensions' => explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) ),
 			);
 			wp_localize_script( 'kompassi-integration-frontend', 'kompassi_options', $js_strings );
 
@@ -187,9 +192,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</section>';
 
 		/*  TODO: For now, output dimensions JSON with a script tag right here... */
-//		$out .= '<script>kompassi_event_schedule = ' . $data . '</script>';
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
-		$out .= '<script>kompassi_schedule_programs = ' . json_encode( $data['programs'] ) . '</script>';
 
 		/*
 		 *  Program colors

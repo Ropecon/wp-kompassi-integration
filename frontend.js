@@ -129,7 +129,9 @@ jQuery( function( e ) {
 	//  Dimension filters
 	//  TODO: Possibility to hide dimensions from this list
 	jQuery.each( kompassi_schedule_dimensions, function( index, dimension ) {
-		console.log( dimension );
+		if( kompassi_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
+			return;
+		}
 		select = jQuery( '<select class="filter filter-dimension" name="filter_' + dimension.slug + '" data-dimension="' + dimension.slug + '" />' );
 		select.append( jQuery( '<option value="0">-- ' + dimension.title + ' --</option>' ) );
 		jQuery.each( this.values, function( index, value ) {
