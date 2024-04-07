@@ -128,15 +128,16 @@ class WP_Plugin_Kompassi_Integration {
 
 	/*
 	 *  Fetch data from GraphQL
+	 *  TODO: #9 - Caching?
 	 *
 	 */
 
 	function get_data_graphql( ) {
 		$query = array(
-			'query' => file_get_contents( 'graphql/ProgramListQuery.gql' ),
+			'query' => file_get_contents( plugins_url( 'graphql/ProgramListQuery.gql', __FILE__ ) ),
 			'variables' => array(
 				'eventSlug' => get_option( 'kompassi_integration_event_slug' ),
-				'language' => 'fi' // TODO
+				'locale' => get_locale( )
 			)
 		);
 		$options = array(
@@ -148,44 +149,9 @@ class WP_Plugin_Kompassi_Integration {
 			)
 		);
 		$context = stream_context_create( $options );
-		$json = file_get_contents( 'https://kompassi.eu/graphql/', false, $context );
-
-		$program = json_decode( $json, true );
-		foreach( $program['programs'] as $index => $prog ) {
-			if( isset( $prog['start_time'] ) ) {
-				$program['programs'][$index]['start_timestamp'] = strtotime( $prog['start_time'] );
-			}
-			if( isset( $prog['end_time'] ) ) {
-				$program['programs'][$index]['end_timestamp'] = strtotime( $prog['end_time'] );
-			}
-		}
-
-		return $program;
-	}
-
-	/*
-	 *  Fetch data from URL
-	 *  TODO: #9 - Caching?
-	 *
-	 */
-
-	function get_data_url( ) {
-		// Get program JSON and convert it into array
-		// TODO: #10 - Only allow specific format, eg. only ask for the event slug?
-		$data_url = get_option( 'kompassi_integration_feed_url' );
-
-		$json = file_get_contents( get_option( 'kompassi_integration_feed_url' ) );
-		$program = json_decode( $json, true );
-		foreach( $program['programs'] as $index => $prog ) {
-			if( isset( $prog['start_time'] ) ) {
-				$program['programs'][$index]['start_timestamp'] = strtotime( $prog['start_time'] );
-			}
-			if( isset( $prog['end_time'] ) ) {
-				$program['programs'][$index]['end_timestamp'] = strtotime( $prog['end_time'] );
-			}
-		}
-
-		return $program;
+		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
+		$response = json_decode( $json, true );
+		return $response['data']['event']['program'];
 	}
 
 	/*
@@ -201,11 +167,10 @@ class WP_Plugin_Kompassi_Integration {
 
 		/*  Schedule  */
 		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
-		if( strlen( get_option( 'kompassi_integration_event_slug' ) ) > 0 && 1==2 ) {
+		if( strlen( get_option( 'kompassi_integration_event_slug' ) ) > 0 ) {
 			$data = $this->get_data_graphql( );
-			var_dump( $data );
 		} else {
-			$data = $this->get_data_url( );
+			return;
 		}
 
 		if( !$data || count( $data ) < 1 ) {
@@ -218,6 +183,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</section>';
 
 		/*  TODO: For now, output dimensions JSON with a script tag right here... */
+//		$out .= '<script>kompassi_event_schedule = ' . $data . '</script>';
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
 		$out .= '<script>kompassi_schedule_programs = ' . json_encode( $data['programs'] ) . '</script>';
 
@@ -256,13 +222,24 @@ class WP_Plugin_Kompassi_Integration {
 
 	function markup_program( $program, $dimensions ) {
 		ob_start( );
+		if( is_array( $program['scheduleItems'] ) && count( $program['scheduleItems'] ) > 0 ) {
+			var_dump( $program['scheduleItems'] );
+		} else {
+			echo 'no scheduleitems';
+		}
+		$program['start'] = $program['scheduleItems'][0]['startTimeUnixSeconds'];
+		$program['end'] = $program['scheduleItems'][0]['endTimeUnixSeconds'];
+		$program['length'] = $program['scheduleItems'][0]['lengthMinutes'];
+		global $idc;
+		$program['identifier'] = $idc; $idc++;
+
 		$attrs = array(
 			'id' => $program['identifier'],
 			'length' => $program['length'], // Required for timeline calculations
-			'start' => $program['start_timestamp'],
-			'end' => $program['end_timestamp'],
+			'start' => $program['start'],
+			'end' => $program['end'],
 		);
-		foreach( $program['dimensions'] as $dimension => $values ) {
+		foreach( $program['cachedDimensions'] as $dimension => $values ) {
 			if( count( $values ) > 0 ) {
 				$attrs[$dimension] = $values[0];
 			}
@@ -276,7 +253,7 @@ class WP_Plugin_Kompassi_Integration {
 		?>
 			<article id="<?php echo $program['identifier']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 				<?php
-					foreach( array( 'title', 'room_name', 'times', 'description', 'short_blurb', 'formatted_hosts' ) as $key ) {
+					foreach( array( 'title', 'times', 'description', 'short_blurb', 'cachedHosts' ) as $key ) {
 						$value = '';
 						if( isset( $program[$key] ) ) {
 							$value = $program[$key];
@@ -287,13 +264,13 @@ class WP_Plugin_Kompassi_Integration {
 							// TODO: #11 - Get directly from Kompassi?
 							if( 'times' == $key ) {
 								$offset = get_option( 'gmt_offset' ) * 60 * 60;
-								$value = date_i18n( 'D j.n. k\l\o H.i', $program['start_timestamp'] + $offset );
+								$value = date_i18n( 'D j.n. k\l\o H.i', $program['start'] + $offset );
 								$value .= ' – ';
-								if( date_i18n( 'Ymd', $program['start_timestamp'] + $offset ) == date_i18n( 'Ymd', $program['end_timestamp'] + $offset ) ) {
-									$value .= date_i18n( 'H.i', $program['end_timestamp'] + $offset );
+								if( date_i18n( 'Ymd', $program['start'] + $offset ) == date_i18n( 'Ymd', $program['end'] + $offset ) ) {
+									$value .= date_i18n( 'H.i', $program['end'] + $offset );
 								} else {
 									// If multiday, show both days
-									$value .= date_i18n( 'D j.n. k\l\o H.i', $program['end_timestamp'] + $offset );
+									$value .= date_i18n( 'D j.n. k\l\o H.i', $program['end'] + $offset );
 								}
 								$value .= ' <span class="length">';
 								$h = $program['length'] / 60;
@@ -313,7 +290,7 @@ class WP_Plugin_Kompassi_Integration {
 						}
 					}
 					// Traverse through dimensions
-					foreach( $program['dimensions'] as $dimension => $data ) {
+					foreach( $program['cachedDimensions'] as $dimension => $data ) {
 						echo '<div class="dimension ' . $dimension . '" style="grid-area: ' . $dimension . ';">';
 						foreach( $data as $slug ) {
 							if( $slug != 'ANY' && $slug != 'OTHER' ) {
