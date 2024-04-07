@@ -286,12 +286,16 @@
 	flex-direction: column;
 }
 	#kompassi_modal .header {
-		flex: 0 0 min-content;
+		display: grid;
+		grid-template-columns: auto max-content;
+		grid-template-areas: 'title actions';
+		grid-gap: 1.5em;
 		padding: 1.5em;
 		background-color: #fff;
 	}
 		#kompassi_modal .header .title {
 			font-size: 150%;
+			line-height: 1.3em;
 			align-self: center;
 		}
 		#kompassi_modal .header .actions {
@@ -384,11 +388,6 @@
 		top: 3.5em;
 		bottom: 3.5em;
 	}
-		#kompassi_modal .header {
-			display: grid;
-			grid-template-columns: auto max-content;
-			grid-template-areas: 'title actions';
-		}
 }
 
 #kompassi_modal_bg {
