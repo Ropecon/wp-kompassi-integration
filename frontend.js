@@ -127,7 +127,6 @@ jQuery( function( e ) {
 	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text search (title, description)', 'kompassi-integration' ) + '" />' ) );
 
 	//  Dimension filters
-	//  TODO: Possibility to hide dimensions from this list
 	jQuery.each( kompassi_schedule_dimensions, function( index, dimension ) {
 		if( kompassi_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
 			return;
