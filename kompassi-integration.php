@@ -42,6 +42,10 @@ class WP_Plugin_Kompassi_Integration {
 		add_settings_section( 'kompassi-integration-general', '', '', 'kompassi_integration_settings' );
 
 		$fields = array(
+			'event_slug' => array(
+				'label' => __( 'Event Slug', 'kompassi-integration' ),
+				'description' => __( 'Event slug in Kompassi.', 'kompassi-integration' )
+			),
 			'feed_url' => array(
 				'label' =>  __( 'Feed URL', 'kompassi-integration' ),
 				'description' => __( 'Feed URL where program data is loaded from.', 'kompassi-integration' )
@@ -123,12 +127,49 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/*
-	 *  Fetch data from the feed URL
+	 *  Fetch data from GraphQL
+	 *
+	 */
+
+	function get_data_graphql( ) {
+		$query = array(
+			'query' => file_get_contents( 'graphql/ProgramListQuery.gql' ),
+			'variables' => array(
+				'eventSlug' => get_option( 'kompassi_integration_event_slug' ),
+				'language' => 'fi' // TODO
+			)
+		);
+		$options = array(
+			'http' => array(
+				'method' => 'POST',
+				'content' => json_encode( $query ),
+				'header' => "Content-Type: application/json\r\n" .
+					"Accept: application/json\r\n"
+			)
+		);
+		$context = stream_context_create( $options );
+		$json = file_get_contents( 'https://kompassi.eu/graphql/', false, $context );
+
+		$program = json_decode( $json, true );
+		foreach( $program['programs'] as $index => $prog ) {
+			if( isset( $prog['start_time'] ) ) {
+				$program['programs'][$index]['start_timestamp'] = strtotime( $prog['start_time'] );
+			}
+			if( isset( $prog['end_time'] ) ) {
+				$program['programs'][$index]['end_timestamp'] = strtotime( $prog['end_time'] );
+			}
+		}
+
+		return $program;
+	}
+
+	/*
+	 *  Fetch data from URL
 	 *  TODO: #9 - Caching?
 	 *
 	 */
 
-	function get_data( ) {
+	function get_data_url( ) {
 		// Get program JSON and convert it into array
 		// TODO: #10 - Only allow specific format, eg. only ask for the event slug?
 		$data_url = get_option( 'kompassi_integration_feed_url' );
@@ -160,7 +201,12 @@ class WP_Plugin_Kompassi_Integration {
 
 		/*  Schedule  */
 		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
-		$data = $this->get_data( );
+		if( strlen( get_option( 'kompassi_integration_event_slug' ) ) > 0 && 1==2 ) {
+			$data = $this->get_data_graphql( );
+			var_dump( $data );
+		} else {
+			$data = $this->get_data_url( );
+		}
 
 		if( !$data || count( $data ) < 1 ) {
 			return;
