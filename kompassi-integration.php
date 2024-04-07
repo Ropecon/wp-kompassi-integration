@@ -269,13 +269,13 @@ class WP_Plugin_Kompassi_Integration {
 							// TODO: #11 - Get directly from Kompassi?
 							if( 'times' == $key ) {
 								$offset = get_option( 'gmt_offset' ) * 60 * 60;
-								$value = date_i18n( 'D j.n. k\l\o H.i', $program['start'] + $offset );
+								$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['start'] + $offset );
 								$value .= ' – ';
 								if( date_i18n( 'Ymd', $program['start'] + $offset ) == date_i18n( 'Ymd', $program['end'] + $offset ) ) {
-									$value .= date_i18n( 'H.i', $program['end'] + $offset );
+									$value .= date_i18n( get_option( 'time_format' ), $program['end'] + $offset );
 								} else {
 									// If multiday, show both days
-									$value .= date_i18n( 'D j.n. k\l\o H.i', $program['end'] + $offset );
+									$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['end'] + $offset );
 								}
 								$value .= ' <span class="length">';
 								$h = $program['length'] / 60;
