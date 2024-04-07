@@ -177,8 +177,16 @@ class WP_Plugin_Kompassi_Integration {
 			return;
 		}
 
+		// Map dimension value labels to array
+		$dimension_value_labels = array( );
+		foreach( $data['dimensions'] as $dimension ) {
+			foreach( $dimension['values'] as $value ) {
+				$dimension_value_labels[$dimension['slug']][$value['slug']] = $value['title'];
+			}
+		}
+
 		foreach( $data['programs'] as $p ) {
-			$out .= $this->markup_program( $p, $data['dimensions'] );
+			$out .= $this->markup_program( $p, $dimension_value_labels );
 		}
 		$out .= '</section>';
 
@@ -220,18 +228,16 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function markup_program( $program, $dimensions ) {
-		ob_start( );
-		if( is_array( $program['scheduleItems'] ) && count( $program['scheduleItems'] ) > 0 ) {
-			var_dump( $program['scheduleItems'] );
-		} else {
-			echo 'no scheduleitems';
+	function markup_program( $program, $dimension_value_labels ) {
+		if( !is_array( $program['scheduleItems'] ) || count( $program['scheduleItems'] ) < 1 ) {
+			return;
 		}
+
+		ob_start( );
 		$program['start'] = $program['scheduleItems'][0]['startTimeUnixSeconds'];
 		$program['end'] = $program['scheduleItems'][0]['endTimeUnixSeconds'];
 		$program['length'] = $program['scheduleItems'][0]['lengthMinutes'];
-		global $idc;
-		$program['identifier'] = $idc; $idc++;
+		$program['identifier'] = $program['slug'];
 
 		$attrs = array(
 			'id' => $program['identifier'],
@@ -290,15 +296,14 @@ class WP_Plugin_Kompassi_Integration {
 						}
 					}
 					// Traverse through dimensions
-					foreach( $program['cachedDimensions'] as $dimension => $data ) {
+					foreach( $program['cachedDimensions'] as $dimension => $values ) {
 						echo '<div class="dimension ' . $dimension . '" style="grid-area: ' . $dimension . ';">';
-						foreach( $data as $slug ) {
-							if( $slug != 'ANY' && $slug != 'OTHER' ) {
-								if( isset( $dimensions[$dimension]['values'][$slug]['display_name'] ) ) {
-									echo '<span class="value">' . $dimensions[$dimension]['values'][$slug]['display_name'] . '</span> ';
-								} else {
-									echo '<span class="value">' . $slug . '</span> ';
-								}
+
+						foreach( $values as $slug ) {
+							if( isset( $dimension_value_labels[$dimension][$slug] ) ) {
+								echo '<span class="value">' . $dimension_value_labels[$dimension][$slug] . '</span> ';
+							} else {
+								echo '<span class="value">' . $slug . '</span> ';
 							}
 						}
 						echo '</div>';
