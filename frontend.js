@@ -227,7 +227,7 @@ jQuery( function( e ) {
 			if( filter.prop( 'tagName' ) == 'SELECT' ) {
 				filter.find( '[value="' + opt[1] + '"]').attr( 'selected', 'selected' );
 			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
-				filter.val( opt[1] );
+				filter.val( decodeURIComponent( opt[1] ) );
 			}
 			filters_from_url = true;
 		}
