@@ -57,6 +57,10 @@ class WP_Plugin_Kompassi_Integration {
 			'hidden_dimensions' => array(
 				'label' => __( 'Hidden Dimensions', 'kompassi-integration' ),
 				'description' => __( 'Comma-separated list of dimension slugs that should be hidden from filters.', 'kompassi-integration' )
+			),
+			'timeline_grouping' => array(
+				'label' => __( 'Timeline Grouping', 'kompassi-integration' ),
+				'description' => __( 'Dimension slug for the dimension that should be used to group program with subheadings in timeline.', 'kompassi-integration' )
 			)
 		);
 
@@ -103,6 +107,7 @@ class WP_Plugin_Kompassi_Integration {
 				'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
 				'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 ),
 				'hidden_dimensions' => explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) ),
+				'timeline_grouping' => get_option( 'kompassi_integration_timeline_grouping' ),
 			);
 			wp_localize_script( 'kompassi-integration-frontend', 'kompassi_options', $js_strings );
 

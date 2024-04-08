@@ -583,7 +583,6 @@ function kompassi_setup_timeline_layout( ) {
 	kompassi_update_date_view_parameters( );
 
 	prev_group = '';
-	var grouping_row = 1;
 
 	length = kompassi_filters.date.length_hours * 60;
 
@@ -597,43 +596,47 @@ function kompassi_setup_timeline_layout( ) {
 		offset = offset_in_m / length * 100;
 
 		// See if we need to add a group heading
-		if( program.find( '.' + timeline_grouping ).text( ) != prev_group ) {
-			rows.push( 'group: ' + program.find( '.' + timeline_grouping ).text( ) );
-			group = jQuery( '<p class="group-name">' + program.find( '.' + timeline_grouping ).text( ) + '</p>' );
-			grouping_row = rows.length - 1;
-			group.css( 'top', 'calc( ' + grouping_row + ' * var(--kompassi-schedule-timeline-row-height)' );
-			jQuery( '#kompassi_schedule' ).append( group );
+		if( kompassi_options.timeline_grouping.length > 0 ) {
+			if( program.find( '.' + kompassi_options.timeline_grouping ).text( ) != prev_group ) {
+				rows.push( 'group: ' + program.find( '.' + kompassi_options.timeline_grouping ).text( ) );
+				group = jQuery( '<p class="group-name">' + program.find( '.' + kompassi_options.timeline_grouping ).text( ) + '</p>' );
+				group.css( 'top', 'calc( ' + ( rows.length - 1 ) + ' * var(--kompassi-schedule-timeline-row-height)' );
+				jQuery( '#kompassi_schedule' ).append( group );
+				check_row = rows.length - 1;
+			}
+		} else {
+			check_row = 2;
 		}
-
-		current_row = grouping_row;
 
 		has_row = false;
 		while( has_row == false ) {
-			if( typeof rows[current_row] === 'undefined' ) {
+			if( typeof rows[check_row] === 'undefined' ) {
 				// Row does not exist, create new
 				rows.push( program.attr( 'data-end' ) );
-				rownum = rows.length - 1;
+				program_row = rows.length - 1;
 				has_row = true;
 			}
-			if( rows[current_row] <= program.attr( 'data-start' ) ) {
+			if( rows[check_row] <= program.attr( 'data-start' ) ) {
 				// Rows last event ends before or at the same time as this one starts
-				rows[current_row] = program.attr( 'data-end' );
-				rownum = current_row;
+				rows[check_row] = program.attr( 'data-end' );
+				program_row = check_row;
 				has_row = true;
 			}
-			current_row = current_row + 1;
+			check_row = check_row + 1;
 		}
 		// End grouping
 
 		program.css( 'width', 'calc( ' + width + '% - 5px )' );
 		program.css( 'min-width', 'calc( ' + width + '% - 5px )' );
 		program.css( 'left', 'calc( ' + offset + '% + 3px )' );
-		program.css( 'top', 'calc( ' + rownum + ' * var(--kompassi-schedule-timeline-row-height)' ); // Grouping
+		program.css( 'top', 'calc( ' + program_row + ' * var(--kompassi-schedule-timeline-row-height)' ); // Grouping
 		if( offset < 0 ) {
 			program.find( '.title' ).css( 'position', 'absolute' ).css( 'left', ( ( -1 * program.position( ).left ) + 6 ) + 'px' );
 		}
 
-		prev_group = program.find( '.' + timeline_grouping ).text( ); // Grouping
+		if( kompassi_options.timeline_grouping.length > 0 ) {
+			prev_group = program.find( '.' + kompassi_options.timeline_grouping ).text( );
+		}
 	} );
 
 	// Make the schedule high enough to contain all rows
@@ -858,7 +861,13 @@ function kompassi_update_url_hash( ) {
  */
 
 function kompassi_sort_by_group( a, b ) {
-	if( jQuery( a ).find( '.' + timeline_grouping ).text( ) > jQuery( b ).find( '.' + timeline_grouping ).text( ) ) {
+	if( kompassi_options.timeline_grouping.length > 0 ) {
+		if( jQuery( a ).find( '.' + kompassi_options.timeline_grouping ).text( ) > jQuery( b ).find( '.' + kompassi_options.timeline_grouping ).text( ) ) {
+			return 1;
+		}
+	}
+
+	if( a.getAttribute( 'data-start' ) > b.getAttribute( 'data-start' ) ) {
 		return 1;
 	}
 	return -1;
