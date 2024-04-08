@@ -568,6 +568,8 @@ function kompassi_setup_display( display_type = false ) {
 
 	jQuery( '#kompassi_schedule_display a' ).removeClass( 'active' );
 	jQuery( '#kompassi_schedule_display [data-display="' + display_type + '"]' ).addClass( 'active' );
+
+	kompassi_update_url_hash( );
 }
 
 /*
@@ -844,6 +846,9 @@ function kompassi_update_url_hash( ) {
 				}
 			}
 		} );
+
+		// Display
+		opts.push( 'display:' + kompassi_get_display_type( ) );
 	}
 
 	window.location.hash = opts.join( '/' );
