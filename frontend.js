@@ -401,6 +401,20 @@ function kompassi_update_date_view_parameters( ) {
 	} else {
 		kompassi_filters.date.start = new Date( kompassi_event.start );
 		kompassi_filters.date.end = new Date( kompassi_event.end );
+
+		if( kompassi_filters.enabled > 0 && jQuery( '#kompassi_schedule article:visible' ).length > 0 ) {
+			starts = [];
+			ends = [];
+
+			jQuery( '#kompassi_schedule article:visible' ).each( function ( ) {
+				starts.push( jQuery( this ).attr( 'data-start' ) );
+				ends.push( jQuery( this ).attr( 'data-end' ) );
+			} );
+
+			kompassi_filters.date.start = new Date( Math.min( ...starts ) * 1000 );
+			kompassi_filters.date.end = new Date( Math.max( ...ends ) * 1000 );
+		}
+
 		kompassi_filters.date.length_hours = kompassi_get_difference_in_hours( kompassi_filters.date.start, kompassi_filters.date.end );
 	}
 }
