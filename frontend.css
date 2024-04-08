@@ -148,6 +148,7 @@
 .kompassi-icon-timeline::before { background-image: url(images/icon_timeline.svg); }
 .kompassi-icon-filter::before { background-image: url(images/icon_filter.svg); }
 .kompassi-icon-favorite::before { background-image: url(images/icon_favorite.svg); }
+.kompassi-icon-signup::before { background-image: url(images/icon_signup.svg); }
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
 #kompassi_schedule.timeline .is-favorite::after { background-image: url(images/icon_is_favorite.svg); }
@@ -156,6 +157,9 @@
 /*  Active button style is dark by default, make sure the icons are visible  */
 [class*="kompassi-icon"].active:not(.kompassi-icon-favorite)::before { filter: invert(); }
 [class*="kompassi-icon"].active::before { opacity: 1 !important; }
+
+/* Icon opacities */
+article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 /*
  *  Toolbar
@@ -535,6 +539,10 @@
 		#kompassi_schedule.list article .actions {
 			margin-bottom: 0;
 		}
+			#kompassi_schedule.list article .actions a:not(:last-child) {
+				margin-right: 0.3em;
+			}
+
 		#kompassi_schedule.list article .times,
 		#kompassi_schedule.list article .room_name {
 			margin-top: 0;

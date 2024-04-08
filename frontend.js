@@ -36,9 +36,8 @@ jQuery( function( e ) {
 	 */
 
 	jQuery( '#kompassi_schedule article' ).each( function( ) {
-		actions = jQuery( '<div class="actions" style="grid-area: actions;" />' );
-		actions.append( '<a class="favorite kompassi-icon-favorite" />' );
-		jQuery( this ).find( '.description' ).before( actions );
+		actions = jQuery( this ).find( '.actions' ); // '<div class="actions" style="grid-area: actions;" />' );
+		actions.append( '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
 	} );
 
 	/*
@@ -293,24 +292,23 @@ jQuery( function( e ) {
 	 */
 
 	jQuery( '#kompassi_schedule article' ).on( 'click', function( e ) {
-		if( jQuery( e.target ).hasClass( 'favorite' ) ) {
+		if( jQuery( e.target ).closest( 'div' ).hasClass( 'actions' ) ) {
 			return;
 		}
 		kompassi_show_modal( jQuery( this ) );
 	} );
 
 	// Close modals when clicking on modal bg or close button or when pressing Esc
-	jQuery( 'body' ).on( 'click', '#kompassi_schedule_modal_bg, #kompassi_modal .actions .close', kompassi_close_modal );
+	jQuery( 'body' ).on( 'click', '#kompassi_modal_bg, #kompassi_modal .actions .close', kompassi_close_modal );
 	jQuery( 'body' ).on( 'keyup', function( e ) {
 		if( e.keyCode == 27 ) {
 			kompassi_close_modal( e );
 		}
 	} );
 
+	// Setup display
 	kompassi_setup_display( );
-
-	//
-	jQuery( window ).on( 'scroll', kompassi_schedule_timeline_sticky_header );
+	//jQuery( window ).on( 'scroll', kompassi_schedule_timeline_sticky_header );
 } );
 
 /*
@@ -662,14 +660,17 @@ function kompassi_show_modal( program ) {
 	modal = program.clone( );
 	modal.attr( 'id', 'kompassi_modal' ).attr( 'style', '' ).addClass( 'kompassi_block_schedule' );
 	modal.children( '.title' ).css( 'position', '' );
-	modal.find( '.actions' ).addClass( 'kompassi-button-group has-icon-only' ).append( '<a class="close kompassi-icon-close" />' );
+	modal.find( '.actions' ).addClass( 'kompassi-button-group has-icon-only' ).append( '<a class="close kompassi-icon-close" title="' + _x( 'Close', 'button label', 'kompassi-integration' ) + '" />' );
 
 	// Modal header
 	modal.children( '.title, .actions' ).wrapAll( '<div class="header" />' );
 	// Modal content
 	content = jQuery( '<div class="content" />' ).appendTo( modal );
 	modal.children( ':not(.header)' ).detach( ).appendTo( content );
-	content.children( '.short_blurb, .description' ).wrapAll( '<div class="main" />' );
+	main = jQuery( '<div class="main" />' ).appendTo( content );
+	content.children( '.short_blurb, .description' ).appendTo( main );
+	signup = modal.find( '.actions .signup' ).clone( ).text( _x( 'Sign Up', 'button label', 'kompassi-integration' ) );
+	signup.appendTo( main );
 	meta = jQuery( '<div class="meta" />' );
 	content.children( '.dimension' ).wrapAll( '<div class="dimensions" />' );
 	content.children( ':not(.main)' ).detach( ).appendTo( meta );

@@ -22,6 +22,7 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
                lengthMinutes
             }
             description
+            signupLink
          }
       }
    }

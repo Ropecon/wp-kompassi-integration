@@ -7,7 +7,7 @@
    viewBox="0 0 16.933334 16.933333"
    version="1.1"
    id="svg8"
-   sodipodi:docname="icon_favorite.svg"
+   sodipodi:docname="icon_favorite_gray.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="-5.4295699"
+     inkscape:cx="2.1465741"
      inkscape:cy="45.583133"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -63,7 +63,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-1.9843481,124.04949)"
-     style="opacity:1">
+     style="opacity:0.5">
     <path
        sodipodi:type="star"
        style="opacity:1;fill:#0e0e0e;fill-opacity:1;stroke:#0e0e0e;stroke-width:2.48749;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
