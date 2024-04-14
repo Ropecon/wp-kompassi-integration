@@ -284,6 +284,12 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	overflow: hidden;
 }
 
+@supports (height:100dvh) {
+	#kompassi_modal {
+		height: 100dvh;
+	}
+}
+
 #kompassi_modal {
 	--kompassi-button-bg: #fafafa;
 	display: flex;
