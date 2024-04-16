@@ -7,6 +7,8 @@
    --kompassi-color-red: #ba3b28;
    --kompassi-color-beige: #eba876;
 
+   --kompassi-hue: 197;
+
    /*  Common  */
    --kompassi-box-shadow: 0 0 0.2em rgba(0,0,0,0.2);
    --kompassi-box-shadow-hover: 0 0 0.2em rgba(0,0,0,0.4);

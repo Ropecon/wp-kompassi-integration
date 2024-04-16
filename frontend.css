@@ -30,8 +30,8 @@
 
 	/*  Modals  */
 	--kompassi-modal-max-width: 1000px;
-	--kompassi-modal-bg: #eee;
-	--kompassi-modal-actions-bg: #ddd;
+	--kompassi-modal-bg: hsl(var(--kompassi-hue), 10%, 95%);
+	--kompassi-modal-actions-bg: hsl(var(--kompassi-hue), 25%, 85%);
 
 	/*  Popovers  */
 	--kompassi-popover-bg: #fff;
@@ -279,7 +279,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	bottom: 0;
 	z-index: 100000;
 
-	background-color: #f7f7f7;
+	background-color: var(--kompassi-modal-bg);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-border-radius);
 
@@ -340,19 +340,34 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			#kompassi_modal .actions a::before {
 				opacity: 1;
 		}
-
-			#kompassi_modal.is-favorite .actions .favorite {
-				background-color: var(--kompassi-button-bg-active);
-				color: var(--kompassi-button-fg-active);
+			#kompassi_modal .actions .favorite {
 				margin-right: 1em;
 				border-top-right-radius: var(--kompassi-button-radius);
 				border-bottom-right-radius: var(--kompassi-button-radius);
 			}
-				#kompassi_modal.is-favorite .actions .favorite + a {
+				#kompassi_modal .actions .favorite + a {
 					border-bottom-left-radius: var(--kompassi-button-radius);
 					border-top-left-radius: var(--kompassi-button-radius);
 				}
+				#kompassi_modal.is-favorite .actions .favorite {
+					background-color: var(--kompassi-button-bg-active);
+					color: var(--kompassi-button-fg-active);
+				}
 
+@media screen and (max-width:599px) {
+	#kompassi_modal .actions a {
+		display: block;
+		width: 100%;
+	}
+		#kompassi_modal .actions a:not(:last-child) {
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		#kompassi_modal .actions a:not(:first-child) {
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+}
 
 		#kompassi_modal .content {
 			display: flex;
@@ -581,9 +596,16 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		#kompassi_schedule.list article .actions {
 			margin-bottom: 0;
 		}
-			#kompassi_schedule.list article .actions a:not(:last-child) {
-				margin-right: 0.3em;
+			#kompassi_schedule.list article .actions {
+				display: flex;
+				justify-content: end;
 			}
+				#kompassi_schedule.list article .actions a {
+					margin-left: 0.3em;
+				}
+					#kompassi_schedule.list article .actions .favorite {
+						order: 1000;
+					}
 
 		#kompassi_schedule.list article .times,
 		#kompassi_schedule.list article .room_name {
