@@ -1,0 +1,341 @@
+:root {
+   /*  Kompassi brand colors  */
+   --kompassi-color-blue-dark: #033245;
+   --kompassi-color-blue-mid: #225f8c;
+   --kompassi-color-blue-light: #4fa8e3;
+   --kompassi-color-blue-bg: #edf8fa;
+   --kompassi-color-red: #ba3b28;
+   --kompassi-color-beige: #eba876;
+
+   --kompassi-hue: 197;
+
+   /*  Common  */
+   --kompassi-box-shadow: 0 0 0.2em rgba(0,0,0,0.2);
+   --kompassi-box-shadow-hover: 0 0 0.2em rgba(0,0,0,0.4);
+   --kompassi-border-radius: 3px;
+
+   /*  Button groups  */
+   --kompassi-button-fg: #222;
+   --kompassi-button-bg: #fff;
+   --kompassi-button-fg-active: #fff;
+   --kompassi-button-bg-active: var(--kompassi-color-blue-mid);
+   --kompassi-button-separator: rgba(0,0,0,0.1);
+   --kompassi-button-padding: 0.6em;
+   --kompassi-button-radius: 0.3em;
+   --kompassi-button-indicator-color: rgba(200,0,0,1);
+   --kompassi-button-icon-size: 21px;
+
+   /*  Modals  */
+   --kompassi-modal-max-width: 1000px;
+   --kompassi-modal-bg: hsl(var(--kompassi-hue), 10%, 95%);
+   --kompassi-modal-actions-bg: hsl(var(--kompassi-hue), 25%, 85%);
+
+   /*  Popovers  */
+   --kompassi-popover-bg: #fff;
+}
+
+[class*="wp-block-kompassi"], #kompassi_modal {
+	container-name: kompassi-integration;
+	container-type: inline-size;
+
+	font-family: var(--kompassi-schedule-font);
+}
+
+/*
+ *  Icons
+ *
+ */
+
+.kompassi-icon-list::before { background-image: url(../images/icon_list.svg); }
+.kompassi-icon-timeline::before { background-image: url(../images/icon_timeline.svg); }
+.kompassi-icon-filter::before { background-image: url(../images/icon_filter.svg); }
+.kompassi-icon-favorite::before { background-image: url(../images/icon_favorite.svg); }
+.kompassi-icon-signup::before { background-image: url(../images/icon_signup.svg); }
+.kompassi-icon-favorite.active::before,
+.is-favorite .kompassi-icon-favorite::before,
+#kompassi_schedule.timeline .is-favorite::after { background-image: url(../images/icon_is_favorite.svg); }
+.kompassi-icon-close::before { background-image: url(../images/icon_close.svg); }
+
+/*
+ *  Data provided by Kompassi
+ *
+ */
+
+.kompassi_provided {
+	margin: 1em 0;
+	text-align: right;
+}
+	.kompassi_provided a {
+		text-decoration: none;
+	}
+	.kompassi_provided img {
+		height: 50px;
+		weidth: auto;
+	}
+
+/*
+ *  Button groups
+ *
+ */
+
+.kompassi-button-group {
+	display: block;
+}
+	.kompassi-button-group a {
+		cursor: pointer;
+		position: relative;
+		display: inline-block;
+		color: var(--kompassi-button-fg);
+		padding: var(--kompassi-button-padding);
+		background: var(--kompassi-button-bg);
+		border-radius: var(--kompassi-button-radius);
+		margin-right: var(--kompassi-button-padding);
+		margin-bottom: var(--kompassi-button-padding);
+		box-shadow: var(--kompassi-box-shadow);
+	}
+		.kompassi-button-group.has-icon-and-label a:is([class*="kompassi-icon"]) {
+			padding-left: calc( ( var(--kompassi-button-padding) * 2 ) + var(--kompassi-button-icon-size) );
+		}
+			.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) a::before {
+				content: '';
+				display: inline-block;
+				position: absolute;
+				top: var(--kompassi-button-padding);
+				left: var(--kompassi-button-padding);
+				width: var(--kompassi-button-icon-size);
+				height: var(--kompassi-button-icon-size);
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				background-size: contain;
+				opacity: 0.5;
+			}
+			.kompassi-button-group.has-icon-only a {
+				width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+				height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+			}
+
+		.kompassi-button-group a.active {
+			color: var(--kompassi-button-fg-active);
+			background: var(--kompassi-button-bg-active);
+		}
+		.kompassi-button-group .indicator:not(:empty) {
+			display: inline-block;
+			margin-left: var(--kompassi-button-padding);
+			width: var(--kompassi-button-icon-size);
+			height: var(--kompassi-button-icon-size);
+			background-color: var(--kompassi-button-indicator-color);
+			text-align: center;
+			color: #fff;
+			border-radius: 9999px;
+		}
+
+@container kompassi-integration (min-width: 0px) {
+	.kompassi-button-group {
+		margin-right: var(--kompassi-button-padding);
+		margin-bottom: var(--kompassi-button-padding);
+	}
+		.kompassi-button-group a {
+			border-radius: 0;
+			margin-right: 0;
+			margin-bottom: 0;
+		}
+			.kompassi-button-group a:not(:last-child) {
+				border-right: 1px solid var(--kompassi-button-separator);
+			}
+			.kompassi-button-group a:first-child {
+				border-bottom-left-radius: var(--kompassi-button-radius);
+				border-top-left-radius: var(--kompassi-button-radius);
+			}
+			.kompassi-button-group a:last-child {
+				border-top-right-radius: var(--kompassi-button-radius);
+				border-bottom-right-radius: var(--kompassi-button-radius);
+			}
+}
+
+/*
+ *  Modal
+ *
+ */
+
+#kompassi_modal {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 100000;
+
+	background-color: var(--kompassi-modal-bg);
+	box-shadow: var(--kompassi-box-shadow);
+	border-radius: var(--kompassi-border-radius);
+
+	overflow: hidden;
+}
+
+@supports (height:100dvh) {
+	#kompassi_modal {
+		height: 100dvh;
+	}
+}
+
+#kompassi_modal {
+	--kompassi-button-bg: #fafafa;
+	display: flex;
+	flex-direction: column;
+}
+	#kompassi_modal .header {
+		position: relative;
+		display: grid;
+		grid-template-columns: auto max-content;
+		grid-template-areas: 'title actions';
+		grid-gap: 1.5em;
+		padding: 1.5em;
+		background-color: #fff;
+	}
+		#kompassi_modal .header .title {
+			font-size: 150%;
+			line-height: 1.3em;
+			align-self: center;
+		}
+		#kompassi_modal .header .close {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			cursor: pointer;
+			display: block;
+			width: 4.75em;
+			padding: 0 1.5em;
+		}
+			#kompassi_modal .header .close::before {
+				display: inline-block;
+				content: '';
+				width: 100%;
+				height: 100%;
+
+				background-position: 50% 50%;
+				background-size: contain;
+				background-repeat: no-repeat;
+			}
+
+		#kompassi_modal .content .actions {
+			background-color: var(--kompassi-modal-actions-bg);
+			padding: 1em 1.5em;
+			margin-right: 0;
+		}
+			#kompassi_modal .content .actions a::before {
+				opacity: 1;
+         }
+         #kompassi_modal .content .actions:is(.has-icon-and-label) a::after {
+            content: attr(title);
+         }
+			#kompassi_modal .content .actions .favorite {
+				margin-right: 1em;
+				border-top-right-radius: var(--kompassi-button-radius);
+				border-bottom-right-radius: var(--kompassi-button-radius);
+			}
+				#kompassi_modal .content .actions .favorite + a {
+					border-bottom-left-radius: var(--kompassi-button-radius);
+					border-top-left-radius: var(--kompassi-button-radius);
+				}
+				#kompassi_modal.is-favorite .content .actions .favorite {
+					background-color: var(--kompassi-button-bg-active);
+					color: var(--kompassi-button-fg-active);
+				}
+
+@media screen and (max-width:599px) {
+	#kompassi_modal .actions a {
+		display: block;
+		width: 100%;
+	}
+		#kompassi_modal .actions a:not(:last-child) {
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		#kompassi_modal .actions a:not(:first-child) {
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+}
+		#kompassi_modal .content {
+			display: flex;
+			flex-direction: column;
+			flex: auto;
+			overflow-y: auto;
+			background:
+				/* Shadow covers */
+				linear-gradient(var(--kompassi-modal-bg) 30%, rgba(255,255,255,0)),
+				linear-gradient(rgba(255,255,255,0), var(--kompassi-modal-bg) 70%) 0 100%,
+
+				/* Shadows */
+				radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+				radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+
+			background-repeat: no-repeat;
+			background-color: var(--kompassi-modal-bg);
+			background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+			/* Opera doesn't support this in the shorthand */
+			background-attachment: local, local, scroll, scroll;
+		}
+			#kompassi_modal .content .main,
+			#kompassi_modal .content .meta {
+				padding: 1.5em;
+			}
+				#kompassi_modal .content .main {
+					flex: auto;
+					display: flex;
+					flex-direction: column;
+
+               font-size: 107%;
+               line-height: 1.7em;
+				}
+               #kompassi_modal .content .main > * {
+                  margin-bottom: 1em;
+               }
+				#kompassi_modal .content .meta {
+					flex: 0 0 min-content;
+					background-color: #fff;
+				}
+
+@media screen and (min-width:900px) {
+	#kompassi_modal {
+		width: auto;
+		height: calc( 100vh - 7em );
+		max-width: var(--kompassi-modal-max-width);
+		right: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
+		left: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
+		top: 3.5em;
+		bottom: 3.5em;
+	}
+}
+
+#kompassi_modal_bg {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0,0,0,0.75);
+	z-index: 10000;
+}
+
+/*
+ *  Popover
+ *
+ */
+
+#kompassi_popover {
+	position: fixed;
+	z-index: 100000;
+
+	padding: 0.5em;
+
+	background-color: var(--kompassi-popover-bg);
+	box-shadow: var(--kompassi-box-shadow);
+	border-radius: var(--kompassi-border-radius);
+}
+   #kompassi_popover p {
+      margin-bottom: 0;
+   }

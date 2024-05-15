@@ -34,7 +34,7 @@ jQuery( function( e ) {
 	 */
 
 	jQuery( '#kompassi_schedule article' ).each( function( ) {
-		actions = jQuery( this ).find( '.actions' ); // '<div class="actions" style="grid-area: actions;" />' );
+		actions = jQuery( this ).find( '.actions' );
 		actions.prepend( '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
 	} );
 
@@ -202,7 +202,7 @@ jQuery( function( e ) {
 	 *
 	 */
 
-	jQuery( 'body' ).on( 'click', 'article.kompassi-program .favorite', kompassi_toggle_favorite );
+	jQuery( 'body' ).on( 'click', '.kompassi-program .favorite', kompassi_toggle_favorite );
 
 	/*
 	 *  Apply user options
@@ -258,7 +258,7 @@ jQuery( function( e ) {
 
 	if( kompassi_user_options.prog ) {
 		if( jQuery( '#' + kompassi_user_options.prog ).length > 0 ) {
-			kompassi_show_modal( jQuery( '#' + kompassi_user_options.prog ) );
+			kompassi_program_modal( jQuery( '#' + kompassi_user_options.prog ) );
 		}
 	}
 
@@ -277,11 +277,16 @@ jQuery( function( e ) {
 			return;
 		}
 		clearTimeout( kompassi_timeouts['popover'] );
-		kompassi_timeouts['popover'] = setTimeout( kompassi_popover, 300, this, e.pageX );
+		options = {
+			title: jQuery( this ).find( '.title' ).text( ),
+			content: jQuery( this ).find( '.times' ).html( )
+		};
+		kompassi_timeouts['popover'] = setTimeout( kompassi_popover, 300, options, e, this );
 	} );
+	// TODO: Tie this to popover
 	jQuery( '#kompassi_schedule article' ).on( 'mouseout', function( e ) {
 		clearTimeout( kompassi_timeouts['popover'] );
-		jQuery( '#kompassi_program_popover' ).remove( );
+		jQuery( '#kompassi_popover' ).remove( );
 	} );
 
 	/*
@@ -293,7 +298,7 @@ jQuery( function( e ) {
 		if( jQuery( e.target ).closest( 'div' ).hasClass( 'actions' ) ) {
 			return;
 		}
-		kompassi_show_modal( jQuery( this ) );
+		kompassi_program_modal( jQuery( this ) );
 	} );
 
 	// Close modals when clicking on modal bg or close button or when pressing Esc
@@ -315,8 +320,8 @@ jQuery( function( e ) {
  */
 
 function kompassi_toggle_favorite( ) {
-	art_id = jQuery( this ).closest( 'article.kompassi-program' ).attr( 'data-id' );
-	jQuery( 'article.kompassi-program[data-id="' + art_id + '"]' ).toggleClass( 'is-favorite' );
+	art_id = jQuery( this ).closest( '.kompassi-program' ).attr( 'data-id' );
+	jQuery( '.kompassi-program[data-id="' + art_id + '"]' ).toggleClass( 'is-favorite' );
 	if( kompassi_cookie.favorites.includes( art_id ) ) {
 		kompassi_cookie.favorites = kompassi_cookie.favorites.filter( function( id ) { return id !== art_id; } );
 	} else {
@@ -666,70 +671,23 @@ function kompassi_revert_timeline_layout( ) {
 }
 
 /*
- *  Modal
+ *  Open program modal
  *
  */
 
+function kompassi_program_modal( program ) {
 
-/*  Open  */
-
-function kompassi_show_modal( program ) {
-	modal = program.clone( );
-	modal.attr( 'id', 'kompassi_modal' ).attr( 'style', '' ).addClass( 'kompassi_block_schedule' );
-	modal.children( '.title' ).css( 'position', '' );
-
-	// Header
-	header = jQuery( '<div class="header" />' ).appendTo( modal );
-	modal.children( '.title' ).detach( ).appendTo( header );
-	header.append( '<a class="close kompassi-icon-close" title="' + _x( 'Close', 'button label', 'kompassi-integration' ) + '" />' );
-	// Actions
-	actions = modal.find( '.actions' ).addClass( 'kompassi-button-group has-icon-and-label' );
-	actions.find( 'a' ).each( function( ) {
-		jQuery( this ).text( jQuery( this ).attr( 'title' ) );
-	} );
-	// Content
-	content = jQuery( '<div class="content" />' ).appendTo( modal );
-	modal.children( ':not(.header)' ).detach( ).appendTo( content );
-	main = jQuery( '<div class="main" />' ).appendTo( content );
-	content.children( '.short_blurb, .description' ).appendTo( main );
-	// Meta
-	meta = jQuery( '<div class="meta" />' );
-	content.children( '.dimension' ).wrapAll( '<div class="dimensions" />' );
-	content.children( ':not(.main, .actions)' ).detach( ).appendTo( meta );
-	meta.appendTo( content );
-	content.appendTo( modal );
-
-	modal.appendTo( jQuery( 'body' ) );
-	jQuery( 'body' ).append( '<div id="kompassi_modal_bg" />' ).css( 'overflow', 'hidden' );
-
-	kompassi_update_url_hash( );
-}
-
-/*  Close  */
-
-function kompassi_close_modal( ) {
-	jQuery( '#kompassi_modal_bg, #kompassi_modal' ).remove( );
-	jQuery( 'body' ).css( 'overflow', 'auto' );
-	kompassi_update_url_hash( );
-}
-
-/*
- *  Popover
- *
- */
-
-function kompassi_popover( program, posX ) {
-	popover = jQuery( '<div id="kompassi_program_popover" class="kompassi_block_schedule" />' );
-	markup = jQuery( program ).find( '.title' ).prop( 'outerHTML' );
-	markup += jQuery( program ).find( '.times' ).prop( 'outerHTML' );
-	if( jQuery( program ).find( '.short_blurb' ).text( ).length > 0 ) {
-		markup += jQuery( program ).find( '.short_blurb' ).prop( 'outerHTML' );
+	options = {
+		attrs: {
+			'class': program.attr( 'class' ),
+			'data-id': program.attr( 'data-id' ),
+		},
+		title: program.children( '.title' ).text( ),
+		actions: program.children( '.actions' ).html( ),
+		content: program.children( '.main' ).html( ),
+		meta: program.children( '.meta' ).html( ),
 	}
-	popover.html( markup );
-	jQuery( 'body' ).append( popover );
-	offset_top = parseInt( jQuery( program ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) );
-	popover.css( 'top', 'calc( ' + offset_top + 'px - ' + popover.outerHeight( ) + 'px - 0.5em )' );
-	popover.css( 'left', 'calc( ' + posX + 'px - ' + popover.outerWidth( ) / 2  + 'px )');
+	kompassi_show_modal( options );
 }
 
 /*

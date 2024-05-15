@@ -105,7 +105,7 @@ class WP_Plugin_Kompassi_Integration {
 				wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
 				wp_enqueue_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
 
-				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-common', 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
 					'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
@@ -118,7 +118,6 @@ class WP_Plugin_Kompassi_Integration {
 				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
 			}
 		} else {
-			wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'css/common.css', __FILE__ ), array( ), $this->ver );
 			wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'css/editor.css', __FILE__ ), array( ), $this->ver );
 		}
 	}
@@ -266,56 +265,67 @@ class WP_Plugin_Kompassi_Integration {
 		$program['description'] = nl2br( $program['description'] );
 		?>
 			<article id="<?php echo $program['identifier']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
-				<?php
-					foreach( array( 'title', 'times', 'description', 'short_blurb', 'cachedHosts' ) as $key ) {
-						$value = '';
-						if( isset( $program[$key] ) ) {
-							$value = $program[$key];
-							if( is_array( $value ) ) {
-								$value = implode( ',', $value );
-							}
-						} else {
-							// TODO: #11 - Get directly from Kompassi?
-							if( 'times' == $key ) {
-								$offset = get_option( 'gmt_offset' ) * 60 * 60;
-								$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['start'] + $offset );
-								$value .= ' – ';
-								if( date_i18n( 'Ymd', $program['start'] + $offset ) == date_i18n( 'Ymd', $program['end'] + $offset ) ) {
-									$value .= date_i18n( get_option( 'time_format' ), $program['end'] + $offset );
-								} else {
-									// If multiday, show both days
-									$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['end'] + $offset );
+				<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
+				<div class="main" style="grid-area: main;">
+					<?php echo $program['description']; ?>
+				</div>
+				<div class="meta" style="grid-area: meta;">
+					<?php
+						// TODO: Kompassi: List meta fields to show
+						foreach( array( 'times', 'cachedHosts' ) as $key ) {
+							$value = '';
+							if( isset( $program[$key] ) ) {
+								$value = $program[$key];
+								if( is_array( $value ) ) {
+									$value = implode( ',', $value );
 								}
-								$value .= ' <span class="length">';
-								$h = $program['length'] / 60;
-								$min = $program['length'] % 60;
-								if( $h < 1 ) {
-									$value .= $min . 'min';
-								} elseif( $min == 0 ) {
-									$value .= floor( $h ) . 'h';
-								} else {
-									$value .= floor( $h ) . 'h ' . $min . 'min';
-								}
-								$value .= '</span>';
-							}
-						}
-						if( isset( $value ) ) {
-							echo '<div class="' . $key . '" style="grid-area: ' . $key . ';">' . $value . '</div>';
-						}
-					}
-					// Traverse through dimensions
-					foreach( $program['cachedDimensions'] as $dimension => $values ) {
-						echo '<div class="dimension ' . $dimension . '" style="grid-area: ' . $dimension . ';">';
-
-						foreach( $values as $slug ) {
-							if( isset( $dimension_value_labels[$dimension][$slug] ) ) {
-								echo '<span class="value">' . $dimension_value_labels[$dimension][$slug] . '</span> ';
 							} else {
-								echo '<span class="value">' . $slug . '</span> ';
+								// TODO: #11 - Get directly from Kompassi?
+								if( 'times' == $key ) {
+									$offset = get_option( 'gmt_offset' ) * 60 * 60;
+									$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['start'] + $offset );
+									$value .= ' – ';
+									if( date_i18n( 'Ymd', $program['start'] + $offset ) == date_i18n( 'Ymd', $program['end'] + $offset ) ) {
+										$value .= date_i18n( get_option( 'time_format' ), $program['end'] + $offset );
+									} else {
+										// If multiday, show both days
+										$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['end'] + $offset );
+									}
+									$value .= ' <span class="length">';
+									$h = $program['length'] / 60;
+									$min = $program['length'] % 60;
+									if( $h < 1 ) {
+										$value .= $min . 'min';
+									} elseif( $min == 0 ) {
+										$value .= floor( $h ) . 'h';
+									} else {
+										$value .= floor( $h ) . 'h ' . $min . 'min';
+									}
+									$value .= '</span>';
+								}
+							}
+							if( isset( $value ) ) {
+								echo '<div class="' . $key . '">' . $value . '</div>';
 							}
 						}
-						echo '</div>';
-					}
+					?>
+					<?php
+						// Traverse through dimensions
+						foreach( $program['cachedDimensions'] as $dimension => $values ) {
+							echo '<div class="dimension ' . $dimension . '">';
+
+							foreach( $values as $slug ) {
+								if( isset( $dimension_value_labels[$dimension][$slug] ) ) {
+									echo '<span class="value">' . $dimension_value_labels[$dimension][$slug] . '</span> ';
+								} else {
+									echo '<span class="value">' . $slug . '</span> ';
+								}
+							}
+							echo '</div>';
+						}
+					?>
+				</div>
+				<?php
 					echo '<div class="actions" style="grid-area: actions;">';
 					if( isset( $program['signupLink'] ) && strlen( $program['signupLink'] ) > 0 ) {
 						echo '<a href="' . $program['signupLink'] . '" class="signup kompassi-icon-signup" title="' . _x( 'Sign Up', 'button label', 'kompassi-integration' ) . '"></a>';
