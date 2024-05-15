@@ -93,29 +93,33 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function enqueue_block_assets( ) {
-		wp_register_script( 'kompassi-integration-blocks', plugins_url( 'blocks.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n' ), $this->ver );
+		wp_register_script( 'kompassi-integration-blocks', plugins_url( 'js/blocks.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n' ), $this->ver );
 		wp_set_script_translations( 'kompassi-integration-blocks', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 
-		if( !is_admin( ) && has_block( 'kompassi-integration/schedule' ) ) {
-			wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
-			wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
-			wp_enqueue_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
+		if( !is_admin( ) ) {
+			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( ), $this->ver );
+			wp_register_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
+			wp_register_style( 'kompassi-integration-frontend-common', plugins_url( 'css/frontend-common.css', __FILE__ ), array( 'kompassi-integration-fonts'), $this->ver );
 
-			wp_enqueue_script( 'kompassi-integration-frontend', plugins_url( 'frontend.js', __FILE__ ), array( 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
-			wp_set_script_translations( 'kompassi-integration-frontend', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
-			$js_strings = array(
-				'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
-				'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 ),
-				'hidden_dimensions' => explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) ),
-				'timeline_grouping' => get_option( 'kompassi_integration_timeline_grouping' ),
-			);
-			wp_localize_script( 'kompassi-integration-frontend', 'kompassi_options', $js_strings );
+			if( has_block( 'kompassi-integration/schedule' ) ) {
+				wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
+				wp_enqueue_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
 
-			wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'frontend.css', __FILE__ ), array( ), $this->ver );
-			wp_enqueue_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-common', 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
+				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
+				$js_strings = array(
+					'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
+					'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 ),
+					'hidden_dimensions' => explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) ),
+					'timeline_grouping' => get_option( 'kompassi_integration_timeline_grouping' ),
+				);
+				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_options', $js_strings );
+
+				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
+			}
 		} else {
-			wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'common.css', __FILE__ ), array( ), $this->ver );
-			wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'editor.css', __FILE__ ), array( ), $this->ver );
+			wp_enqueue_style( 'kompassi-integration-common', plugins_url( 'css/common.css', __FILE__ ), array( ), $this->ver );
+			wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'css/editor.css', __FILE__ ), array( ), $this->ver );
 		}
 	}
 

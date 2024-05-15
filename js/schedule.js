@@ -3,8 +3,6 @@ _x = wp.i18n._x;
 _n = wp.i18n._n;
 sprintf = wp.i18n.sprintf;
 
-var timeline_grouping = 'room_name';
-
 var kompassi_cookie;
 var kompassi_event = {};
 var kompassi_filters = {};
