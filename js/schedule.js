@@ -585,7 +585,8 @@ function kompassi_setup_timeline_layout( ) {
 
 	kompassi_update_date_view_parameters( );
 
-	prev_group = '';
+	prev_group = undefined;
+	group_index = 0;
 
 	length = kompassi_filters.date.length_hours * 60;
 
@@ -599,33 +600,35 @@ function kompassi_setup_timeline_layout( ) {
 		offset = offset_in_m / length * 100;
 
 		// See if we need to add a group heading
+		// TODO: Check if dimension exists?
 		if( kompassi_options.timeline_grouping.length > 0 ) {
 			if( program.find( '.' + kompassi_options.timeline_grouping ).text( ) != prev_group ) {
-				rows.push( 'group: ' + program.find( '.' + kompassi_options.timeline_grouping ).text( ) );
+				check_index = rows.push( 'group: ' + program.find( '.' + kompassi_options.timeline_grouping ).text( ) );
+				group_index = check_index;
 				group = jQuery( '<p class="group-name">' + program.find( '.' + kompassi_options.timeline_grouping ).text( ) + '</p>' );
 				group.css( 'top', 'calc( ' + ( rows.length - 1 ) + ' * var(--kompassi-schedule-timeline-row-height)' );
 				jQuery( '#kompassi_schedule' ).append( group );
-				check_row = rows.length - 1;
+			} else {
+				check_index = group_index;
 			}
 		} else {
-			check_row = 2;
+			check_index = 2;
 		}
 
 		has_row = false;
-		while( has_row == false ) {
-			if( typeof rows[check_row] === 'undefined' ) {
+		while( has_row == false && check_index < 200 ) {
+			if( rows.length == check_index - 1 ) {
 				// Row does not exist, create new
-				rows.push( program.attr( 'data-end' ) );
+				rows.push( parseInt( program.attr( 'data-end' ) ) );
 				program_row = rows.length - 1;
 				has_row = true;
-			}
-			if( rows[check_row] <= program.attr( 'data-start' ) ) {
+			} else if( rows[check_index] <= program.attr( 'data-start' ) ) {
 				// Rows last event ends before or at the same time as this one starts
-				rows[check_row] = program.attr( 'data-end' );
-				program_row = check_row;
+				rows[check_index] = parseInt( program.attr( 'data-end' ) );
+				program_row = check_index;
 				has_row = true;
 			}
-			check_row = check_row + 1;
+			check_index += 1;
 		}
 		// End grouping
 
