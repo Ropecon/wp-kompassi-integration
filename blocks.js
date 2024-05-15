@@ -28,9 +28,9 @@ wp.blocks.registerBlockType(
          default_display: { type: 'string', default: 'list' },
       },
       edit: function( props ) {
-         return( [
-            el( 'div', { }, __( 'Program Schedule', 'kompassi-integration' ) ),
-         ] );
+         return el( wp.components.Placeholder, {
+            'label': __( 'Program Schedule', 'kompassi-integration' ),
+         }, '' );
       },
       save: function( props ) {
          return null;
