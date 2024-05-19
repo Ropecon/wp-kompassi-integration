@@ -7,8 +7,10 @@
 
 function kompassi_show_modal( options ) {
 	modal = jQuery( '<div id="kompassi_modal" />' );
-	for( [attr, value] of Object.entries( options.attrs ) ) {
-		modal.attr( attr, value );
+	if( typeof options.attrs !== 'undefined' && options.attrs.length > 0 ) {
+		for( [attr, value] of Object.entries( options.attrs ) ) {
+			modal.attr( attr, value );
+		}
 	}
 	header = jQuery( '<div class="header" />' ).appendTo( modal );
 	title = jQuery( '<div class="title">' + options.title + '</div>' ).appendTo( header );
@@ -16,10 +18,14 @@ function kompassi_show_modal( options ) {
 	// header_actions from options
 	header_actions.append( '<a class="close kompassi-icon-close" title="' + _x( 'Close', 'button label', 'kompassi-integration' ) + '" />' );
 	content = jQuery( '<div class="content" />' ).appendTo( modal );
-	content.append( '<div class="actions kompassi-button-group has-icon-and-label">' + options.actions + '</div>' );
+	if( typeof options.actions !== 'undefined' ) {
+		content.append( '<div class="actions kompassi-button-group has-icon-and-label">' + options.actions + '</div>' );
+	}
 	content.append( '<div class="main">' + options.content + '</div>' );
-	content.append( '<div class="meta">' + options.meta + '</div>' );
-
+	if( typeof options.meta !== 'undefined' ) {
+		content.append( '<div class="meta">' + options.meta + '</div>' );
+	}
+	
 	modal.appendTo( jQuery( 'body' ) );
 	jQuery( 'body' ).append( '<div id="kompassi_modal_bg" />' ).css( 'overflow', 'hidden' );
 
