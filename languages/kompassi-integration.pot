@@ -3,20 +3,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp.ropecon.fi-kompassi-integration\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-integration\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-21T11:37:31+02:00\n"
+"POT-Creation-Date: 2024-05-19T13:39:38+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:68
-#: kompassi-integration.php:73
+#: kompassi-integration.php:76
+#: kompassi-integration.php:81
 msgid "Kompassi Integration"
 msgstr ""
 
@@ -25,11 +25,11 @@ msgid "Pasi Lallinaho"
 msgstr ""
 
 #: kompassi-integration.php:46
-msgid "Feed URL"
+msgid "Event Slug"
 msgstr ""
 
 #: kompassi-integration.php:47
-msgid "Feed URL where program data is loaded from."
+msgid "Event slug in Kompassi."
 msgstr ""
 
 #: kompassi-integration.php:50
@@ -48,121 +48,195 @@ msgstr ""
 msgid "End of Day when a single day is shown."
 msgstr ""
 
-#: kompassi-integration.php:76
+#: kompassi-integration.php:58
+msgid "Hidden Dimensions"
+msgstr ""
+
+#: kompassi-integration.php:59
+msgid "Comma-separated list of dimension slugs that should be hidden from filters."
+msgstr ""
+
+#: kompassi-integration.php:62
+msgid "Timeline Grouping"
+msgstr ""
+
+#: kompassi-integration.php:63
+msgid "Dimension slug for the dimension that should be used to group program with subheadings in timeline."
+msgstr ""
+
+#: kompassi-integration.php:84
 msgid "Save Changes"
 msgstr ""
 
-#: blocks.js:20
-#: blocks.js:32
+#: js/blocks.js:20
+#: js/blocks.js:32
 msgid "Program Schedule"
 msgstr ""
 
-#: frontend.js:84
+#: js/frontend-common.js:19
+msgctxt "button label"
+msgid "Close"
+msgstr ""
+
+#: js/schedule.js:38
+msgctxt "button label"
+msgid "Favorite"
+msgstr ""
+
+#: js/schedule.js:85
 msgctxt "date filter"
 msgid "Next"
 msgstr ""
 
-#: frontend.js:105
+#: js/schedule.js:106
 msgid "Favorites"
 msgstr ""
 
-#: frontend.js:106
+#: js/schedule.js:107
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr ""
 
-#: frontend.js:123
+#: js/schedule.js:122
+msgid "Help"
+msgstr ""
+
+#: js/schedule.js:133
 msgid "Text search (title, description)"
 msgstr ""
 
-#: frontend.js:137
+#: js/schedule.js:149
 msgid "Clear filters"
 msgstr ""
 
-#: frontend.js:168
+#: js/schedule.js:180
 msgctxt "display style"
 msgid "List"
 msgstr ""
 
-#: frontend.js:169
+#: js/schedule.js:181
 msgctxt "display style"
 msgid "Timeline"
 msgstr ""
 
 #. translators: count of programs visible
-#: frontend.js:330
+#: js/schedule.js:351
 msgid "%s program visible"
 msgid_plural "%s programs visible"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: count of programs
-#: frontend.js:333
+#: js/schedule.js:354
 msgid "%s program"
 msgid_plural "%s programs"
 msgstr[0] ""
 msgstr[1] ""
 
-#: frontend.js:452
+#: js/schedule.js:488
 msgid "Search results are sorted by relevance, not chronologically, when using text search."
 msgstr ""
 
-#: frontend.js:495
+#: js/schedule.js:531
 msgid "Nothing matched your search!"
 msgstr ""
 
 #. translators: start of day hour, end of day hour
-#: frontend.js:504
+#: js/schedule.js:540
 msgid "Note: This view shows programs starting between %1$s and %2$s."
 msgstr ""
 
 #. translators: amount of repositioned events
-#: frontend.js:510
+#: js/schedule.js:546
 msgid "%d program which started before the timerange is listed at the end of the results."
 msgid_plural "%d programs which started before the timerange are listed at the end of the results."
 msgstr[0] ""
 msgstr[1] ""
 
-#: frontend.js:510
+#: js/schedule.js:546
 msgctxt "link to another position in the page"
 msgid "Jump there!"
 msgstr ""
 
-#: frontend.js:511
+#: js/schedule.js:547
 msgid "Programs continuing"
 msgstr ""
 
-#: frontend.js:747
+#: js/schedule.js:629
+msgid "Ungrouped"
+msgstr ""
+
+#: js/schedule.js:709
+msgid "Use <em>Shift + mouse wheel</em> to zoom the timeline."
+msgstr ""
+
+#: js/schedule.js:810
+msgid "List View"
+msgstr ""
+
+#: js/schedule.js:811
+msgid "When using text search, results are sorted by relevance rather than chronologically."
+msgstr ""
+
+#: js/schedule.js:812
+msgid "When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results."
+msgstr ""
+
+#: js/schedule.js:813
+msgid "Timeline View"
+msgstr ""
+
+#: js/schedule.js:814
+msgid "You can zoom and pan the timeline view:"
+msgstr ""
+
+#: js/schedule.js:815
+msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
+msgstr ""
+
+#: js/schedule.js:816
+msgid "On a touch screen, pinch to zoom."
+msgstr ""
+
+#: js/schedule.js:817
+msgid "Drag to pan on all devices."
+msgstr ""
+
+#: js/schedule.js:820
+msgid "Help!"
+msgstr ""
+
+#: js/schedule.js:873
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr ""
 
-#: frontend.js:748
+#: js/schedule.js:874
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr ""
 
-#: frontend.js:749
+#: js/schedule.js:875
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr ""
 
-#: frontend.js:750
+#: js/schedule.js:876
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr ""
 
-#: frontend.js:751
+#: js/schedule.js:877
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr ""
 
-#: frontend.js:752
+#: js/schedule.js:878
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr ""
 
-#: frontend.js:753
+#: js/schedule.js:879
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr ""

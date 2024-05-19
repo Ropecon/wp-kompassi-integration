@@ -8,8 +8,9 @@
    --kompassi-color-beige: #eba876;
 
    --kompassi-hue: 197;
+   --kompassi-font: 'Lato', Helvetica, Arial, sans-serif;
 
-   /*  Common  */
+   /*  Common definitions  */
    --kompassi-box-shadow: 0 0 0.2em rgba(0,0,0,0.2);
    --kompassi-box-shadow-hover: 0 0 0.2em rgba(0,0,0,0.4);
    --kompassi-border-radius: 3px;
@@ -37,8 +38,9 @@
 [class*="wp-block-kompassi"], #kompassi_modal {
 	container-name: kompassi-integration;
 	container-type: inline-size;
-
-	font-family: var(--kompassi-schedule-font);
+}
+[class*="wp-block-kompassi"], [id^="kompassi"] {
+	font-family: var(--kompassi-font);
 }
 
 /*
@@ -46,17 +48,17 @@
  *
  */
 
-.kompassi-icon-list::before { background-image: url(../images/icon_list.svg); }
-.kompassi-icon-timeline::before { background-image: url(../images/icon_timeline.svg); }
-.kompassi-icon-filter::before { background-image: url(../images/icon_filter.svg); }
+.kompassi-icon-close::before { background-image: url(../images/icon_close.svg); }
 .kompassi-icon-favorite::before { background-image: url(../images/icon_favorite.svg); }
 .kompassi-icon-help::before { background-image: url(../images/icon_help.svg); }
 .kompassi-icon-filter::before { background-image: url(../images/icon_filter.svg); }
+.kompassi-icon-list::before { background-image: url(../images/icon_list.svg); }
 .kompassi-icon-signup::before { background-image: url(../images/icon_signup.svg); }
+.kompassi-icon-timeline::before { background-image: url(../images/icon_timeline.svg); }
+
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
 #kompassi_schedule.timeline .is-favorite::after { background-image: url(../images/icon_is_favorite.svg); }
-.kompassi-icon-close::before { background-image: url(../images/icon_close.svg); }
 
 /*
  *  Data provided by Kompassi

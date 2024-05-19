@@ -1,7 +1,4 @@
 :root {
-	/*  Schedule  */
-	--kompassi-schedule-font: 'Lato', Helvetica, Arial, sans-serif;
-
 	/*  Timeline */
 	--kompassi-schedule-timeline-bg: #fff;
 	--kompassi-schedule-timeline-row-padding: 0.2em;
