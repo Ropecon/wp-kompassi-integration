@@ -50,6 +50,8 @@
 .kompassi-icon-timeline::before { background-image: url(../images/icon_timeline.svg); }
 .kompassi-icon-filter::before { background-image: url(../images/icon_filter.svg); }
 .kompassi-icon-favorite::before { background-image: url(../images/icon_favorite.svg); }
+.kompassi-icon-help::before { background-image: url(../images/icon_help.svg); }
+.kompassi-icon-filter::before { background-image: url(../images/icon_filter.svg); }
 .kompassi-icon-signup::before { background-image: url(../images/icon_signup.svg); }
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
@@ -112,6 +114,7 @@
 			.kompassi-button-group.has-icon-only a {
 				width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
 				height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+            user-select: none;
 			}
 
 		.kompassi-button-group a.active {

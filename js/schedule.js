@@ -117,6 +117,15 @@ jQuery( function( e ) {
 		jQuery( '#kompassi_schedule_filters' ).toggleClass( 'visible' );
 	} );
 
+	/*  Help  */
+	help_section = jQuery( '<section id="kompassi_schedule_help" class="kompassi-button-group has-icon-only" />' );
+	help_button = jQuery( '<a class="schedule-help kompassi-icon-help" title="' + __( 'Help', 'kompassi-integration' ) + '">&nbsp;</a>' ).appendTo( help_section );
+	help_section.appendTo( toolbar );
+
+	help_button.on( 'click', function( ) {
+		kompassi_schedule_help_modal( );
+	} );
+
 	/*  Filter popup  */
 	filters = jQuery( '<section id="kompassi_schedule_filters" />' );
 
@@ -794,6 +803,28 @@ function kompassi_program_modal( program ) {
 		actions: program.children( '.actions' ).html( ),
 		content: program.children( '.main' ).html( ),
 		meta: program.children( '.meta' ).html( ),
+	}
+	kompassi_show_modal( options );
+}
+
+/*
+ *  Display schedule help modal
+ *
+ */
+
+function kompassi_schedule_help_modal( ) {
+	help = '<strong>' + __( 'List View', 'kompassi-integration' ) + '</strong>';
+	help += '<p>' + __( 'When using text search, results are sorted by relevance rather than chronologically.', 'kompassi-integration' ) + '</p>';
+	help += '<p>' + __( 'When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results.', 'kompassi-integration' ) + '</p>';
+	help += '<strong>' + __( 'Timeline View', 'kompassi-integration' ) + '</strong>';
+	help += '<p>' + __( 'You can zoom and pan the timeline view:', 'kompassi-integration' ) + '</p>';
+	help += '<p>' + __( 'On desktop, use <em>Shift + mouse wheel</em> to zoom.', 'kompassi-integration' ) + '</p>';
+	help += '<p>' + __( 'On a touch screen, pinch to zoom.', 'kompassi-integration' ) + '</p>';
+	help += '<p>' + __( 'Drag to pan on all devices.', 'kompassi-integration' ) + '</p>';
+
+	options = {
+		title: __( 'Help!', 'kompassi-integration' ),
+		content: help
 	}
 	kompassi_show_modal( options );
 }
