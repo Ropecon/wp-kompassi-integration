@@ -1,29 +1,33 @@
 query ProgramListQuery($eventSlug: String!, $locale: String) {
-   event(slug: $eventSlug) {
-      name
-      slug
-      program {
-         dimensions {
-            slug
-            title(lang: $locale)
-            values {
-               slug
-               title(lang: $locale)
-            }
-         }
-         programs {
-            slug
-            title
-            cachedDimensions
-            cachedHosts
-            scheduleItems {
-               startTimeUnixSeconds
-               endTimeUnixSeconds
-               lengthMinutes
-            }
-            description
-            signupLink
-         }
+  event(slug: $eventSlug) {
+    name
+    slug
+    program {
+      dimensions {
+        slug
+        title(lang: $locale)
+        values {
+          slug
+          title(lang: $locale)
+        }
       }
-   }
+      programs {
+        slug
+        title
+        cachedDimensions
+        cachedHosts
+        scheduleItems {
+          startTimeUnixSeconds
+          endTimeUnixSeconds
+          lengthMinutes
+        }
+        description
+        links(lang: $locale) {
+          title
+          href
+          type
+        }
+      }
+    }
+  }
 }

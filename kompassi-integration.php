@@ -327,8 +327,8 @@ class WP_Plugin_Kompassi_Integration {
 				</div>
 				<?php
 					echo '<div class="actions" style="grid-area: actions;">';
-					if( isset( $program['signupLink'] ) && strlen( $program['signupLink'] ) > 0 ) {
-						echo '<a href="' . $program['signupLink'] . '" class="signup kompassi-icon-signup" title="' . _x( 'Sign Up', 'button label', 'kompassi-integration' ) . '"></a>';
+					foreach( $program['links'] as $link ) {
+						echo '<a href="' . $link['href'] . '" class="' . strtolower( $link['type'] ) . ' kompassi-icon-' . strtolower( $link['type'] ) . '" title="' . $link['title'] . '"></a>';
 					}
 					echo '</div>';
 				?>
