@@ -610,13 +610,24 @@ function kompassi_setup_timeline_layout( ) {
 		offset_in_m = offset_in_s / 60;
 		offset = offset_in_m / length * 100;
 
-		// See if we need to add a group heading
-		// TODO: Check if dimension exists?
-		if( kompassi_options.timeline_grouping.length > 0 ) {
-			if( program.find( '.' + kompassi_options.timeline_grouping ).text( ) != prev_group ) {
-				check_index = rows.push( 'group: ' + program.find( '.' + kompassi_options.timeline_grouping ).text( ) );
+		// See if we need to add a group headings
+		if( kompassi_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_options.timeline_grouping ) ) {
+			grouping = kompassi_options.timeline_grouping;
+		} else {
+			grouping = false;
+		}
+
+		if( grouping ) {
+			group_name = program.find( '.' + grouping ).text( );
+			if( group_name != prev_group ) {
+				check_index = rows.push( 'group: ' + group_name );
 				group_index = check_index;
-				group = jQuery( '<p class="group-name">' + program.find( '.' + kompassi_options.timeline_grouping ).text( ) + '</p>' );
+				// TODO: Case: All items have no grouping value or have multiple
+				if( group_name.length == 0 ) {
+					group = jQuery( '<p class="group-name">' + __( 'Ungrouped', 'kompassi-integration' ) + '</p>' );
+				} else {
+					group = jQuery( '<p class="group-name">' + group_name + '</p>' );
+				}
 				group.css( 'top', 'calc( ' + ( rows.length - 1 ) + ' * var(--kompassi-schedule-timeline-row-height)' );
 				jQuery( '#kompassi_schedule' ).append( group );
 			} else {
@@ -651,8 +662,8 @@ function kompassi_setup_timeline_layout( ) {
 			program.find( '.title' ).css( 'position', 'absolute' ).css( 'left', ( ( -1 * program.position( ).left ) + 6 ) + 'px' );
 		}
 
-		if( kompassi_options.timeline_grouping.length > 0 ) {
-			prev_group = program.find( '.' + kompassi_options.timeline_grouping ).text( );
+		if( grouping ) {
+			prev_group = group_name;
 		}
 	} );
 
@@ -965,6 +976,8 @@ function kompassi_sort_by_group( a, b ) {
 	if( kompassi_options.timeline_grouping.length > 0 ) {
 		if( jQuery( a ).find( '.' + kompassi_options.timeline_grouping ).text( ) > jQuery( b ).find( '.' + kompassi_options.timeline_grouping ).text( ) ) {
 			return 1;
+		} else if( jQuery( a ).find( '.' + kompassi_options.timeline_grouping ).text( ) < jQuery( b ).find( '.' + kompassi_options.timeline_grouping ).text( ) ) {
+			return -1;
 		}
 	}
 
