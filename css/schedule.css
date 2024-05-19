@@ -146,6 +146,15 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  *
  */
 
+.kompassi_schedule_wrapper {
+	width: calc( 100% + 0.4em ); /* shadow×2 */
+	padding: 0.2em;
+	margin: 0 -0.2em;
+	overflow: hidden;
+	user-select: none;
+	position: relative;
+}
+
 #kompassi_schedule article > * {
 	display: none;
 }
@@ -304,23 +313,28 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-border-radius);
 }
-	#kompassi_schedule.timeline .day_hint {
+	#kompassi_schedule.timeline .headers {
 		position: absolute;
-		border-left: 1px solid var(--kompassi-schedule-timeline-ruler);
-		height: var(--kompassi-schedule-timeline-row-height);
-		padding: 3px;
+		top: 0;
+		width: 100%;
+		height: calc( 2 * var(--kompassi-schedule-timeline-row-height) );
 	}
-		#kompassi_schedule.timeline .day_hint:first-of-type {
-			border-left: 1px solid transparent;
-		}
-		#kompassi_schedule.timeline .day_hint.sticky {
+		#kompassi_schedule.timeline .headers .hint {
+			position: absolute;
+			border-left: 1px solid var(--kompassi-schedule-timeline-ruler);
+			height: var(--kompassi-schedule-timeline-row-height);
+			padding: var(--kompassi-schedule-timeline-row-padding);
 			background-color: var(--kompassi-schedule-timeline-bg);
-			position: fixed;
-			top: 0;
-			width: 100%;
-			height: 3em;
+			overflow: hidden;
 		}
-
+			#kompassi_schedule.timeline .headers .time_hint {
+				border-top: 1px solid var(--kompassi-schedule-timeline-ruler);
+				top: var(--kompassi-schedule-timeline-row-height);
+			}
+		#kompassi_schedule.timeline .headers.sticky {
+			z-index: 10;
+			box-shadow: var(--kompassi-box-shadow);
+		}
 	#kompassi_schedule.timeline .ruler {
 		width: auto;
 		height: 100%;

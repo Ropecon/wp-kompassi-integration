@@ -98,14 +98,15 @@ class WP_Plugin_Kompassi_Integration {
 
 		if( !is_admin( ) ) {
 			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( ), $this->ver );
+			wp_register_script( 'hammer', plugins_url( 'lib/hammer.min.js', __FILE__ ), array( ), '2.0.8' );
+			wp_register_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
+			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
+
 			wp_register_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
 			wp_register_style( 'kompassi-integration-frontend-common', plugins_url( 'css/frontend-common.css', __FILE__ ), array( 'kompassi-integration-fonts'), $this->ver );
 
 			if( has_block( 'kompassi-integration/schedule' ) ) {
-				wp_enqueue_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
-				wp_enqueue_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
-
-				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'hammer', 'js-cookie', 'dayjs', 'jquery', 'wp-i18n', 'js-cookie' ), $this->ver );
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
 					'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
@@ -175,6 +176,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . '>';
 
 		/*  Schedule  */
+		$out .= '<section class="kompassi_schedule_wrapper">';
 		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
 		if( strlen( get_option( 'kompassi_integration_event_slug' ) ) > 0 ) {
 			$data = $this->get_data_graphql( );
@@ -197,6 +199,7 @@ class WP_Plugin_Kompassi_Integration {
 		foreach( $data['programs'] as $p ) {
 			$out .= $this->markup_program( $p, $dimension_value_labels );
 		}
+		$out .= '</section>';
 		$out .= '</section>';
 
 		/*  TODO: For now, output dimensions JSON with a script tag right here... */

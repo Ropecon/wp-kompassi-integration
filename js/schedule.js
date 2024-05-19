@@ -312,6 +312,8 @@ jQuery( function( e ) {
 	// Setup display
 	kompassi_setup_display( );
 	//jQuery( window ).on( 'scroll', kompassi_schedule_timeline_sticky_header );
+
+	jQuery( window ).on( 'scroll', kompassi_schedule_timeline_sticky_header );
 } );
 
 /*
@@ -649,16 +651,120 @@ function kompassi_setup_timeline_layout( ) {
 	jQuery( '#kompassi_schedule' ).css( 'height', 'calc( var(--kompassi-schedule-timeline-row-height) * ' + ( rows.length ) + ' )' );
 
 	// Rulers
+	headers = jQuery( '<div class="headers" />' );
+	j = 1;
 	for( i = 0; i < Math.ceil( kompassi_filters.date.length_hours ); i++ ) {
 		offset = 100 / Math.ceil( kompassi_filters.date.length_hours );
 		label = ( kompassi_filters.date.start.getHours( ) + i ) % 24;
 		label.toString( ).padStart( 2, '0' );
-		jQuery( '#kompassi_schedule' ).append( '<div class="ruler ' + ( i % 2 == 0 ? 'even' : 'odd' ) + '" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% );">' + label + '</div>' );
+		jQuery( '#kompassi_schedule' ).append( '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% );" />' ); // + label + '</div>' );
+		headers.append( '<div class="hint time_hint" style="left: calc( ' + offset + ' * ' + i + '%); width: calc( ' + offset + '% );">' + label + '</div>' );
 		if( label == '00' || i == 0 ) {
 			d = kompassi_filters.date.start.valueOf( ) / 1000 + ( i * 60 * 60 );
-			jQuery( '#kompassi_schedule' ).append( '<strong class="day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% );">' + kompassi_get_date_formatted( d ) + '</div>' );
+			headers.append( '<strong class="hint day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% ); width: calc( 100% - ' + ( 24 - i ) * offset + '% ); z-index: ' + j + ';"><span>' + kompassi_get_date_formatted( d ) + '</span></div>' );
+			j += 1;
 		}
 	}
+	jQuery( '#kompassi_schedule' ).prepend( headers );
+
+	//
+	jQuery( '#kompassi_schedule' ).data( 'scale', 1 );
+	var hammer = new Hammer( jQuery( '#kompassi_schedule' )[0], { touchAction: 'pan-x pan-y' } );
+	hammer.get( 'pinch' ).set( { enable: true } );
+	hammer.get( 'pan' ).set( { direction: Hammer.DIRECTION_ALL } );
+
+	// Zoom (pinch)
+	hammer.on( 'pinch', function( ev ) {
+		if( ev.additionalEvent == 'pinchin' ) {
+			kompassi_timeline_zoom( 1 );
+		} else {
+			kompassi_timeline_zoom( -1 );
+		}
+	} );
+
+	// Zoom (mouse)
+	jQuery( '#kompassi_schedule' )[0].addEventListener( 'wheel', function( event ) {
+		if( event.shiftKey ) {
+			kompassi_timeline_zoom( event.deltaY );
+		}
+	} );
+
+	// Pan
+	hammer.on( 'pan', function( ev ) {
+		switch( ev.additionalEvent ) {
+			case 'panleft':
+				kompassi_timeline_pan( 1, 0, ev );
+				break;
+			case 'panright':
+				kompassi_timeline_pan( -1, 0, ev );
+				break;
+			case 'panup':
+				kompassi_timeline_pan( 0, 1, ev );
+				break;
+			case 'pandown':
+				kompassi_timeline_pan( 0, -1, ev );
+				break;
+		}
+	} );
+}
+
+function kompassi_timeline_zoom( direction ) {
+	elem = jQuery( '#kompassi_schedule' );
+   if( direction < 0 ) {
+      scale = elem.data( 'scale' ) + 0.5;
+   } else if( direction > 0 ) {
+      scale = elem.data( 'scale' ) - 0.5;
+   }
+
+	min_hours_to_show = 2;
+	max_scale = kompassi_filters.date.length_hours / min_hours_to_show;
+
+   if( scale < 1 ) {
+      scale = 1;
+   } else if( scale > max_scale ) {
+      scale = max_scale;
+   }
+
+	kompassi_timeline_zoom_set( scale );
+}
+
+function kompassi_timeline_zoom_set( scale ) {
+	elem = jQuery( '#kompassi_schedule' );
+	elem.data( 'scale', scale );
+	elem.css( 'width', ( scale * 100 ) + '%' );
+	kompassi_timeline_reposition_headers( );
+}
+
+function kompassi_timeline_pan( direction_x, direction_y, ev ) {
+	if( ev.pointerType === 'mouse' ) {
+		pan_speed = 20;
+	} else {
+		pan_speed = 20;
+	}
+	if( direction_x !== 0 ) {
+		wrapper = jQuery( '#kompassi_schedule' ).parent( '.kompassi_schedule_wrapper' );
+		wrapper.scrollLeft( wrapper.scrollLeft( ) + ( direction_x * pan_speed ) );
+		kompassi_timeline_reposition_headers( );
+	}
+	if( direction_y !== 0 ) {
+		wrapper = jQuery( window );
+		wrapper.scrollTop( parseInt( wrapper.scrollTop( ) ) + ( direction_y * pan_speed ) );
+	}
+}
+
+function kompassi_timeline_reposition_headers( ) {
+	jQuery( '#kompassi_schedule .day_hint' ).each( function( ) {
+		content_width = jQuery( this ).find( 'span' ).first( ).outerWidth( );
+		scroll = wrapper.scrollLeft( );
+		offset = jQuery( this )[0].offsetLeft;
+		next_offset = jQuery( this ).next( )[0].offsetLeft;
+
+		if( scroll > offset ) {
+			jQuery( this ).css( 'padding-left', ( scroll - offset ) + 'px' );
+		} else {
+			jQuery( this ).css( 'padding-left', '' );
+		}
+	} );
 }
 
 /*
@@ -698,18 +804,19 @@ function kompassi_program_modal( program ) {
  */
 
 function kompassi_schedule_timeline_sticky_header( ) {
-	return; // TODO
-	jQuery( '#kompassi_schedule.timeline' ).each( function( ) {
-		var top = this.offsetTop;
-		var bottom = top + this.scrollHeight;
+	jQuery( '#kompassi_block_schedule' ).each( function( ) {
+		var schedule_top = this.offsetTop + jQuery( this ).find( '.kompassi_schedule_wrapper' ).first( )[0].offsetTop;
+		var schedule_bottom = schedule_top + jQuery( this ).find( '.kompassi_schedule_wrapper' ).first( )[0].scrollHeight;
 		var scroll = window.scrollY;
 
-		if( scroll > top && scroll < bottom ) {
-			jQuery( this ).find( '.day_hint' ).addClass( 'sticky' );
-			//tables[i].children[0].style.left = tables[i].offsetLeft + 'px';
-			//tables[i].children[0].style.width = tables[i].offsetWidth + 'px';
+		var buffer = jQuery( this ).find( '.headers' ).first( ).outerHeight( );
+
+		if( scroll > schedule_top + buffer && scroll < schedule_bottom - buffer ) {
+			jQuery( this ).find( '.headers' ).addClass( 'sticky' );
+			jQuery( this ).find( '.headers' ).css( 'top', scroll - schedule_top );
 		} else {
-			jQuery( this ).find( '.day_hint' ).removeClass( 'sticky' );
+			jQuery( this ).find( '.headers' ).removeClass( 'sticky' );
+			jQuery( this ).find( '.headers' ).css( 'top', 0 );
 		}
 	} );
 }
