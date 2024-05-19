@@ -46,11 +46,11 @@ jQuery( function( e ) {
 	 *
 	 */
 
-	kompassi_event.start = new Date( parseInt( jQuery( '#kompassi_schedule article' ).first( ).attr( 'data-start' ) ) * 1000 );
+	kompassi_event.start = new Date( parseInt( jQuery( '#kompassi_schedule article' ).first( ).data( 'start' ) ) * 1000 );
 	kompassi_event.end = new Date( kompassi_event.start );
 	jQuery( '#kompassi_schedule article' ).each( function( ) {
-		if( kompassi_event.end / 1000 < jQuery( this ).attr( 'data-end' ) ) {
-			kompassi_event.end.setTime( parseInt( jQuery( this ).attr( 'data-end' ) * 1000 ) );
+		if( kompassi_event.end / 1000 < jQuery( this ).data( 'end' ) ) {
+			kompassi_event.end.setTime( parseInt( jQuery( this ).data( 'end' ) * 1000 ) );
 		}
 	} );
 
@@ -175,7 +175,7 @@ jQuery( function( e ) {
 	jQuery.each( styles, function( style, label ) {
 		link = jQuery( '<a class="kompassi-icon-' + style + '" data-display="' + style + '">' + label + '</a>' );
 		ds.append( link );
-		if( jQuery( '#kompassi_schedule' ).attr( 'data-display' ) == style ) {
+		if( jQuery( '#kompassi_schedule' ).data( 'display' ) == style ) {
 			link.addClass( 'active' );
 		}
 	} );
@@ -187,7 +187,7 @@ jQuery( function( e ) {
 			return;
 		}
 
-		kompassi_setup_display( jQuery( this ).attr( 'data-display' ) );
+		kompassi_setup_display( jQuery( this ).data( 'display' ) );
 	} );
 
 	/*
@@ -320,7 +320,7 @@ jQuery( function( e ) {
  */
 
 function kompassi_toggle_favorite( ) {
-	art_id = jQuery( this ).closest( '.kompassi-program' ).attr( 'data-id' );
+	art_id = jQuery( this ).closest( '.kompassi-program' ).data( 'id' );
 	jQuery( '.kompassi-program[data-id="' + art_id + '"]' ).toggleClass( 'is-favorite' );
 	if( kompassi_cookie.favorites.includes( art_id ) ) {
 		kompassi_cookie.favorites = kompassi_cookie.favorites.filter( function( id ) { return id !== art_id; } );
@@ -357,7 +357,7 @@ function kompassi_update_date_view_parameters( ) {
 	kompassi_filters.date = { };
 	if( block.find( '.date-toggle.active' ).length > 0 ) {
 		selected_date = block.find( '.date-toggle.active' ).first( );
-		if( selected_date.attr( 'data-date' ) == 'next' ) {
+		if( selected_date.data( 'date' ) == 'next' ) {
 			kompassi_filters.date.start = new Date( );
 			// This is for debugging purposes...
 			if( kompassi_user_options.now ) {
@@ -366,7 +366,7 @@ function kompassi_update_date_view_parameters( ) {
 			// TODO: Allow user to select how much program to show?
 			kompassi_filters.date.length_hours = 2;
 		} else {
-			timestamp = selected_date.attr( 'data-timestamp' );
+			timestamp = selected_date.data( 'timestamp' );
 			start_of_day = parseInt( kompassi_options.schedule_start_of_day );
 			end_of_day = parseInt( kompassi_options.schedule_end_of_day );
 
@@ -410,8 +410,8 @@ function kompassi_update_date_view_parameters( ) {
 			ends = [];
 
 			jQuery( '#kompassi_schedule article:visible' ).each( function ( ) {
-				starts.push( jQuery( this ).attr( 'data-start' ) );
-				ends.push( jQuery( this ).attr( 'data-end' ) );
+				starts.push( jQuery( this ).data( 'start' ) );
+				ends.push( jQuery( this ).data( 'end' ) );
 			} );
 
 			kompassi_filters.date.start = new Date( Math.min( ...starts ) * 1000 );
@@ -443,7 +443,7 @@ function kompassi_apply_filters( ) {
 		if( filter.hasClass( 'filter-dimension' ) ) {
 			if( filter.val( ) !== '0' ) {
 				jQuery( '#kompassi_schedule article:visible' ).filter( function( ) {
-					prog_dimension = jQuery( this ).attr( 'data-' + filter.attr( 'data-dimension' ) );
+					prog_dimension = jQuery( this ).data( '' + filter.data( 'dimension' ) );
 					return prog_dimension !== filter.val( );
 				} ).addClass( 'filtered' );
 				filter_count += 1;
@@ -495,8 +495,8 @@ function kompassi_apply_filters( ) {
 	kompassi_update_date_view_parameters( );
 	jQuery( '#kompassi_schedule article:visible' ).each( function( index ) {
 		program = jQuery( this );
-		program_start = parseInt( program.attr( 'data-start' ) );
-		program_end = parseInt( program.attr( 'data-end' ) );
+		program_start = parseInt( program.data( 'start' ) );
+		program_end = parseInt( program.data( 'end' ) );
 		if( program_start > kompassi_filters.date.end / 1000 || program_end <= kompassi_filters.date.start / 1000 ) {
 			program.addClass( 'filtered' );
 		}
@@ -594,8 +594,8 @@ function kompassi_setup_timeline_layout( ) {
 		program = jQuery( this );
 
 		// Count the width % and offset % for program
-		width = program.attr( 'data-length' ) / length * 100;
-		offset_in_s = program.attr( 'data-start' ) - ( kompassi_filters.date.start.valueOf( ) / 1000 );
+		width = program.data( 'length' ) / length * 100;
+		offset_in_s = program.data( 'start' ) - ( kompassi_filters.date.start.valueOf( ) / 1000 );
 		offset_in_m = offset_in_s / 60;
 		offset = offset_in_m / length * 100;
 
@@ -619,12 +619,12 @@ function kompassi_setup_timeline_layout( ) {
 		while( has_row == false && check_index < 200 ) {
 			if( rows.length == check_index - 1 ) {
 				// Row does not exist, create new
-				rows.push( parseInt( program.attr( 'data-end' ) ) );
+				rows.push( parseInt( program.data( 'end' ) ) );
 				program_row = rows.length - 1;
 				has_row = true;
-			} else if( rows[check_index] <= program.attr( 'data-start' ) ) {
+			} else if( rows[check_index] <= program.data( 'start' ) ) {
 				// Rows last event ends before or at the same time as this one starts
-				rows[check_index] = parseInt( program.attr( 'data-end' ) );
+				rows[check_index] = parseInt( program.data( 'end' ) );
 				program_row = check_index;
 				has_row = true;
 			}
@@ -679,11 +679,10 @@ function kompassi_revert_timeline_layout( ) {
  */
 
 function kompassi_program_modal( program ) {
-
 	options = {
 		attrs: {
 			'class': program.attr( 'class' ),
-			'data-id': program.attr( 'data-id' ),
+			'data-id': program.data( 'id' ),
 		},
 		title: program.children( '.title' ).text( ),
 		actions: program.children( '.actions' ).html( ),
@@ -787,11 +786,11 @@ function kompassi_update_url_hash( ) {
 
 	// If program modal is open, dismiss other options
 	if( jQuery( '#kompassi_modal' ).length > 0 ) {
-		opts.push( 'prog:' + jQuery( '#kompassi_modal' ).attr( 'data-id' ) );
+		opts.push( 'prog:' + jQuery( '#kompassi_modal' ).data( 'id' ) );
 	} else {
 		// Date
 		if( jQuery( '.date-toggle.active' ).length > 0 ) {
-			opts.push( 'date:' + jQuery( '.date-toggle.active' ).first( ).attr( 'data-date' ) );
+			opts.push( 'date:' + jQuery( '.date-toggle.active' ).first( ).data( 'date' ) );
 		}
 
 		// Favorites
