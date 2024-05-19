@@ -777,7 +777,7 @@ function kompassi_timeline_pan( direction_x, direction_y, ev ) {
 function kompassi_timeline_reposition_headers( ) {
 	jQuery( '#kompassi_schedule .day_hint' ).each( function( ) {
 		content_width = jQuery( this ).find( 'span' ).first( ).outerWidth( );
-		scroll = wrapper.scrollLeft( );
+		scroll = jQuery( this ).closest( '.kompassi_schedule_wrapper ').scrollLeft( );
 		offset = jQuery( this )[0].offsetLeft;
 		next_offset = jQuery( this ).next( )[0].offsetLeft;
 
