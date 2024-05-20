@@ -31,20 +31,40 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	position: relative;
 }
 
-@container kompassi-integration (min-width: 0px) {
-	#kompassi_schedule_toolbar section {
-		display: inline-block;
-		margin-right: var(--kompassi-button-padding);
+#kompassi_schedule_toolbar .kompassi-button-group {
+	margin: 0;
+}
+
+#kompassi_schedule_toolbar {
+	display: grid;
+	margin-bottom: var(--kompassi-button-padding);
+	grid-gap: var(--kompassi-button-padding);
+	grid-template-areas: "dates dates" "filtering filtering" "help display";
+	grid-template-columns: min-content auto;
+}
+	#kompassi_schedule_toolbar section { align-content: center; }
+	#kompassi_schedule_toolbar #kompassi_schedule_dates { grid-area: dates; }
+	#kompassi_schedule_toolbar #kompassi_schedule_filtering { grid-area: filtering; }
+	#kompassi_schedule_toolbar #kompassi_schedule_help { grid-area: help; }
+	#kompassi_schedule_toolbar #kompassi_schedule_display { grid-area: display; }
+
+@container kompassi-integration (min-width:450px) {
+	#kompassi_schedule_toolbar {
+		grid-template-areas: "dates display" "filtering help";
+		grid-template-columns: auto auto;
+	}
+		#kompassi_schedule_toolbar #kompassi_schedule_help,
+		#kompassi_schedule_toolbar #kompassi_schedule_display { text-align: right; }
+}
+
+@container kompassi-integration (min-width:700px) {
+	#kompassi_schedule_toolbar {
+		grid-template-areas: "dates filtering help display";
+		grid-template-columns: max-content max-content auto max-content;
 	}
 }
 
-@container kompassi-integration (min-width: 900px) {
-	#kompassi_schedule_toolbar #kompassi_schedule_display {
-		position: absolute;
-		right: 0;
-		margin-right: 0;
-	}
-}
+
 
 /*
  *  Filters
@@ -53,7 +73,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 #kompassi_schedule_filters {
 	display: none;
-	margin-bottom: 1em;
+	margin-bottom: var(--kompassi-button-padding);
 	background-color: var(--kompassi-button-bg-active);
 	color: var(--kompassi-button-fg-active);
 	padding: var(--kompassi-button-padding);
@@ -129,7 +149,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  *
  */
 
-#kompassi_schedule_notes div {
+#kompassi_schedule_notes:not(:empty) {
 	padding: 0.5em;
 	background-color: rgba(255,255,204,1);
 	border-radius: var(--kompassi-border-radius);
@@ -137,6 +157,14 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	color: #222;
 	margin-bottom: 0.5em;
 }
+	#kompassi_schedule_notes span {
+		display: inline-block;
+		margin-right: 1em;
+	}
+		#kompassi_schedule_notes .program-count {
+			font-weight: 600;
+		}
+
 
 /*
  *  Schedule
@@ -324,6 +352,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			background-color: var(--kompassi-schedule-timeline-bg);
 			overflow: hidden;
 		}
+			#kompassi_schedule.timeline .headers .day_hint {
+				width: 100%;
+			}
 			#kompassi_schedule.timeline .headers .time_hint {
 				border-top: 1px solid var(--kompassi-schedule-timeline-ruler);
 				top: var(--kompassi-schedule-timeline-row-height);

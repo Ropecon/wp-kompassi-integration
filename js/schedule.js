@@ -171,10 +171,6 @@ jQuery( function( e ) {
 		kompassi_timeouts['text-filter'] = setTimeout( kompassi_apply_filters, 300 );
 	} );
 
-	/*  Show event count  */
-	jQuery( '<section id="kompassi_event_count" />' ).appendTo( toolbar );
-	kompassi_update_event_count( );
-
  	/*  Display styles  */
 	styles = {
 		'list': _x( 'List', 'display style', 'kompassi-integration' ),
@@ -205,6 +201,9 @@ jQuery( function( e ) {
 	 */
 
 	jQuery( '<section id="kompassi_schedule_notes" />' ).insertAfter( filters );
+
+	/*  Show program count  */
+	kompassi_update_program_count( );
 
 	/*
 	 *  Toggle favorites
@@ -340,21 +339,23 @@ function kompassi_toggle_favorite( ) {
 }
 
 /*
- *  Get and show (visible) event count
+ *  Get and show (visible) program count
  *
  */
 
-function kompassi_update_event_count( ) {
-	event_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
+function kompassi_update_program_count( ) {
+	jQuery( '#kompassi_schedule_notes .program-count' ).remove( );
+	program_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
 	if( kompassi_filters.enabled > 0 ) {
-		// translators: count of programs visible
-		event_count_label = _n( '%s program visible', '%s programs visible', event_count, 'kompassi-integration' );
-	} else {
-		// translators: count of programs
-		event_count_label = _n( '%s program', '%s programs', event_count, 'kompassi-integration' );
+		if( program_count > 0 ) {
+			// translators: count of programs visible
+			program_count_label = _n( '%s program visible.', '%s programs visible.', program_count, 'kompassi-integration' );
+			program_count_label = program_count_label.replace( '%s', program_count );
+			jQuery( '#kompassi_schedule_notes' ).prepend( '<span class="program-count">' + program_count_label + '</span>' );
+		} else {
+			jQuery( '#kompassi_schedule_notes' ).prepend( '<span class="program-count">' + __( 'Nothing matched your search!', 'kompassi-integration' ) + '</span>' );
+		}
 	}
-	event_count_label = event_count_label.replace( '%s', event_count );
-	jQuery( '#kompassi_schedule_toolbar #kompassi_event_count' ).html( event_count_label );
 }
 
 /*
@@ -485,7 +486,6 @@ function kompassi_apply_filters( ) {
 						program.addClass( 'filtered' );
 					}
 				} );
-				jQuery( '#kompassi_schedule_notes' ).append( '<div class="filter display-not-timeline">' + __( 'Search results are sorted by relevance, not chronologically, when using text search.', 'kompassi-integration' ) + '</div>' );
 				filter_count += 1;
 			}
 		}
@@ -526,24 +526,22 @@ function kompassi_apply_filters( ) {
 		kompassi_setup_timeline_layout( );
 	}
 
-	// If there is no program that matches the search, show notification
-	if( jQuery( '#kompassi_schedule article:not(.filtered)' ).length == 0 ) {
-		jQuery( '#kompassi_schedule_notes' ).append( '<div class="filter">' + __( 'Nothing matched your search!', 'kompassi-integration' ) + '</div>' );
-	}
-
 	// If there is no text search and there is a date search, and there is programs that have started before the filtered timerange, show notification
 	if( block.find( '.date-toggle.active' ).length > 0 ) {
 		if( parseInt( kompassi_options.schedule_start_of_day ) !== 0 || parseInt( kompassi_options.schedule_end_of_day ) !== 0 ) {
 			start_of_day = parseInt( kompassi_options.schedule_start_of_day );
 			end_of_day = parseInt( kompassi_options.schedule_end_of_day );
-			// translators: start of day hour, end of day hour
-			jQuery( '#kompassi_schedule_notes' ).append( '<div class="filter display-not-timeline">' + sprintf( __( 'Note: This view shows programs starting between %1$s and %2$s.', 'kompassi-integration' ), start_of_day, end_of_day ) + '</div>' );
+			program_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
+			if( program_count > 0 ) {
+				// translators: start of day hour, end of day hour
+				jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-between display-not-timeline">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), start_of_day, end_of_day ) + '</span>' );
+			}
 		}
 		// TODO: Show note about the Start/End of Day times
 		if( jQuery( '#kompassi_schedule_filters [name="filter_text"]' ).val( ).length < 1 && jQuery( '#kompassi_schedule article.multiday-overlap' ).length > 0 ) {
 			count = jQuery( '#kompassi_schedule article.multiday-overlap:visible' ).length;
 			// translators: amount of repositioned events
-			jQuery( '#kompassi_schedule_notes' ).append( '<div class="filter display-not-timeline">' + sprintf( _n( '%d program which started before the timerange is listed at the end of the results.', '%d programs which started before the timerange are listed at the end of the results.', count, 'kompassi-integration' ), count ) + '<a href="#kompassi_programs_continuing">' + ' ' + _x( 'Jump there!', 'link to another position in the page', 'kompassi-integration' ) + '</a></div>' );
+			jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-continuing display-not-timeline"><a href="#kompassi_programs_continuing">' + sprintf( _n( 'Show %d program starting earlier', 'Show %d programs starting earlier', count, 'kompassi-integration' ), count ) + '</a></span>' );
 			jQuery( '#kompassi_schedule article.multiday-overlap' ).first( ).before( '<h3 id="kompassi_programs_continuing"">' + __( 'Programs continuing', 'kompassi-integration' ) + '</h3>' );
 		}
 	}
@@ -556,7 +554,7 @@ function kompassi_apply_filters( ) {
 	}
 
 	kompassi_update_url_hash( );
-	kompassi_update_event_count( );
+	kompassi_update_program_count( );
 
 	jQuery( '#kompassi_schedule_notes .display-not-' + kompassi_get_display_type( ) ).hide( );
 	jQuery( '#kompassi_schedule_notes .display-only-' + kompassi_get_display_type( ) ).show( );
@@ -683,7 +681,7 @@ function kompassi_setup_timeline_layout( ) {
 		headers.append( '<div class="hint time_hint" style="left: calc( ' + offset + ' * ' + i + '%); width: calc( ' + offset + '% );">' + label + '</div>' );
 		if( label == '00' || i == 0 ) {
 			d = kompassi_filters.date.start.valueOf( ) / 1000 + ( i * 60 * 60 );
-			headers.append( '<strong class="hint day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% ); width: calc( 100% - ' + ( 24 - i ) * offset + '% ); z-index: ' + j + ';"><span>' + kompassi_get_date_formatted( d ) + '</span></div>' );
+			headers.append( '<strong class="hint day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% ); z-index: ' + j + ';"><span>' + kompassi_get_date_formatted( d ) + '</span></div>' );
 			j += 1;
 		}
 	}
@@ -798,7 +796,7 @@ function kompassi_revert_timeline_layout( ) {
 	jQuery( '#kompassi_schedule' ).css( 'height', 'auto' );
 	jQuery( '#kompassi_schedule article' ).attr( 'style', '' );
 	jQuery( '#kompassi_schedule .title' ).css( 'left', '' ).css( 'position', '' );
-	jQuery( '#kompassi_schedule .day_hint, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
+	jQuery( '#kompassi_schedule .headers, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
 }
 
 /*
@@ -826,7 +824,7 @@ function kompassi_program_modal( program ) {
  */
 
 function kompassi_schedule_help_modal( ) {
-	help = '<strong>' + __( 'List View', 'kompassi-integration' ) + '</strong>';
+	help = '<strong class="kompassi-icon-list">' + __( 'List View', 'kompassi-integration' ) + '</strong>';
 	help += '<p>' + __( 'When using text search, results are sorted by relevance rather than chronologically.', 'kompassi-integration' ) + '</p>';
 	help += '<p>' + __( 'When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results.', 'kompassi-integration' ) + '</p>';
 	help += '<strong>' + __( 'Timeline View', 'kompassi-integration' ) + '</strong>';

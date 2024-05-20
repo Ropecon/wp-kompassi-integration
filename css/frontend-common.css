@@ -11,8 +11,8 @@
    --kompassi-font: 'Lato', Helvetica, Arial, sans-serif;
 
    /*  Common definitions  */
-   --kompassi-box-shadow: 0 0 0.2em rgba(0,0,0,0.2);
-   --kompassi-box-shadow-hover: 0 0 0.2em rgba(0,0,0,0.4);
+   --kompassi-box-shadow: 0 0 3px rgba(0,0,0,0.1);
+   --kompassi-box-shadow-hover: 0 0 3px rgba(0,0,0,0.4);
    --kompassi-border-radius: 3px;
 
    /*  Button groups  */
@@ -59,6 +59,18 @@
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
 #kompassi_schedule.timeline .is-favorite::after { background-image: url(../images/icon_is_favorite.svg); }
+
+/*  Icons without button group parent  */
+:not(.kompassi-button-group) > [class*="kompassi-icon"]::before {
+   content: '';
+   display: inline-block;
+   height: 1.25em;
+   width: 1.26em;
+   margin-right: 0.5em;
+   background-size: contain;
+   background-position: 50% 50%;
+   background-repeat: no-repeat;
+}
 
 /*
  *  Data provided by Kompassi
