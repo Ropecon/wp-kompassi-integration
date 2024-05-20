@@ -7,7 +7,7 @@
 
 function kompassi_show_modal( options ) {
 	modal = jQuery( '<div id="kompassi_modal" />' );
-	if( typeof options.attrs !== 'undefined' && options.attrs.length > 0 ) {
+	if( typeof options.attrs == 'object' && Object.keys(options.attrs).length > 0 ) {
 		for( [attr, value] of Object.entries( options.attrs ) ) {
 			modal.attr( attr, value );
 		}
@@ -25,7 +25,7 @@ function kompassi_show_modal( options ) {
 	if( typeof options.meta !== 'undefined' ) {
 		content.append( '<div class="meta">' + options.meta + '</div>' );
 	}
-	
+
 	modal.appendTo( jQuery( 'body' ) );
 	jQuery( 'body' ).append( '<div id="kompassi_modal_bg" />' ).css( 'overflow', 'hidden' );
 
