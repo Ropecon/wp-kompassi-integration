@@ -144,7 +144,6 @@ jQuery( function( e ) {
 		wrapper = jQuery( '<div class="select" />' ).append( select );
 		filters.append( wrapper );
 
-		// dimension.title
 		select.multiselect( {
 			texts: {
 				placeholder: dimension.title,

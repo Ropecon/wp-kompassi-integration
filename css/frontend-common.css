@@ -39,7 +39,7 @@
 	container-name: kompassi-integration;
 	container-type: inline-size;
    position: relative;
-   z-index: 100000;
+   z-index: 10000;
 }
 [class*="wp-block-kompassi"], [id^="kompassi"] {
 	font-family: var(--kompassi-font);
@@ -89,6 +89,7 @@
     text-align: center;
     color: #fff;
     border-radius: 9999px;
+    align-content: center;
 }
 
 /*
@@ -190,7 +191,7 @@
 	left: 0;
 	top: 0;
 	bottom: 0;
-	z-index: 300000;
+	z-index: 30000;
 
 	background-color: var(--kompassi-modal-bg);
 	box-shadow: var(--kompassi-box-shadow);
@@ -344,7 +345,7 @@
 	bottom: 0;
 	left: 0;
 	background-color: rgba(0,0,0,0.75);
-	z-index: 200000;
+	z-index: 20000;
 }
 
 /*
@@ -354,7 +355,7 @@
 
 #kompassi_popover {
 	position: fixed;
-	z-index: 100000;
+	z-index: 10000;
 
 	padding: 0.5em;
 
