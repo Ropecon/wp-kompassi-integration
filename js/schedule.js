@@ -137,19 +137,36 @@ jQuery( function( e ) {
 		if( kompassi_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
 			return;
 		}
-		select = jQuery( '<select class="filter filter-dimension" name="filter_' + dimension.slug + '" data-dimension="' + dimension.slug + '" />' );
-		select.append( jQuery( '<option value="0">-- ' + dimension.title + ' --</option>' ) );
+		select = jQuery( '<select class="filter filter-dimension" name="filter_' + dimension.slug + '" data-dimension="' + dimension.slug + '" placeholder="' + dimension.title + '" multiple="multiple" />' );
 		jQuery.each( this.values, function( index, value ) {
 			select.append( jQuery( '<option value="' + value.slug + '">' + value.title + '</option>' ) );
 		} );
-		filters.append( select );
+		wrapper = jQuery( '<div class="select" />' ).append( select );
+		filters.append( wrapper );
+
+		// dimension.title
+		select.multiselect( {
+			texts: {
+				placeholder: dimension.title,
+				select_title: dimension.title,
+			},
+			maxWidth: 500,
+			onPlaceholder: function( element, placeholderTxt, selectedOpts ) {
+				jQuery( element ).next( ).find( 'button' ).first( ).html( this.texts.select_title + ' <span class="indicator">' + selectedOpts.length + '</span>' );
+			},
+			onOptionClick: function( element, option ) {
+				if( jQuery( element ).find( '[checked="checked"]' ).length == 0 ) {
+					jQuery( element ).next( ).find( 'button' ).first( ).html( this.texts.select_title );
+				}
+			}
+		} );
 	} );
 
 	// Clear filters
 	clear_filters = jQuery( '<a href="#" class="clear-filters">' + __( 'Clear filters', 'kompassi-integration' ) + '</button>' );
 	clear_filters.hide( );
 	clear_filters.on( 'click', function( ) {
-		jQuery( filters ).children( ).each( function( index ) {
+		jQuery( filters ).find( 'input, select' ).each( function( index ) {
 			if( jQuery( this ).hasClass( 'filter-dimension' ) ) {
 				jQuery( this ).val( '0' );
 			}
@@ -231,7 +248,10 @@ jQuery( function( e ) {
 		filter = jQuery( '[name="filter_' + opt[0] + '"]' );
 		if( filter.length > 0 ) {
 			if( filter.prop( 'tagName' ) == 'SELECT' ) {
-				filter.find( '[value="' + opt[1] + '"]').attr( 'selected', 'selected' );
+				opt[1].split( ',' ).forEach( function( value, index, array ) {
+					filter.find( '[value="' + value + '"]').attr( 'selected', 'selected' );
+				} );
+				filter.multiselect( 'reload' );
 			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
 				filter.val( decodeURIComponent( opt[1] ) );
 			}
@@ -451,10 +471,14 @@ function kompassi_apply_filters( ) {
 
 		// Dimension filters
 		if( filter.hasClass( 'filter-dimension' ) ) {
-			if( filter.val( ) !== '0' ) {
+			if( filter.val( ).length > 0 ) {
 				jQuery( '#kompassi_schedule article:visible' ).filter( function( ) {
-					prog_dimension = jQuery( this ).data( '' + filter.data( 'dimension' ) );
-					return prog_dimension !== filter.val( );
+					prog_dimension = jQuery( this ).data( filter.data( 'dimension' ) );
+					if( filter.val( ).indexOf( prog_dimension ) == -1 ) {
+						return true;
+					} else {
+						return false;
+					}
 				} ).addClass( 'filtered' );
 				filter_count += 1;
 			}

@@ -83,12 +83,12 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	#kompassi_schedule_filters.visible {
 		display: block;
 	}
-		#kompassi_schedule_filters > * {
+		#kompassi_schedule_filters > *,
+		#kompassi_schedule_filters > .select > * {
 			display: inline-block;
 			width: 100%;
 		}
-			#kompassi_schedule_filters input,
-			#kompassi_schedule_filters select {
+			#kompassi_schedule_filters :is(input, select, .ms-options-wrap button) {
 				padding: 0.5em;
 				margin-bottom: 0.3em;
 				background-color: rgba(0,0,0,0.25);
@@ -101,31 +101,53 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				#kompassi_schedule_filters input::placeholder {
 					color: rgba(255,255,255,0.5);
 				}
-				#kompassi_schedule_filters select {
+				#kompassi_schedule_filters :is(select, .ms-options-wrap button) {
 					appearance: none;
-					text-align: center;
+					cursor: pointer;
 
-					background-image: url(images/icon_dropdown.svg);
+					background-image: url(../images/icon_dropdown.svg);
 					background-size: 1em auto;
 					background-repeat: no-repeat;
-					background-position: calc( 100% - 0.5em ) 50%;
-					padding: 0.5em 2em;
+					background-position: calc( 100% - 0.5em ) 0.65em;
+					padding: 0.5em 2em 0.5em 0.5em;
 				}
+					#kompassi_schedule_filters .ms-options-wrap button::after {
+						display: none;
+					}
 					#kompassi_schedule_filters option {
 						background-color: #fff;
 						color: #000;
 					}
 				#kompassi_schedule_filters input:not(:placeholder-shown),
-				#kompassi_schedule_filters select:has(option:checked:not([value="0"])) {
+				#kompassi_schedule_filters select:has(option:checked:not([value="0"])),
+			   #kompassi_schedule_filters .ms-options-wrap.ms-has-selections button {
 					background-color: var(--kompassi-button-fg-active);
 					color: var(--kompassi-button-bg-active);
 				}
-					#kompassi_schedule_filters select:has(option:checked:not([value="0"])) {
-						background-image: url(images/icon_dropdown_black.svg);
+					#kompassi_schedule_filters select:has(option:checked:not([value="0"])),
+					#kompassi_schedule_filters .ms-options-wrap.ms-has-selections button {
+						background-image: url(../images/icon_dropdown_black.svg);
 					}
-
-
-
+				#kompassi_schedule_filters .ms-options {
+					z-index: 20;
+					color: #000;
+				}
+					#kompassi_schedule_filters .ms-options > ul li {
+						padding: 0;
+						border-bottom: 1px solid var(--kompassi-schedule-timeline-ruler);
+					}
+						#kompassi_schedule_filters .ms-options > ul label {
+							cursor: pointer;
+							padding: calc( var(--kompassi-button-padding) / 2 ) var(--kompassi-button-padding);
+							padding-left: calc( var(--kompassi-button-padding) + 1.5em );
+						}
+							#kompassi_schedule_filters .ms-options > ul li.selected label {
+								background-color: inherit;
+							}
+								#kompassi_schedule_filters .ms-options > ul input {
+									width: 1.5em;
+									margin: calc( var(--kompassi-button-padding) / 2 - 3px ) var(--kompassi-button-padding) calc( var(--kompassi-button-padding) / 2 ) 0;
+								}
 			#kompassi_schedule_filters a {
 				color: var(--kompassi-button-fg-active);
 				text-decoration: underline;
@@ -133,14 +155,17 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 
 @container kompassi-integration (min-width: 700px) {
-	#kompassi_schedule_filters > * {
-		margin-right: 0.5em;
-		width: auto;
-		max-width: 16em;
+	#kompassi_schedule_filters.visible {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-gap: var(--kompassi-button-padding);
 	}
-	#kompassi_schedule_filters .filter-text {
-		width: 20em;
-		max-width: 20em;
+	#kompassi_schedule_filters.visible > *,
+	#kompassi_schedule_filters.visible > .select > * {
+		margin-right: 0;
+		margin-bottom: 0;
+		width: 100%;
+		max-width: 100%;
 	}
 }
 

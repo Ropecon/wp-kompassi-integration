@@ -38,6 +38,8 @@
 [class*="wp-block-kompassi"], #kompassi_modal {
 	container-name: kompassi-integration;
 	container-type: inline-size;
+   position: relative;
+   z-index: 100000;
 }
 [class*="wp-block-kompassi"], [id^="kompassi"] {
 	font-family: var(--kompassi-font);
@@ -70,6 +72,23 @@
    background-size: contain;
    background-position: 50% 50%;
    background-repeat: no-repeat;
+}
+
+/*
+ *  Indicators
+ *
+ */
+
+ .indicator:not(:empty) {
+    display: inline-block;
+    float: right;
+    margin-left: var(--kompassi-button-padding);
+    width: var(--kompassi-button-icon-size);
+    height: var(--kompassi-button-icon-size);
+    background-color: var(--kompassi-button-indicator-color);
+    text-align: center;
+    color: #fff;
+    border-radius: 9999px;
 }
 
 /*
@@ -135,16 +154,6 @@
 			color: var(--kompassi-button-fg-active);
 			background: var(--kompassi-button-bg-active);
 		}
-		.kompassi-button-group .indicator:not(:empty) {
-			display: inline-block;
-			margin-left: var(--kompassi-button-padding);
-			width: var(--kompassi-button-icon-size);
-			height: var(--kompassi-button-icon-size);
-			background-color: var(--kompassi-button-indicator-color);
-			text-align: center;
-			color: #fff;
-			border-radius: 9999px;
-		}
 
 @container kompassi-integration (min-width: 0px) {
 	.kompassi-button-group {
@@ -181,7 +190,7 @@
 	left: 0;
 	top: 0;
 	bottom: 0;
-	z-index: 100000;
+	z-index: 300000;
 
 	background-color: var(--kompassi-modal-bg);
 	box-shadow: var(--kompassi-box-shadow);
@@ -335,7 +344,7 @@
 	bottom: 0;
 	left: 0;
 	background-color: rgba(0,0,0,0.75);
-	z-index: 10000;
+	z-index: 200000;
 }
 
 /*
