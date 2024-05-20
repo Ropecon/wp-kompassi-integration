@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-05-19T13:39:38+03:00\n"
+"POT-Creation-Date: 2024-05-20T08:49:19+03:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -86,7 +86,7 @@ msgstr "Sulje"
 #: js/schedule.js:38
 msgctxt "button label"
 msgid "Favorite"
-msgstr "Suosikit"
+msgstr "Suosikki"
 
 #: js/schedule.js:85
 msgctxt "date filter"
@@ -184,15 +184,11 @@ msgstr "Jatkuvat ohjelmat"
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:709
-msgid "Use <em>Shift + mouse wheel</em> to zoom the timeline."
-msgstr "Käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."
-
-#: js/schedule.js:810
+#: js/schedule.js:829
 msgid "List View"
 msgstr "Listanäkymä"
 
-#: js/schedule.js:811
+#: js/schedule.js:830
 msgid ""
 "When using text search, results are sorted by relevance rather than "
 "chronologically."
@@ -200,7 +196,7 @@ msgstr ""
 "Kun käytät tekstihakua, tulokset järjestetään relevanssin perusteella, ei "
 "kronologisesti."
 
-#: js/schedule.js:812
+#: js/schedule.js:831
 msgid ""
 "When limiting search results by date, programs which have started in "
 "previous days that are still continuing are listed at the end of the search "
@@ -210,65 +206,68 @@ msgstr ""
 "olevat ohjelmatm jotka ovat alkaneet edellisenä päivänä näytetään "
 "hakutuloksien lopussa."
 
-#: js/schedule.js:813
+#: js/schedule.js:832
 msgid "Timeline View"
 msgstr "Aikajananäkymä"
 
-#: js/schedule.js:814
+#: js/schedule.js:833
 msgid "You can zoom and pan the timeline view:"
 msgstr "Voit suurentaa ja liikuttaa aikajananäkymää:"
 
-#: js/schedule.js:815
+#: js/schedule.js:834
 msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
 msgstr ""
 "Työpöydällä, käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."
 
-#: js/schedule.js:816
+#: js/schedule.js:835
 msgid "On a touch screen, pinch to zoom."
 msgstr "Kosketusnäytöllä nipistä suurentaaksesi."
 
-#: js/schedule.js:817
+#: js/schedule.js:836
 msgid "Drag to pan on all devices."
 msgstr "Vedä liikuttaaksesi kaikilla laitteilla."
 
-#: js/schedule.js:820
+#: js/schedule.js:839
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:873
+#: js/schedule.js:893
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr "su"
 
-#: js/schedule.js:874
+#: js/schedule.js:894
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr "ma"
 
-#: js/schedule.js:875
+#: js/schedule.js:895
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr "ti"
 
-#: js/schedule.js:876
+#: js/schedule.js:896
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr "ke"
 
-#: js/schedule.js:877
+#: js/schedule.js:897
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr "to"
 
-#: js/schedule.js:878
+#: js/schedule.js:898
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr "pe"
 
-#: js/schedule.js:879
+#: js/schedule.js:899
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr "la"
+
+#~ msgid "Use <em>Shift + mouse wheel</em> to zoom the timeline."
+#~ msgstr "Käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."
 
 #~ msgid "Feed URL"
 #~ msgstr "Syötteen URL"

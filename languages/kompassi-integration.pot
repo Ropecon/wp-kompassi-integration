@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-19T13:39:38+03:00\n"
+"POT-Creation-Date: 2024-05-20T08:49:19+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
@@ -166,77 +166,73 @@ msgstr ""
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:709
-msgid "Use <em>Shift + mouse wheel</em> to zoom the timeline."
-msgstr ""
-
-#: js/schedule.js:810
+#: js/schedule.js:829
 msgid "List View"
 msgstr ""
 
-#: js/schedule.js:811
+#: js/schedule.js:830
 msgid "When using text search, results are sorted by relevance rather than chronologically."
 msgstr ""
 
-#: js/schedule.js:812
+#: js/schedule.js:831
 msgid "When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results."
 msgstr ""
 
-#: js/schedule.js:813
+#: js/schedule.js:832
 msgid "Timeline View"
 msgstr ""
 
-#: js/schedule.js:814
+#: js/schedule.js:833
 msgid "You can zoom and pan the timeline view:"
 msgstr ""
 
-#: js/schedule.js:815
+#: js/schedule.js:834
 msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
 msgstr ""
 
-#: js/schedule.js:816
+#: js/schedule.js:835
 msgid "On a touch screen, pinch to zoom."
 msgstr ""
 
-#: js/schedule.js:817
+#: js/schedule.js:836
 msgid "Drag to pan on all devices."
 msgstr ""
 
-#: js/schedule.js:820
+#: js/schedule.js:839
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:873
+#: js/schedule.js:893
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr ""
 
-#: js/schedule.js:874
+#: js/schedule.js:894
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr ""
 
-#: js/schedule.js:875
+#: js/schedule.js:895
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr ""
 
-#: js/schedule.js:876
+#: js/schedule.js:896
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr ""
 
-#: js/schedule.js:877
+#: js/schedule.js:897
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr ""
 
-#: js/schedule.js:878
+#: js/schedule.js:898
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr ""
 
-#: js/schedule.js:879
+#: js/schedule.js:899
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr ""
