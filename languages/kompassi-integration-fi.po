@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-05-20T08:49:19+03:00\n"
+"POT-Creation-Date: 2024-05-21T08:32:03+03:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -107,88 +107,59 @@ msgid "Help"
 msgstr "Apua"
 
 #: js/schedule.js:133
-msgid "Text search (title, description)"
-msgstr "Tekstihaku (otsikko, kuvaus)"
+msgid "Text search"
+msgstr "Tekstihaku"
 
-#: js/schedule.js:149
+#: js/schedule.js:165
 msgid "Clear filters"
 msgstr "Tyhjennä suodattimet"
 
-#: js/schedule.js:180
+#: js/schedule.js:192
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: js/schedule.js:181
+#: js/schedule.js:193
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
 #. translators: count of programs visible
-#: js/schedule.js:351
-msgid "%s program visible"
-msgid_plural "%s programs visible"
-msgstr[0] "%s ohjelma näkyvissä"
-msgstr[1] "%s ohjelmaa näkyvissä"
+#: js/schedule.js:371
+msgid "%s program visible."
+msgid_plural "%s programs visible."
+msgstr[0] "%s ohjelma näkyvissä."
+msgstr[1] "%s ohjelmaa näkyvissä."
 
-#. translators: count of programs
-#: js/schedule.js:354
-msgid "%s program"
-msgid_plural "%s programs"
-msgstr[0] "%s ohjelma"
-msgstr[1] "%s ohjelmaa"
-
-#: js/schedule.js:488
-msgid ""
-"Search results are sorted by relevance, not chronologically, when using text "
-"search."
-msgstr ""
-"Hakutulokset järjestetään relevanssin perusteella, ei aikajärjestyksessä, "
-"kun käytetään tekstihakua."
-
-#: js/schedule.js:531
+#: js/schedule.js:375
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:540
-msgid "Note: This view shows programs starting between %1$s and %2$s."
-msgstr ""
-"Huomaa: Tämä näkymä näyttää ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
+#: js/schedule.js:560
+msgid "Showing programs starting between %1$s and %2$s."
+msgstr "Näytetään ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
 
 #. translators: amount of repositioned events
-#: js/schedule.js:546
-msgid ""
-"%d program which started before the timerange is listed at the end of the "
-"results."
-msgid_plural ""
-"%d programs which started before the timerange are listed at the end of the "
-"results."
-msgstr[0] ""
-"%d ohjelma joka on alkanut ennen suodatettua aikaikkunaa listataan tulosten "
-"lopussa."
-msgstr[1] ""
-"%d ohjelmaa jotka ovat alkaneet ennen suodatettua aikaikkunaa listataan "
-"tulosten lopussa."
+#: js/schedule.js:567
+msgid "Show %d program starting earlier"
+msgid_plural "Show %d programs starting earlier"
+msgstr[0] "Näytä %d aiemmin alkava ohjelma"
+msgstr[1] "Näytä %d aiemmin alkavaa ohjelmaa"
 
-#: js/schedule.js:546
-msgctxt "link to another position in the page"
-msgid "Jump there!"
-msgstr "Hyppää sinne!"
-
-#: js/schedule.js:547
+#: js/schedule.js:568
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:629
+#: js/schedule.js:650
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:829
+#: js/schedule.js:850
 msgid "List View"
 msgstr "Listanäkymä"
 
-#: js/schedule.js:830
+#: js/schedule.js:851
 msgid ""
 "When using text search, results are sorted by relevance rather than "
 "chronologically."
@@ -196,7 +167,7 @@ msgstr ""
 "Kun käytät tekstihakua, tulokset järjestetään relevanssin perusteella, ei "
 "kronologisesti."
 
-#: js/schedule.js:831
+#: js/schedule.js:852
 msgid ""
 "When limiting search results by date, programs which have started in "
 "previous days that are still continuing are listed at the end of the search "
@@ -206,65 +177,97 @@ msgstr ""
 "olevat ohjelmatm jotka ovat alkaneet edellisenä päivänä näytetään "
 "hakutuloksien lopussa."
 
-#: js/schedule.js:832
+#: js/schedule.js:853
 msgid "Timeline View"
 msgstr "Aikajananäkymä"
 
-#: js/schedule.js:833
+#: js/schedule.js:854
 msgid "You can zoom and pan the timeline view:"
 msgstr "Voit suurentaa ja liikuttaa aikajananäkymää:"
 
-#: js/schedule.js:834
+#: js/schedule.js:855
 msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
 msgstr ""
 "Työpöydällä, käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."
 
-#: js/schedule.js:835
+#: js/schedule.js:856
 msgid "On a touch screen, pinch to zoom."
 msgstr "Kosketusnäytöllä nipistä suurentaaksesi."
 
-#: js/schedule.js:836
+#: js/schedule.js:857
 msgid "Drag to pan on all devices."
 msgstr "Vedä liikuttaaksesi kaikilla laitteilla."
 
-#: js/schedule.js:839
+#: js/schedule.js:860
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:893
+#: js/schedule.js:914
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr "su"
 
-#: js/schedule.js:894
+#: js/schedule.js:915
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr "ma"
 
-#: js/schedule.js:895
+#: js/schedule.js:916
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr "ti"
 
-#: js/schedule.js:896
+#: js/schedule.js:917
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr "ke"
 
-#: js/schedule.js:897
+#: js/schedule.js:918
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr "to"
 
-#: js/schedule.js:898
+#: js/schedule.js:919
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr "pe"
 
-#: js/schedule.js:899
+#: js/schedule.js:920
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr "la"
+
+#~ msgid "Text search (title, description)"
+#~ msgstr "Tekstihaku (otsikko, kuvaus)"
+
+#~ msgid "%s program"
+#~ msgid_plural "%s programs"
+#~ msgstr[0] "%s ohjelma"
+#~ msgstr[1] "%s ohjelmaa"
+
+#~ msgid ""
+#~ "Search results are sorted by relevance, not chronologically, when using "
+#~ "text search."
+#~ msgstr ""
+#~ "Hakutulokset järjestetään relevanssin perusteella, ei aikajärjestyksessä, "
+#~ "kun käytetään tekstihakua."
+
+#~ msgid ""
+#~ "%d program which started before the timerange is listed at the end of the "
+#~ "results."
+#~ msgid_plural ""
+#~ "%d programs which started before the timerange are listed at the end of "
+#~ "the results."
+#~ msgstr[0] ""
+#~ "%d ohjelma joka on alkanut ennen suodatettua aikaikkunaa listataan "
+#~ "tulosten lopussa."
+#~ msgstr[1] ""
+#~ "%d ohjelmaa jotka ovat alkaneet ennen suodatettua aikaikkunaa listataan "
+#~ "tulosten lopussa."
+
+#~ msgctxt "link to another position in the page"
+#~ msgid "Jump there!"
+#~ msgstr "Hyppää sinne!"
 
 #~ msgid "Use <em>Shift + mouse wheel</em> to zoom the timeline."
 #~ msgstr "Käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."

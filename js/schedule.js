@@ -130,7 +130,7 @@ jQuery( function( e ) {
 	filters = jQuery( '<section id="kompassi_schedule_filters" />' );
 
 	//  Text filter
-	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text search (title, description)', 'kompassi-integration' ) + '" />' ) );
+	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text search', 'kompassi-integration' ) + '" />' ) );
 
 	//  Dimension filters
 	jQuery.each( kompassi_schedule_dimensions, function( index, dimension ) {
@@ -560,7 +560,7 @@ function kompassi_apply_filters( ) {
 				jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-between display-not-timeline">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), start_of_day, end_of_day ) + '</span>' );
 			}
 		}
-		// TODO: Show note about the Start/End of Day times
+		// Show note about the Start/End of Day times
 		if( jQuery( '#kompassi_schedule_filters [name="filter_text"]' ).val( ).length < 1 && jQuery( '#kompassi_schedule article.multiday-overlap' ).length > 0 ) {
 			count = jQuery( '#kompassi_schedule article.multiday-overlap:visible' ).length;
 			// translators: amount of repositioned events

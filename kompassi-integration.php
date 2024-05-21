@@ -172,6 +172,16 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function block_schedule( $attributes ) {
+		$event_slug = get_option( 'kompassi_integration_event_slug' );
+		if( strlen( $event_slug ) < 1 ) {
+			return;
+		}
+
+		//$transient = get_site_transient( 'kompassi_integration_schedule_' . $event_slug );
+		//if( $transient ) {
+		//	return $transient;
+		//}
+
 		$html_attrs = array( 'class' => '' );
 		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
 
@@ -180,12 +190,8 @@ class WP_Plugin_Kompassi_Integration {
 		/*  Schedule  */
 		$out .= '<section class="kompassi_schedule_wrapper">';
 		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
-		if( strlen( get_option( 'kompassi_integration_event_slug' ) ) > 0 ) {
-			$data = $this->get_data_graphql( );
-		} else {
-			return;
-		}
 
+		$data = $this->get_data_graphql( );
 		if( !$data || count( $data ) < 1 ) {
 			return;
 		}
@@ -204,7 +210,6 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</section>';
 		$out .= '</section>';
 
-		/*  TODO: For now, output dimensions JSON with a script tag right here... */
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
 
 		/*
@@ -232,6 +237,8 @@ class WP_Plugin_Kompassi_Integration {
 
 		$out .= $this->data_provided_image( );
 		$out .= '</div>';
+
+		//set_site_transient( 'kompassi_integration_schedule_' . $event_slug, $out, 15 * 60 );
 		return $out;
 	}
 
