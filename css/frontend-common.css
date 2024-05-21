@@ -50,6 +50,7 @@
  *
  */
 
+.kompassi-icon-clear-filters::before { background-image: url(../images/icon_clear_filters.svg); }
 .kompassi-icon-close::before { background-image: url(../images/icon_close.svg); }
 .kompassi-icon-favorite::before { background-image: url(../images/icon_favorite.svg); }
 .kompassi-icon-help::before { background-image: url(../images/icon_help.svg); }

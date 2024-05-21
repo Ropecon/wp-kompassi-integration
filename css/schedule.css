@@ -72,6 +72,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  */
 
 #kompassi_schedule_filters {
+	position: relative;
 	display: none;
 	margin-bottom: var(--kompassi-button-padding);
 	background-color: var(--kompassi-button-bg-active);
@@ -90,7 +91,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		}
 			#kompassi_schedule_filters :is(input, select, .ms-options-wrap button) {
 				padding: 0.5em;
-				margin-bottom: 0.3em;
 				background-color: rgba(0,0,0,0.25);
 				color: var(--kompassi-button-fg-active);
 				border: none;
@@ -140,11 +140,19 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 							padding: 0;
 							border-bottom: 1px solid var(--kompassi-schedule-timeline-ruler);
 						}
+							#kompassi_schedule_filters .ms-options > ul li:last-child {
+								border-bottom: none;
+							}
 							#kompassi_schedule_filters .ms-options > ul label {
 								cursor: pointer;
 								padding: calc( var(--kompassi-button-padding) / 2 ) var(--kompassi-button-padding);
 								padding-left: calc( var(--kompassi-button-padding) + 1.5em );
+								border: none;
 							}
+								#kompassi_schedule_filters .ms-options > ul label.focused,
+								#kompassi_schedule_filters .ms-options > ul label:hover {
+									background-color: transparent(0,0,0,0.1);
+								}
 							#kompassi_schedule_filters .ms-options > ul li.selected {
 								order: -1;
 							}
@@ -155,11 +163,29 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 								width: 1.5em;
 								margin: calc( var(--kompassi-button-padding) / 2 - 3px ) var(--kompassi-button-padding) calc( var(--kompassi-button-padding) / 2 ) 0;
 							}
-			#kompassi_schedule_filters a {
-				color: var(--kompassi-button-fg-active);
-				text-decoration: underline;
-			}
 
+	#kompassi_schedule_filters.visible.has-filters-enabled {
+		padding-bottom: calc( 1.5em + var(--kompassi-button-padding) * 2 );
+	}
+			#kompassi_schedule_filters .clear-filters {
+				display: none;
+				position: absolute;
+				bottom: var(--kompassi-button-padding);
+				left: var(--kompassi-button-padding);
+				height: 1.5em;
+				width: 100%;
+			}
+				#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters {
+					display: block;
+				}
+				#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters::before {
+					height: 100%;
+				}
+				#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters::after {
+					position: absolute;
+					content: attr(title);
+					color: var(--kompassi-button-fg-active);
+				}
 
 @container kompassi-integration (min-width: 700px) {
 	#kompassi_schedule_filters.visible {
@@ -167,13 +193,32 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 		grid-gap: var(--kompassi-button-padding);
 	}
-	#kompassi_schedule_filters.visible > *,
-	#kompassi_schedule_filters.visible > .select > * {
-		margin-right: 0;
-		margin-bottom: 0;
-		width: 100%;
-		max-width: 100%;
+		#kompassi_schedule_filters.visible > *,
+		#kompassi_schedule_filters.visible > .select > * {
+			margin-right: 0;
+			margin-bottom: 0;
+			width: 100%;
+			max-width: 100%;
+		}
+	#kompassi_schedule_filters.visible.has-filters-enabled {
+		padding-right: calc( 1.5em + var(--kompassi-button-padding) * 2 );
+		padding-bottom: var(--kompassi-button-padding);
 	}
+		#kompassi_schedule_filters .clear-filters {
+			left: unset;
+			bottom: unset;
+			top: var(--kompassi-button-padding);
+			right: var(--kompassi-button-padding);
+			width: 1.5em;
+			height: calc( 100% - var(--kompassi-button-padding) * 2 );
+		}
+		#kompassi_schedule_filters .clear-filters::before {
+			width: 100%;
+			margin-right: 0;
+		}
+		#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters::after {
+			display: none;
+		}
 }
 
 /*

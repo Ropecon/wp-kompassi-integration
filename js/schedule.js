@@ -130,7 +130,7 @@ jQuery( function( e ) {
 	filters = jQuery( '<section id="kompassi_schedule_filters" />' );
 
 	//  Text filter
-	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text search', 'kompassi-integration' ) + '" />' ) );
+	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text...', 'kompassi-integration' ) + '" />' ) );
 
 	//  Dimension filters
 	jQuery.each( kompassi_schedule_dimensions, function( index, dimension ) {
@@ -144,30 +144,30 @@ jQuery( function( e ) {
 		wrapper = jQuery( '<div class="select" />' ).append( select );
 		filters.append( wrapper );
 
-		select.multiselect( {
+		options = {
 			texts: {
 				placeholder: dimension.title,
-				select_title: dimension.title,
+				select_label: dimension.title,
 			},
 			maxWidth: 500,
-			onPlaceholder: function( element, placeholderTxt, selectedOpts ) {
-				jQuery( element ).next( ).find( 'button' ).first( ).html( this.texts.select_title + ' <span class="indicator">' + selectedOpts.length + '</span>' );
-			},
-			onOptionClick: function( element, option ) {
-				if( jQuery( element ).find( '[checked="checked"]' ).length == 0 ) {
-					jQuery( element ).next( ).find( 'button' ).first( ).html( this.texts.select_title );
+			onPlaceholder: kompassi_update_multiselect_label,
+			onOptionClick: kompassi_update_multiselect_label,
 				}
 			}
-		} );
+		};
+		select.multiselect( options );
 	} );
 
 	// Clear filters
-	clear_filters = jQuery( '<a href="#" class="clear-filters">' + __( 'Clear filters', 'kompassi-integration' ) + '</button>' );
-	clear_filters.hide( );
+	clear_filters = jQuery( '<a href="#" class="clear-filters kompassi-icon-clear-filters" title="' + __( 'Clear filters', 'kompassi-integration' ) + '"/>' );
 	clear_filters.on( 'click', function( ) {
 		jQuery( filters ).find( 'input, select' ).each( function( index ) {
 			if( jQuery( this ).hasClass( 'filter-dimension' ) ) {
-				jQuery( this ).val( '0' );
+				select = jQuery( this );
+				select.children( 'option' ).each( function( ) {
+					jQuery( this ).removeAttr( 'selected' );
+				} );
+				select.multiselect( 'reload' );
 			}
 			if( jQuery( this ).hasClass( 'filter-text' ) ) {
 				jQuery( this ).val( '' );
@@ -571,9 +571,9 @@ function kompassi_apply_filters( ) {
 
 	//
 	if( kompassi_filters.enabled > 0 ) {
-		jQuery( '#kompassi_schedule_filters .clear-filters' ).show( );
+		jQuery( '#kompassi_schedule_filters' ).addClass( 'has-filters-enabled' );
 	} else {
-		jQuery( '#kompassi_schedule_filters .clear-filters' ).hide( );
+		jQuery( '#kompassi_schedule_filters' ).removeClass( 'has-filters-enabled' );
 	}
 
 	kompassi_update_url_hash( );
@@ -581,6 +581,23 @@ function kompassi_apply_filters( ) {
 
 	jQuery( '#kompassi_schedule_notes .display-not-' + kompassi_get_display_type( ) ).hide( );
 	jQuery( '#kompassi_schedule_notes .display-only-' + kompassi_get_display_type( ) ).show( );
+}
+
+/*
+ *  Update multiselect
+ *
+ */
+
+function kompassi_update_multiselect_label( element ) {
+	options = jQuery( element ).find( 'option' ).length;
+	selected_options = jQuery( element ).next( ).find( '.selected' ).length;
+
+	html = this.texts.select_label;
+	if( selected_options > 0 ) {
+		html += ' <span class="indicator">' + selected_options + '</span>';
+	}
+	jQuery( element ).next( ).find( 'button' ).first( ).html( html );
+	jQuery( element ).data( 'indicator', selected_options );
 }
 
 /*
@@ -975,7 +992,7 @@ function kompassi_update_url_hash( ) {
 			filter = jQuery( this );
 			opt_name = filter.attr( 'name' ).substring( 7 ); // Strip filter_
 			if( filter.prop( 'tagName' ) == 'SELECT' ) {
-				if( filter.val( ) != 0 ) {
+				if( filter.val( ).length > 0 ) {
 					opts.push( opt_name + ':' + filter.val( ) );
 				}
 			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
