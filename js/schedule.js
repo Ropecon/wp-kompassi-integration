@@ -163,7 +163,7 @@ jQuery( function( e ) {
 		// TODO: Dimension flag
 		if( dimension.slug == 'tag' ) {
 			select.addClass( 'flag-negative' );
-			options.texts.options_header = __( 'Selected values will be hidden from results.', 'kompassi-integration' );
+			options.texts.options_header = __( 'Program matching selection will be hidden from results.', 'kompassi-integration' );
 		}
 
 		select.multiselect( options );

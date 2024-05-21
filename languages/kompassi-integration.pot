@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-21T08:32:03+03:00\n"
+"POT-Creation-Date: 2024-05-21T14:28:38+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
@@ -102,121 +102,125 @@ msgid "Help"
 msgstr ""
 
 #: js/schedule.js:133
-msgid "Text search"
+msgid "Text..."
 msgstr ""
 
-#: js/schedule.js:165
+#: js/schedule.js:166
+msgid "Program matching selection will be hidden from results."
+msgstr ""
+
+#: js/schedule.js:173
 msgid "Clear filters"
 msgstr ""
 
-#: js/schedule.js:192
+#: js/schedule.js:203
 msgctxt "display style"
 msgid "List"
 msgstr ""
 
-#: js/schedule.js:193
+#: js/schedule.js:204
 msgctxt "display style"
 msgid "Timeline"
 msgstr ""
 
 #. translators: count of programs visible
-#: js/schedule.js:371
+#: js/schedule.js:382
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:375
+#: js/schedule.js:386
 msgid "Nothing matched your search!"
 msgstr ""
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:560
+#: js/schedule.js:576
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr ""
 
 #. translators: amount of repositioned events
-#: js/schedule.js:567
+#: js/schedule.js:583
 msgid "Show %d program starting earlier"
 msgid_plural "Show %d programs starting earlier"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:568
+#: js/schedule.js:584
 msgid "Programs continuing"
 msgstr ""
 
-#: js/schedule.js:650
+#: js/schedule.js:683
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:850
+#: js/schedule.js:883
 msgid "List View"
 msgstr ""
 
-#: js/schedule.js:851
+#: js/schedule.js:884
 msgid "When using text search, results are sorted by relevance rather than chronologically."
 msgstr ""
 
-#: js/schedule.js:852
+#: js/schedule.js:885
 msgid "When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results."
 msgstr ""
 
-#: js/schedule.js:853
+#: js/schedule.js:886
 msgid "Timeline View"
 msgstr ""
 
-#: js/schedule.js:854
+#: js/schedule.js:887
 msgid "You can zoom and pan the timeline view:"
 msgstr ""
 
-#: js/schedule.js:855
+#: js/schedule.js:888
 msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
 msgstr ""
 
-#: js/schedule.js:856
+#: js/schedule.js:889
 msgid "On a touch screen, pinch to zoom."
 msgstr ""
 
-#: js/schedule.js:857
+#: js/schedule.js:890
 msgid "Drag to pan on all devices."
 msgstr ""
 
-#: js/schedule.js:860
+#: js/schedule.js:893
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:914
+#: js/schedule.js:947
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr ""
 
-#: js/schedule.js:915
+#: js/schedule.js:948
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr ""
 
-#: js/schedule.js:916
+#: js/schedule.js:949
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr ""
 
-#: js/schedule.js:917
+#: js/schedule.js:950
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr ""
 
-#: js/schedule.js:918
+#: js/schedule.js:951
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr ""
 
-#: js/schedule.js:919
+#: js/schedule.js:952
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr ""
 
-#: js/schedule.js:920
+#: js/schedule.js:953
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr ""
