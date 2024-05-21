@@ -132,6 +132,11 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					z-index: 20;
 					color: #000;
 				}
+					#kompassi_schedule_filters .ms-options > .ms-options-header {
+						padding: var(--kompassi-button-padding);
+						font-size: 90%;
+						border-bottom: 1px solid var(--kompassi-schedule-timeline-ruler);
+					}
 					#kompassi_schedule_filters .ms-options > ul {
 						display: flex;
 						flex-direction: column;

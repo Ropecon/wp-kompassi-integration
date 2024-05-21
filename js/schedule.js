@@ -152,9 +152,20 @@ jQuery( function( e ) {
 			maxWidth: 500,
 			onPlaceholder: kompassi_update_multiselect_label,
 			onOptionClick: kompassi_update_multiselect_label,
+			onControlOpen: function( element ) {
+				if( typeof this.texts.options_header !== 'undefined' && jQuery( element ).next( ).find( '.ms-options-header' ).length == 0 ) {
+					header = jQuery( '<div class="ms-options-header">' + this.texts.options_header + '</div>' );
+					jQuery( element ).next( ).find( '.ms-options' ).prepend( header );
 				}
 			}
 		};
+
+		// TODO: Dimension flag
+		if( dimension.slug == 'tag' ) {
+			select.addClass( 'flag-negative' );
+			options.texts.options_header = __( 'Selected values will be hidden from results.', 'kompassi-integration' );
+		}
+
 		select.multiselect( options );
 	} );
 
@@ -474,9 +485,14 @@ function kompassi_apply_filters( ) {
 				jQuery( '#kompassi_schedule article:visible' ).filter( function( ) {
 					prog_dimension = jQuery( this ).data( filter.data( 'dimension' ) );
 					if( filter.val( ).indexOf( prog_dimension ) == -1 ) {
-						return true;
+						match = false;
 					} else {
-						return false;
+						match = true;
+					}
+					if( filter.hasClass( 'flag-negative' ) ) {
+						return match;
+					} else {
+						return !match;
 					}
 				} ).addClass( 'filtered' );
 				filter_count += 1;
