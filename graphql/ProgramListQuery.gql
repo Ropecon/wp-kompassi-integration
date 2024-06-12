@@ -10,6 +10,9 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
           slug
           title(lang: $locale)
         }
+        isListFilter
+        isShownInDetail
+        isNegativeSelection
       }
       programs {
         slug

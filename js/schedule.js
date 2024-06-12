@@ -134,6 +134,9 @@ jQuery( function( e ) {
 
 	//  Dimension filters
 	jQuery.each( kompassi_schedule_dimensions, function( index, dimension ) {
+		if( dimension.isListFilter == false ) {
+			return;
+		}
 		if( kompassi_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
 			return;
 		}
@@ -160,8 +163,8 @@ jQuery( function( e ) {
 			}
 		};
 
-		// TODO: Dimension flag
-		if( dimension.slug == 'tag' ) {
+		// Negative selectin filter
+		if( dimension.isNegativeSelection == true ) {
 			select.addClass( 'flag-negative' );
 			options.texts.options_header = __( 'Program matching selection will be hidden from results.', 'kompassi-integration' );
 		}

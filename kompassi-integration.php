@@ -283,13 +283,21 @@ class WP_Plugin_Kompassi_Integration {
 			return;
 		}
 
-		// Map dimension value labels to array
+		// Map dimension value labels and flags to arrays
 		$dimension_value_labels = array( );
 		foreach( $data['dimensions'] as $dimension ) {
 			foreach( $dimension['values'] as $value ) {
 				$dimension_value_labels[$dimension['slug']][$value['slug']] = $value['title'];
+				foreach( $dimension as $k => $v ) {
+					if( substr( $k, 0, 2 ) == 'is' ) {
+						$dimension_flags[$dimension['slug']][$k] = $v;
+					}
+				}
 			}
 		}
+
+		// Get a list of hidden dimensions
+		$hidden_dimensions = explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) );
 
 		// Check which icons are avalable
 		$icons_path = plugin_dir_path( __FILE__ ) . 'images/icons';
@@ -304,7 +312,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		foreach( $data['programs'] as $p ) {
-			$out .= $this->markup_program( $p, $dimension_value_labels );
+			$out .= $this->markup_program( $p, $dimension_value_labels, $dimension_flags, $hidden_dimensions );
 		}
 		$out .= '</section>';
 		$out .= '</section>';
@@ -348,7 +356,7 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function markup_program( $program, $dimension_value_labels ) {
+	function markup_program( $program, $dimension_value_labels, $dimension_flags, $hidden_dimensions ) {
 		if( !is_array( $program['scheduleItems'] ) || count( $program['scheduleItems'] ) < 1 ) {
 			return;
 		}
@@ -425,8 +433,15 @@ class WP_Plugin_Kompassi_Integration {
 					<?php
 						// Traverse through dimensions
 						foreach( $program['cachedDimensions'] as $dimension => $values ) {
-							echo '<div class="dimension ' . $dimension . '">';
+							if( !$dimension_flags[$dimension]['isShownInDetail'] ) {
+								continue;
+							}
 
+							if( in_array( $dimension, $hidden_dimensions ) ) {
+								continue;
+							}
+
+							echo '<div class="dimension ' . $dimension . '">';
 							foreach( $values as $slug ) {
 								if( isset( $dimension_value_labels[$dimension][$slug] ) ) {
 									echo '<span class="value">' . $dimension_value_labels[$dimension][$slug] . '</span> ';
