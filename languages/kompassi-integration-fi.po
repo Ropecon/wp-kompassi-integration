@@ -23,7 +23,7 @@ msgstr "Kompassi-integraatio"
 
 #. Description of the plugin
 msgid "Integrate data from Kompassi to your WordPress site easily"
-msgstr "Yhdistyä tietoja Kompassista WordPress-sivustollesi helposti"
+msgstr "Yhdistä tietoja Kompassista WordPress-sivustollesi helposti"
 
 #. Author of the plugin
 msgid "Pasi Lallinaho"
