@@ -50,18 +50,18 @@
  *
  */
 
-.kompassi-icon-clear-filters::before { background-image: url(../images/icon_clear_filters.svg); }
-.kompassi-icon-close::before { background-image: url(../images/icon_close.svg); }
-.kompassi-icon-favorite::before { background-image: url(../images/icon_favorite.svg); }
-.kompassi-icon-help::before { background-image: url(../images/icon_help.svg); }
-.kompassi-icon-filter::before { background-image: url(../images/icon_filter.svg); }
-.kompassi-icon-list::before { background-image: url(../images/icon_list.svg); }
-.kompassi-icon-signup::before { background-image: url(../images/icon_signup.svg); }
-.kompassi-icon-timeline::before { background-image: url(../images/icon_timeline.svg); }
+.kompassi-icon-clear-filters::before { background-image: url(../images/icons/clear_filters.svg); }
+.kompassi-icon-close::before { background-image: url(../images/icons/close.svg); }
+.kompassi-icon-favorite::before { background-image: url(../images/icons/favorite.svg); }
+.kompassi-icon-help::before { background-image: url(../images/icons/help.svg); }
+.kompassi-icon-filter::before { background-image: url(../images/icons/filter.svg); }
+.kompassi-icon-list::before { background-image: url(../images/icons/list.svg); }
+.kompassi-icon-signup::before { background-image: url(../images/icons/signup.svg); }
+.kompassi-icon-timeline::before { background-image: url(../images/icons/timeline.svg); }
 
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
-#kompassi_schedule.timeline .is-favorite::after { background-image: url(../images/icon_is_favorite.svg); }
+#kompassi_schedule.timeline .is-favorite::after { background-image: url(../images/icons/is_favorite.svg); }
 
 /*  Icons without button group parent  */
 :not(.kompassi-button-group) > [class*="kompassi-icon"]::before {

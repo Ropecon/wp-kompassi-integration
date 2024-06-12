@@ -105,7 +105,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					appearance: none;
 					cursor: pointer;
 
-					background-image: url(../images/icon_dropdown.svg);
+					background-image: url(../images/icons/dropdown.svg);
 					background-size: 1em auto;
 					background-repeat: no-repeat;
 					background-position: calc( 100% - 0.5em ) 0.65em;
@@ -126,7 +126,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				}
 					#kompassi_schedule_filters select:has(option:checked:not([value="0"])),
 					#kompassi_schedule_filters .ms-options-wrap.ms-has-selections button {
-						background-image: url(../images/icon_dropdown_black.svg);
+						background-image: url(../images/icons/dropdown_black.svg);
 					}
 				#kompassi_schedule_filters .ms-options {
 					z-index: 20;

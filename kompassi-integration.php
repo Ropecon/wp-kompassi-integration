@@ -11,6 +11,7 @@
 
 class WP_Plugin_Kompassi_Integration {
 	private string $ver;
+	private array $icons;
 
 	function __construct( ) {
 		add_action( 'init', array( &$this, 'init' ) );
@@ -290,6 +291,18 @@ class WP_Plugin_Kompassi_Integration {
 			}
 		}
 
+		// Check which icons are avalable
+		$icons_path = plugin_dir_path( __FILE__ ) . 'images/icons';
+		if( is_readable( $icons_path ) ) {
+			foreach( scandir( $icons_path ) as $icon ) {
+				if( $icon != '.' && $icon != '..' ) {
+					if( substr( $icon, -4 ) == '.svg' ) {
+						$this->icons[] = basename( $icon, '.svg' );
+					}
+				}
+			}
+		}
+
 		foreach( $data['programs'] as $p ) {
 			$out .= $this->markup_program( $p, $dimension_value_labels );
 		}
@@ -428,7 +441,11 @@ class WP_Plugin_Kompassi_Integration {
 				<?php
 					echo '<div class="actions" style="grid-area: actions;">';
 					foreach( $program['links'] as $link ) {
-						echo '<a href="' . $link['href'] . '" class="' . strtolower( $link['type'] ) . ' kompassi-icon-' . strtolower( $link['type'] ) . '" title="' . $link['title'] . '"></a>';
+						$class = strtolower( $link['type'] );
+						if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
+							$class .= ' kompassi-icon-' . strtolower( $link['type'] );
+						}
+						echo '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
 					}
 					echo '</div>';
 				?>
