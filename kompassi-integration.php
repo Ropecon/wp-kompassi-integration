@@ -1,9 +1,9 @@
 <?php
 /**
  *  Plugin Name: Kompassi Integration
- *  Description:
+ *  Description: Integrate data from Kompassi to your WordPress site easily
  *  Author: Pasi Lallinaho
- *  Version: 2023
+ *  Version: 2024-06-12
  *  Text Domain: kompassi-integration
  *
  */

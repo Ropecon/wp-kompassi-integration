@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Kompassi Integration plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Kompassi Integration 2023\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
+"Project-Id-Version: Kompassi Integration\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-06-12T11:49:19+03:00\n"
+"POT-Creation-Date: 2024-06-12T12:06:58+03:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,6 +20,10 @@ msgstr ""
 #: kompassi-integration.php:89 kompassi-integration.php:103
 msgid "Kompassi Integration"
 msgstr "Kompassi-integraatio"
+
+#. Description of the plugin
+msgid "Integrate data from Kompassi to your WordPress site easily"
+msgstr "Yhdistyä tietoja Kompassista WordPress-sivustollesi helposti"
 
 #. Author of the plugin
 msgid "Pasi Lallinaho"
@@ -49,7 +53,7 @@ msgstr "Transientit"
 
 #: kompassi-integration.php:56
 msgid "Method used for caching."
-msgstr "Välimuistituksesessa käytettävä menetelmä. "
+msgstr "Välimuistituksesessa käytettävä menetelmä."
 
 #: kompassi-integration.php:57
 msgid "Clear cache now"
