@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration 2023\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-05-21T14:28:38+03:00\n"
+"POT-Creation-Date: 2024-06-12T11:49:19+03:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:76 kompassi-integration.php:81
+#: kompassi-integration.php:89 kompassi-integration.php:103
 msgid "Kompassi Integration"
 msgstr "Kompassi-integraatio"
 
@@ -34,35 +34,57 @@ msgid "Event slug in Kompassi."
 msgstr "Tapahtuman polkutunnus Kompassissa."
 
 #: kompassi-integration.php:50
+msgid "Cache"
+msgstr "Välimuisti"
+
+#: kompassi-integration.php:53
+msgctxt "caching: none"
+msgid "None"
+msgstr "Ei mitään"
+
+#: kompassi-integration.php:54
+msgctxt "caching: transient"
+msgid "Transient"
+msgstr "Transientit"
+
+#: kompassi-integration.php:56
+msgid "Method used for caching."
+msgstr "Välimuistituksesessa käytettävä menetelmä. "
+
+#: kompassi-integration.php:57
+msgid "Clear cache now"
+msgstr "Tyhjennä välimuisti nyt"
+
+#: kompassi-integration.php:60
 msgid "Start of Day"
 msgstr "Päivän alku"
 
-#: kompassi-integration.php:51
+#: kompassi-integration.php:61
 msgid "Start of Day when a single day is shown."
 msgstr "Päivän alku, kun yksi päivä näytetään."
 
-#: kompassi-integration.php:54
+#: kompassi-integration.php:64
 msgid "End of Day"
 msgstr "Päivän loppu"
 
-#: kompassi-integration.php:55
+#: kompassi-integration.php:65
 msgid "End of Day when a single day is shown."
 msgstr "Päivän loppu, kun yksi päivä näytetään."
 
-#: kompassi-integration.php:58
+#: kompassi-integration.php:68
 msgid "Hidden Dimensions"
 msgstr "Piilotetut dimensiot"
 
-#: kompassi-integration.php:59
+#: kompassi-integration.php:69
 msgid ""
 "Comma-separated list of dimension slugs that should be hidden from filters."
 msgstr "Pilkuilla erotettu lista dimensioista, jotka eivät näy suodattimina."
 
-#: kompassi-integration.php:62
+#: kompassi-integration.php:72
 msgid "Timeline Grouping"
 msgstr "Aikajanan ryhmittely"
 
-#: kompassi-integration.php:63
+#: kompassi-integration.php:73
 msgid ""
 "Dimension slug for the dimension that should be used to group program with "
 "subheadings in timeline."
@@ -70,9 +92,16 @@ msgstr ""
 "Dimensiotunnus, jonka perusteella ohjelma ryhmitellään alaotsikoin "
 "aikajanalla."
 
-#: kompassi-integration.php:84
+#: kompassi-integration.php:106
 msgid "Save Changes"
 msgstr "Tallenna muutokset"
+
+#. translators: amount of transients deleted
+#: kompassi-integration.php:221
+msgid "%s transient deleted."
+msgid_plural "%s transients deleted."
+msgstr[0] "%s transientti poistettu."
+msgstr[1] "%s transienttia poistettu."
 
 #: js/blocks.js:20 js/blocks.js:32
 msgid "Program Schedule"

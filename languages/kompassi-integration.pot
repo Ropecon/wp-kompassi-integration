@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-21T14:28:38+03:00\n"
+"POT-Creation-Date: 2024-06-12T11:49:19+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:76
-#: kompassi-integration.php:81
+#: kompassi-integration.php:89
+#: kompassi-integration.php:103
 msgid "Kompassi Integration"
 msgstr ""
 
@@ -33,40 +33,69 @@ msgid "Event slug in Kompassi."
 msgstr ""
 
 #: kompassi-integration.php:50
-msgid "Start of Day"
+msgid "Cache"
 msgstr ""
 
-#: kompassi-integration.php:51
-msgid "Start of Day when a single day is shown."
+#: kompassi-integration.php:53
+msgctxt "caching: none"
+msgid "None"
 msgstr ""
 
 #: kompassi-integration.php:54
+msgctxt "caching: transient"
+msgid "Transient"
+msgstr ""
+
+#: kompassi-integration.php:56
+msgid "Method used for caching."
+msgstr ""
+
+#: kompassi-integration.php:57
+msgid "Clear cache now"
+msgstr ""
+
+#: kompassi-integration.php:60
+msgid "Start of Day"
+msgstr ""
+
+#: kompassi-integration.php:61
+msgid "Start of Day when a single day is shown."
+msgstr ""
+
+#: kompassi-integration.php:64
 msgid "End of Day"
 msgstr ""
 
-#: kompassi-integration.php:55
+#: kompassi-integration.php:65
 msgid "End of Day when a single day is shown."
 msgstr ""
 
-#: kompassi-integration.php:58
+#: kompassi-integration.php:68
 msgid "Hidden Dimensions"
 msgstr ""
 
-#: kompassi-integration.php:59
+#: kompassi-integration.php:69
 msgid "Comma-separated list of dimension slugs that should be hidden from filters."
 msgstr ""
 
-#: kompassi-integration.php:62
+#: kompassi-integration.php:72
 msgid "Timeline Grouping"
 msgstr ""
 
-#: kompassi-integration.php:63
+#: kompassi-integration.php:73
 msgid "Dimension slug for the dimension that should be used to group program with subheadings in timeline."
 msgstr ""
 
-#: kompassi-integration.php:84
+#: kompassi-integration.php:106
 msgid "Save Changes"
 msgstr ""
+
+#. translators: amount of transients deleted
+#: kompassi-integration.php:221
+msgid "%s transient deleted."
+msgid_plural "%s transients deleted."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/blocks.js:20
 #: js/blocks.js:32

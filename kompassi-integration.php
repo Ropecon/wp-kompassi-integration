@@ -46,6 +46,16 @@ class WP_Plugin_Kompassi_Integration {
 				'label' => __( 'Event Slug', 'kompassi-integration' ),
 				'description' => __( 'Event slug in Kompassi.', 'kompassi-integration' )
 			),
+			'caching' => array(
+				'label' => __( 'Cache', 'kompassi-integration' ),
+				'type' => 'dropdown',
+				'options' => array(
+					'none' => _x( 'None', 'caching: none', 'kompassi-integration' ),
+					'transient' => _x( 'Transient', 'caching: transient', 'kompassi-integration' )
+				),
+				'description' => __( 'Method used for caching.', 'kompassi-integration' ) . ' ' .
+					'<a href="' . menu_page_url( 'kompassi_integration_settings', false ) . '&action=clear_cache">' . __( 'Clear cache now', 'kompassi-integration' ) . '</a>.',
+			),
 			'schedule_start_of_day' => array(
 				'label' =>  __( 'Start of Day', 'kompassi-integration' ),
 				'description' => __( 'Start of Day when a single day is shown.', 'kompassi-integration' )
@@ -66,7 +76,10 @@ class WP_Plugin_Kompassi_Integration {
 
 		foreach( $fields as $key => $data ) {
 			$data['field_name'] = 'kompassi_integration_' . $key;
-			$data['sanitize_callback'] = 'sanitize_text_field';
+			if( !isset( $data['type'] ) ) {
+				$data['type'] = 'text';
+				$data['sanitize_callback'] = 'sanitize_text_field';
+			}
 			add_settings_field( 'kompassi_integration_' . $key, $data['label'], array( &$this, 'setting_field' ), 'kompassi_integration_settings', 'kompassi-integration-general', $data );
 			register_setting( 'kompassi_integration_settings', $data['field_name'], $data );
 		}
@@ -77,6 +90,15 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function admin_page_settings( ) {
+		if( !current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		if( isset( $_GET['action'] ) && $_GET['action'] == 'clear_cache' ) {
+			$info = $this->clear_schedule_cache( );
+			if( strlen( $info ) > 0 ) {
+    			echo '<div class="notice notice-success is-dismissible"><p>' . $info . '</p></div>';
+			}
+		}
 		echo '<div class="wrap"><form action="options.php" method="POST">';
 		echo '<h1>' . __( 'Kompassi Integration', 'kompassi-integration' ) . '</h1>';
 		settings_fields( 'kompassi_integration_settings' );
@@ -86,7 +108,21 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function setting_field( $data ) {
-		echo '<p><input type="text" id="' . $data['field_name'] . '" name="' . $data['field_name'] . '" class="widefat" value="' . get_option( $data['field_name'] ) . '"/></p>';
+		switch( $data['type'] ) {
+			case 'dropdown':
+				$current = get_option( $data['field_name'] );
+				echo '<p>';
+				echo '<select name="' . $data['field_name'] . '">';
+				foreach( $data['options'] as $v => $l ) {
+					echo '<option value="' . $v . '" ' . selected( $current, $v, false ) . '>' . $l . '</option>';
+				}
+				echo '</select>';
+				echo '</p>';
+				break;
+			default:
+				echo '<p><input type="text" id="' . $data['field_name'] . '" name="' . $data['field_name'] . '" class="widefat" value="' . get_option( $data['field_name'] ) . '"/></p>';
+				break;
+		}
 		if( isset( $data['description'] ) ) {
 			echo '<p class="description">' . $data['description'] . '</p>';
 		}
@@ -139,12 +175,61 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/*
-	 *  Fetch data from GraphQL
-	 *  TODO: #9 - Caching?
+	 *  Fetch processed schedule cache
 	 *
 	 */
 
-	function get_data_graphql( ) {
+	function get_schedule_cache( ) {
+		switch( get_option( 'kompassi_integration_caching' ) ) {
+			case 'transient':
+				$transient = get_site_transient( 'kompassi_integration_schedule_' . get_option( 'kompassi_integration_event_slug' ) . '_' . get_locale( ) );
+				if( $transient ) {
+					return $transient;
+				}
+				break;
+		}
+		return false;
+	}
+
+	/*
+	 *  Save processed schedule cache
+	 *
+	 */
+
+	function save_schedule_cache( $data ) {
+		$cache_time_in_min = 5;
+		switch( get_option( 'kompassi_integration_caching' ) ) {
+			case 'transient':
+				set_site_transient( 'kompassi_integration_schedule_' . get_option( 'kompassi_integration_event_slug' ) . '_' . get_locale( ), $data, $cache_time_in_min * 60 );
+				break;
+		}
+	}
+
+	/*
+	 *  Clear processed schedule cache
+	 *
+	 */
+
+	function clear_schedule_cache( ) {
+		$info = '';
+
+		// Transients
+		global $wpdb;
+		$transients = $wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '_site_transient_kompassi_integration_schedule_%'" );
+		if( $transients > 0 ) {
+			# translators: amount of transients deleted
+			$info .= sprintf( _n( '%s transient deleted.', '%s transients deleted.', $transients, 'kompassi-integration' ), $transients );
+		}
+
+		return $info;
+	}
+
+	/*
+	 *  Fetch data from GraphQL
+	 *
+	 */
+
+	function get_schedule_data_graphql( ) {
 		$query = array(
 			'query' => file_get_contents( plugins_url( 'graphql/ProgramListQuery.gql', __FILE__ ) ),
 			'variables' => array(
@@ -177,10 +262,11 @@ class WP_Plugin_Kompassi_Integration {
 			return;
 		}
 
-		//$transient = get_site_transient( 'kompassi_integration_schedule_' . $event_slug );
-		//if( $transient ) {
-		//	return $transient;
-		//}
+		// Get cache
+		$cached_data = $this->get_schedule_cache( );
+		if( $cached_data ) {
+			return $cached_data;
+		}
 
 		$html_attrs = array( 'class' => '' );
 		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
@@ -191,7 +277,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '<section class="kompassi_schedule_wrapper">';
 		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
 
-		$data = $this->get_data_graphql( );
+		$data = $this->get_schedule_data_graphql( );
 		if( !$data || count( $data ) < 1 ) {
 			return;
 		}
@@ -238,7 +324,9 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= $this->data_provided_image( );
 		$out .= '</div>';
 
-		//set_site_transient( 'kompassi_integration_schedule_' . $event_slug, $out, 15 * 60 );
+		// Save cache
+		$this->save_schedule_cache( $out );
+
 		return $out;
 	}
 
