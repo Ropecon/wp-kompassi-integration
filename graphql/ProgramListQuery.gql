@@ -30,6 +30,7 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
           href
           type
         }
+        otherFields
       }
     }
   }

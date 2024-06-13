@@ -69,6 +69,10 @@ class WP_Plugin_Kompassi_Integration {
 				'label' => __( 'Hidden Dimensions', 'kompassi-integration' ),
 				'description' => __( 'Comma-separated list of dimension slugs that should be hidden from filters.', 'kompassi-integration' )
 			),
+			'otherfields_visible' => array(
+				'label' => __( 'Other Fields', 'kompassi-integration' ),
+				'description' => __( 'Comma-separated list of otherFields fields that should be shown.', 'kompassi-integration' )
+			),
 			'timeline_grouping' => array(
 				'label' => __( 'Timeline Grouping', 'kompassi-integration' ),
 				'description' => __( 'Dimension slug for the dimension that should be used to group program with subheadings in timeline.', 'kompassi-integration' )
@@ -283,21 +287,25 @@ class WP_Plugin_Kompassi_Integration {
 			return;
 		}
 
+		$options = array( );
 		// Map dimension value labels and flags to arrays
-		$dimension_value_labels = array( );
+		$options['dimensions'] = array( );
 		foreach( $data['dimensions'] as $dimension ) {
+			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
 			foreach( $dimension['values'] as $value ) {
-				$dimension_value_labels[$dimension['slug']][$value['slug']] = $value['title'];
+				$d['value_labels'][$value['slug']] = $value['title'];
 				foreach( $dimension as $k => $v ) {
 					if( substr( $k, 0, 2 ) == 'is' ) {
-						$dimension_flags[$dimension['slug']][$k] = $v;
+						$d['flags'][$k] = $v;
 					}
 				}
 			}
+			$options['dimensions'][$dimension['slug']] = $d;
 		}
 
 		// Get a list of hidden dimensions
-		$hidden_dimensions = explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) );
+		$options['hidden_dimensions'] = explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) );
+		$options['otherfields_visible'] = explode( ',', get_option( 'kompassi_integration_otherfields_visible', '' ) );
 
 		// Check which icons are avalable
 		$icons_path = plugin_dir_path( __FILE__ ) . 'images/icons';
@@ -312,7 +320,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		foreach( $data['programs'] as $p ) {
-			$out .= $this->markup_program( $p, $dimension_value_labels, $dimension_flags, $hidden_dimensions );
+			$out .= $this->markup_program( $p, $options );
 		}
 		$out .= '</section>';
 		$out .= '</section>';
@@ -356,7 +364,7 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function markup_program( $program, $dimension_value_labels, $dimension_flags, $hidden_dimensions ) {
+	function markup_program( $program, $options ) {
 		if( !is_array( $program['scheduleItems'] ) || count( $program['scheduleItems'] ) < 1 ) {
 			return;
 		}
@@ -388,7 +396,18 @@ class WP_Plugin_Kompassi_Integration {
 			<article id="<?php echo $program['identifier']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 				<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
 				<div class="main" style="grid-area: main;">
-					<?php echo $program['description']; ?>
+					<div class="description">
+						<?php echo $program['description']; ?>
+					</div>
+					<div class="other">
+						<?php
+							foreach( $program['otherFields'] as $field => $value ) {
+								if( in_array( $field, $options['otherfields_visible'] ) ) {
+									echo '<p class="otherField otherField-' . str_replace( ':', '-', $field ) . '">' . $value . '</p>';
+								}
+							}
+						?>
+					</div>
 				</div>
 				<div class="meta" style="grid-area: meta;">
 					<?php
@@ -433,18 +452,18 @@ class WP_Plugin_Kompassi_Integration {
 					<?php
 						// Traverse through dimensions
 						foreach( $program['cachedDimensions'] as $dimension => $values ) {
-							if( !$dimension_flags[$dimension]['isShownInDetail'] ) {
+							if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
 								continue;
 							}
 
-							if( in_array( $dimension, $hidden_dimensions ) ) {
+							if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
 								continue;
 							}
 
 							echo '<div class="dimension ' . $dimension . '">';
 							foreach( $values as $slug ) {
-								if( isset( $dimension_value_labels[$dimension][$slug] ) ) {
-									echo '<span class="value">' . $dimension_value_labels[$dimension][$slug] . '</span> ';
+								if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
+									echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
 								} else {
 									echo '<span class="value">' . $slug . '</span> ';
 								}
