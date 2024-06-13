@@ -485,12 +485,21 @@ function kompassi_apply_filters( ) {
 		// Dimension filters
 		if( filter.hasClass( 'filter-dimension' ) ) {
 			if( filter.val( ).length > 0 ) {
+				filter_dimension = filter.data( 'dimension' );
 				jQuery( '#kompassi_schedule article:visible' ).filter( function( ) {
-					prog_dimension = jQuery( this ).data( filter.data( 'dimension' ) );
-					if( filter.val( ).indexOf( prog_dimension ) == -1 ) {
+					if( typeof jQuery( this ).data( filter_dimension ) == 'undefined' ) {
 						match = false;
 					} else {
-						match = true;
+						prog_dimensions = jQuery( this ).data( filter_dimension ).split( ',' );
+						dimension_matches = prog_dimensions.filter( function( v ) {
+							return filter.val( ).includes( v );
+						} );
+
+						if( dimension_matches.length < 1 ) {
+							match = false;
+						} else {
+							match = true;
+						}
 					}
 					if( filter.hasClass( 'flag-negative' ) ) {
 						return match;

@@ -382,8 +382,16 @@ class WP_Plugin_Kompassi_Integration {
 			'end' => $program['end'],
 		);
 		foreach( $program['cachedDimensions'] as $dimension => $values ) {
+			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+				continue;
+			}
+
+			if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
+				continue;
+			}
+
 			if( count( $values ) > 0 ) {
-				$attrs[$dimension] = $values[0];
+				$attrs[$dimension] = implode( ',', $values );
 			}
 		}
 
