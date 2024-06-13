@@ -397,7 +397,7 @@ class WP_Plugin_Kompassi_Integration {
 				<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
 				<div class="main" style="grid-area: main;">
 					<div class="description">
-						<?php echo $program['description']; ?>
+						<?php echo make_clickable( $program['description'] ); ?>
 					</div>
 					<?php
 						$others = '';
