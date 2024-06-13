@@ -399,15 +399,17 @@ class WP_Plugin_Kompassi_Integration {
 					<div class="description">
 						<?php echo $program['description']; ?>
 					</div>
-					<div class="other">
-						<?php
-							foreach( $program['otherFields'] as $field => $value ) {
-								if( in_array( $field, $options['otherfields_visible'] ) ) {
-									echo '<p class="otherField otherField-' . str_replace( ':', '-', $field ) . '">' . $value . '</p>';
-								}
+					<?php
+						$others = '';
+						foreach( $program['otherFields'] as $field => $value ) {
+							if( in_array( $field, $options['otherfields_visible'] ) ) {
+								$others .= '<p class="otherField otherField-' . str_replace( ':', '-', $field ) . '">' . $value . '</p>';
 							}
-						?>
-					</div>
+						}
+						if( strlen( $others ) > 0 ) {
+							echo '<div class="other">' . $others . '</div>';
+						}
+					?>
 				</div>
 				<div class="meta" style="grid-area: meta;">
 					<?php
