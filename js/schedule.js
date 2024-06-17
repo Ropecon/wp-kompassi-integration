@@ -538,6 +538,8 @@ function kompassi_apply_filters( ) {
 					}
 				} );
 				filter_count += 1;
+			} else {
+				jQuery( '#kompassi_schedule article' ).css( 'order', 0 );
 			}
 		}
 	} );
