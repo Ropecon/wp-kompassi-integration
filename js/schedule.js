@@ -514,7 +514,7 @@ function kompassi_apply_filters( ) {
 		// Text filter
 		search_targets = {
 			'title': 100,
-			'formatted_hosts': 10,
+			'cachedHosts': 10,
 			'description': 1
 		};
 		if( filter.hasClass( 'filter-text' ) ) {
