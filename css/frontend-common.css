@@ -30,16 +30,22 @@
    --kompassi-modal-max-width: 1000px;
    --kompassi-modal-bg: hsl(var(--kompassi-hue), 10%, 95%);
    --kompassi-modal-actions-bg: hsl(var(--kompassi-hue), 25%, 85%);
+   --kompassi-modal-padding: 1em;
 
    /*  Popovers  */
    --kompassi-popover-bg: #fff;
+}
+
+@media screen and (min-width:900px) and (min-height:600px) {
+   :root {
+      --kompassi-modal-padding: 1.5em;
+   }
 }
 
 [class*="wp-block-kompassi"], #kompassi_modal {
 	container-name: kompassi-integration;
 	container-type: inline-size;
    position: relative;
-   z-index: 10000;
 }
 [class*="wp-block-kompassi"], [id^="kompassi"] {
 	font-family: var(--kompassi-font);
@@ -192,7 +198,7 @@
 	left: 0;
 	top: 0;
 	bottom: 0;
-	z-index: 30000;
+	z-index: 5000;
 
 	background-color: var(--kompassi-modal-bg);
 	box-shadow: var(--kompassi-box-shadow);
@@ -217,12 +223,12 @@
 		display: grid;
 		grid-template-columns: auto max-content;
 		grid-template-areas: 'title actions';
-		grid-gap: 1.5em;
-		padding: 1.5em;
+		grid-gap: var(--kompassi-modal-padding);
+		padding: var(--kompassi-modal-padding);
 		background-color: #fff;
 	}
 		#kompassi_modal .header .title {
-			font-size: 150%;
+			font-size: 120%;
 			line-height: 1.3em;
 			align-self: center;
 		}
@@ -234,7 +240,7 @@
 			cursor: pointer;
 			display: block;
 			width: 4.75em;
-			padding: 0 1.5em;
+			padding: 0 var(--kompassi-modal-padding);
 		}
 			#kompassi_modal .header .close::before {
 				display: inline-block;
@@ -249,8 +255,9 @@
 
 		#kompassi_modal .content .actions {
 			background-color: var(--kompassi-modal-actions-bg);
-			padding: 1em 1.5em;
+			padding: calc( var(--kompassi-modal-padding) / 2 ) var(--kompassi-modal-padding);
 			margin-right: 0;
+         margin-bottom: 0;
 		}
 			#kompassi_modal .content .actions a::before {
 				opacity: 1;
@@ -271,6 +278,10 @@
 					background-color: var(--kompassi-button-bg-active);
 					color: var(--kompassi-button-fg-active);
 				}
+      #kompassi_modal .content .main,
+		#kompassi_modal .content .meta {
+         padding: var(--kompassi-modal-padding);
+      }
 
 @media screen and (max-width:599px) {
 	#kompassi_modal .actions a {
@@ -307,10 +318,6 @@
 			/* Opera doesn't support this in the shorthand */
 			background-attachment: local, local, scroll, scroll;
 		}
-			#kompassi_modal .content .main,
-			#kompassi_modal .content .meta {
-				padding: 1.5em;
-			}
 				#kompassi_modal .content .main {
 					flex: auto;
 					display: flex;
@@ -319,15 +326,13 @@
                font-size: 107%;
                line-height: 1.7em;
 				}
-               #kompassi_modal .content .main > * {
-                  margin-bottom: 1em;
-               }
+
 				#kompassi_modal .content .meta {
 					flex: 0 0 min-content;
 					background-color: #fff;
 				}
 
-@media screen and (min-width:900px) {
+@media screen and (min-width:900px) and (min-height: 800px) {
 	#kompassi_modal {
 		width: auto;
 		height: calc( 100vh - 7em );
@@ -337,6 +342,9 @@
 		top: 3.5em;
 		bottom: 3.5em;
 	}
+      #kompassi_modal .header .title {
+         font-size: 150%;
+      }
 }
 
 #kompassi_modal_bg {
@@ -346,7 +354,7 @@
 	bottom: 0;
 	left: 0;
 	background-color: rgba(0,0,0,0.75);
-	z-index: 20000;
+	z-index: 4999;
 }
 
 /*
@@ -356,7 +364,7 @@
 
 #kompassi_popover {
 	position: fixed;
-	z-index: 10000;
+	z-index: 4998;
 
 	padding: 0.5em;
 

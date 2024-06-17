@@ -385,14 +385,14 @@ class WP_Plugin_Kompassi_Integration {
 						<?php echo make_clickable( $program['description'] ); ?>
 					</div>
 					<?php
-						$others = '';
+						$annotations = '';
 						foreach( $program['otherFields'] as $field => $value ) {
 							if( in_array( $field, $options['otherfields_visible'] ) ) {
-								$others .= '<p class="otherField otherField-' . str_replace( ':', '-', $field ) . '">' . $value . '</p>';
+								$annotations .= '<p class="annotation annotation-' . str_replace( ':', '-', $field ) . '">' . $value . '</p>';
 							}
 						}
-						if( strlen( $others ) > 0 ) {
-							echo '<div class="other">' . $others . '</div>';
+						if( strlen( $annotations ) > 0 ) {
+							echo '<div class="annotations">' . $annotations . '</div>';
 						}
 					?>
 				</div>

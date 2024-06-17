@@ -525,15 +525,26 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  *
  */
 
-#kompassi_modal .content .main .other {
-	margin: 1em -1.5rem 0 -1.5rem;
-	padding: 2em 1.5em;
+#kompassi_modal .content .main .annotations {
+	margin-top: var(--kompassi-modal-padding);
+	padding-top: var(--kompassi-modal-padding);
 	border-top: 1px solid rgba(0,0,0,0.2);
+}
+	#kompassi_modal .content .main .annotations .annotation {
+		font-size: 90%;
+	}
+		#kompassi_modal .content .main .annotations > :last-child {
+			margin-bottom: 0;
+		}
+
+#kompassi_modal .meta > :not(.dimension) {
+	display: block;
+	margin-bottom: 0.3em;
 }
 
 #kompassi_modal .meta .dimension {
 	display: inline-block;
-	margin-top: 0.5em;
+	margin-top: 0.3em;
 }
 	#kompassi_modal .meta .dimension:empty {
 		display: none;
