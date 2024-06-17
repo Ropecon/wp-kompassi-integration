@@ -327,29 +327,6 @@ class WP_Plugin_Kompassi_Integration {
 
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
 
-		/*
-		 *  Program colors
-		 *  Color values from dimensions later in the data will override earlier values
-		 *  Philosophically, more specific tags should take precendence
-		 *
-		 */
-		$out .= '<style>';
-		foreach( $data['dimensions'] as $dimension_slug => $dimension ) {
-			foreach( $dimension['values'] as $value_slug => $value ) {
-				if( isset( $value['color'] ) || isset( $value['icon'] ) ) {
-					$out .= ' #kompassi_schedule article[data-' . $dimension_slug . '="' .  $value_slug . '"] {';
-					if( isset( $value['color'] ) ) {
-						$out .= '  --kompassi-program-color: ' . $value['color'] . '; ';
-					}
-					if( isset( $value['icon'] ) ) {
-						$out .= '  --kompassi-program-icon: url(' . $value['icon'] . '); ';
-					}
-					$out .= ' }';
-				}
-			}
-		}
-		$out .= '</style>';
-
 		$out .= $this->data_provided_image( );
 		$out .= '</div>';
 
