@@ -598,7 +598,7 @@ function kompassi_apply_filters( ) {
 
 	//  If on timeline, refresh the layout
 	if( kompassi_get_display_type( ) == 'timeline' ) {
-		kompassi_revert_timeline_layout( );
+		kompassi_revert_display_layouts( );
 		kompassi_setup_timeline_layout( );
 	}
 
@@ -666,14 +666,13 @@ function kompassi_setup_display( display_type = false ) {
 	}
 
 	jQuery( '#kompassi_schedule' ).removeClass( 'list timeline' ).addClass( display_type );
+	kompassi_revert_display_layouts( );
 	if( display_type == 'list' ) {
 		kompassi_setup_list_layout( );
 	}
 	if( display_type == 'timeline' ) {
 		kompassi_setup_timeline_layout( );
 	}
-
-	kompassi_revert_display_layouts( );
 
 	jQuery( '#kompassi_schedule_notes .display-not-' + display_type ).hide( );
 	jQuery( '#kompassi_schedule_notes .display-only-' + display_type ).show( );
@@ -746,7 +745,7 @@ function kompassi_setup_timeline_layout( ) {
 		}
 
 		has_row = false;
-		while( has_row == false && check_index < 200 ) {
+		while( has_row == false ) {
 			if( rows.length == check_index - 1 ) {
 				// Row does not exist, create new
 				rows.push( parseInt( program.data( 'end' ) ) );
