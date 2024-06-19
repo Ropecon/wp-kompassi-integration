@@ -337,11 +337,34 @@ jQuery( function( e ) {
 		kompassi_program_modal( jQuery( this ) );
 	} );
 
+	// Move to next/prev program
+	// Arrow keys
+	jQuery( 'body' ).on( 'keyup', function( e ) {
+		if( jQuery( '#kompassi_modal.kompassi-program' ).length > 0 ) {
+			current_prog = jQuery( '#kompassi_modal.kompassi-program' ).data( 'id' );
+
+			if( e.keyCode == 37 ) {
+				open_prog = kompassi_get_next_visible_program( current_prog, -1 );
+			}
+			if( e.keyCode == 39 ) {
+				open_prog = kompassi_get_next_visible_program( current_prog );
+			}
+
+			if( open_prog ) {
+				kompassi_program_modal( open_prog );
+			}
+		}
+	} );
+
 	// Close modals when clicking on modal bg or close button or when pressing Esc
-	jQuery( 'body' ).on( 'click', '#kompassi_modal_bg, #kompassi_modal .header .close', kompassi_close_modal );
+	jQuery( 'body' ).on( 'click', '#kompassi_modal_bg, #kompassi_modal .header .close', function( e ) {
+		kompassi_close_modal( );
+		kompassi_update_url_hash( );
+	} );
 	jQuery( 'body' ).on( 'keyup', function( e ) {
 		if( e.keyCode == 27 ) {
-			kompassi_close_modal( e );
+			kompassi_close_modal( );
+			kompassi_update_url_hash( );
 		}
 	} );
 
@@ -355,8 +378,8 @@ jQuery( function( e ) {
 	jQuery( window ).on( 'scroll', kompassi_schedule_timeline_sticky_header );
 } );
 
-/*
- *  Filter: Toggle Favorites
+/**
+ *  Toggles the favorite filter
  *
  */
 
@@ -371,8 +394,8 @@ function kompassi_toggle_favorite( ) {
 	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
 }
 
-/*
- *  Get and show (visible) program count
+/**
+ *  Shows visible program count
  *
  */
 
@@ -391,8 +414,8 @@ function kompassi_update_program_count( ) {
 	}
 }
 
-/*
- *  Update date view parameters
+/**
+ *  Updates date view parameters
  *
  */
 
@@ -465,8 +488,8 @@ function kompassi_update_date_view_parameters( ) {
 	}
 }
 
-/*
- *  Filters: Apply
+/**
+ *  Applies filters
  *
  */
 
@@ -613,8 +636,10 @@ function kompassi_apply_filters( ) {
 	jQuery( '#kompassi_schedule_notes .display-only-' + kompassi_get_display_type( ) ).show( );
 }
 
-/*
- *  Update multiselect
+/**
+ *  Update multiselect labels
+ *
+ *  @param {Object} element JS element to update
  *
  */
 
@@ -641,11 +666,14 @@ function kompassi_setup_display( display_type = false ) {
 	}
 
 	jQuery( '#kompassi_schedule' ).removeClass( 'list timeline' ).addClass( display_type );
+	if( display_type == 'list' ) {
+		kompassi_setup_list_layout( );
+	}
 	if( display_type == 'timeline' ) {
 		kompassi_setup_timeline_layout( );
-	} else {
-		kompassi_revert_timeline_layout( );
 	}
+
+	kompassi_revert_display_layouts( );
 
 	jQuery( '#kompassi_schedule_notes .display-not-' + display_type ).hide( );
 	jQuery( '#kompassi_schedule_notes .display-only-' + display_type ).show( );
@@ -656,8 +684,18 @@ function kompassi_setup_display( display_type = false ) {
 	kompassi_update_url_hash( );
 }
 
-/*
- *  Timeline: Setup layout
+/**
+ *  Sets up list display layout
+ *
+ */
+
+function kompassi_setup_list_layout( ) {
+
+}
+
+
+/**
+ *  Sets up timeline display layout
  *
  */
 
@@ -757,7 +795,7 @@ function kompassi_setup_timeline_layout( ) {
 	}
 	jQuery( '#kompassi_schedule' ).prepend( headers );
 
-	//
+	// Enable zooming
 	jQuery( '#kompassi_schedule' ).data( 'scale', 1 );
 	var hammer = new Hammer( jQuery( '#kompassi_schedule' )[0], { touchAction: 'pan-x pan-y' } );
 	hammer.get( 'pinch' ).set( { enable: true } );
@@ -857,20 +895,23 @@ function kompassi_timeline_reposition_headers( ) {
 	} );
 }
 
-/*
- *  Timeline: Revert layout
+/**
+ *  Revert display layouts
  *
  */
 
-function kompassi_revert_timeline_layout( ) {
+function kompassi_revert_display_layouts( ) {
+	// Timeline
 	jQuery( '#kompassi_schedule' ).css( 'height', 'auto' );
 	jQuery( '#kompassi_schedule article' ).attr( 'style', '' );
 	jQuery( '#kompassi_schedule .title' ).css( 'left', '' ).css( 'position', '' );
 	jQuery( '#kompassi_schedule .headers, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
 }
 
-/*
- *  Open program modal
+/**
+ *  Opens program modal
+ *
+ *  @param {Object} program jQuery object of the program number
  *
  */
 
@@ -889,28 +930,9 @@ function kompassi_program_modal( program ) {
 	}
 	kompassi_show_modal( options );
 
-	// Move to next/prev modal
-	// Arrow keys
-	jQuery( 'body' ).on( 'keyup', function( e ) {
-		if( jQuery( '#kompassi_modal.kompassi-program' ).length > 0 ) {
-			current_prog = jQuery( '#kompassi_modal.kompassi-program' ).data( 'id' );
-
-			if( e.keyCode == 37 ) {
-				open_prog = kompassi_get_next_visible_program( current_prog, -1 );
-			}
-			if( e.keyCode == 39 ) {
-				open_prog = kompassi_get_next_visible_program( current_prog );
-			}
-
-			if( open_prog ) {
-				kompassi_program_modal( open_prog );
-			}
-		}
-	} );
-
 	// Swipe
-	var hammer = new Hammer( jQuery( '#kompassi_modal.kompassi-program' )[0], { touchAction: 'swipe' } );
-	hammer.on( 'swipe', function( ev ) {
+	var hammer_modal = new Hammer( jQuery( '#kompassi_modal.kompassi-program' )[0], { touchAction: 'swipe' } );
+	hammer_modal.on( 'swipe', function( ev ) {
 		current_prog = jQuery( '#kompassi_modal.kompassi-program' ).data( 'id' );
 
 		if( ev.direction == '4' ) {
@@ -924,10 +946,12 @@ function kompassi_program_modal( program ) {
 			kompassi_program_modal( open_prog );
 		}
 	} );
+
+	kompassi_update_url_hash( );
 }
 
-/*
- *  Display schedule help modal
+/**
+ *  Displays schedule help modal
  *
  */
 
@@ -948,8 +972,8 @@ function kompassi_schedule_help_modal( ) {
 	kompassi_show_modal( options );
 }
 
-/*
- *
+/**
+ *  Makes the timeline header sticky
  *
  */
 
@@ -971,7 +995,19 @@ function kompassi_schedule_timeline_sticky_header( ) {
 	} );
 }
 
+//
 //  Helper functions
+//
+
+/**
+ *  Returns the previous or next (filtered) program number
+ *
+ *  @param {string} current Current program slug
+ *  @param {boolean} reverse Whether to reverse the order, eg. return the previous program number
+ *
+ *  @returns {Object} jQuery object of the next/previous program number
+ */
+
 function kompassi_get_next_visible_program( current = false, reverse = false ) {
 	if( reverse ) {
 		// Prev
@@ -994,24 +1030,28 @@ function kompassi_get_next_visible_program( current = false, reverse = false ) {
 	return open_prog;
 }
 
-function kompassi_get_display_type( display_type = '' ) {
-	if( display_type !== '' ) {
-		return display_type;
-	} else {
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'list' ) ) { display_type = 'list'; }
-		if( jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
-	}
+/**
+ *  Returns the current display type
+ *
+ *  @returns {string} Current display type
+ *
+ */
+
+function kompassi_get_display_type( ) {
+	if( jQuery( '#kompassi_schedule' ).hasClass( 'list' ) ) { display_type = 'list'; }
+	if( jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
+
 	return display_type;
 }
 
 /**
  *  Returns a date formatted in human readable format.
  *
- *  @param {int} timestamp Unix timestamp
- *  @param {bool} weekday Whether to return the weekday name or not
- *  @param {bool} date Whether to return the date or not
+ *  @param {number} timestamp Unix timestamp
+ *  @param {boolean} weekday Whether to return the weekday name or not
+ *  @param {boolean} date Whether to return the date or not
  *
- *  @return {string} Formatted date
+ *  @returns {string} Formatted date
  *
  */
 
@@ -1045,7 +1085,7 @@ function kompassi_get_date_formatted( timestamp, weekday = true, date = true ) {
  *  @param {Date} a Date object
  *  @param {Date} b Date object
  *
- *  @return {int} Difference of timestamps in hours
+ *  @returns {number} Difference of timestamps in hours
  *
  */
 
@@ -1100,6 +1140,8 @@ function kompassi_update_url_hash( ) {
 }
 
 /**
+ *  Sorting function to sort program by group (and alphabetically inside groups)
+ *
  */
 
 function kompassi_sort_by_group( a, b ) {

@@ -29,8 +29,6 @@ function kompassi_show_modal( options ) {
 	modal.appendTo( jQuery( 'body' ) );
 	jQuery( 'body' ).append( '<div id="kompassi_modal_bg" />' ).css( 'overflow', 'hidden' );
 
-	kompassi_update_url_hash( );
-
 	return;
 }
 
@@ -39,7 +37,6 @@ function kompassi_show_modal( options ) {
 function kompassi_close_modal( ) {
 	jQuery( '#kompassi_modal_bg, #kompassi_modal' ).remove( );
 	jQuery( 'body' ).css( 'overflow', 'auto' );
-	kompassi_update_url_hash( );
 }
 
 /*

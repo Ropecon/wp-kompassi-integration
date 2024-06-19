@@ -356,10 +356,9 @@ class WP_Plugin_Kompassi_Integration {
 		$program['start'] = $program['scheduleItems'][0]['startTimeUnixSeconds'];
 		$program['end'] = $program['scheduleItems'][0]['endTimeUnixSeconds'];
 		$program['length'] = $program['scheduleItems'][0]['lengthMinutes'];
-		$program['identifier'] = $program['slug'];
 
 		$attrs = array(
-			'id' => $program['identifier'],
+			'id' => $program['slug'],
 			'length' => $program['length'], // Required for timeline calculations
 			'start' => $program['start'],
 			'end' => $program['end'],
@@ -384,7 +383,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 		$program['description'] = nl2br( $program['description'] );
 		?>
-			<article id="<?php echo $program['identifier']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
+			<article id="<?php echo $program['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 				<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
 				<div class="main" style="grid-area: main;">
 					<div class="description">
