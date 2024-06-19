@@ -3,6 +3,13 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
     name
     slug
     program {
+      annotations(lang: $locale) {
+         slug
+         title(lang: $locale)
+         isShownInDetail
+         isPublic
+         description
+      }
       dimensions {
         slug
         title(lang: $locale)
@@ -19,6 +26,7 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
         title
         cachedDimensions
         cachedHosts
+        cachedAnnotations
         scheduleItems {
           startTimeUnixSeconds
           endTimeUnixSeconds

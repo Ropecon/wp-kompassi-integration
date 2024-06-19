@@ -69,9 +69,9 @@ class WP_Plugin_Kompassi_Integration {
 				'label' => __( 'Hidden Dimensions', 'kompassi-integration' ),
 				'description' => __( 'Comma-separated list of dimension slugs that should be hidden from filters.', 'kompassi-integration' )
 			),
-			'otherfields_visible' => array(
-				'label' => __( 'Other Fields', 'kompassi-integration' ),
-				'description' => __( 'Comma-separated list of otherFields fields that should be shown.', 'kompassi-integration' )
+			'hidden_annotations' => array(
+				'label' => __( 'Hidden Annotations', 'kompassi-integration' ),
+				'description' => __( 'Comma-separated list of annotation fields that should be hidden.', 'kompassi-integration' )
 			),
 			'timeline_grouping' => array(
 				'label' => __( 'Timeline Grouping', 'kompassi-integration' ),
@@ -303,9 +303,15 @@ class WP_Plugin_Kompassi_Integration {
 			$options['dimensions'][$dimension['slug']] = $d;
 		}
 
+		// Map annotation labels and flags to arrays
+		$options['annotations'] = array( );
+		foreach( $data['annotations'] as $annotation ) {
+			$options['annotations'][$annotation['slug']] = $annotation;
+		}
+
 		// Get a list of hidden dimensions
 		$options['hidden_dimensions'] = explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) );
-		$options['otherfields_visible'] = explode( ',', get_option( 'kompassi_integration_otherfields_visible', '' ) );
+		$options['hidden_annotations'] = explode( ',', get_option( 'kompassi_integration_hidden_annotations', '' ) );
 
 		// Check which icons are avalable
 		$icons_path = plugin_dir_path( __FILE__ ) . 'images/icons';
@@ -386,13 +392,13 @@ class WP_Plugin_Kompassi_Integration {
 					</div>
 					<?php
 						$annotations = '';
-						foreach( $program['otherFields'] as $field => $value ) {
-							if( in_array( $field, $options['otherfields_visible'] ) ) {
-								$annotations .= '<p class="annotation annotation-' . str_replace( ':', '-', $field ) . '">' . $value . '</p>';
+						foreach( $program['cachedAnnotations'] as $field => $value ) {
+							if( in_array( $field, $options['hidden_annotations'] ) ) {
+								$annotations .= '<dt>' . $options['annotations'][$field]['title'] . '</dt><dd>' . $value . '</dd>';
 							}
 						}
 						if( strlen( $annotations ) > 0 ) {
-							echo '<div class="annotations">' . $annotations . '</div>';
+							echo '<dl class="annotations">' . $annotations . '</dl>';
 						}
 					?>
 				</div>

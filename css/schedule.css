@@ -530,12 +530,23 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	padding-top: var(--kompassi-modal-padding);
 	border-top: 1px solid rgba(0,0,0,0.2);
 }
-	#kompassi_modal .content .main .annotations .annotation {
+	#kompassi_modal .content .main .annotations :is(dt,dd) {
 		font-size: 90%;
 	}
+		#kompassi_modal .content .main .annotations dt {
+			font-weight: bold;
+		}
 		#kompassi_modal .content .main .annotations > :last-child {
 			margin-bottom: 0;
 		}
+
+@media screen and (min-width: 800px) {
+	#kompassi_modal .content .main .annotations {
+		display: grid;
+		grid-template-columns: min-content auto;
+		grid-gap: 0 2em;
+	}
+}
 
 #kompassi_modal .meta > :not(.dimension) {
 	display: block;

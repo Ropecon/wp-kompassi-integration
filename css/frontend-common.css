@@ -322,11 +322,14 @@
 					flex: auto;
 					display: flex;
 					flex-direction: column;
+               justify-content: space-between;
 
                font-size: 107%;
                line-height: 1.7em;
 				}
-
+               #kompassi_modal .content .main > :last-child {
+                  margin-bottom: 0;
+               }
 				#kompassi_modal .content .meta {
 					flex: 0 0 min-content;
 					background-color: #fff;
