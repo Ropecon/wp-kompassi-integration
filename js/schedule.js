@@ -875,6 +875,8 @@ function kompassi_revert_timeline_layout( ) {
  */
 
 function kompassi_program_modal( program ) {
+	kompassi_close_modal( );
+
 	options = {
 		attrs: {
 			'class': program.attr( 'class' ),
@@ -886,6 +888,42 @@ function kompassi_program_modal( program ) {
 		meta: program.children( '.meta' ).html( ),
 	}
 	kompassi_show_modal( options );
+
+	// Move to next/prev modal
+	// Arrow keys
+	jQuery( 'body' ).on( 'keyup', function( e ) {
+		if( jQuery( '#kompassi_modal.kompassi-program' ).length > 0 ) {
+			current_prog = jQuery( '#kompassi_modal.kompassi-program' ).data( 'id' );
+
+			if( e.keyCode == 37 ) {
+				open_prog = kompassi_get_next_visible_program( current_prog, -1 );
+			}
+			if( e.keyCode == 39 ) {
+				open_prog = kompassi_get_next_visible_program( current_prog );
+			}
+
+			if( open_prog ) {
+				kompassi_program_modal( open_prog );
+			}
+		}
+	} );
+
+	// Swipe
+	var hammer = new Hammer( jQuery( '#kompassi_modal.kompassi-program' )[0], { touchAction: 'swipe' } );
+	hammer.on( 'swipe', function( ev ) {
+		current_prog = jQuery( '#kompassi_modal.kompassi-program' ).data( 'id' );
+
+		if( ev.direction == '4' ) {
+			open_prog = kompassi_get_next_visible_program( current_prog, -1 );
+		}
+		if( ev.direction == '2' ) {
+			open_prog = kompassi_get_next_visible_program( current_prog );
+		}
+
+		if( open_prog ) {
+			kompassi_program_modal( open_prog );
+		}
+	} );
 }
 
 /*
@@ -934,6 +972,28 @@ function kompassi_schedule_timeline_sticky_header( ) {
 }
 
 //  Helper functions
+function kompassi_get_next_visible_program( current = false, reverse = false ) {
+	if( reverse ) {
+		// Prev
+		open_prog = jQuery( '#kompassi_schedule article#' + current ).prevAll( 'article:visible' ).first( );
+		if( open_prog.length == 0 ) {
+			open_prog = jQuery( '#kompassi_schedule article#' + current ).nextAll( 'article:visible' ).last( );
+		}
+	} else {
+		// Next
+		open_prog = jQuery( '#kompassi_schedule article#' + current ).nextAll( 'article:visible' ).first( );
+		if( open_prog.length == 0 ) {
+			open_prog = jQuery( '#kompassi_schedule article#' + current ).prevAll( 'article:visible' ).last( );
+		}
+	}
+
+	if( open_prog.length == 0 ) {
+		return false;
+	}
+
+	return open_prog;
+}
+
 function kompassi_get_display_type( display_type = '' ) {
 	if( display_type !== '' ) {
 		return display_type;
@@ -1003,38 +1063,38 @@ function kompassi_get_difference_in_hours( a, b ) {
 function kompassi_update_url_hash( ) {
 	opts = [];
 
-	// If program modal is open, dismiss other options
-	if( jQuery( '#kompassi_modal' ).length > 0 ) {
+	// If program modal is open, show prog
+	if( jQuery( '#kompassi_modal.kompassi-program' ).length > 0 ) {
 		opts.push( 'prog:' + jQuery( '#kompassi_modal' ).data( 'id' ) );
-	} else {
-		// Date
-		if( jQuery( '.date-toggle.active' ).length > 0 ) {
-			opts.push( 'date:' + jQuery( '.date-toggle.active' ).first( ).data( 'date' ) );
-		}
-
-		// Favorites
-		if( jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
-			opts.push( 'favorites:1' );
-		}
-
-		// Filters
-		jQuery( '[name^="filter_"]' ).each( function( ) {
-			filter = jQuery( this );
-			opt_name = filter.attr( 'name' ).substring( 7 ); // Strip filter_
-			if( filter.prop( 'tagName' ) == 'SELECT' ) {
-				if( filter.val( ).length > 0 ) {
-					opts.push( opt_name + ':' + filter.val( ) );
-				}
-			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
-				if( filter.val( ) ) {
-					opts.push( opt_name + ':' + filter.val( ) );
-				}
-			}
-		} );
-
-		// Display
-		opts.push( 'display:' + kompassi_get_display_type( ) );
 	}
+
+	// Date
+	if( jQuery( '.date-toggle.active' ).length > 0 ) {
+		opts.push( 'date:' + jQuery( '.date-toggle.active' ).first( ).data( 'date' ) );
+	}
+
+	// Favorites
+	if( jQuery( '.favorites-toggle' ).hasClass( 'active' ) ) {
+		opts.push( 'favorites:1' );
+	}
+
+	// Filters
+	jQuery( '[name^="filter_"]' ).each( function( ) {
+		filter = jQuery( this );
+		opt_name = filter.attr( 'name' ).substring( 7 ); // Strip filter_
+		if( filter.prop( 'tagName' ) == 'SELECT' ) {
+			if( filter.val( ).length > 0 ) {
+				opts.push( opt_name + ':' + filter.val( ) );
+			}
+		} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
+			if( filter.val( ) ) {
+				opts.push( opt_name + ':' + filter.val( ) );
+			}
+		}
+	} );
+
+	// Display
+	opts.push( 'display:' + kompassi_get_display_type( ) );
 
 	window.location.hash = opts.join( '/' );
 }

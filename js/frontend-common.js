@@ -32,11 +32,6 @@ function kompassi_show_modal( options ) {
 	kompassi_update_url_hash( );
 
 	return;
-
-	// Actions
-	actions.find( 'a' ).each( function( ) {
-		jQuery( this ).text( jQuery( this ).attr( 'title' ) );
-	} );
 }
 
 /*  Close  */
