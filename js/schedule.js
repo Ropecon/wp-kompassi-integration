@@ -342,6 +342,7 @@ jQuery( function( e ) {
 	jQuery( 'body' ).on( 'keyup', function( e ) {
 		if( jQuery( '#kompassi_modal.kompassi-program' ).length > 0 ) {
 			current_prog = jQuery( '#kompassi_modal.kompassi-program' ).data( 'id' );
+			open_prog = false;
 
 			if( e.keyCode == 37 ) {
 				open_prog = kompassi_get_next_visible_program( current_prog, -1 );
