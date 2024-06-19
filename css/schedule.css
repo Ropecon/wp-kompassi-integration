@@ -543,7 +543,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 @media screen and (min-width: 800px) {
 	#kompassi_modal .content .main .annotations {
 		display: grid;
-		grid-template-columns: min-content auto;
+		grid-template-columns: max-content auto;
 		grid-gap: 0 2em;
 	}
 }
