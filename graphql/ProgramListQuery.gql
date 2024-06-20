@@ -7,7 +7,6 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
          slug
          title(lang: $locale)
          isShownInDetail
-         isPublic
          description
       }
       dimensions {

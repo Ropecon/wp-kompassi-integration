@@ -392,8 +392,8 @@ class WP_Plugin_Kompassi_Integration {
 					<?php
 						$annotations = '';
 						foreach( $program['cachedAnnotations'] as $field => $value ) {
-							if( !in_array( $field, $options['hidden_annotations'] ) ) {
-								$annotations .= '<dt>' . $options['annotations'][$field]['title'] . '</dt><dd>' . $value . '</dd>';
+							if( !in_array( $field, $options['hidden_annotations'] ) && $options['annotations'][$field]['isShownInDetail'] !== false ) {
+								$annotations .= '<dt>' . $options['annotations'][$field]['title'] . '</dt><dd class="annotation-' . str_replace( ':', '-', $field ) . '">' . $value . '</dd>';
 							}
 						}
 						if( strlen( $annotations ) > 0 ) {
