@@ -3,7 +3,6 @@ _x = wp.i18n._x;
 _n = wp.i18n._n;
 sprintf = wp.i18n.sprintf;
 
-var kompassi_cookie;
 var kompassi_schedule = {
 	'event': {},
 	'filters': {},
@@ -45,7 +44,7 @@ jQuery( function( e ) {
 	}
 
 	/** **/
-	kompassi_schedule_init_cookie( );
+	kompassi_schedule_cookie_init( );
 	kompassi_schedule_init( );
 	kompassi_schedule_refresh( );
 } );
@@ -295,22 +294,14 @@ function kompassi_schedule_init_toolbar( ) {
 }
 
 /**
- *  Sets up cookie for user preferences:
- *  - favorites
+ *  Gets favorite programs from cookie
  *
  */
 
-function kompassi_schedule_init_cookie( ) {
-	kompassi_cookie = Cookies.get( 'kompassi_integration' );
-	if( kompassi_cookie == undefined ) {
-		kompassi_cookie = { favorites: [] };
-		Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
-	} else {
-		kompassi_cookie = JSON.parse( kompassi_cookie );
-		jQuery.each( kompassi_cookie.favorites, function( ) {
-			jQuery( '#' + this ).addClass( 'is-favorite' );
-		} );
-	}
+function kompassi_schedule_cookie_init( ) {
+	jQuery.each( kompassi_cookie.favorites, function( ) {
+		jQuery( '#' + this ).addClass( 'is-favorite' );
+	} );
 }
 
 /**

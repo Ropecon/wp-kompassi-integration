@@ -1,3 +1,20 @@
+var kompassi_cookie;
+
+/*
+ *  Cookie
+ *
+ */
+
+kompassi_cookie = Cookies.get( 'kompassi_integration' );
+if( kompassi_cookie == undefined ) {
+	kompassi_cookie = {
+		favorites: []
+	};
+	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
+} else {
+	kompassi_cookie = JSON.parse( kompassi_cookie );
+}
+
 /*
  *  Modal
  *
