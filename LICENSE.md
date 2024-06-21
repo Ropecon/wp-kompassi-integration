@@ -14,7 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 Libraries bundled with the plugin are subject to their own licenses.
 
-^ Library            ^ License ^ Website                                              ^
+| Library            | License | Website                                              |
+| ------------------ | ------- | ---------------------------------------------------- |
 | Day.js             | MIT     | https://day.js.org/                                  |
 | Hammer.js          | MIT     | https://hammerjs.github.io/                          |
 | jQuery-MultiSelect | MIT     | https://springstubbe.us/projects/jquery-multiselect/ |
