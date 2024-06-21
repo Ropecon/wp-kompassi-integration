@@ -49,6 +49,10 @@ class WP_Plugin_Kompassi_Integration {
 				'label' => __( 'Event Slug', 'kompassi-integration' ),
 				'description' => __( 'Event slug in Kompassi.', 'kompassi-integration' )
 			),
+			'contact' => array(
+				'label' => __( 'Contact', 'kompassi-integration' ),
+				'description' => __( 'Email address for contacts (eg. errors in the program data).', 'kompassi-integration' )
+			),
 			'caching' => array(
 				'label' => __( 'Cache', 'kompassi-integration' ),
 				'type' => 'dropdown',
@@ -335,7 +339,10 @@ class WP_Plugin_Kompassi_Integration {
 
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
 
+		$out .= '<div class="kompassi-footer">';
+		$out .= $this->contact( );
 		$out .= $this->data_provided_image( );
+		$out .= '</div>';
 		$out .= '</div>';
 
 		// Save cache
@@ -498,12 +505,28 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/**
+	 *  Returns the contact information
+	 *
+	 */
+
+	function contact( ) {
+		if( get_option( 'kompassi_integration_contact' ) ) {
+			$out = '<div class="kompassi-contact">';
+			$contact_link = '<a href="mailto:' . get_option( 'kompassi_integration_contact' ) . '">' . get_option( 'kompassi_integration_contact' ) . '</a>';
+			# translators: email link
+			$out .= '<p>' . sprintf( __( 'If you find errors in the program data, contact us at %s.', 'kompassi-integration' ), $contact_link ) . '</p>';
+			$out .= '</div>';
+			return $out;
+		}
+	}
+
+	/**
 	 *  Returns a "Data provided by Kompassi" image
 	 *
 	 */
 
 	function data_provided_image( ) {
-		return '<div class="kompassi_provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
+		return '<div class="kompassi-provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
 	}
 }
 
