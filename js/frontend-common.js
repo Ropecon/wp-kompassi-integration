@@ -1,3 +1,20 @@
+var kompassi_cookie;
+
+/*
+ *  Cookie
+ *
+ */
+
+kompassi_cookie = Cookies.get( 'kompassi_integration' );
+if( kompassi_cookie == undefined ) {
+	kompassi_cookie = {
+		favorites: []
+	};
+	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
+} else {
+	kompassi_cookie = JSON.parse( kompassi_cookie );
+}
+
 /*
  *  Modal
  *
@@ -55,4 +72,23 @@ function kompassi_popover( options, event, element ) {
 	popover.css( 'top', 'calc( ' + offset_top + 'px - ' + popover.outerHeight( ) + 'px - 0.5em )' );
 	popover.css( 'left', 'calc( ' + event.pageX + 'px - ' + popover.outerWidth( ) / 2  + 'px )');
 
+}
+
+/*
+ *  URL options
+ *
+ */
+
+function kompassi_get_url_options( ) {
+	url_options = {};
+	hash = new URL( window.location ).hash.substring( 1 ).split( '/' );
+	jQuery( hash ).each( function( opt_pair ) {
+		opt = this.split( ':' );
+		if( !opt[1] ) {
+			url_options[opt[0]] = true;
+		} else {
+			url_options[opt[0]] = opt[1];
+		}
+	} );
+	return url_options;
 }
