@@ -29,7 +29,8 @@ wp.blocks.registerBlockType(
       },
       edit: function( props ) {
          return el( wp.components.Placeholder, {
-            'label': __( 'Program Schedule', 'kompassi-integration' ),
+            icon: icon,
+            label: __( 'Program Schedule', 'kompassi-integration' ),
          }, '' );
       },
       save: function( props ) {
