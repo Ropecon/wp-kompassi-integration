@@ -198,7 +198,7 @@ function kompassi_schedule_init_toolbar( ) {
 	filters = jQuery( '<section id="kompassi_schedule_filters" />' );
 
 	//  Text filter
-	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" placeholder="' + __( 'Text...', 'kompassi-integration' ) + '" />' ) );
+	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" data-filter="text" placeholder="' + __( 'Text...', 'kompassi-integration' ) + '" />' ) );
 
 	//  Dimension filters
 	jQuery.each( kompassi_schedule_dimensions, function( index, dimension ) {
@@ -208,7 +208,7 @@ function kompassi_schedule_init_toolbar( ) {
 		if( kompassi_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
 			return;
 		}
-		select = jQuery( '<select class="filter filter-dimension" name="filter_' + dimension.slug + '" data-dimension="' + dimension.slug + '" placeholder="' + dimension.title + '" multiple="multiple" />' );
+		select = jQuery( '<select class="filter filter-dimension" name="filter_' + dimension.slug + '" data-filter="' + dimension.slug + '" data-dimension="' + dimension.slug + '" placeholder="' + dimension.title + '" multiple="multiple" />' );
 		jQuery.each( this.values, function( index, value ) {
 			select.append( jQuery( '<option value="' + value.slug + '">' + value.title + '</option>' ) );
 		} );
@@ -347,46 +347,61 @@ function kompassi_toggle_favorite( ) {
  */
 
 function kompassi_schedule_apply_options( opts ) {
-	filters_from_url = false;
+	filters_set = false;
 
-	jQuery( opts ).each( function( k, v ) {
-		// Filters
-		filter = jQuery( '[name="filter_' + k + '"]' );
-		if( filter.length > 0 ) {
-			if( filter.prop( 'tagName' ) == 'SELECT' ) {
-				v.split( ',' ).forEach( function( value, index, array ) {
-					filter.find( '[value="' + value + '"]').attr( 'selected', 'selected' );
+	// Filters
+	filters = jQuery( '#kompassi_schedule_filters .filter' );
+	filters.each( function( ) {
+		filter = jQuery( this );
+		filter_name = filter.data( 'filter' );
+		if( filter.prop( 'tagName' ) == 'SELECT' ) {
+			if( opts[filter_name] ) {
+				opts[filter_name].split( ',' ).forEach( function( value, index, array ) {
+					if( filter.find( '[value="' + value + '"]' ).length > 0 ) {
+						filter.find( '[value="' + value + '"]' ).attr( 'selected', 'selected' );
+						filters_set = true;
+					}
 				} );
-				filter.multiselect( 'reload' );
-			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
-				filter.val( decodeURIComponent( v ) );
+			} else {
+				filter.find( 'option' ).removeAttr( 'selected' );
 			}
-			filters_from_url = true;
+			filter.multiselect( 'reload' );
+		} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
+			if( opts[filter_name] ) {
+				filter.val( decodeURIComponent( opts[filter_name] ) );
+				filters_set = true;
+			} else {
+				filter.val( '' );
+			}
 		}
 	} );
 
-	// If filters are set from URL, open filters toolbar
-	if( filters_from_url == true ) {
+	// If any filters are set, open filters toolbar
+	if( filters_set == true ) {
 		jQuery( '.filters-toggle' ).addClass( 'active' );
-		jQuery( '#kompassi_schedule_filters' ).toggleClass( 'visible' );
+		jQuery( '#kompassi_schedule_filters' ).addClass( 'visible' );
 	}
 
 	// Date
 	if( opts.date ) {
 		if( jQuery( '.date-toggle[data-date="' + opts.date + '"]' ).length > 0 ) {
 		 	jQuery( '.date-toggle[data-date="' + opts.date + '"]' ).addClass( 'active' );
-			filters_from_url = true;
+			filters_set = true;
 		}
+	} else {
+		jQuery( '.date-toggle' ).removeClass( 'active' );
 	}
 
 	// Favorites
 	if( opts.favorites ) {
 		jQuery( '.favorites-toggle' ).addClass( 'active' );
-		filters_from_url = true;
+		filters_set = true;
+	} else {
+		jQuery( '.favorites-toggle' ).removeClass( 'active' );
 	}
 
 	// Apply filters
-	if( filters_from_url == true ) {
+	if( filters_set == true ) {
 		kompassi_apply_filters( );
 	}
 
@@ -1126,9 +1141,9 @@ function kompassi_update_url_hash( ) {
 	}
 
 	// Filters
-	jQuery( '[name^="filter_"]' ).each( function( ) {
+	jQuery( '#kompassi_schedule_filters .filter' ).each( function( ) {
 		filter = jQuery( this );
-		opt_name = filter.attr( 'name' ).substring( 7 ); // Strip filter_
+		opt_name = filter.data( 'filter' );
 		if( filter.prop( 'tagName' ) == 'SELECT' ) {
 			if( filter.val( ).length > 0 ) {
 				opts.push( opt_name + ':' + filter.val( ) );
@@ -1143,6 +1158,7 @@ function kompassi_update_url_hash( ) {
 	// Display
 	opts.push( 'display:' + kompassi_get_display_type( ) );
 
+	// Update hash
 	window.location.hash = opts.join( '/' );
 }
 
