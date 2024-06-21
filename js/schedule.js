@@ -133,9 +133,8 @@ function kompassi_schedule_init( ) {
 	jQuery( window ).on( 'scroll', kompassi_schedule_timeline_sticky_header );
 
 	//  Events (popstate): Refresh view on back/forward/history
-	jQuery( window ).on( 'popstate', function( e ) {
+	jQuery( window ).on( 'hashchange', function( e ) {
 		kompassi_schedule_refresh( );
-		e.preventDefault( );
 	} );
 }
 
@@ -395,6 +394,10 @@ function kompassi_schedule_apply_options( opts ) {
 	if( opts.prog ) {
 		if( jQuery( '#' + opts.prog ).length > 0 ) {
 			kompassi_program_modal( jQuery( '#' + opts.prog ) );
+		}
+	} else {
+		if( jQuery( '#kompassi_modal.kompassi-program' ).length > 0 ) {
+			kompassi_close_modal( );
 		}
 	}
 }
