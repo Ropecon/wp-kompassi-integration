@@ -337,7 +337,6 @@
 					flex: auto;
 					display: flex;
 					flex-direction: column;
-               justify-content: space-between;
 
                font-size: 107%;
                line-height: 1.7em;
