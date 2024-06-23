@@ -43,6 +43,8 @@ jQuery( function( e ) {
 		i += 24 * 60 * 60 * 1000;
 	}
 
+	/** Import? **/
+
 	/** **/
 	kompassi_schedule_cookie_init( );
 	kompassi_schedule_init( );
@@ -185,14 +187,17 @@ function kompassi_schedule_init_toolbar( ) {
 		jQuery( '#kompassi_schedule_filters' ).toggleClass( 'visible' );
 	} );
 
-	/*  Help  */
-	help_section = jQuery( '<section id="kompassi_schedule_help" class="kompassi-button-group has-icon-only" />' );
-	help_button = jQuery( '<a class="schedule-help kompassi-icon-help" title="' + __( 'Help', 'kompassi-integration' ) + '">&nbsp;</a>' ).appendTo( help_section );
-	help_section.appendTo( toolbar );
-
-	help_button.on( 'click', function( ) {
-		kompassi_schedule_help_modal( );
-	} );
+	/*  Dropdown menu  */
+	dropdown = kompassi_dropdown_menu(
+		{
+			help: { label: __( 'Help', 'kompassi-integration' ), callback: kompassi_schedule_help_modal },
+			export: { label: __( 'Export', 'kompassi-integration' ), callback: kompassi_schedule_export_modal },
+		},
+		{
+			id: 'kompassi_schedule_menu'
+		}
+	);
+	dropdown.appendTo( toolbar );
 
 	/*  Filter popup  */
 	filters = jQuery( '<section id="kompassi_schedule_filters" />' );
@@ -975,6 +980,28 @@ function kompassi_schedule_help_modal( ) {
 	options = {
 		title: __( 'Help!', 'kompassi-integration' ),
 		content: help
+	}
+	kompassi_show_modal( options );
+}
+
+/**
+ *  Displays export modal
+ *
+ */
+
+function kompassi_schedule_export_modal( ) {
+	cur = window.location;
+	favorites = [];
+	jQuery( 'article.is-favorite' ).each( function( ) {
+		favorites.push( jQuery( this ).data( 'id' ) );
+	} );
+	cur.hash = 'favorite:' + favorites.join( ',' );
+	ie = '<div class="kompassi-button-group">';
+	ie += '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + cur + '">' + __( 'Another Device', 'kompassi-integration' ) + '</a>';
+	ie += '</div>';
+	options = {
+		title: __( 'Export Favorites', 'kompassi-integration' ),
+		content: ie
 	}
 	kompassi_show_modal( options );
 }

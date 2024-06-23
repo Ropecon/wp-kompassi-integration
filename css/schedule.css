@@ -15,10 +15,6 @@
 	--kompassi-program-icon-default: url(images/kompassi_white.svg);
 }
 
-/*  Active button style is dark by default, make sure the icons are visible  */
-[class*="kompassi-icon"].active:not(.kompassi-icon-favorite)::before { filter: invert(); }
-[class*="kompassi-icon"].active::before { opacity: 1 !important; }
-
 /* Icon opacities */
 article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
@@ -39,27 +35,34 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	display: grid;
 	margin-bottom: var(--kompassi-button-padding);
 	grid-gap: var(--kompassi-button-padding);
-	grid-template-areas: "dates dates" "filtering filtering" "help display";
+	grid-template-areas: "dates dates" "filtering filtering" "menu display";
 	grid-template-columns: min-content auto;
 }
 	#kompassi_schedule_toolbar section { align-content: center; }
 	#kompassi_schedule_toolbar #kompassi_schedule_dates { grid-area: dates; }
 	#kompassi_schedule_toolbar #kompassi_schedule_filtering { grid-area: filtering; }
-	#kompassi_schedule_toolbar #kompassi_schedule_help { grid-area: help; }
+	#kompassi_schedule_toolbar #kompassi_schedule_menu { grid-area: menu; position: relative; }
 	#kompassi_schedule_toolbar #kompassi_schedule_display { grid-area: display; }
 
 @container kompassi-integration (min-width:450px) {
 	#kompassi_schedule_toolbar {
-		grid-template-areas: "dates display" "filtering help";
+		grid-template-areas: "dates display" "filtering menu";
 		grid-template-columns: auto auto;
 	}
-		#kompassi_schedule_toolbar #kompassi_schedule_help,
+		#kompassi_schedule_toolbar #kompassi_schedule_menu { justify-self: end; }
+			#kompassi_schedule_toolbar #kompassi_schedule_menu.open .kompassi-dropdown-menu-items {
+				border-top-left-radius: var(--kompassi-button-radius);
+				border-top-right-radius: 0;
+			}
+			#kompassi_schedule_toolbar #kompassi_schedule_menu ul {
+				right: 0;
+			}
 		#kompassi_schedule_toolbar #kompassi_schedule_display { text-align: right; }
 }
 
 @container kompassi-integration (min-width:700px) {
 	#kompassi_schedule_toolbar {
-		grid-template-areas: "dates filtering help display";
+		grid-template-areas: "dates filtering menu display";
 		grid-template-columns: max-content max-content auto max-content;
 	}
 }
