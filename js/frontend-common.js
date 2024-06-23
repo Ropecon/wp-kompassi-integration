@@ -16,6 +16,45 @@ if( kompassi_cookie == undefined ) {
 }
 
 /*
+ *  Dropdown menu
+ *
+ */
+
+function kompassi_dropdown_menu( menu_items, options = {} ) {
+	if( typeof options.title == 'undefined' ) {
+		options.title = __( 'More actions', 'kompassi-integration' );
+	}
+	if( typeof options.icon == 'undefined' ) {
+		options.icon = 'kompassi-icon-ellipsis';
+	} else {
+		options.icon = 'kompassi-icon-' + options.icon;
+	}
+	if( typeof options.id == 'undefined' ) {
+		id = '';
+	} else {
+		id = 'id="' + options.id + '"';
+	}
+
+	menu = jQuery( '<section ' + id + ' class="kompassi-dropdown-menu" />' );
+	menu_button = jQuery( '<a class="' + options.icon + '" title="' + options.title + '">&nbsp;</a>' );
+	menu.append( menu_button );
+	list = jQuery( '<ul class="kompassi-dropdown-menu-items" />' );
+	Object.keys( menu_items ).forEach( function( item ) {
+		list_item = jQuery( '<li><a>' + menu_items[item].label + '</a></li>' );
+		list.append( list_item );
+		list_item.on( 'click', menu_items[item].callback );
+		list_item.on( 'click', function( ) { jQuery( this ).closest( '.kompassi-dropdown-menu' ).removeClass( 'open' ); })
+	} );
+	menu.append( list );
+
+	menu_button.on( 'click', function( ) {
+		jQuery( this ).toggleClass( 'active' );
+		jQuery( this ).parent( ).toggleClass( 'open' );
+	} );
+	return menu;
+}
+
+/*
  *  Modal
  *
  */
@@ -91,4 +130,18 @@ function kompassi_get_url_options( ) {
 		}
 	} );
 	return url_options;
+}
+
+/*
+ *  Copies the href of given link to clipboard
+ *
+ */
+
+async function kompassi_href_to_clipboard( event, link ) {
+	try {
+		await navigator.clipboard.writeText( link.getAttribute( 'href' ) );
+	} catch( error ) {
+		console.log( error );
+	}
+	event.preventDefault( );
 }
