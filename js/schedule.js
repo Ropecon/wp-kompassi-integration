@@ -43,8 +43,6 @@ jQuery( function( e ) {
 		i += 24 * 60 * 60 * 1000;
 	}
 
-	/** Import? **/
-
 	/** **/
 	kompassi_schedule_cookie_init( );
 	kompassi_schedule_init( );
@@ -191,7 +189,7 @@ function kompassi_schedule_init_toolbar( ) {
 	dropdown = kompassi_dropdown_menu(
 		{
 			help: { label: __( 'Help', 'kompassi-integration' ), callback: kompassi_schedule_help_modal },
-			export: { label: __( 'Export', 'kompassi-integration' ), callback: kompassi_schedule_export_modal },
+			export: { label: __( 'Export Favorites', 'kompassi-integration' ), callback: kompassi_schedule_export_modal },
 		},
 		{
 			id: 'kompassi_schedule_menu'
@@ -316,6 +314,12 @@ function kompassi_schedule_cookie_init( ) {
 function kompassi_schedule_refresh( ) {
 	url_options = kompassi_get_url_options( );
 
+	// Import
+	if( url_options.favorite ) {
+		kompassi_schedule_import_modal( url_options.favorite );
+		return;
+	}
+
 	//  Apply options from URL
 	kompassi_schedule_apply_options( url_options );
 
@@ -418,8 +422,7 @@ function kompassi_update_program_count( ) {
 	if( kompassi_schedule.filters.enabled > 0 ) {
 		if( program_count > 0 ) {
 			// translators: count of programs visible
-			program_count_label = _n( '%s program visible.', '%s programs visible.', program_count, 'kompassi-integration' );
-			program_count_label = program_count_label.replace( '%s', program_count );
+			program_count_label = sprintf( _n( '%s program visible.', '%s programs visible.', program_count, 'kompassi-integration' ), program_count );
 			jQuery( '#kompassi_schedule_notes' ).prepend( '<span class="program-count">' + program_count_label + '</span>' );
 		} else {
 			jQuery( '#kompassi_schedule_notes' ).prepend( '<span class="program-count">' + __( 'Nothing matched your search!', 'kompassi-integration' ) + '</span>' );
@@ -990,19 +993,58 @@ function kompassi_schedule_help_modal( ) {
  */
 
 function kompassi_schedule_export_modal( ) {
-	cur = window.location;
 	favorites = [];
 	jQuery( 'article.is-favorite' ).each( function( ) {
 		favorites.push( jQuery( this ).data( 'id' ) );
 	} );
-	cur.hash = 'favorite:' + favorites.join( ',' );
+	cur = String( window.location );
+	export_link = cur.split( '#' )[0] + '#favorite:' + favorites.join( ',' );
 	ie = '<div class="kompassi-button-group">';
-	ie += '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + cur + '">' + __( 'Another Device', 'kompassi-integration' ) + '</a>';
+	ie += '<p>' + __( 'To create an export link you can use to import your favorites to another device, click the link below.', 'kompassi-integration' ) + '</p>';
+	ie += '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + export_link + '">' + __( 'Export to other device', 'kompassi-integration' ) + '</a>';
 	ie += '</div>';
 	options = {
 		title: __( 'Export Favorites', 'kompassi-integration' ),
-		content: ie
+		content: ie,
+		attrs: {
+			class: 'kompassi-schedule-export small-modal'
+		}
 	}
+	kompassi_show_modal( options );
+}
+
+/**
+ *  Displays import modal
+ *
+ */
+
+function kompassi_schedule_import_modal( programs ) {
+	programs = programs.split( ',' );
+	valid_programs = [];
+	programs.forEach( function( value, index, array ) {
+		if( jQuery( '#' + value ).length > 0 ) {
+			valid_programs.push( jQuery( '#' + value ).find( '.title' ).text( ) );
+		}
+	} );
+
+	markup = '<p>' + sprintf( _n( 'You are about to import %s program as favorite.', 'You are about to import %s programs as favorites.', valid_programs.length, 'kompassi-integration' ), valid_programs.length ) + '</p>';
+	markup += '<ul>';
+	valid_programs.forEach( function( value, index, array ) {
+		markup += '<li>' + value + '</li>';
+	} );
+	markup += '</ul>';
+	markup += '<p>' + __( 'Please select how to proceed.', 'kompassi-integration' ) + '</p>';
+
+	actions = '<a class="kompassi-button replace">' + __( 'Replace Favorites', 'kompassi-integration' ) + '</a>';
+	actions += '<a class="kompassi-button append">' + __( 'Append to Favorites', 'kompassi-integration' ) + '</a>';
+	options = {
+		attrs: {
+			class: 'kompassi-schedule-import small-modal actions-last'
+		},
+		title: __( 'Import Favorites', 'kompassi-integration' ),
+		actions: actions,
+		content: markup
+	};
 	kompassi_show_modal( options );
 }
 

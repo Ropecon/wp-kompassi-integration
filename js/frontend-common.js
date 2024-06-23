@@ -43,7 +43,10 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 		list_item = jQuery( '<li><a>' + menu_items[item].label + '</a></li>' );
 		list.append( list_item );
 		list_item.on( 'click', menu_items[item].callback );
-		list_item.on( 'click', function( ) { jQuery( this ).closest( '.kompassi-dropdown-menu' ).removeClass( 'open' ); })
+		list_item.on( 'click', function( ) {
+			jQuery( this ).closest( '.kompassi-dropdown-menu' ).children( 'a' ).removeClass( 'active' );
+			jQuery( this ).closest( '.kompassi-dropdown-menu' ).removeClass( 'open' );
+		} );
 	} );
 	menu.append( list );
 

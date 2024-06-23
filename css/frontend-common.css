@@ -253,8 +253,11 @@
 
       .kompassi-dropdown-menu-items {
          border-top-left-radius: 0;
-         min-width: max( 150px, max-content );
+         min-width: max-content;
       }
+         .kompassi-dropdown-menu-items li {
+            border-bottom: 1px solid var(--kompassi-button-separator);
+         }
          .kompassi-dropdown-menu-items a {
             display: block;
             padding: var(--kompassi-button-padding);
@@ -341,6 +344,10 @@
 			margin-right: 0;
          margin-bottom: 0;
 		}
+         #kompassi_modal.actions-last .content .actions {
+            text-align: right;
+            order: 2;
+         }
 			#kompassi_modal .content .actions a::before {
 				opacity: 1;
          }
@@ -426,10 +433,26 @@
 		top: 3.5em;
 		bottom: 3.5em;
 	}
+      #kompassi_modal.small-modal {
+         right: max( 4em, 15vw );
+         left: max( 4em, 15vw );
+         top: max( 4em, 15vh );
+         bottom: max( 4em, 15vh );
+         height: auto;
+      }
       #kompassi_modal .header .title {
          font-size: 150%;
       }
 }
+@media screen and (min-width:1100px) and (min-height: 1000px) {
+   #kompassi_modal.small-modal {
+      right: max( 4em, 25vw );
+      left: max( 4em, 25vw );
+      top: max( 4em, 25vh );
+      bottom: max( 4em, 25vh );
+   }
+}
+
 
 #kompassi_modal_bg {
 	position: fixed;
