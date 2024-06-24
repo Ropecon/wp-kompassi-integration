@@ -1039,7 +1039,7 @@ function kompassi_schedule_export_modal( ) {
 	cur = String( window.location );
 	export_link = cur.split( '#' )[0] + '#favorite:' + favorites.join( ',' );
 	markup = '<p>';
-	markup += __( 'Create an export link to import your favorites to another device.', 'kompassi-integration' ) + ' ';
+	markup += __( 'Create an import link to export your favorites to another device.', 'kompassi-integration' ) + ' ';
 	markup += __( 'Favorites to be exported:', 'kompassi-integration' );
 	markup += '</p>';
 	markup += '<ul class="program-title-list">';
@@ -1047,7 +1047,7 @@ function kompassi_schedule_export_modal( ) {
 		markup += '<li>' + value + '</li>';
 	} );
 	markup += '</ul>';
-	actions = '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + export_link + '">' + __( 'Copy export link to clipboard', 'kompassi-integration' ) + '</a>';
+	actions = '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + export_link + '">' + __( 'Copy import link to clipboard', 'kompassi-integration' ) + '</a>';
 	options = {
 		attrs: {
 			class: 'kompassi-schedule-export small-modal actions-bottom-right'
