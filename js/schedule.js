@@ -1031,21 +1031,30 @@ function kompassi_schedule_help_modal( ) {
 
 function kompassi_schedule_export_modal( ) {
 	favorites = [];
+	titles = [];
 	jQuery( 'article.is-favorite' ).each( function( ) {
 		favorites.push( jQuery( this ).data( 'id' ) );
+		titles.push( jQuery( this ).find( '.title' ).text( ) );
 	} );
 	cur = String( window.location );
 	export_link = cur.split( '#' )[0] + '#favorite:' + favorites.join( ',' );
-	ie = '<div class="kompassi-button-group">';
-	ie += '<p>' + __( 'To create an export link you can use to import your favorites to another device, click the link below.', 'kompassi-integration' ) + '</p>';
-	ie += '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + export_link + '">' + __( 'Export to other device', 'kompassi-integration' ) + '</a>';
-	ie += '</div>';
+	markup = '<p>';
+	markup += __( 'Create an export link to import your favorites to another device.', 'kompassi-integration' ) + ' ';
+	markup += __( 'Favorites to be exported:', 'kompassi-integration' );
+	markup += '</p>';
+	markup += '<ul class="program-title-list">';
+	titles.forEach( function( value, index, array ) {
+		markup += '<li>' + value + '</li>';
+	} );
+	markup += '</ul>';
+	actions = '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + export_link + '">' + __( 'Copy export link to clipboard', 'kompassi-integration' ) + '</a>';
 	options = {
-		title: __( 'Export Favorites', 'kompassi-integration' ),
-		content: ie,
 		attrs: {
-			class: 'kompassi-schedule-export small-modal'
-		}
+			class: 'kompassi-schedule-export small-modal actions-bottom-right'
+		},
+		title: __( 'Export Favorites', 'kompassi-integration' ),
+		actions: actions,
+		content: markup,
 	}
 	kompassi_show_modal( options );
 }
@@ -1064,19 +1073,18 @@ function kompassi_schedule_import_modal( programs ) {
 		}
 	} );
 
-	markup = '<p>' + sprintf( _n( 'You are about to import %s program as favorite.', 'You are about to import %s programs as favorites.', valid_programs.length, 'kompassi-integration' ), valid_programs.length ) + '</p>';
-	markup += '<ul>';
+	markup = '<p>' + sprintf( _n( 'You are about to import %s program as favorite:', 'You are about to import %s programs as favorites:', valid_programs.length, 'kompassi-integration' ), valid_programs.length ) + '</p>';
+	markup += '<ul class="program-title-list">';
 	valid_programs.forEach( function( value, index, array ) {
 		markup += '<li>' + value + '</li>';
 	} );
 	markup += '</ul>';
-	markup += '<p>' + __( 'Please select how to proceed.', 'kompassi-integration' ) + '</p>';
 
 	actions = '<a class="kompassi-button replace">' + __( 'Replace Favorites', 'kompassi-integration' ) + '</a>';
 	actions += '<a class="kompassi-button append">' + __( 'Append to Favorites', 'kompassi-integration' ) + '</a>';
 	options = {
 		attrs: {
-			class: 'kompassi-schedule-import small-modal actions-last'
+			class: 'kompassi-schedule-import small-modal actions-bottom-right'
 		},
 		title: __( 'Import Favorites', 'kompassi-integration' ),
 		actions: actions,

@@ -579,3 +579,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		overflow-wrap: break-word;
 		line-height: 1.2em;
 	}
+
+#kompassi_modal .program-title-list li::before {
+	display: inline-block;
+	width: 1.25em;
+	content: "–";
+}

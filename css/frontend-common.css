@@ -344,7 +344,7 @@
 			margin-right: 0;
          margin-bottom: 0;
 		}
-         #kompassi_modal.actions-last .content .actions {
+         #kompassi_modal.actions-bottom-right .content .actions {
             text-align: right;
             order: 2;
          }
