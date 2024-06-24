@@ -56,6 +56,7 @@ jQuery( function( e ) {
 
 function kompassi_schedule_init( ) {
 	//  MARKUP
+
 	//  Schedule toolbar
 	kompassi_schedule_init_toolbar( );
 
@@ -136,6 +137,42 @@ function kompassi_schedule_init( ) {
 	jQuery( window ).on( 'hashchange', function( e ) {
 		kompassi_schedule_refresh( );
 	} );
+
+	//  Events (click): Import
+	jQuery( 'body' ).on( 'click', '.kompassi-schedule-import a', function( ) {
+		url_options = kompassi_get_url_options( );
+
+		favorites_updated = false;
+		if( jQuery( this ).hasClass( 'replace' ) ) {
+			kompassi_cookie.favorites = url_options.favorite.split( ',' );
+			favorites_updated = true;
+		}
+		if( jQuery( this ).hasClass( 'append' ) ) {
+			old_favorites = kompassi_cookie.favorites;
+			new_favorites = url_options.favorite.split( ',' );
+			new_favorites.filter( function( item ) {
+				return old_favorites.indexOf( item );
+			} );
+			merged_favorites = old_favorites.concat( new_favorites );
+			kompassi_cookie.favorites = merged_favorites;
+
+			if( old_favorites !== merged_favorites ) {
+				favorites_updated = true;
+			}
+		}
+
+		if( favorites_updated ) {
+			kompassi_update_cookie( );
+
+			jQuery( '#kompassi_schedule article' ).removeClass( 'is-favorite' );
+			jQuery.each( kompassi_cookie.favorites, function( ) {
+				jQuery( '#' + this ).addClass( 'is-favorite' );
+			} );
+		}
+
+		kompassi_close_modal( );
+		kompassi_update_url_hash( );
+	} );
 }
 
 /**
@@ -148,7 +185,7 @@ function kompassi_schedule_init_toolbar( ) {
 	toolbar.prependTo( jQuery( '#kompassi_block_schedule' ) );
 
 	/*  Date filter  */
-	date_section = jQuery( '<section id="kompassi_schedule_dates"  class="kompassi-button-group" />' );
+	date_section = jQuery( '<section id="kompassi_schedule_dates" class="kompassi-button-group" />' );
 	//  TODO: Only show "Next" if there is anything to show?
 	date_next_toggle = jQuery( '<a class="date-toggle no-icon" data-date="next">' + _x( 'Next', 'date filter', 'kompassi-integration' ) + '</a>' );
 	date_section.append( date_next_toggle );
@@ -347,7 +384,7 @@ function kompassi_toggle_favorite( ) {
 	} else {
 		kompassi_cookie.favorites.push( program );
 	}
-	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
+	kompassi_update_cookie( );
 }
 
 /**

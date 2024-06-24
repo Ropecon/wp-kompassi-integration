@@ -10,9 +10,15 @@ if( kompassi_cookie == undefined ) {
 	kompassi_cookie = {
 		favorites: []
 	};
-	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
+	kompassi_update_cookie( );
 } else {
 	kompassi_cookie = JSON.parse( kompassi_cookie );
+}
+
+/*  Update cookie  */
+
+function kompassi_update_cookie( ) {
+	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
 }
 
 /*
