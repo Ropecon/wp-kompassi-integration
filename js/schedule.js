@@ -64,13 +64,16 @@ function kompassi_schedule_init( ) {
 		actions = jQuery( this ).find( '.actions' );
 		favorite = jQuery( '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
 		actions.prepend( favorite );
-		favorite.on( 'click', kompassi_toggle_favorite );
 	} );
 
 	//  Container for notes
 	jQuery( '<section id="kompassi_schedule_notes" />' ).insertAfter( filters );
 
 	//  EVENTS
+
+	//  Events (click): Favorite
+	jQuery( 'body' ).on( 'click', '#kompassi_schedule article .favorite, #kompassi_modal.kompassi-program .favorite', kompassi_toggle_favorite );
+
 
 	//  Events (mouseover, mouseout): Popover
 	jQuery( '#kompassi_schedule article' ).on( 'mouseover', function( e ) {
