@@ -349,17 +349,17 @@ function kompassi_toggle_favorite( ) {
 function kompassi_schedule_apply_options( opts ) {
 	filters_from_url = false;
 
-	jQuery( opts ).each( function( k, v ) {
+	Object.keys( opts ).forEach( function( k ) {
 		// Filters
 		filter = jQuery( '[name="filter_' + k + '"]' );
 		if( filter.length > 0 ) {
 			if( filter.prop( 'tagName' ) == 'SELECT' ) {
-				v.split( ',' ).forEach( function( value, index, array ) {
+				opts[k].split( ',' ).forEach( function( value, index, array ) {
 					filter.find( '[value="' + value + '"]').attr( 'selected', 'selected' );
 				} );
 				filter.multiselect( 'reload' );
 			} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
-				filter.val( decodeURIComponent( v ) );
+				filter.val( decodeURIComponent( opts[k] ) );
 			}
 			filters_from_url = true;
 		}
