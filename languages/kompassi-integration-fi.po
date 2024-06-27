@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-06-24T15:34:03+03:00\n"
+"POT-Creation-Date: 2024-06-27T12:51:45+03:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -146,86 +146,86 @@ msgctxt "button label"
 msgid "Favorite"
 msgstr "Suosikki"
 
-#: js/schedule.js:190
+#: js/schedule.js:193
 msgctxt "date filter"
 msgid "Next"
 msgstr "Seuraavaksi"
 
-#: js/schedule.js:211
+#: js/schedule.js:214
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: js/schedule.js:212
+#: js/schedule.js:215
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: js/schedule.js:228
+#: js/schedule.js:231
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:229 js/schedule.js:1055
+#: js/schedule.js:232 js/schedule.js:1058
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
-#: js/schedule.js:241
+#: js/schedule.js:244
 msgid "Text..."
 msgstr "Teksti..."
 
-#: js/schedule.js:277
+#: js/schedule.js:280
 msgid "Program matching selection will be hidden from results."
 msgstr "Valintaa vastaava ohjelma piilotetaan tuloksista."
 
-#: js/schedule.js:284
+#: js/schedule.js:287
 msgid "Clear filters"
 msgstr "Tyhjennä suodattimet"
 
-#: js/schedule.js:314
+#: js/schedule.js:317
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: js/schedule.js:315
+#: js/schedule.js:318
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
 #. translators: count of programs visible
-#: js/schedule.js:462
+#: js/schedule.js:465
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] "%s ohjelma näkyvissä."
 msgstr[1] "%s ohjelmaa näkyvissä."
 
-#: js/schedule.js:465
+#: js/schedule.js:468
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:666
+#: js/schedule.js:669
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr "Näytetään ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
 
 #. translators: amount of repositioned events
-#: js/schedule.js:673
+#: js/schedule.js:676
 msgid "Show %d program starting earlier"
 msgid_plural "Show %d programs starting earlier"
 msgstr[0] "Näytä %d aiemmin alkava ohjelma"
 msgstr[1] "Näytä %d aiemmin alkavaa ohjelmaa"
 
-#: js/schedule.js:674
+#: js/schedule.js:677
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:787
+#: js/schedule.js:790
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1011
+#: js/schedule.js:1014
 msgid "List View"
 msgstr "Listanäkymä"
 
-#: js/schedule.js:1012
+#: js/schedule.js:1015
 msgid ""
 "When using text search, results are sorted by relevance rather than "
 "chronologically."
@@ -233,7 +233,7 @@ msgstr ""
 "Kun käytät tekstihakua, tulokset järjestetään relevanssin perusteella, ei "
 "kronologisesti."
 
-#: js/schedule.js:1013
+#: js/schedule.js:1016
 msgid ""
 "When limiting search results by date, programs which have started in "
 "previous days that are still continuing are listed at the end of the search "
@@ -243,86 +243,86 @@ msgstr ""
 "olevat ohjelmatm jotka ovat alkaneet edellisenä päivänä näytetään "
 "hakutuloksien lopussa."
 
-#: js/schedule.js:1014
+#: js/schedule.js:1017
 msgid "Timeline View"
 msgstr "Aikajananäkymä"
 
-#: js/schedule.js:1015
+#: js/schedule.js:1018
 msgid "You can zoom and pan the timeline view:"
 msgstr "Voit suurentaa ja liikuttaa aikajananäkymää:"
 
-#: js/schedule.js:1016
+#: js/schedule.js:1019
 msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
 msgstr ""
 "Työpöydällä, käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."
 
-#: js/schedule.js:1017
+#: js/schedule.js:1020
 msgid "On a touch screen, pinch to zoom."
 msgstr "Kosketusnäytöllä nipistä suurentaaksesi."
 
-#: js/schedule.js:1018
+#: js/schedule.js:1021
 msgid "Drag to pan on all devices."
 msgstr "Vedä liikuttaaksesi kaikilla laitteilla."
 
-#: js/schedule.js:1021
+#: js/schedule.js:1024
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1042
+#: js/schedule.js:1045
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1043
+#: js/schedule.js:1046
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1050
+#: js/schedule.js:1053
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1083
+#: js/schedule.js:1086
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1084
+#: js/schedule.js:1087
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1089
+#: js/schedule.js:1092
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 
-#: js/schedule.js:1182
+#: js/schedule.js:1185
 msgctxt "day abbreviation"
 msgid "Sun"
 msgstr "su"
 
-#: js/schedule.js:1183
+#: js/schedule.js:1186
 msgctxt "day abbreviation"
 msgid "Mon"
 msgstr "ma"
 
-#: js/schedule.js:1184
+#: js/schedule.js:1187
 msgctxt "day abbreviation"
 msgid "Tue"
 msgstr "ti"
 
-#: js/schedule.js:1185
+#: js/schedule.js:1188
 msgctxt "day abbreviation"
 msgid "Wed"
 msgstr "ke"
 
-#: js/schedule.js:1186
+#: js/schedule.js:1189
 msgctxt "day abbreviation"
 msgid "Thu"
 msgstr "to"
 
-#: js/schedule.js:1187
+#: js/schedule.js:1190
 msgctxt "day abbreviation"
 msgid "Fri"
 msgstr "pe"
 
-#: js/schedule.js:1188
+#: js/schedule.js:1191
 msgctxt "day abbreviation"
 msgid "Sat"
 msgstr "la"
