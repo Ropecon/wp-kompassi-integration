@@ -58,8 +58,8 @@
 
 .kompassi-icon-clear-filters::before { background-image: url(../images/icons/clear_filters.svg); }
 .kompassi-icon-close::before { background-image: url(../images/icons/close.svg); }
+.kompassi-icon-ellipsis::before { background-image: url(../images/icons/ellipsis.svg); }
 .kompassi-icon-favorite::before { background-image: url(../images/icons/favorite.svg); }
-.kompassi-icon-help::before { background-image: url(../images/icons/help.svg); }
 .kompassi-icon-filter::before { background-image: url(../images/icons/filter.svg); }
 .kompassi-icon-list::before { background-image: url(../images/icons/list.svg); }
 .kompassi-icon-signup::before { background-image: url(../images/icons/signup.svg); }
@@ -68,6 +68,10 @@
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
 #kompassi_schedule.timeline .is-favorite::after { background-image: url(../images/icons/is_favorite.svg); }
+
+/*  Active button style is dark by default, make sure the icons are visible  */
+[class*="kompassi-icon"].active:not(.kompassi-icon-favorite)::before { filter: invert(); }
+[class*="kompassi-icon"].active::before { opacity: 1 !important; }
 
 /*  Icons without button group parent  */
 :not(.kompassi-button-group) > [class*="kompassi-icon"]::before {
@@ -139,7 +143,7 @@
 .kompassi-button-group {
 	display: block;
 }
-	.kompassi-button-group a {
+	.kompassi-button-group > a {
 		cursor: pointer;
 		position: relative;
 		display: inline-block;
@@ -151,10 +155,10 @@
 		margin-bottom: var(--kompassi-button-padding);
 		box-shadow: var(--kompassi-box-shadow);
 	}
-		.kompassi-button-group.has-icon-and-label a:is([class*="kompassi-icon"]) {
+		.kompassi-button-group.has-icon-and-label > a:is([class*="kompassi-icon"]) {
 			padding-left: calc( ( var(--kompassi-button-padding) * 2 ) + var(--kompassi-button-icon-size) );
 		}
-			.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) a::before {
+			.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) > a::before {
 				content: '';
 				display: inline-block;
 				position: absolute;
@@ -167,13 +171,13 @@
 				background-size: contain;
 				opacity: 0.5;
 			}
-			.kompassi-button-group.has-icon-only a {
+			.kompassi-button-group.has-icon-only > a {
 				width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
 				height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
             user-select: none;
 			}
 
-		.kompassi-button-group a.active {
+		.kompassi-button-group > a.active {
 			color: var(--kompassi-button-fg-active);
 			background: var(--kompassi-button-bg-active);
 		}
@@ -183,23 +187,89 @@
 		margin-right: var(--kompassi-button-padding);
 		margin-bottom: var(--kompassi-button-padding);
 	}
-		.kompassi-button-group a {
+		.kompassi-button-group > a {
 			border-radius: 0;
 			margin-right: 0;
 			margin-bottom: 0;
 		}
-			.kompassi-button-group a:not(:last-child) {
+			.kompassi-button-group > a:not(:last-of-type) {
 				border-right: 1px solid var(--kompassi-button-separator);
 			}
-			.kompassi-button-group a:first-child {
+			.kompassi-button-group > a:first-child {
 				border-bottom-left-radius: var(--kompassi-button-radius);
 				border-top-left-radius: var(--kompassi-button-radius);
 			}
-			.kompassi-button-group a:last-child {
+			.kompassi-button-group > a:last-of-type {
 				border-top-right-radius: var(--kompassi-button-radius);
 				border-bottom-right-radius: var(--kompassi-button-radius);
 			}
 }
+
+/*
+ *  Dropdown menu
+ *
+ */
+
+.kompassi-dropdown-menu-items {
+   display: none;
+}
+   .kompassi-dropdown-menu.open .kompassi-dropdown-menu-items {
+      position: absolute;
+      display: block;
+      z-index: 3000;
+   }
+
+   .kompassi-dropdown-menu > a,
+   .kompassi-dropdown-menu-items {
+		cursor: pointer;
+		color: var(--kompassi-button-fg);
+		background: var(--kompassi-button-bg);
+		border-radius: var(--kompassi-button-radius);
+		box-shadow: var(--kompassi-box-shadow);
+	}
+      .kompassi-dropdown-menu > a {
+         display: block;
+         position: relative;
+         user-select: none;
+
+         padding: var(--kompassi-button-padding);
+
+         width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+         height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
+      }
+         .kompassi-dropdown-menu > a::before {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: var(--kompassi-button-padding);
+            left: var(--kompassi-button-padding);
+            width: var(--kompassi-button-icon-size);
+            height: var(--kompassi-button-icon-size);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: contain;
+            opacity: 0.5;
+         }
+
+      .kompassi-dropdown-menu-items {
+         border-top-left-radius: 0;
+         min-width: max-content;
+      }
+         .kompassi-dropdown-menu-items li {
+            border-bottom: 1px solid var(--kompassi-button-separator);
+         }
+         .kompassi-dropdown-menu-items a {
+            display: block;
+            padding: var(--kompassi-button-padding);
+         }
+.kompassi-dropdown-menu.open > a {
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
+
+   background-color: var(--kompassi-button-bg-active);
+   color: var(--kompassi-button-fg-active);
+}
+
 
 /*
  *  Modal
@@ -274,6 +344,10 @@
 			margin-right: 0;
          margin-bottom: 0;
 		}
+         #kompassi_modal.actions-bottom-right .content .actions {
+            text-align: right;
+            order: 2;
+         }
 			#kompassi_modal .content .actions a::before {
 				opacity: 1;
          }
@@ -359,10 +433,26 @@
 		top: 3.5em;
 		bottom: 3.5em;
 	}
+      #kompassi_modal.small-modal {
+         right: max( 4em, 15vw );
+         left: max( 4em, 15vw );
+         top: max( 4em, 15vh );
+         bottom: max( 4em, 15vh );
+         height: auto;
+      }
       #kompassi_modal .header .title {
          font-size: 150%;
       }
 }
+@media screen and (min-width:1100px) and (min-height: 1000px) {
+   #kompassi_modal.small-modal {
+      right: max( 4em, 25vw );
+      left: max( 4em, 25vw );
+      top: max( 4em, 25vh );
+      bottom: max( 4em, 25vh );
+   }
+}
+
 
 #kompassi_modal_bg {
 	position: fixed;
