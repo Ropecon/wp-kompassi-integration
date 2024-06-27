@@ -11,6 +11,7 @@
 
 class WP_Plugin_Kompassi_Integration {
 	private string $ver;
+	private string $icon;
 	private array $icons;
 
 	function __construct( ) {
@@ -21,6 +22,7 @@ class WP_Plugin_Kompassi_Integration {
 		add_filter( 'block_categories_all', array( &$this, 'block_categories_all' ), 10, 2 );
 
 		$this->ver = time( );
+		$this->icon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcyIgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICB3aWR0aD0iMTE2LjUzOTMzIgogICBoZWlnaHQ9IjExNi41MzkzMyIKICAgdmlld0JveD0iMCAwIDExNi41MzkzMyAxMTYuNTM5MzMiCiAgIHNvZGlwb2RpOmRvY25hbWU9Ik1PRC1mYXZpY29uLXdoaXRlLnBuZy5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMS4yICgwYTAwY2Y1MzM5LCAyMDIyLTAyLTA0KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcwogICAgIGlkPSJkZWZzNiI+PGNsaXBQYXRoCiAgICAgICBjbGlwUGF0aFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIKICAgICAgIGlkPSJjbGlwUGF0aDE2Ij48cGF0aAogICAgICAgICBkPSJNIDAsODcuNDA0IEggODcuNDA0IFYgMCBIIDAgWiIKICAgICAgICAgaWQ9InBhdGgxNCIgLz48L2NsaXBQYXRoPjwvZGVmcz48c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzQiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaW5rc2NhcGU6em9vbT0iNS4wOTY5OTE3IgogICAgIGlua3NjYXBlOmN4PSI0NC42MzQxNzEiCiAgICAgaW5rc2NhcGU6Y3k9IjU4LjM2Nzc2MiIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJnOCIgLz48ZwogICAgIGlkPSJnOCIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlua3NjYXBlOmxhYmVsPSJmYXZpY29uLWRhcmsiCiAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMS4zMzMzMzMzLDAsMCwtMS4zMzMzMzMzLDAsMTE2LjUzOTMzKSI+PGcKICAgICAgIGlkPSJnMTIiCiAgICAgICBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgxNikiCiAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmIj48ZwogICAgICAgICBpZD0iZzE4IgogICAgICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4xMjQzLDQ1LjgzMzMpIgogICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmIj48cGF0aAogICAgICAgICAgIGQ9Im0gMCwwIGMgLTEuMTI4LC0yLjA4NSAtMi4xODMsLTQuMDQ3IC0zLjA3NCwtNS43MiAtMi4xMDgsLTMuOTU3IC01LjkzMiwtNy4wMjQgLTEwLjgyMSwtNi4zMjcgLTAuOTE0LDAuMTMgLTEuNzg3LDAuMzk1IC0yLjYwNywwLjc2MiBsIC0xLjMzNywwLjcyNCBjIC0xLjIwOCwwLjc3OSAtMi4yMzgsMS44MTEgLTMuMDE3LDMuMDE4IGwgLTAuNzE3LDEuMzI1IGMgLTAuMzcxLDAuODI4IC0wLjYzOCwxLjcxIC0wLjc2OCwyLjYzNCAtMC41OTEsNC4xOTggMS42MzEsNy41MzMgNC43NSw5Ljc4MSBMIDkuMjU4LDE5LjYwMiBaIE0gMzEuMDI2LC0xLjc1MyA2LjcxLDguMTYgMTIuNTExLDIwLjQ0MiBjIDAuMzM5LDAuNjczIDAuMTg5LDEuNDk4IC0wLjM4MiwyLjA2OCAtMC41NzUsMC41NzUgLTEuNDA4LDAuNzIyIC0yLjA4NCwwLjM3MyBsIC0xMi4xMDksLTYuMDQ2IC05Ljk4LDI0LjQ4IGMgLTAuMTM4LDAuMzM5IC0wLjYxOCwwLjMzOSAtMC43NTYsMCBsIC0xMC42NDYsLTI2LjExNSAtMTIuMTg3LDYuNTk5IGMgLTAuMzg2LDAuMjA5IC0wLjkzLC0wLjMzNSAtMC43MjEsLTAuNzIxIEwgLTI5Ljc1NSw4Ljg5MyAtNTUuODcsLTEuNzUzIGMgLTAuMzM5LC0wLjEzOCAtMC4zMzksLTAuNjE4IDAsLTAuNzU2IGwgMjYuMTE1LC0xMC42NDYgLTYuNTk5LC0xMi4xODcgYyAtMC4yMDksLTAuMzg2IDAuMzM1LC0wLjkzIDAuNzIxLC0wLjcyMSBsIDEyLjE4Nyw2LjU5OSAxMC42NDYsLTI2LjExNSBjIDAuMTM4LC0wLjMzOSAwLjYxOCwtMC4zMzkgMC43NTYsMCBsIDEwLjY0NiwyNi4xMTUgMTIuMTg3LC02LjU5OSBjIDAuMzg2LC0wLjIwOSAwLjkzLDAuMzM1IDAuNzIxLDAuNzIxIGwgLTYuNTk5LDEyLjE4NyAyNi4xMTUsMTAuNjQ2IGMgMC4zMzksMC4xMzggMC4zMzksMC42MTggMCwwLjc1NiIKICAgICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lIgogICAgICAgICAgIGlkPSJwYXRoMjAiIC8+PC9nPjxnCiAgICAgICAgIGlkPSJnMjIiCiAgICAgICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQzLjc0Myw0OC4yMjg3KSIKICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZiI+PHBhdGgKICAgICAgICAgICBkPSJtIDAsMCBjIC0yLjQ5NiwwIC00LjUyNiwtMi4wMyAtNC41MjYsLTQuNTI2IDAsLTIuNDk2IDIuMDMsLTQuNTI3IDQuNTI2LC00LjUyNyAyLjQ5NiwwIDQuNTI2LDIuMDMxIDQuNTI2LDQuNTI3IEMgNC41MjYsLTIuMDMgMi40OTYsMCAwLDAiCiAgICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6bm9uemVybztzdHJva2U6bm9uZSIKICAgICAgICAgICBpZD0icGF0aDI0IiAvPjwvZz48L2c+PC9nPjwvc3ZnPgo=';
 	}
 
 	function init( ) {
@@ -46,6 +48,10 @@ class WP_Plugin_Kompassi_Integration {
 			'event_slug' => array(
 				'label' => __( 'Event Slug', 'kompassi-integration' ),
 				'description' => __( 'Event slug in Kompassi.', 'kompassi-integration' )
+			),
+			'contact' => array(
+				'label' => __( 'Contact', 'kompassi-integration' ),
+				'description' => __( 'Email address for contacts (eg. errors in the program data).', 'kompassi-integration' )
 			),
 			'caching' => array(
 				'label' => __( 'Cache', 'kompassi-integration' ),
@@ -91,7 +97,7 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function admin_menu( ) {
-		add_menu_page( __( 'Kompassi Integration', 'kompassi-integration' ), 'Kompassi', 'manage_options', 'kompassi_integration_settings', array( &$this, 'admin_page_settings' ), 'dashicons-book', 100 );
+		add_menu_page( __( 'Kompassi Integration', 'kompassi-integration' ), 'Kompassi', 'manage_options', 'kompassi_integration_settings', array( &$this, 'admin_page_settings' ), $this->icon, 100 );
 	}
 
 	function admin_page_settings( ) {
@@ -333,7 +339,10 @@ class WP_Plugin_Kompassi_Integration {
 
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
 
+		$out .= '<div class="kompassi-footer">';
+		$out .= $this->contact( );
 		$out .= $this->data_provided_image( );
+		$out .= '</div>';
 		$out .= '</div>';
 
 		// Save cache
@@ -496,12 +505,28 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/**
+	 *  Returns the contact information
+	 *
+	 */
+
+	function contact( ) {
+		if( get_option( 'kompassi_integration_contact' ) ) {
+			$out = '<div class="kompassi-contact">';
+			$contact_link = '<a href="mailto:' . get_option( 'kompassi_integration_contact' ) . '">' . get_option( 'kompassi_integration_contact' ) . '</a>';
+			# translators: email link
+			$out .= '<p>' . sprintf( __( 'If you find errors in the program data, contact us at %s.', 'kompassi-integration' ), $contact_link ) . '</p>';
+			$out .= '</div>';
+			return $out;
+		}
+	}
+
+	/**
 	 *  Returns a "Data provided by Kompassi" image
 	 *
 	 */
 
 	function data_provided_image( ) {
-		return '<div class="kompassi_provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
+		return '<div class="kompassi-provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
 	}
 }
 

@@ -525,6 +525,10 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  *
  */
 
+#kompassi_modal.kompassi-program .content .main {
+	justify-content: space-between;
+}
+
 #kompassi_modal .content .main .annotations {
 	margin-top: var(--kompassi-modal-padding);
 	padding-top: var(--kompassi-modal-padding);
