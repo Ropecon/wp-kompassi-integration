@@ -46,7 +46,9 @@ jQuery( function( e ) {
 	/** **/
 	kompassi_schedule_cookie_init( );
 	kompassi_schedule_init( );
-	kompassi_schedule_refresh( );
+
+	//  Apply options from URL
+	kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
 } );
 
 /**
@@ -136,8 +138,8 @@ function kompassi_schedule_init( ) {
 	jQuery( window ).on( 'scroll', kompassi_schedule_timeline_sticky_header );
 
 	//  Events (popstate): Refresh view on back/forward/history
-	jQuery( window ).on( 'hashchange', function( e ) {
-		kompassi_schedule_refresh( );
+	jQuery( window ).on( 'popstate', function( e ) {
+		kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
 	} );
 }
 
@@ -287,9 +289,11 @@ function kompassi_schedule_init_toolbar( ) {
 		link.on( 'click', function( ) {
 			if( jQuery( this ).hasClass( 'active' ) ) {
 				return;
+			} else {
+				jQuery( '#kompassi_schedule_display a' ).removeClass( 'active' );
+				jQuery( this ).addClass( 'active' );
+				kompassi_schedule_apply_filters( );
 			}
-
-			kompassi_schedule_setup_display( jQuery( this ).data( 'display' ) );
 		} );
 	} );
 	toolbar.append( ds );
@@ -304,28 +308,6 @@ function kompassi_schedule_cookie_init( ) {
 	jQuery.each( kompassi_cookie.favorites, function( ) {
 		jQuery( '#' + this ).addClass( 'is-favorite' );
 	} );
-}
-
-/**
- *  Refreshes the schedule view
- *
- */
-
-function kompassi_schedule_refresh( ) {
-	url_options = kompassi_get_url_options( );
-
-	//  Apply options from URL
-	kompassi_schedule_apply_options( url_options );
-
-	//  Update program count
-	kompassi_schedule_update_program_count( );
-
-	//  Setup display
-	if( url_options.display && Object.keys( styles ).indexOf( url_options.display ) > -1 ) {
-		kompassi_schedule_setup_display( url_options.display );
-	} else {
-		kompassi_schedule_setup_display( );
-	}
 }
 
 /**
@@ -345,11 +327,11 @@ function kompassi_schedule_toggle_favorite( ) {
 }
 
 /**
- *  Applies options from URL hash
+ *  Applies options
  *
  */
 
-function kompassi_schedule_apply_options( opts ) {
+function kompassi_schedule_update_filters_from_options( opts = {} ) {
 	filters_set = false;
 
 	// Filters
@@ -368,7 +350,6 @@ function kompassi_schedule_apply_options( opts ) {
 			} else {
 				filter.find( 'option' ).removeAttr( 'selected' );
 			}
-			filter.multiselect( 'reload' );
 		} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
 			if( opts[filter_name] ) {
 				filter.val( decodeURIComponent( opts[filter_name] ) );
@@ -514,13 +495,14 @@ function kompassi_schedule_update_date_view_parameters( ) {
 }
 
 /**
- *  Applies filters from DOM
+ *  Applies filters to program listing
  *
  */
 
 function kompassi_schedule_apply_filters( ) {
 	//  Show all and remove notification if exists
 	jQuery( '#kompassi_schedule article' ).removeClass( 'filtered multiday-overlap' );
+	// TODO: Do this on setup_display?
 	jQuery( '#kompassi_schedule_notes .filter, #kompassi_programs_continuing' ).remove( );
 
 	kompassi_schedule.filters = { };
@@ -557,6 +539,7 @@ function kompassi_schedule_apply_filters( ) {
 				} ).addClass( 'filtered' );
 				filter_count += 1;
 			}
+			filter.multiselect( 'reload' );
 		}
 
 		// Text filter
@@ -621,16 +604,6 @@ function kompassi_schedule_apply_filters( ) {
 		kompassi_schedule.filters.enabled += 1;
 	}
 
-	//  If on timeline, refresh the layout
-	kompassi_schedule_revert_display_layouts( );
-	//  TODO
-	if( kompassi_schedule_get_display_type( ) == 'timeline' ) {
-		kompassi_schedule_setup_timeline_layout( );
-	}
-	if( kompassi_schedule_get_display_type( ) == 'list' ) {
-		kompassi_schedule_setup_list_layout( );
-	}
-
 	// If there is no text search and there is a date search, and there is programs that have started before the filtered timerange, show notification
 	if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).length > 0 ) {
 		if( parseInt( kompassi_options.schedule_start_of_day ) !== 0 || parseInt( kompassi_options.schedule_end_of_day ) !== 0 ) {
@@ -658,11 +631,8 @@ function kompassi_schedule_apply_filters( ) {
 		jQuery( '#kompassi_schedule_filters' ).removeClass( 'has-filters-enabled' );
 	}
 
+	kompassi_schedule_setup_display( );
 	kompassi_schedule_update_url_hash( );
-	kompassi_schedule_update_program_count( );
-
-	jQuery( '#kompassi_schedule_notes .display-not-' + kompassi_schedule_get_display_type( ) ).hide( );
-	jQuery( '#kompassi_schedule_notes .display-only-' + kompassi_schedule_get_display_type( ) ).show( );
 }
 
 /**
@@ -691,10 +661,8 @@ function kompassi_schedule_update_multiselect_label( element ) {
  *
  */
 
-function kompassi_schedule_setup_display( display_type = false ) {
-	if( display_type === false ) {
-		display_type = kompassi_schedule_get_display_type( );
-	}
+function kompassi_schedule_setup_display( ) {
+	display_type = kompassi_schedule_get_display_type( );
 
 	//  Update schedule element class
 	jQuery( '#kompassi_schedule' ).removeClass( 'list timeline' ).addClass( display_type );
@@ -717,8 +685,8 @@ function kompassi_schedule_setup_display( display_type = false ) {
 	jQuery( '#kompassi_schedule_display a' ).removeClass( 'active' );
 	jQuery( '#kompassi_schedule_display [data-display="' + display_type + '"]' ).addClass( 'active' );
 
-	// Update URL hash
-	kompassi_schedule_update_url_hash( );
+	//  Update visible program count
+	kompassi_schedule_update_program_count( );
 }
 
 /**
@@ -1083,11 +1051,11 @@ function kompassi_schedule_get_display_type( ) {
 }
 
 /**
- *  Updates the URL hash based on selected options
+ *  Gets URL hash components from filters
  *
  */
 
-function kompassi_schedule_update_url_hash( ) {
+function kompassi_schedule_collect_url_hash( ) {
 	opts = [];
 
 	// If program modal is open, show prog
@@ -1123,8 +1091,17 @@ function kompassi_schedule_update_url_hash( ) {
 	// Display
 	opts.push( 'display:' + kompassi_schedule_get_display_type( ) );
 
-	// Update hash
-	window.location.hash = opts.join( '/' );
+	return opts;
+}
+
+/**
+ *  Updates the URL hash based on selected options
+ *
+ */
+
+function kompassi_schedule_update_url_hash( ) {
+	opts = kompassi_schedule_collect_url_hash( );
+	kompassi_set_url_options( opts );
 }
 
 /**

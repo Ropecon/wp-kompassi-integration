@@ -75,7 +75,7 @@ function kompassi_popover( options, event, element ) {
 }
 
 /*
- *  URL options
+ *  Get URL options
  *
  */
 
@@ -91,6 +91,15 @@ function kompassi_get_url_options( ) {
 		}
 	} );
 	return url_options;
+}
+
+/*
+ *  Push options to URL
+ *
+ */
+
+function kompassi_set_url_options( opts = [] ) {
+	window.location.hash = opts.join( '/' );
 }
 
 /**
