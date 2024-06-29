@@ -341,15 +341,18 @@ function kompassi_schedule_update_filters_from_options( opts = {} ) {
 		filter_name = filter.data( 'filter' );
 		if( filter.prop( 'tagName' ) == 'SELECT' ) {
 			if( opts[filter_name] ) {
-				opts[filter_name].split( ',' ).forEach( function( value, index, array ) {
-					if( filter.find( '[value="' + value + '"]' ).length > 0 ) {
-						filter.find( '[value="' + value + '"]' ).attr( 'selected', 'selected' );
+				filter.find( 'option' ).each( function( ) {
+					if( opts[filter_name].includes( jQuery( this ).val( ) ) ) {
+						jQuery( this ).attr( 'selected', 'selected' );
 						filters_set = true;
+					} else {
+						jQuery( this ).removeAttr( 'selected' );
 					}
 				} );
 			} else {
 				filter.find( 'option' ).removeAttr( 'selected' );
 			}
+			filter.multiselect( 'reload' );
 		} else if( filter.prop( 'tagName' ) == 'INPUT' ) {
 			if( opts[filter_name] ) {
 				filter.val( decodeURIComponent( opts[filter_name] ) );
@@ -361,7 +364,6 @@ function kompassi_schedule_update_filters_from_options( opts = {} ) {
 	} );
 
 	// If any filters are set, open filters toolbar
-	// TODO: Only on first load
 	if( filters_set == true ) {
 		jQuery( '.filters-toggle' ).addClass( 'active' );
 		jQuery( '#kompassi_schedule_filters' ).addClass( 'visible' );
