@@ -142,6 +142,74 @@ function kompassi_get_url_options( ) {
 }
 
 /*
+ *  Push options to URL
+ *
+ */
+
+function kompassi_set_url_options( opts = [] ) {
+	window.location.hash = opts.join( '/' );
+}
+
+/**
+ *  Returns a date formatted in human readable format.
+ *
+ *  @param {number} timestamp Unix timestamp
+ *  @param {boolean} weekday Whether to return the weekday name or not
+ *  @param {boolean} date Whether to return the date or not
+ *
+ *  @returns {string} Formatted date
+ *
+ */
+
+function kompassi_get_date_formatted( timestamp, weekday = true, date = true ) {
+	datetime_obj = new Date( timestamp * 1000 );
+	const dayNames = [
+		_x( 'Sun', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Mon', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Tue', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Wed', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Thu', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Fri', 'day abbreviation', 'kompassi-integration' ),
+		_x( 'Sat', 'day abbreviation', 'kompassi-integration' )
+	];
+	formatted = '';
+	if( weekday == true ) {
+		formatted += dayNames[datetime_obj.getDay( )];
+	}
+	if( weekday == true && date == true ) {
+		formatted += ' ';
+	}
+	if( date == true ) {
+		formatted += datetime_obj.getDate( ) + '.' + ( datetime_obj.getMonth( ) + 1 ) + '.';
+	}
+	return formatted;
+}
+
+/**
+ *  Returns difference of two timestamps in hours
+ *
+ *  @param {Date} a Date object
+ *  @param {Date} b Date object
+ *
+ *  @returns {number} Difference of timestamps in hours
+ *
+ */
+
+function kompassi_get_difference_in_hours( a, b ) {
+	ms_to_hour = 1000 * 60 * 60;
+	difference = b - a;
+	return difference / ms_to_hour;
+}
+
+/**
+ *
+ */
+
+function filter_unique( value, index, array ) {
+	 return array.indexOf( value ) === index;
+}
+
+/*
  *  Copies the href of given link to clipboard
  *
  */
