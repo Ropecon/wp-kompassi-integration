@@ -141,6 +141,42 @@ function kompassi_schedule_init( ) {
 	jQuery( window ).on( 'popstate', function( e ) {
 		kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
 	} );
+
+	//  Events (click): Import
+	jQuery( 'body' ).on( 'click', '.kompassi-schedule-import a', function( ) {
+		url_options = kompassi_get_url_options( );
+
+		favorites_updated = false;
+		if( jQuery( this ).hasClass( 'replace' ) ) {
+			kompassi_cookie.favorites = url_options.favorite.split( ',' );
+			favorites_updated = true;
+		}
+		if( jQuery( this ).hasClass( 'append' ) ) {
+			old_favorites = kompassi_cookie.favorites;
+			new_favorites = url_options.favorite.split( ',' );
+			new_favorites.filter( function( item ) {
+				return old_favorites.indexOf( item );
+			} );
+			merged_favorites = old_favorites.concat( new_favorites );
+			kompassi_cookie.favorites = merged_favorites;
+
+			if( old_favorites !== merged_favorites ) {
+				favorites_updated = true;
+			}
+		}
+
+		if( favorites_updated ) {
+			kompassi_update_cookie( );
+
+			jQuery( '#kompassi_schedule article' ).removeClass( 'is-favorite' );
+			jQuery.each( kompassi_cookie.favorites, function( ) {
+				jQuery( '#' + this ).addClass( 'is-favorite' );
+			} );
+		}
+
+		kompassi_close_modal( );
+		kompassi_update_url_hash( );
+	} );
 }
 
 /**
@@ -153,7 +189,7 @@ function kompassi_schedule_init_toolbar( ) {
 	toolbar.prependTo( jQuery( '#kompassi_block_schedule' ) );
 
 	/*  Date filter  */
-	date_section = jQuery( '<section id="kompassi_schedule_dates"  class="kompassi-button-group" />' );
+	date_section = jQuery( '<section id="kompassi_schedule_dates" class="kompassi-button-group" />' );
 	//  TODO: Only show "Next" if there is anything to show?
 	date_next_toggle = jQuery( '<a class="date-toggle no-icon" data-date="next">' + _x( 'Next', 'date filter', 'kompassi-integration' ) + '</a>' );
 	date_section.append( date_next_toggle );
@@ -190,14 +226,17 @@ function kompassi_schedule_init_toolbar( ) {
 		jQuery( '#kompassi_schedule_filters' ).toggleClass( 'visible' );
 	} );
 
-	/*  Help  */
-	help_section = jQuery( '<section id="kompassi_schedule_help" class="kompassi-button-group has-icon-only" />' );
-	help_button = jQuery( '<a class="schedule-help kompassi-icon-help" title="' + __( 'Help', 'kompassi-integration' ) + '">&nbsp;</a>' ).appendTo( help_section );
-	help_section.appendTo( toolbar );
-
-	help_button.on( 'click', function( ) {
-		kompassi_schedule_help_modal( );
-	} );
+	/*  Dropdown menu  */
+	dropdown = kompassi_dropdown_menu(
+		{
+			help: { label: __( 'Help', 'kompassi-integration' ), callback: kompassi_schedule_help_modal },
+			export: { label: __( 'Export Favorites', 'kompassi-integration' ), callback: kompassi_schedule_export_modal },
+		},
+		{
+			id: 'kompassi_schedule_menu'
+		}
+	);
+	dropdown.appendTo( toolbar );
 
 	/*  Filter popup  */
 	filters = jQuery( '<section id="kompassi_schedule_filters" />' );
@@ -323,7 +362,7 @@ function kompassi_schedule_toggle_favorite( ) {
 	} else {
 		kompassi_cookie.favorites.push( program );
 	}
-	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
+	kompassi_update_cookie( );
 }
 
 /**
@@ -413,8 +452,7 @@ function kompassi_schedule_update_program_count( ) {
 	if( kompassi_schedule.filters.enabled > 0 ) {
 		if( program_count > 0 ) {
 			// translators: count of programs visible
-			program_count_label = _n( '%s program visible.', '%s programs visible.', program_count, 'kompassi-integration' );
-			program_count_label = program_count_label.replace( '%s', program_count );
+			program_count_label = sprintf( _n( '%s program visible.', '%s programs visible.', program_count, 'kompassi-integration' ), program_count );
 			jQuery( '#kompassi_schedule_notes' ).prepend( '<span class="program-count">' + program_count_label + '</span>' );
 		} else {
 			jQuery( '#kompassi_schedule_notes' ).prepend( '<span class="program-count">' + __( 'Nothing matched your search!', 'kompassi-integration' ) + '</span>' );
@@ -977,6 +1015,75 @@ function kompassi_schedule_help_modal( ) {
 		title: __( 'Help!', 'kompassi-integration' ),
 		content: help
 	}
+	kompassi_show_modal( options );
+}
+
+/**
+ *  Displays export modal
+ *
+ */
+
+function kompassi_schedule_export_modal( ) {
+	favorites = [];
+	titles = [];
+	jQuery( 'article.is-favorite' ).each( function( ) {
+		favorites.push( jQuery( this ).data( 'id' ) );
+		titles.push( jQuery( this ).find( '.title' ).text( ) );
+	} );
+	cur = String( window.location );
+	export_link = cur.split( '#' )[0] + '#favorite:' + favorites.join( ',' );
+	markup = '<p>';
+	markup += __( 'Create an import link to export your favorites to another device.', 'kompassi-integration' ) + ' ';
+	markup += __( 'Favorites to be exported:', 'kompassi-integration' );
+	markup += '</p>';
+	markup += '<ul class="program-title-list">';
+	titles.forEach( function( value, index, array ) {
+		markup += '<li>' + value + '</li>';
+	} );
+	markup += '</ul>';
+	actions = '<a onClick="kompassi_href_to_clipboard(event,this);" href="' + export_link + '">' + __( 'Copy import link to clipboard', 'kompassi-integration' ) + '</a>';
+	options = {
+		attrs: {
+			class: 'kompassi-schedule-export small-modal actions-bottom-right'
+		},
+		title: __( 'Export Favorites', 'kompassi-integration' ),
+		actions: actions,
+		content: markup,
+	}
+	kompassi_show_modal( options );
+}
+
+/**
+ *  Displays import modal
+ *
+ */
+
+function kompassi_schedule_import_modal( programs ) {
+	programs = programs.split( ',' );
+	valid_programs = [];
+	programs.forEach( function( value, index, array ) {
+		if( jQuery( '#' + value ).length > 0 ) {
+			valid_programs.push( jQuery( '#' + value ).find( '.title' ).text( ) );
+		}
+	} );
+
+	markup = '<p>' + sprintf( _n( 'You are about to import %s program as favorite:', 'You are about to import %s programs as favorites:', valid_programs.length, 'kompassi-integration' ), valid_programs.length ) + '</p>';
+	markup += '<ul class="program-title-list">';
+	valid_programs.forEach( function( value, index, array ) {
+		markup += '<li>' + value + '</li>';
+	} );
+	markup += '</ul>';
+
+	actions = '<a class="kompassi-button replace">' + __( 'Replace Favorites', 'kompassi-integration' ) + '</a>';
+	actions += '<a class="kompassi-button append">' + __( 'Append to Favorites', 'kompassi-integration' ) + '</a>';
+	options = {
+		attrs: {
+			class: 'kompassi-schedule-import small-modal actions-bottom-right'
+		},
+		title: __( 'Import Favorites', 'kompassi-integration' ),
+		actions: actions,
+		content: markup
+	};
 	kompassi_show_modal( options );
 }
 
