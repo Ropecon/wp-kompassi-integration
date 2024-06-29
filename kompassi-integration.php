@@ -286,7 +286,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		/*  Schedule  */
 		$out .= '<section class="kompassi_schedule_wrapper">';
-		$out .= '<section id="kompassi_schedule" class="' . $attributes['default_display'] . '">';
+		$out .= '<section id="kompassi_schedule" data-display="' . $attributes['default_display'] . '">';
 
 		$data = $this->get_schedule_data_graphql( );
 		if( !$data || count( $data ) < 1 ) {

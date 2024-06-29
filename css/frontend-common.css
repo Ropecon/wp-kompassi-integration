@@ -67,7 +67,7 @@
 
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
-#kompassi_schedule.timeline .is-favorite::after { background-image: url(../images/icons/is_favorite.svg); }
+#kompassi_schedule[data-display="timeline"] .is-favorite::after { background-image: url(../images/icons/is_favorite.svg); }
 
 /*  Active button style is dark by default, make sure the icons are visible  */
 [class*="kompassi-icon"].active:not(.kompassi-icon-favorite)::before { filter: invert(); }

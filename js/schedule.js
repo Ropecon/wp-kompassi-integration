@@ -79,7 +79,7 @@ function kompassi_schedule_init( ) {
 
 	//  Events (mouseover, mouseout): Popover
 	jQuery( '#kompassi_schedule article' ).on( 'mouseover', function( e ) {
-		if( !jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) {
+		if( !jQuery( '#kompassi_schedule' ).data( 'display' ) == 'timeline' ) {
 			return;
 		}
 		clearTimeout( kompassi_schedule.timeouts['popover'] );
@@ -331,7 +331,9 @@ function kompassi_schedule_init_toolbar( ) {
 			} else {
 				jQuery( '#kompassi_schedule_display a' ).removeClass( 'active' );
 				jQuery( this ).addClass( 'active' );
-				kompassi_schedule_apply_filters( );
+
+				kompassi_schedule_setup_display( jQuery( this ).data( 'display' ) );
+				kompassi_schedule_update_url_hash( );
 			}
 		} );
 	} );
@@ -435,6 +437,11 @@ function kompassi_schedule_update_filters_from_options( opts = {} ) {
 		if( jQuery( '#kompassi_modal.kompassi-program' ).length > 0 ) {
 			kompassi_close_modal( );
 		}
+	}
+
+	// Display type
+	if( opts.display ) {
+		kompassi_schedule_setup_display( opts.display );
 	}
 
 	// Apply filters
@@ -701,11 +708,14 @@ function kompassi_schedule_update_multiselect_label( element ) {
  *
  */
 
-function kompassi_schedule_setup_display( ) {
-	display_type = kompassi_schedule_get_display_type( );
-
-	//  Update schedule element class
-	jQuery( '#kompassi_schedule' ).removeClass( 'list timeline' ).addClass( display_type );
+function kompassi_schedule_setup_display( display = false ) {
+	if( display ) {
+		display_type = display;
+	} else {
+		display_type = jQuery( '#kompassi_schedule' ).data( 'display' );
+	}
+	jQuery( '#kompassi_schedule' ).data( 'display', display_type );
+	jQuery( '#kompassi_schedule' ).attr( 'data-display', display_type );
 
 	//  Refresh display layout
 	//  TODO
@@ -1146,20 +1156,6 @@ function kompassi_schedule_get_next_visible_program( current = false, reverse = 
 }
 
 /**
- *  Returns the current display type
- *
- *  @returns {string} Current display type
- *
- */
-
-function kompassi_schedule_get_display_type( ) {
-	if( jQuery( '#kompassi_schedule' ).hasClass( 'list' ) ) { display_type = 'list'; }
-	if( jQuery( '#kompassi_schedule' ).hasClass( 'timeline' ) ) { display_type = 'timeline'; }
-
-	return display_type;
-}
-
-/**
  *  Gets URL hash components from filters
  *
  */
@@ -1198,7 +1194,7 @@ function kompassi_schedule_collect_url_hash( ) {
 	} );
 
 	// Display
-	opts.push( 'display:' + kompassi_schedule_get_display_type( ) );
+	opts.push( 'display:' + jQuery( '#kompassi_schedule' ).data( 'display' ) );
 
 	return opts;
 }
