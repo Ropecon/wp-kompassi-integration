@@ -123,7 +123,7 @@ function kompassi_popover( options, event, element ) {
 }
 
 /*
- *  URL options
+ *  Get URL options
  *
  */
 
