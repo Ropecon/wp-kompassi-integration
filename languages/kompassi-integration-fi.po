@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-06-27T12:51:45+03:00\n"
+"POT-Creation-Date: 2024-07-01T13:49:33+03:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:100 kompassi-integration.php:114
+#: kompassi-integration.php:101 kompassi-integration.php:115
 msgid "Kompassi Integration"
 msgstr "Kompassi-integraatio"
 
@@ -29,82 +29,82 @@ msgstr "Yhdistä tietoja Kompassista WordPress-sivustollesi helposti"
 msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
-#: kompassi-integration.php:49
+#: kompassi-integration.php:50
 msgid "Event Slug"
 msgstr "Tapahtuman polkutunnus"
 
-#: kompassi-integration.php:50
+#: kompassi-integration.php:51
 msgid "Event slug in Kompassi."
 msgstr "Tapahtuman polkutunnus Kompassissa."
 
-#: kompassi-integration.php:53
+#: kompassi-integration.php:54
 msgid "Contact"
 msgstr "Yhteyshenkilö"
 
-#: kompassi-integration.php:54
+#: kompassi-integration.php:55
 msgid "Email address for contacts (eg. errors in the program data)."
 msgstr "Sähköpostiosoite yhteydenotoille (esim. virheet ohjelmatiedoissa)."
 
-#: kompassi-integration.php:57
+#: kompassi-integration.php:58
 msgid "Cache"
 msgstr "Välimuisti"
 
-#: kompassi-integration.php:60
+#: kompassi-integration.php:61
 msgctxt "caching: none"
 msgid "None"
 msgstr "Ei mitään"
 
-#: kompassi-integration.php:61
+#: kompassi-integration.php:62
 msgctxt "caching: transient"
 msgid "Transient"
 msgstr "Transientit"
 
-#: kompassi-integration.php:63
+#: kompassi-integration.php:64
 msgid "Method used for caching."
 msgstr "Välimuistituksesessa käytettävä menetelmä."
 
-#: kompassi-integration.php:64
+#: kompassi-integration.php:65
 msgid "Clear cache now"
 msgstr "Tyhjennä välimuisti nyt"
 
-#: kompassi-integration.php:67
+#: kompassi-integration.php:68
 msgid "Start of Day"
 msgstr "Päivän alku"
 
-#: kompassi-integration.php:68
+#: kompassi-integration.php:69
 msgid "Start of Day when a single day is shown."
 msgstr "Päivän alku, kun yksi päivä näytetään."
 
-#: kompassi-integration.php:71
+#: kompassi-integration.php:72
 msgid "End of Day"
 msgstr "Päivän loppu"
 
-#: kompassi-integration.php:72
+#: kompassi-integration.php:73
 msgid "End of Day when a single day is shown."
 msgstr "Päivän loppu, kun yksi päivä näytetään."
 
-#: kompassi-integration.php:75
+#: kompassi-integration.php:76
 msgid "Hidden Dimensions"
 msgstr "Piilotetut dimensiot"
 
-#: kompassi-integration.php:76
+#: kompassi-integration.php:77
 msgid ""
 "Comma-separated list of dimension slugs that should be hidden from filters."
 msgstr "Pilkuilla erotettu lista dimensioista, jotka eivät näy suodattimina."
 
-#: kompassi-integration.php:79
+#: kompassi-integration.php:80
 msgid "Hidden Annotations"
 msgstr "Piilotetut annotaatiot"
 
-#: kompassi-integration.php:80
+#: kompassi-integration.php:81
 msgid "Comma-separated list of annotation fields that should be hidden."
 msgstr "Pilkuilla erotettu lista annotaatiokentistä, jotka tulisi piilottaa."
 
-#: kompassi-integration.php:83
+#: kompassi-integration.php:84
 msgid "Timeline Grouping"
 msgstr "Aikajanan ryhmittely"
 
-#: kompassi-integration.php:84
+#: kompassi-integration.php:85
 msgid ""
 "Dimension slug for the dimension that should be used to group program with "
 "subheadings in timeline."
@@ -112,19 +112,19 @@ msgstr ""
 "Dimensiotunnus, jonka perusteella ohjelma ryhmitellään alaotsikoin "
 "aikajanalla."
 
-#: kompassi-integration.php:117
+#: kompassi-integration.php:118
 msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
 #. translators: amount of transients deleted
-#: kompassi-integration.php:232
+#: kompassi-integration.php:282
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] "%s transientti poistettu."
 msgstr[1] "%s transienttia poistettu."
 
 #. translators: email link
-#: kompassi-integration.php:517
+#: kompassi-integration.php:567
 msgid "If you find errors in the program data, contact us at %s."
 msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 
@@ -141,191 +141,187 @@ msgctxt "button label"
 msgid "Close"
 msgstr "Sulje"
 
-#: js/schedule.js:66
+#: js/frontend-common.js:167
+msgctxt "day abbreviation"
+msgid "Sun"
+msgstr "su"
+
+#: js/frontend-common.js:168
+msgctxt "day abbreviation"
+msgid "Mon"
+msgstr "ma"
+
+#: js/frontend-common.js:169
+msgctxt "day abbreviation"
+msgid "Tue"
+msgstr "ti"
+
+#: js/frontend-common.js:170
+msgctxt "day abbreviation"
+msgid "Wed"
+msgstr "ke"
+
+#: js/frontend-common.js:171
+msgctxt "day abbreviation"
+msgid "Thu"
+msgstr "to"
+
+#: js/frontend-common.js:172
+msgctxt "day abbreviation"
+msgid "Fri"
+msgstr "pe"
+
+#: js/frontend-common.js:173
+msgctxt "day abbreviation"
+msgid "Sat"
+msgstr "la"
+
+#: js/frontend-common.js:254
+msgid "Error processing AJAX query."
+msgstr "Virhe käsiteltäessä AJAX-kyselyä."
+
+#: js/schedule.js:68
 msgctxt "button label"
 msgid "Favorite"
 msgstr "Suosikki"
 
-#: js/schedule.js:193
+#: js/schedule.js:194
 msgctxt "date filter"
 msgid "Next"
 msgstr "Seuraavaksi"
 
-#: js/schedule.js:214
+#: js/schedule.js:215
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: js/schedule.js:215
+#: js/schedule.js:216
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: js/schedule.js:231
+#: js/schedule.js:232
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:232 js/schedule.js:1058
+#: js/schedule.js:233 js/schedule.js:1062
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
-#: js/schedule.js:244
+#: js/schedule.js:245
 msgid "Text..."
 msgstr "Teksti..."
 
-#: js/schedule.js:280
+#: js/schedule.js:281
 msgid "Program matching selection will be hidden from results."
 msgstr "Valintaa vastaava ohjelma piilotetaan tuloksista."
 
-#: js/schedule.js:287
+#: js/schedule.js:288
 msgid "Clear filters"
 msgstr "Tyhjennä suodattimet"
 
-#: js/schedule.js:317
+#: js/schedule.js:318
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: js/schedule.js:318
+#: js/schedule.js:319
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
 #. translators: count of programs visible
-#: js/schedule.js:465
+#: js/schedule.js:462
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] "%s ohjelma näkyvissä."
 msgstr[1] "%s ohjelmaa näkyvissä."
 
-#: js/schedule.js:468
+#: js/schedule.js:465
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:669
+#: js/schedule.js:662
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr "Näytetään ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
 
 #. translators: amount of repositioned events
-#: js/schedule.js:676
+#: js/schedule.js:669
 msgid "Show %d program starting earlier"
 msgid_plural "Show %d programs starting earlier"
 msgstr[0] "Näytä %d aiemmin alkava ohjelma"
 msgstr[1] "Näytä %d aiemmin alkavaa ohjelmaa"
 
-#: js/schedule.js:677
+#: js/schedule.js:670
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:790
+#: js/schedule.js:791
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1014
-msgid "List View"
-msgstr "Listanäkymä"
-
-#: js/schedule.js:1015
-msgid ""
-"When using text search, results are sorted by relevance rather than "
-"chronologically."
-msgstr ""
-"Kun käytät tekstihakua, tulokset järjestetään relevanssin perusteella, ei "
-"kronologisesti."
-
-#: js/schedule.js:1016
-msgid ""
-"When limiting search results by date, programs which have started in "
-"previous days that are still continuing are listed at the end of the search "
-"results."
-msgstr ""
-"Kun hakutuloksia rajoitetaan päivämäärän perusteella, edelleen käynnissä "
-"olevat ohjelmatm jotka ovat alkaneet edellisenä päivänä näytetään "
-"hakutuloksien lopussa."
-
-#: js/schedule.js:1017
-msgid "Timeline View"
-msgstr "Aikajananäkymä"
-
-#: js/schedule.js:1018
-msgid "You can zoom and pan the timeline view:"
-msgstr "Voit suurentaa ja liikuttaa aikajananäkymää:"
-
-#: js/schedule.js:1019
-msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
-msgstr ""
-"Työpöydällä, käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."
-
 #: js/schedule.js:1020
-msgid "On a touch screen, pinch to zoom."
-msgstr "Kosketusnäytöllä nipistä suurentaaksesi."
-
-#: js/schedule.js:1021
-msgid "Drag to pan on all devices."
-msgstr "Vedä liikuttaaksesi kaikilla laitteilla."
-
-#: js/schedule.js:1024
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1045
+#: js/schedule.js:1049
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1046
+#: js/schedule.js:1050
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1053
+#: js/schedule.js:1057
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1086
+#: js/schedule.js:1090
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1087
+#: js/schedule.js:1091
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1092
+#: js/schedule.js:1096
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 
-#: js/schedule.js:1185
-msgctxt "day abbreviation"
-msgid "Sun"
-msgstr "su"
+#~ msgid "List View"
+#~ msgstr "Listanäkymä"
 
-#: js/schedule.js:1186
-msgctxt "day abbreviation"
-msgid "Mon"
-msgstr "ma"
+#~ msgid ""
+#~ "When using text search, results are sorted by relevance rather than "
+#~ "chronologically."
+#~ msgstr ""
+#~ "Kun käytät tekstihakua, tulokset järjestetään relevanssin perusteella, ei "
+#~ "kronologisesti."
 
-#: js/schedule.js:1187
-msgctxt "day abbreviation"
-msgid "Tue"
-msgstr "ti"
+#~ msgid ""
+#~ "When limiting search results by date, programs which have started in "
+#~ "previous days that are still continuing are listed at the end of the "
+#~ "search results."
+#~ msgstr ""
+#~ "Kun hakutuloksia rajoitetaan päivämäärän perusteella, edelleen käynnissä "
+#~ "olevat ohjelmatm jotka ovat alkaneet edellisenä päivänä näytetään "
+#~ "hakutuloksien lopussa."
 
-#: js/schedule.js:1188
-msgctxt "day abbreviation"
-msgid "Wed"
-msgstr "ke"
+#~ msgid "Timeline View"
+#~ msgstr "Aikajananäkymä"
 
-#: js/schedule.js:1189
-msgctxt "day abbreviation"
-msgid "Thu"
-msgstr "to"
+#~ msgid "You can zoom and pan the timeline view:"
+#~ msgstr "Voit suurentaa ja liikuttaa aikajananäkymää:"
 
-#: js/schedule.js:1190
-msgctxt "day abbreviation"
-msgid "Fri"
-msgstr "pe"
+#~ msgid "On desktop, use <em>Shift + mouse wheel</em> to zoom."
+#~ msgstr ""
+#~ "Työpöydällä, käytä <em>Shift + hiiren rulla</em> suurentaaksesi aikajanaa."
 
-#: js/schedule.js:1191
-msgctxt "day abbreviation"
-msgid "Sat"
-msgstr "la"
+#~ msgid "On a touch screen, pinch to zoom."
+#~ msgstr "Kosketusnäytöllä nipistä suurentaaksesi."
+
+#~ msgid "Drag to pan on all devices."
+#~ msgstr "Vedä liikuttaaksesi kaikilla laitteilla."
 
 #~ msgid "Text search"
 #~ msgstr "Tekstihaku"
