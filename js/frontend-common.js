@@ -222,3 +222,41 @@ async function kompassi_href_to_clipboard( event, link ) {
 	}
 	event.preventDefault( );
 }
+
+/*
+ *  Run an AJAX query with default options and retries on error
+ *
+ */
+
+function kompassi_ajax_query( opts ) {
+	kompassi_ajax_opts = {
+		type: 'GET',
+		retryLimit: 3,
+		data: { },
+		beforeSend: function( xhr ) {
+			// TODO: Allow overriding default nonce for extra security
+			// xhr.setRequestHeader( 'X-WP-Nonce', kompassi_common.rest_nonce );
+		},
+		error: function( xhr, textStatus, errorThrown ) {
+			this.retryLimit--;
+			if( this.retryLimit ) {
+				jQuery.ajax( this );
+				return;
+			} else {
+				console.log( errorThrown );
+				/*  On errors, the "real" action should be a function in .errorAction  */
+				if( this.errorAction instanceof Function ) {
+					this.errorAction( );
+				}
+			}
+			return;
+		},
+		errorActionMessage: __( 'Error processing AJAX query.', 'kompassi-integration' ),
+	}
+
+	/*  Prepend REST URL base to rest_route  */
+	opts.url = kompassi_common.rest_url_base + opts.rest_route;
+
+	/*  Fire AJAX query  */
+	return jQuery.ajax( Object.assign( kompassi_ajax_opts, opts ) );
+}

@@ -453,6 +453,17 @@
    }
 }
 
+#kompassi_modal.kompassi-document ul li {
+   margin-left: 1.5em;
+}
+#kompassi_modal.kompassi-document ul li::before {
+   content: "–";
+   display: inline-block;
+
+   margin-left: -1.5em;
+   width: 1.5em;
+}
+
 
 #kompassi_modal_bg {
 	position: fixed;

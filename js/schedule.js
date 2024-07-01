@@ -79,7 +79,7 @@ function kompassi_schedule_init( ) {
 
 	//  Events (mouseover, mouseout): Popover
 	jQuery( '#kompassi_schedule article' ).on( 'mouseover', function( e ) {
-		if( !jQuery( '#kompassi_schedule' ).data( 'display' ) == 'timeline' ) {
+		if( jQuery( '#kompassi_schedule' ).data( 'display' ) != 'timeline' ) {
 			return;
 		}
 		clearTimeout( kompassi_schedule.timeouts['popover'] );
@@ -1012,20 +1012,23 @@ function kompassi_schedule_program_modal( program ) {
  */
 
 function kompassi_schedule_help_modal( ) {
-	help = '<strong class="kompassi-icon-list">' + __( 'List View', 'kompassi-integration' ) + '</strong>';
-	help += '<p>' + __( 'When using text search, results are sorted by relevance rather than chronologically.', 'kompassi-integration' ) + '</p>';
-	help += '<p>' + __( 'When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results.', 'kompassi-integration' ) + '</p>';
-	help += '<strong class="kompassi-icon-timeline">' + __( 'Timeline View', 'kompassi-integration' ) + '</strong>';
-	help += '<p>' + __( 'You can zoom and pan the timeline view:', 'kompassi-integration' ) + '</p>';
-	help += '<p>' + __( 'On desktop, use <em>Shift + mouse wheel</em> to zoom.', 'kompassi-integration' ) + '</p>';
-	help += '<p>' + __( 'On a touch screen, pinch to zoom.', 'kompassi-integration' ) + '</p>';
-	help += '<p>' + __( 'Drag to pan on all devices.', 'kompassi-integration' ) + '</p>';
-
-	options = {
-		title: __( 'Help!', 'kompassi-integration' ),
-		content: help
-	}
-	kompassi_show_modal( options );
+	opts = {
+		rest_route: 'kompassi-integration/v1/docs/help/' + kompassi_options.locale,
+		success: function( response ) {
+			var sdc = new showdown.Converter( );
+			options = {
+				title: __( 'Help!', 'kompassi-integration' ),
+				content: sdc.makeHtml( response.content ),
+				attrs: {
+					class: 'kompassi-document'
+				},
+			};
+			if( response.status !== false ) {
+				kompassi_show_modal( options );
+			}
+		},
+	};
+	kompassi_ajax_query( opts );
 }
 
 /**
