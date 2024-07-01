@@ -20,6 +20,7 @@ class WP_Plugin_Kompassi_Integration {
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 		add_action( 'enqueue_block_assets', array( &$this, 'enqueue_block_assets' ) );
 		add_filter( 'block_categories_all', array( &$this, 'block_categories_all' ), 10, 2 );
+		add_action( 'rest_api_init', array( &$this, 'rest_api_init' ) );
 
 		$this->ver = time( );
 		$this->icon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcyIgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICB3aWR0aD0iMTE2LjUzOTMzIgogICBoZWlnaHQ9IjExNi41MzkzMyIKICAgdmlld0JveD0iMCAwIDExNi41MzkzMyAxMTYuNTM5MzMiCiAgIHNvZGlwb2RpOmRvY25hbWU9Ik1PRC1mYXZpY29uLXdoaXRlLnBuZy5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMS4yICgwYTAwY2Y1MzM5LCAyMDIyLTAyLTA0KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcwogICAgIGlkPSJkZWZzNiI+PGNsaXBQYXRoCiAgICAgICBjbGlwUGF0aFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIKICAgICAgIGlkPSJjbGlwUGF0aDE2Ij48cGF0aAogICAgICAgICBkPSJNIDAsODcuNDA0IEggODcuNDA0IFYgMCBIIDAgWiIKICAgICAgICAgaWQ9InBhdGgxNCIgLz48L2NsaXBQYXRoPjwvZGVmcz48c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzQiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaW5rc2NhcGU6em9vbT0iNS4wOTY5OTE3IgogICAgIGlua3NjYXBlOmN4PSI0NC42MzQxNzEiCiAgICAgaW5rc2NhcGU6Y3k9IjU4LjM2Nzc2MiIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJnOCIgLz48ZwogICAgIGlkPSJnOCIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlua3NjYXBlOmxhYmVsPSJmYXZpY29uLWRhcmsiCiAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMS4zMzMzMzMzLDAsMCwtMS4zMzMzMzMzLDAsMTE2LjUzOTMzKSI+PGcKICAgICAgIGlkPSJnMTIiCiAgICAgICBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgxNikiCiAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmIj48ZwogICAgICAgICBpZD0iZzE4IgogICAgICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4xMjQzLDQ1LjgzMzMpIgogICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmIj48cGF0aAogICAgICAgICAgIGQ9Im0gMCwwIGMgLTEuMTI4LC0yLjA4NSAtMi4xODMsLTQuMDQ3IC0zLjA3NCwtNS43MiAtMi4xMDgsLTMuOTU3IC01LjkzMiwtNy4wMjQgLTEwLjgyMSwtNi4zMjcgLTAuOTE0LDAuMTMgLTEuNzg3LDAuMzk1IC0yLjYwNywwLjc2MiBsIC0xLjMzNywwLjcyNCBjIC0xLjIwOCwwLjc3OSAtMi4yMzgsMS44MTEgLTMuMDE3LDMuMDE4IGwgLTAuNzE3LDEuMzI1IGMgLTAuMzcxLDAuODI4IC0wLjYzOCwxLjcxIC0wLjc2OCwyLjYzNCAtMC41OTEsNC4xOTggMS42MzEsNy41MzMgNC43NSw5Ljc4MSBMIDkuMjU4LDE5LjYwMiBaIE0gMzEuMDI2LC0xLjc1MyA2LjcxLDguMTYgMTIuNTExLDIwLjQ0MiBjIDAuMzM5LDAuNjczIDAuMTg5LDEuNDk4IC0wLjM4MiwyLjA2OCAtMC41NzUsMC41NzUgLTEuNDA4LDAuNzIyIC0yLjA4NCwwLjM3MyBsIC0xMi4xMDksLTYuMDQ2IC05Ljk4LDI0LjQ4IGMgLTAuMTM4LDAuMzM5IC0wLjYxOCwwLjMzOSAtMC43NTYsMCBsIC0xMC42NDYsLTI2LjExNSAtMTIuMTg3LDYuNTk5IGMgLTAuMzg2LDAuMjA5IC0wLjkzLC0wLjMzNSAtMC43MjEsLTAuNzIxIEwgLTI5Ljc1NSw4Ljg5MyAtNTUuODcsLTEuNzUzIGMgLTAuMzM5LC0wLjEzOCAtMC4zMzksLTAuNjE4IDAsLTAuNzU2IGwgMjYuMTE1LC0xMC42NDYgLTYuNTk5LC0xMi4xODcgYyAtMC4yMDksLTAuMzg2IDAuMzM1LC0wLjkzIDAuNzIxLC0wLjcyMSBsIDEyLjE4Nyw2LjU5OSAxMC42NDYsLTI2LjExNSBjIDAuMTM4LC0wLjMzOSAwLjYxOCwtMC4zMzkgMC43NTYsMCBsIDEwLjY0NiwyNi4xMTUgMTIuMTg3LC02LjU5OSBjIDAuMzg2LC0wLjIwOSAwLjkzLDAuMzM1IDAuNzIxLDAuNzIxIGwgLTYuNTk5LDEyLjE4NyAyNi4xMTUsMTAuNjQ2IGMgMC4zMzksMC4xMzggMC4zMzksMC42MTggMCwwLjc1NiIKICAgICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lIgogICAgICAgICAgIGlkPSJwYXRoMjAiIC8+PC9nPjxnCiAgICAgICAgIGlkPSJnMjIiCiAgICAgICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQzLjc0Myw0OC4yMjg3KSIKICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZiI+PHBhdGgKICAgICAgICAgICBkPSJtIDAsMCBjIC0yLjQ5NiwwIC00LjUyNiwtMi4wMyAtNC41MjYsLTQuNTI2IDAsLTIuNDk2IDIuMDMsLTQuNTI3IDQuNTI2LC00LjUyNyAyLjQ5NiwwIDQuNTI2LDIuMDMxIDQuNTI2LDQuNTI3IEMgNC41MjYsLTIuMDMgMi40OTYsMCAwLDAiCiAgICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6bm9uemVybztzdHJva2U6bm9uZSIKICAgICAgICAgICBpZD0icGF0aDI0IiAvPjwvZz48L2c+PC9nPjwvc3ZnPgo=';
@@ -144,20 +145,33 @@ class WP_Plugin_Kompassi_Integration {
 		wp_set_script_translations( 'kompassi-integration-blocks', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 
 		if( !is_admin( ) ) {
+			// Scripts: Libraries
 			wp_register_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
 			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
 			wp_register_script( 'hammer', plugins_url( 'lib/hammer.min.js', __FILE__ ), array( ), '2.0.8' );
 			wp_register_script( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.js', __FILE__ ), array( 'jquery' ), '2.4.23' );
-			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( 'jquery', 'js-cookie' ), $this->ver );
+			wp_register_script( 'showdown', plugins_url( 'lib/showdown.min.js', __FILE__ ), array( ), '2.1.0' );
 
+			// Scripts: Common frontend
+			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( 'jquery', 'js-cookie' ), $this->ver );
+			wp_set_script_translations( 'kompassi-integration-frontend-common', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
+			$js_strings = array(
+				'rest_url_base' => rest_url( ),
+				'rest_nonce' => wp_create_nonce( 'wp_rest' ),
+			);
+			wp_localize_script( 'kompassi-integration-frontend-common', 'kompassi_common', $js_strings );
+
+			// Styles
 			wp_register_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
 			wp_register_style( 'kompassi-integration-frontend-common', plugins_url( 'css/frontend-common.css', __FILE__ ), array( 'kompassi-integration-fonts' ), $this->ver );
 			wp_register_style( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.css', __FILE__ ), array( ), '2.4.23' );
 
+			// SCHEDULE BLOCK
 			if( has_block( 'kompassi-integration/schedule' ) ) {
-				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'dayjs', 'hammer', 'jquery-multiselect', 'wp-i18n' ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'dayjs', 'hammer', 'jquery-multiselect', 'wp-i18n', 'showdown' ), $this->ver );
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
+					'locale' => get_locale( ),
 					'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
 					'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', 0 ),
 					'hidden_dimensions' => explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) ),
@@ -183,6 +197,42 @@ class WP_Plugin_Kompassi_Integration {
 		);
 
 		return $categories;
+	}
+
+	/*
+	 *
+	 *
+	 */
+
+	function rest_api_init( ) {
+		register_rest_route(
+			'kompassi-integration/v1',
+			'/docs/(?P<document>\S+)/(?P<locale>\S+)',
+			array(
+				'methods' => 'GET',
+				'callback' => array( &$this, 'rest_callback_docs' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+
+	function rest_callback_docs( WP_REST_Request $request ) {
+		$parameters = $request->get_params( );
+
+		if( !is_readable( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md' ) ) {
+			// Specified document is not available in given language, try English
+			if( !is_readable( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_en.md' ) ) {
+				// Specified document is not available in English, return false
+				return array( 'status' => false );
+			} else {
+				$filename = plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_en.md';
+			}
+		} else {
+			$filename = plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md';
+		}
+		$doc = file_get_contents( $filename );
+
+		return array( 'status' => true, 'content' => $doc );
 	}
 
 	/*
