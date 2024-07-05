@@ -142,6 +142,13 @@ function kompassi_schedule_init( ) {
 		kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
 	} );
 
+	//  Events (click): Jump to -links
+	jQuery( 'body' ).on( 'click', '.kompassi-jump-to', function( e ) {
+		target = jQuery( this ).attr( 'href' );
+		jQuery( target )[0].scrollIntoView( );
+		e.preventDefault( );
+	} );
+
 	//  Events (click): Import
 	jQuery( 'body' ).on( 'click', '.kompassi-schedule-import a', function( ) {
 		url_options = kompassi_get_url_options( );
@@ -666,7 +673,7 @@ function kompassi_schedule_apply_filters( ) {
 		if( jQuery( '#kompassi_schedule_filters [name="filter_text"]' ).val( ).length < 1 && jQuery( '#kompassi_schedule article.multiday-overlap' ).length > 0 ) {
 			count = jQuery( '#kompassi_schedule article.multiday-overlap:visible' ).length;
 			// translators: amount of repositioned events
-			jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-continuing display-not-timeline"><a href="#kompassi_programs_continuing">' + sprintf( _n( 'Show %d program starting earlier', 'Show %d programs starting earlier', count, 'kompassi-integration' ), count ) + '</a></span>' );
+			jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-continuing display-not-timeline"><a class="kompassi-jump-to" href="#kompassi_programs_continuing">' + sprintf( _n( 'Show %d program starting earlier', 'Show %d programs starting earlier', count, 'kompassi-integration' ), count ) + '</a></span>' );
 			jQuery( '#kompassi_schedule article.multiday-overlap' ).first( ).before( '<h3 id="kompassi_programs_continuing"">' + __( 'Programs continuing', 'kompassi-integration' ) + '</h3>' );
 		}
 	}
