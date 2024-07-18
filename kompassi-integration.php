@@ -231,6 +231,7 @@ class WP_Plugin_Kompassi_Integration {
 			$filename = plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md';
 		}
 		$doc = file_get_contents( $filename );
+		$doc = apply_filters( 'kompassi_integration_document_' . $parameters['document'], $doc, $parameters );
 
 		return array( 'status' => true, 'content' => $doc );
 	}

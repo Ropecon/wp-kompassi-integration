@@ -1020,7 +1020,7 @@ function kompassi_schedule_program_modal( program ) {
 
 function kompassi_schedule_help_modal( ) {
 	opts = {
-		rest_route: 'kompassi-integration/v1/docs/help/' + kompassi_options.locale,
+		rest_route: 'kompassi-integration/v1/docs/schedule_	help/' + kompassi_options.locale,
 		success: function( response ) {
 			var sdc = new showdown.Converter( );
 			options = {
