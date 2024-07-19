@@ -382,6 +382,12 @@ function kompassi_schedule_toggle_favorite( ) {
 function kompassi_schedule_update_filters_from_options( opts = {} ) {
 	filters_set = false;
 
+	// Import
+	if( opts.favorite ) {
+		kompassi_schedule_import_modal( opts.favorite );
+		return;
+	}
+
 	// Filters
 	filters = jQuery( '#kompassi_schedule_filters .filter' );
 	filters.each( function( ) {
