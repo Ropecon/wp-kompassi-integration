@@ -607,16 +607,18 @@ function kompassi_schedule_apply_filters( ) {
 				jQuery( '#kompassi_schedule article:visible' ).each( function( index ) {
 					program = jQuery( this );
 					program_relevance = 0;
-					words = filter.val( ).toLowerCase( ).split( ' ' ); // words to look for
+					words = filter.val( ).toLowerCase( ).split( ' ' ).filter( function( el ) { return el.length > 0; } ); // words to look for
 					jQuery.each( search_targets, function( target, target_relevance_score ) {
 						text = program.find( '.' + target ).first( ).text( ).toLowerCase( );
+						word_matches = 0;
 						jQuery.each( words, function( ) {
 							if( text.includes( this ) ) {
 								program_relevance += target_relevance_score;
+								word_matches += 1;
 							}
 						} );
 					} );
-					if( program_relevance > 0 ) {
+					if( program_relevance > 0 && word_matches == words.length ) {
 						program.css( 'order', '-' + program_relevance ); // Sort text searches by relevance
 					} else {
 						program.addClass( 'filtered' );
