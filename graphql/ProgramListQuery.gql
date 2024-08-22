@@ -23,6 +23,8 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
       programs {
         slug
         title
+        description
+        color
         cachedDimensions
         cachedHosts
         cachedAnnotations
@@ -31,7 +33,6 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
           endTimeUnixSeconds
           lengthMinutes
         }
-        description
         links(lang: $locale) {
           title
           href

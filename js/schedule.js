@@ -975,8 +975,8 @@ function kompassi_schedule_timeline_reposition_headers( ) {
 function kompassi_schedule_revert_display_layouts( ) {
 	// Timeline
 	jQuery( '#kompassi_schedule' ).css( 'height', 'auto' );
-	jQuery( '#kompassi_schedule article' ).attr( 'style', '' );
-	jQuery( '#kompassi_schedule .title' ).css( 'left', '' ).css( 'position', '' );
+	jQuery( '#kompassi_schedule article' ).css( { 'width': '', 'min-width': '', 'left': '', 'top': '' } );
+	jQuery( '#kompassi_schedule .title' ).css( { 'left': '', 'position': '' } );
 	jQuery( '#kompassi_schedule .headers, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
 }
 

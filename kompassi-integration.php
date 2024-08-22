@@ -418,10 +418,10 @@ class WP_Plugin_Kompassi_Integration {
 		$program['length'] = $program['scheduleItems'][0]['lengthMinutes'];
 
 		$attrs = array(
-			'id' => $program['slug'],
-			'length' => $program['length'], // Required for timeline calculations
-			'start' => $program['start'],
-			'end' => $program['end'],
+			'data-id' => $program['slug'],
+			'data-length' => $program['length'], // Required for timeline calculations
+			'data-start' => $program['start'],
+			'data-end' => $program['end'],
 		);
 		foreach( $program['cachedDimensions'] as $dimension => $values ) {
 			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
@@ -433,13 +433,18 @@ class WP_Plugin_Kompassi_Integration {
 			}
 
 			if( count( $values ) > 0 ) {
-				$attrs[$dimension] = implode( ',', $values );
+				$attr = 'data-' . $dimension;
+				$attrs[$attr] = implode( ',', $values );
 			}
+		}
+
+		if( $program['color'] ) {
+			$attrs['style'] = '--kompassi-program-color: ' . $program['color'] . ';';
 		}
 
 		$html_attrs = '';
 		foreach( $attrs as $attr => $value ) {
-			$html_attrs .= ' data-' . $attr . '="' . $value . '"';
+			$html_attrs .= ' ' . $attr . '="' . $value . '"';
 		}
 		$program['description'] = nl2br( $program['description'] );
 		?>
