@@ -12,7 +12,7 @@
 	--kompassi-program-bg: #fff;
 	--kompassi-program-padding: 1em;
 	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
-	--kompassi-program-icon-default: url(images/kompassi_white.svg);
+	--kompassi-program-icon-default: url(../images/kompassi_white.svg);
 }
 
 /* Icon opacities */

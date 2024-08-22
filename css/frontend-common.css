@@ -28,6 +28,7 @@
 
    /*  Modals  */
    --kompassi-modal-max-width: 1000px;
+   --kompassi-modal-fg: #222;
    --kompassi-modal-bg: hsl(var(--kompassi-hue), 10%, 95%);
    --kompassi-modal-actions-bg: hsl(var(--kompassi-hue), 25%, 85%);
    --kompassi-modal-padding: 1em;
@@ -154,6 +155,7 @@
 		margin-right: var(--kompassi-button-padding);
 		margin-bottom: var(--kompassi-button-padding);
 		box-shadow: var(--kompassi-box-shadow);
+      text-decoration: none;
 	}
 		.kompassi-button-group.has-icon-and-label > a:is([class*="kompassi-icon"]) {
 			padding-left: calc( ( var(--kompassi-button-padding) * 2 ) + var(--kompassi-button-icon-size) );
@@ -212,6 +214,7 @@
 
 .kompassi-dropdown-menu-items {
    display: none;
+   list-style-type: none;
 }
    .kompassi-dropdown-menu.open .kompassi-dropdown-menu-items {
       position: absolute;
@@ -226,6 +229,7 @@
 		background: var(--kompassi-button-bg);
 		border-radius: var(--kompassi-button-radius);
 		box-shadow: var(--kompassi-box-shadow);
+      text-decoration: none;
 	}
       .kompassi-dropdown-menu > a {
          display: block;
@@ -285,6 +289,7 @@
 	bottom: 0;
 	z-index: 5000;
 
+   color: var(--kompassi-modal-fg);
 	background-color: var(--kompassi-modal-bg);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-border-radius);
