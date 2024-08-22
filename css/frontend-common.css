@@ -239,8 +239,6 @@
          position: relative;
          user-select: none;
 
-         padding: var(--kompassi-button-padding);
-
          width: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
          height: calc( var(--kompassi-button-icon-size) + var(--kompassi-button-padding) * 2 );
       }
