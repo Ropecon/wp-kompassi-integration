@@ -15,9 +15,10 @@
    --kompassi-box-shadow: 0 0 3px rgba(0,0,0,0.1);
    --kompassi-box-shadow-hover: 0 0 3px rgba(0,0,0,0.4);
    --kompassi-border-radius: 3px;
+   --kompassi-fg: #222;
 
    /*  Button groups  */
-   --kompassi-button-fg: #222;
+   --kompassi-button-fg: var(--kompassi-fg);
    --kompassi-button-bg: #fff;
    --kompassi-button-fg-active: #fff;
    --kompassi-button-bg-active: var(--kompassi-color-blue-mid);
@@ -29,12 +30,13 @@
 
    /*  Modals  */
    --kompassi-modal-max-width: 1000px;
-   --kompassi-modal-fg: #222;
+   --kompassi-modal-fg: var(--kompassi-fg);
    --kompassi-modal-bg: hsl(var(--kompassi-hue), 10%, 95%);
    --kompassi-modal-actions-bg: hsl(var(--kompassi-hue), 25%, 85%);
    --kompassi-modal-padding: 1em;
 
    /*  Popovers  */
+   --kompassi-popover-fg: var(--kompassi-fg);
    --kompassi-popover-bg: #fff;
 }
 
@@ -494,6 +496,7 @@
 
 	padding: 0.5em;
 
+   color: var(--kompassi-popover-fg);
 	background-color: var(--kompassi-popover-bg);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-border-radius);
