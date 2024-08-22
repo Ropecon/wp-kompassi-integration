@@ -151,15 +151,15 @@
 		cursor: pointer;
 		position: relative;
 		display: inline-block;
-		color: var(--kompassi-button-fg);
 		padding: var(--kompassi-button-padding);
+      color: var(--kompassi-button-fg) !important;
 		background: var(--kompassi-button-bg);
 		border-radius: var(--kompassi-button-radius);
 		margin-right: var(--kompassi-button-padding);
 		margin-bottom: var(--kompassi-button-padding);
 		box-shadow: var(--kompassi-box-shadow);
       text-decoration: none;
-	}
+   }
 		.kompassi-button-group.has-icon-and-label > a:is([class*="kompassi-icon"]) {
 			padding-left: calc( ( var(--kompassi-button-padding) * 2 ) + var(--kompassi-button-icon-size) );
 		}
@@ -183,8 +183,8 @@
 			}
 
 		.kompassi-button-group > a.active {
-			color: var(--kompassi-button-fg-active);
-			background: var(--kompassi-button-bg-active);
+			color: var(--kompassi-button-fg-active) !important;
+			background: var(--kompassi-button-bg-active) !important;
 		}
 
 @container kompassi-integration (min-width: 0px) {
@@ -234,7 +234,7 @@
 		background: var(--kompassi-button-bg);
 		border-radius: var(--kompassi-button-radius);
 		box-shadow: var(--kompassi-box-shadow);
-      text-decoration: none;
+      text-decoration: none !important;
 	}
       .kompassi-dropdown-menu > a {
          display: block;
