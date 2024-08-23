@@ -7,8 +7,8 @@ The plugin is licensed under the [MIT license](LICENSE.md).
 
 ### Getting Started
 
-1) Install the plugin by either
-   - clone the repository under your WordPress plugins directory
+1) Install the plugin – either
+   - clone the repository under your WordPress plugins directory, or
    - [download the repository](https://github.com/Ropecon/wp-kompassi-integration/archive/refs/heads/main.zip) and copy the files under your WordPress plugins directory either via file access or the upload plugin feature
 2) Enable the plugin
 3) Navigate to "Kompassi" under WordPress admin and set your event slug
