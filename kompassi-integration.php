@@ -47,8 +47,8 @@ class WP_Plugin_Kompassi_Integration {
 
 		$fields = array(
 			'event_slug' => array(
-				'label' => __( 'Event Slug', 'kompassi-integration' ),
-				'description' => __( 'Event slug in Kompassi.', 'kompassi-integration' )
+				'label' => __( 'Event Technical Name', 'kompassi-integration' ),
+				'description' => __( 'Technical name for the event in Kompassi (eg. tracon2024).', 'kompassi-integration' )
 			),
 			'contact' => array(
 				'label' => __( 'Contact', 'kompassi-integration' ),

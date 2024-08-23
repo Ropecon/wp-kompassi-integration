@@ -3,9 +3,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-07-18T19:26:02+03:00\n"
+"POT-Creation-Date: 2024-08-23T12:56:44+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #. Plugin Name of the plugin
 #: kompassi-integration.php:101 kompassi-integration.php:115
@@ -30,12 +30,12 @@ msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
 #: kompassi-integration.php:50
-msgid "Event Slug"
-msgstr "Tapahtuman polkutunnus"
+msgid "Event Technical Name"
+msgstr "Tapahtuman tekninen nimi"
 
 #: kompassi-integration.php:51
-msgid "Event slug in Kompassi."
-msgstr "Tapahtuman polkutunnus Kompassissa."
+msgid "Technical name for the event in Kompassi (eg. tracon2024)."
+msgstr "Tapahtuman tekinen nimi Kompassissa (esim. tracon2024)."
 
 #: kompassi-integration.php:54
 msgid "Contact"
@@ -123,13 +123,13 @@ msgid_plural "%s transients deleted."
 msgstr[0] "%s transientti poistettu."
 msgstr[1] "%s transienttia poistettu."
 
-#: kompassi-integration.php:457
+#: kompassi-integration.php:462
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr "Kyllä"
 
 #. translators: email link
-#: kompassi-integration.php:571
+#: kompassi-integration.php:576
 msgid "If you find errors in the program data, contact us at %s."
 msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 
@@ -208,7 +208,7 @@ msgstr "Suodata"
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:240 js/schedule.js:1069
+#: js/schedule.js:240 js/schedule.js:1080
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
@@ -235,63 +235,69 @@ msgid "Timeline"
 msgstr "Aikajana"
 
 #. translators: count of programs visible
-#: js/schedule.js:469
+#: js/schedule.js:475
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] "%s ohjelma näkyvissä."
 msgstr[1] "%s ohjelmaa näkyvissä."
 
-#: js/schedule.js:472
+#: js/schedule.js:478
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:669
+#: js/schedule.js:680
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr "Näytetään ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
 
 #. translators: amount of repositioned events
-#: js/schedule.js:676
+#: js/schedule.js:687
 msgid "Show %d program starting earlier"
 msgid_plural "Show %d programs starting earlier"
 msgstr[0] "Näytä %d aiemmin alkava ohjelma"
 msgstr[1] "Näytä %d aiemmin alkavaa ohjelmaa"
 
-#: js/schedule.js:677
+#: js/schedule.js:688
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:798
+#: js/schedule.js:809
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1027
+#: js/schedule.js:1038
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1056
+#: js/schedule.js:1067
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1057
+#: js/schedule.js:1068
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1064
+#: js/schedule.js:1075
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1097
+#: js/schedule.js:1108
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1098
+#: js/schedule.js:1109
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1103
+#: js/schedule.js:1114
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
+
+#~ msgid "Event Slug"
+#~ msgstr "Tapahtuman polkutunnus"
+
+#~ msgid "Event slug in Kompassi."
+#~ msgstr "Tapahtuman polkutunnus Kompassissa."
 
 #~ msgid "List View"
 #~ msgstr "Listanäkymä"

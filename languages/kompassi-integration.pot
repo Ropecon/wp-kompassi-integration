@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kompassi Integration 2024-06-12\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-integration\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-integration\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-18T19:26:02+03:00\n"
+"POT-Creation-Date: 2024-08-23T12:56:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
@@ -29,11 +29,11 @@ msgid "Pasi Lallinaho"
 msgstr ""
 
 #: kompassi-integration.php:50
-msgid "Event Slug"
+msgid "Event Technical Name"
 msgstr ""
 
 #: kompassi-integration.php:51
-msgid "Event slug in Kompassi."
+msgid "Technical name for the event in Kompassi (eg. tracon2024)."
 msgstr ""
 
 #: kompassi-integration.php:54
@@ -117,13 +117,13 @@ msgid_plural "%s transients deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kompassi-integration.php:457
+#: kompassi-integration.php:462
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr ""
 
 #. translators: email link
-#: kompassi-integration.php:571
+#: kompassi-integration.php:576
 msgid "If you find errors in the program data, contact us at %s."
 msgstr ""
 
@@ -204,7 +204,7 @@ msgid "Help"
 msgstr ""
 
 #: js/schedule.js:240
-#: js/schedule.js:1069
+#: js/schedule.js:1080
 msgid "Export Favorites"
 msgstr ""
 
@@ -231,60 +231,60 @@ msgid "Timeline"
 msgstr ""
 
 #. translators: count of programs visible
-#: js/schedule.js:469
+#: js/schedule.js:475
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:472
+#: js/schedule.js:478
 msgid "Nothing matched your search!"
 msgstr ""
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:669
+#: js/schedule.js:680
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr ""
 
 #. translators: amount of repositioned events
-#: js/schedule.js:676
+#: js/schedule.js:687
 msgid "Show %d program starting earlier"
 msgid_plural "Show %d programs starting earlier"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:677
+#: js/schedule.js:688
 msgid "Programs continuing"
 msgstr ""
 
-#: js/schedule.js:798
+#: js/schedule.js:809
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:1027
+#: js/schedule.js:1038
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:1056
+#: js/schedule.js:1067
 msgid "Create an import link to export your favorites to another device."
 msgstr ""
 
-#: js/schedule.js:1057
+#: js/schedule.js:1068
 msgid "Favorites to be exported:"
 msgstr ""
 
-#: js/schedule.js:1064
+#: js/schedule.js:1075
 msgid "Copy import link to clipboard"
 msgstr ""
 
-#: js/schedule.js:1097
+#: js/schedule.js:1108
 msgid "Replace Favorites"
 msgstr ""
 
-#: js/schedule.js:1098
+#: js/schedule.js:1109
 msgid "Append to Favorites"
 msgstr ""
 
-#: js/schedule.js:1103
+#: js/schedule.js:1114
 msgid "Import Favorites"
 msgstr ""
