@@ -282,7 +282,7 @@ function kompassi_schedule_init_toolbar( ) {
 			}
 		};
 
-		// Negative selectin filter
+		// Negative selection filter
 		if( dimension.isNegativeSelection == true ) {
 			select.addClass( 'flag-negative' );
 			options.texts.options_header = __( 'Program matching selection will be hidden from results.', 'kompassi-integration' );
@@ -501,6 +501,8 @@ function kompassi_schedule_update_date_view_parameters( ) {
 			timestamp = selected_date.data( 'timestamp' );
 			start_of_day = parseInt( kompassi_options.schedule_start_of_day );
 			end_of_day = parseInt( kompassi_options.schedule_end_of_day );
+			if( isNaN( start_of_day ) ) { start_of_day = 0; }
+			if( isNaN( end_of_day ) ) { end_of_day = 0; }
 
 			// Calculate Start of Day
 			kompassi_schedule.filters.date.start = new Date( parseInt( timestamp ) + ( start_of_day * 3600 ) * 1000 );
