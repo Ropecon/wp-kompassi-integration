@@ -32,6 +32,8 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
           startTimeUnixSeconds
           endTimeUnixSeconds
           lengthMinutes
+          title
+          subtitle
         }
         links(lang: $locale) {
           title
