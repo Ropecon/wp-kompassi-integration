@@ -29,8 +29,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 #kompassi_schedule_toolbar {
 	display: grid;
-	margin-bottom: var(--kompassi-button-padding);
-	grid-gap: var(--kompassi-button-padding);
+	margin-bottom: var(--kompassi-padding);
+	grid-gap: var(--kompassi-padding);
 	grid-template-areas: "dates dates" "filtering filtering" "menu display";
 	grid-template-columns: min-content auto;
 }
@@ -73,10 +73,10 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 #kompassi_schedule_filters {
 	position: relative;
 	display: none;
-	margin-bottom: var(--kompassi-button-padding);
+	margin-bottom: var(--kompassi-padding);
 	color: var(--kompassi-fg-alt);
 	background-color: var(--kompassi-bg-alt);
-	padding: var(--kompassi-button-padding);
+	padding: var(--kompassi-padding);
 	border-radius: var(--kompassi-radius);
 	box-shadow: var(--kompassi-box-shadow);
 }
@@ -132,7 +132,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					color: #000;
 				}
 					#kompassi_schedule_filters .ms-options > .ms-options-header {
-						padding: var(--kompassi-button-padding);
+						padding: var(--kompassi-padding);
 						font-size: 90%;
 						border-bottom: 1px solid var(--kompassi-schedule-timeline-ruler);
 					}
@@ -149,8 +149,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 							}
 							#kompassi_schedule_filters .ms-options > ul label {
 								cursor: pointer;
-								padding: calc( var(--kompassi-button-padding) / 2 ) var(--kompassi-button-padding);
-								padding-left: calc( var(--kompassi-button-padding) + 1.5em );
+								padding: calc( var(--kompassi-padding) / 2 ) var(--kompassi-padding);
+								padding-left: calc( var(--kompassi-padding) + 1.5em );
 								border: none;
 							}
 								#kompassi_schedule_filters .ms-options > ul label.focused,
@@ -165,17 +165,17 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 								}
 							#kompassi_schedule_filters .ms-options > ul input {
 								width: 1.5em;
-								margin: calc( var(--kompassi-button-padding) / 2 - 3px ) var(--kompassi-button-padding) calc( var(--kompassi-button-padding) / 2 ) 0;
+								margin: calc( var(--kompassi-padding) / 2 - 3px ) var(--kompassi-padding) calc( var(--kompassi-padding) / 2 ) 0;
 							}
 
 	#kompassi_schedule_filters.visible.has-filters-enabled {
-		padding-bottom: calc( 1.5em + var(--kompassi-button-padding) * 2 );
+		padding-bottom: calc( 1.5em + var(--kompassi-padding) * 2 );
 	}
 			#kompassi_schedule_filters .clear-filters {
 				display: none;
 				position: absolute;
-				bottom: var(--kompassi-button-padding);
-				left: var(--kompassi-button-padding);
+				bottom: var(--kompassi-padding);
+				left: var(--kompassi-padding);
 				height: 1.5em;
 				width: 100%;
 			}
@@ -195,7 +195,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	#kompassi_schedule_filters.visible {
 		display: grid;
 		grid-template-columns: repeat(4, minmax(0, 1fr));
-		grid-gap: var(--kompassi-button-padding);
+		grid-gap: var(--kompassi-padding);
 	}
 		#kompassi_schedule_filters.visible > *,
 		#kompassi_schedule_filters.visible > .select > * {
@@ -205,16 +205,16 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			max-width: 100%;
 		}
 	#kompassi_schedule_filters.visible.has-filters-enabled {
-		padding-right: calc( 1.5em + var(--kompassi-button-padding) * 2 );
-		padding-bottom: var(--kompassi-button-padding);
+		padding-right: calc( 1.5em + var(--kompassi-padding) * 2 );
+		padding-bottom: var(--kompassi-padding);
 	}
 		#kompassi_schedule_filters .clear-filters {
 			left: unset;
 			bottom: unset;
-			top: var(--kompassi-button-padding);
-			right: var(--kompassi-button-padding);
+			top: var(--kompassi-padding);
+			right: var(--kompassi-padding);
 			width: 1.5em;
-			height: calc( 100% - var(--kompassi-button-padding) * 2 );
+			height: calc( 100% - var(--kompassi-padding) * 2 );
 		}
 		#kompassi_schedule_filters .clear-filters::before {
 			width: 100%;
