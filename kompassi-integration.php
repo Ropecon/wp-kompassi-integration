@@ -455,17 +455,30 @@ class WP_Plugin_Kompassi_Integration {
 						<?php echo make_clickable( $program['description'] ); ?>
 					</div>
 					<?php
-						$annotations = '';
+						$annotations = array( );
 						foreach( $program['cachedAnnotations'] as $field => $value ) {
 							if( !in_array( $field, $options['hidden_annotations'] ) && $options['annotations'][$field]['isShownInDetail'] !== false && $value !== false ) {
 								if( $value === true ) {
 									$value = _x( 'Yes', 'boolean field: true', 'kompassi-integration' );
 								}
-								$annotations .= '<dt>' . $options['annotations'][$field]['title'] . '</dt><dd class="annotation-' . str_replace( ':', '-', $field ) . '">' . $value . '</dd>';
+								$annotations[] = array(
+									'title' => $options['annotations'][$field]['title'],
+									'description' => $value,
+									'class' => 'annotation-' . str_replace( ':', '-', $field )
+								);
 							}
 						}
-						if( strlen( $annotations ) > 0 ) {
-							echo '<dl class="annotations">' . $annotations . '</dl>';
+						// Allow sites to programmatically add annotations
+						$annotations = apply_filters( 'kompassi_integration_program_annotations', $annotations, $program );
+						if( count( $annotations ) > 0 ) {
+							echo '<dl class="annotations">';
+							foreach( $annotations as $annotation ) {
+								echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
+								foreach( (array) $annotation['description'] as $desc ) {
+									echo '<dd class="' . $annotation['class'] . '">' . $desc . '</dd>';
+								}
+							}
+							echo '</dl>';
 						}
 					?>
 				</div>
