@@ -836,8 +836,8 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		}
 		// End grouping
 
-		program.css( 'width', 'calc( ' + width + '% - 5px )' );
-		program.css( 'min-width', 'calc( ' + width + '% - 5px )' );
+		program.css( 'width', 'calc( ' + width + '% - 9px )' );
+		program.css( 'min-width', 'calc( ' + width + '% - 9px )' );
 		program.css( 'left', 'calc( ' + offset + '% + 3px )' );
 		program.css( 'top', 'calc( ' + program_row + ' * var(--kompassi-schedule-timeline-row-height)' ); // Grouping
 		if( offset < 0 ) {
