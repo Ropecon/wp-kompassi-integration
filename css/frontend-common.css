@@ -11,22 +11,28 @@
    --kompassi-fg-alt: #fff;
    --kompassi-bg-alt: #225f8c; /* from kompassi brand colors */
    --kompassi-fg-indicator: #fff;
-   --kompassi-bg-indicator: rgba(200,0,0,1);
+   --kompassi-bg-indicator: hsl(0,100%,40%);
+   --kompassi-fg-lesser: hsl(0,0%,0%,0.6);
 
    /*  Common definitions  */
-   --kompassi-box-shadow: 0 0 3px rgba(0,0,0,0.1);
-   --kompassi-box-shadow-hover: 0 0 3px rgba(0,0,0,0.4);
+   --kompassi-box-shadow: 0 0 3px hsla(0,0%,0%,0.1);
+   --kompassi-box-shadow-hover: 0 0 3px hsla(0,0%,0%,0.4);
    --kompassi-radius: 0.3em;
    --kompassi-padding: 0.6em;
    --kompassi-padding-large: 1.5em;
+   --kompassi-hairline: hsla(0,0%,0%,0.1);
 
    /*  Button groups  */
-   --kompassi-button-separator: rgba(0,0,0,0.1);
    --kompassi-button-icon-size: 21px;
 
-   /*  Modals  */
+   /*  Modal  */
    --kompassi-modal-max-width: 1000px;
-   --kompassi-modal-bg: hsl(var(--kompassi-hue), 10%, 95%);
+   --kompassi-modal-bg: hsl(var(--kompassi-hue),10%,95%);
+   --kompassi-modal-underlay-bg: hsla(0,0%,0%,0.75);
+   --kompassi-modal-actions-bg: hsl(var(--kompassi-hue),25%,85%);
+
+   /*  Popover  */
+   --kompassi-popover-bg: hsl(var(--kompassi-hue),50%,95%);
 }
 
 [class*="wp-block-kompassi"], #kompassi_modal {
@@ -38,6 +44,38 @@
 	font-family: var(--kompassi-font);
    font-size: var(--kompassi-font-size);
    line-height: 1.3em;
+}
+
+@media (prefers-color-scheme: dark) {
+   :root {
+      --kompassi-fg-lightness: 0%;
+
+      --kompassi-fg: #ddd;
+      --kompassi-bg: hsl(var(--kompassi-hue),5%,10%);
+      --kompassi-fg-alt: hsl(var(--kompassi-hue),70%,70%);
+      --kompassi-bg-alt: hsl(var(--kompassi-hue),100%,10%);
+
+      --kompassi-hairline: hsla(0,0%,100%,0.1);
+
+      --kompassi-box-shadow: 0 0 3px hsla(0,0%,100%,0.1);
+      --kompassi-box-shadow-hover: 0 0 3px hsla(0,0%,100%,0.4);
+
+      --kompassi-modal-bg: hsl(var(--kompassi-hue),10%,15%);
+      --kompassi-modal-actions-bg: hsl(var(--kompassi-hue),20%,20%);
+
+      --kompassi-popover-bg: hsl(var(--kompassi-hue),50%,25%);
+   }
+   [class*="kompassi-icon"]::before {
+      filter: invert() !important;
+      opacity: 1 !important;
+   }
+      .is-favorite .kompassi-icon-favorite::before,
+      .kompassi-icon-favorite.active::before {
+         filter: none !important;
+      }
+   .kompassi-provided {
+      filter: invert() saturate(0%) brightness(200%);
+   }
 }
 
 /*
@@ -104,7 +142,7 @@
       font-size: 85%;
       letter-spacing: 0.02em;
       font-weight: 600;
-      color: rgba(0,0,0,0.6);
+      color: var(--kompassi-fg-lesser);
    }
    .kompassi-provided {
    	text-align: right;
@@ -183,7 +221,7 @@
 			margin-bottom: 0;
 		}
 			.kompassi-button-group > a:not(:last-of-type) {
-				border-right: 1px solid var(--kompassi-button-separator);
+            border-right: 1px solid var(--kompassi-hairline);
 			}
 			.kompassi-button-group > a:first-child {
 				border-bottom-left-radius: var(--kompassi-radius);
@@ -246,7 +284,7 @@
          min-width: max-content;
       }
          .kompassi-dropdown-menu-items li {
-            border-bottom: 1px solid var(--kompassi-button-separator);
+            border-bottom: 1px solid var(--kompassi-hairline);
          }
          .kompassi-dropdown-menu-items a {
             display: block;
@@ -302,7 +340,7 @@
 		grid-template-areas: 'title actions';
 		grid-gap: var(--kompassi-padding-large);
 		padding: var(--kompassi-padding-large);
-		background-color: #fff;
+      background-color: var(--kompassi-bg);
 	}
 		#kompassi_modal .header .title {
 			font-size: 120%;
@@ -331,7 +369,7 @@
 			}
 
 		#kompassi_modal .content .actions {
-			background-color: hsl(var(--kompassi-hue), 25%, 85%);
+         background-color: var(--kompassi-modal-actions-bg);
          padding: var(--kompassi-padding) var(--kompassi-padding-large);
 			margin-right: 0;
          margin-bottom: 0;
@@ -412,7 +450,7 @@
                }
 				#kompassi_modal .content .meta {
 					flex: 0 0 min-content;
-					background-color: #fff;
+               background-color: var(--kompassi-bg);
 				}
 
 @media screen and (min-width:900px) and (min-height: 800px) {
@@ -457,13 +495,13 @@
 }
 
 
-#kompassi_modal_bg {
+#kompassi_modal_underlay {
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: rgba(0,0,0,0.75);
+   background-color: var(--kompassi-modal-underlay-bg);
 	z-index: 4999;
 }
 
@@ -479,7 +517,7 @@
 	padding: 0.5em;
 
    color: var(--kompassi-fg);
-	background-color: hsl(var(--kompassi-hue), 50%, 95%);
+   background-color: var(--kompassi-popover-bg);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-radius);
 }

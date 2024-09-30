@@ -123,7 +123,7 @@ function kompassi_schedule_init( ) {
 	} );
 
 	//  Events (click, keyup): Close modal
-	jQuery( 'body' ).on( 'click', '#kompassi_modal_bg, #kompassi_modal .header .close', function( e ) {
+	jQuery( 'body' ).on( 'click', '#kompassi_modal_underlay, #kompassi_modal .header .close', function( e ) {
 		kompassi_close_modal( );
 		kompassi_schedule_update_url_hash( );
 	} );

@@ -2,13 +2,39 @@
 	/*  Timeline */
 	--kompassi-schedule-timeline-row-padding: 0.2em;
 	--kompassi-schedule-timeline-row-height: 2em;
-	--kompassi-schedule-timeline-ruler: rgba(0,0,0,0.1);
+	--kompassi-schedule-timeline-ruler: var(--kompassi-hairline);
 	--kompassi-schedule-timeline-time: rgba(0,0,0,0.4);
+	--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,90%);
 
 	/*  Program guide  */
 	--kompassi-program-padding: 1em;
 	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
+	--kompassi-program-bar-fg: #fff;
 	--kompassi-program-icon-default: url(../images/kompassi_white.svg);
+	--kompassi-program-length: hsla(0,0%,100%,0.5);
+
+	/* Filters */
+	--kompassi-schedule-filter-fg: #fff;
+	--kompassi-schedule-filter-bg: rgba(0,0,0,0.25);
+	--kompassi-schedule-filter-hover-bg: hsla(0,0%,0%,0.1);
+	--kompassi-schedule-filter-placeholder: hsla(0,0%,100%,0.5);
+
+	/*  Notes  */
+	--kompassi-schedule-notes-fg: var(--kompassi-fg);
+	--kompassi-schedule-notes-bg: hsl(60,100%,90%,1);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--kompassi-program-length: hsla(0,0%,100%,0.5);
+		--kompassi-schedule-notes-fg: #222;
+		--kompassi-schedule-notes-bg: hsl(60,100%,45%);
+		--kompassi-schedule-filter-hover-bg: hsla(0,0%,100%,0.1);
+		--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,15%);
+	}
+	#kompassi_schedule_filters .clear-filters::before {
+		filter: none !important;
+	}
 }
 
 /* Icon opacities */
@@ -90,15 +116,15 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		}
 			#kompassi_schedule_filters :is(input, select, .ms-options-wrap button) {
 				padding: 0.5em;
-				color: #fff;
-				background-color: rgba(0,0,0,0.25);
+				color: var(--kompassi-schedule-filter-fg);
+				background-color: var(--kompassi-schedule-filter-bg);
 				border: none;
 				border-radius: var(--kompassi-radius);
 				font-family: var(--kompassi-schedule-font);
 				font-size: 100%;
 			}
 				#kompassi_schedule_filters input::placeholder {
-					color: rgba(255,255,255,0.5);
+					color: var(--kompassi-schedule-filter-placeholder);
 				}
 				#kompassi_schedule_filters :is(select, .ms-options-wrap button) {
 					appearance: none;
@@ -114,8 +140,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 						display: none;
 					}
 					#kompassi_schedule_filters option {
-						background-color: #fff;
-						color: #000;
+						color: var(--kompassi-fg);
+						background-color: var(--kompassi-bg);
 					}
 				#kompassi_schedule_filters input:not(:placeholder-shown),
 				#kompassi_schedule_filters select:has(option:checked:not([value="0"])),
@@ -129,7 +155,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					}
 				#kompassi_schedule_filters .ms-options {
 					z-index: 20;
-					color: #000;
+					color: var(--kompassi-fg);
+					background-color: var(--kompassi-bg);
 				}
 					#kompassi_schedule_filters .ms-options > .ms-options-header {
 						padding: var(--kompassi-padding);
@@ -155,7 +182,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 							}
 								#kompassi_schedule_filters .ms-options > ul label.focused,
 								#kompassi_schedule_filters .ms-options > ul label:hover {
-									background-color: transparent(0,0,0,0.1);
+									background-color: var(--kompassi-schedule-filter-hover-bg);
 								}
 							#kompassi_schedule_filters .ms-options > ul li.selected {
 								order: -1;
@@ -232,10 +259,10 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 #kompassi_schedule_notes:not(:empty) {
 	padding: 0.5em;
-	background-color: rgba(255,255,204,1);
 	border-radius: var(--kompassi-radius);
 	box-shadow: var(--kompassi-box-shadow);
-	color: #222;
+	background-color: var(--kompassi-schedule-notes-bg);
+	color: var(--kompassi-schedule-notes-fg);
 	margin-bottom: 0.5em;
 }
 	#kompassi_schedule_notes span {
@@ -307,7 +334,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 [id^="kompassi"] .times .length {
 	font-size: max(85%, 8pt);
 	text-transform: none;
-	color: rgba(0,0,0,0.5);
+	color: var(--kompassi-program-length);
 	margin-left: 0.4em;
 }
 
@@ -471,7 +498,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		#kompassi_schedule[data-display="timeline"] .group-name {
 			display: block;
 			color: var(--kompassi-fg);
-			background-color: hsl(var(--kompassi-hue), 60%, 95%);
+			background-color: var(--kompassi-schedule-timeline-group-bg);
 			border-radius: var(--kompassi-radius);
 			position: absolute;
 			left: 3px;
@@ -485,7 +512,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			display: inline-block;
 			background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
 			background-image: linear-gradient(to bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.15));
-			color: #fff;
+			color: var(--kompassi-program-bar-fg);
 
 			z-index: 1;
 			white-space: nowrap;
