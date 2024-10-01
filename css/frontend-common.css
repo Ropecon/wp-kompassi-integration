@@ -2,6 +2,7 @@
    /*  Typography  */
    --kompassi-font: 'Lato', Helvetica, Arial, sans-serif;
    --kompassi-font-size: 16px;
+   --kompassi-line-height: 1.3em;
 
    /*  Colors  */
    --kompassi-hue: 197;
@@ -43,7 +44,7 @@
 [class*="wp-block-kompassi"], [id^="kompassi"] {
 	font-family: var(--kompassi-font);
    font-size: var(--kompassi-font-size);
-   line-height: 1.3em;
+   line-height: var(--kompassi-line-height);
 }
 
 @media (prefers-color-scheme: dark) {

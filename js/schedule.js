@@ -937,7 +937,7 @@ function kompassi_schedule_timeline_zoom_set( scale ) {
 	elem = jQuery( '#kompassi_schedule' );
 	elem.data( 'scale', scale );
 	elem.css( 'width', ( scale * 100 ) + '%' );
-	kompassi_schedule_timeline_reposition_headers( );
+	kompassi_schedule_timeline_reposition_labels( );
 }
 
 function kompassi_schedule_timeline_pan( direction_x, direction_y, ev ) {
@@ -949,7 +949,7 @@ function kompassi_schedule_timeline_pan( direction_x, direction_y, ev ) {
 	if( direction_x !== 0 ) {
 		wrapper = jQuery( '#kompassi_schedule' ).parent( '.kompassi_schedule_wrapper' );
 		wrapper.scrollLeft( wrapper.scrollLeft( ) + ( direction_x * pan_speed ) );
-		kompassi_schedule_timeline_reposition_headers( );
+		kompassi_schedule_timeline_reposition_labels( );
 	}
 	if( direction_y !== 0 ) {
 		wrapper = jQuery( window );
@@ -957,10 +957,11 @@ function kompassi_schedule_timeline_pan( direction_x, direction_y, ev ) {
 	}
 }
 
-function kompassi_schedule_timeline_reposition_headers( ) {
+function kompassi_schedule_timeline_reposition_labels( ) {
+	// Reposition headers
 	jQuery( '#kompassi_schedule .day_hint' ).each( function( ) {
 		content_width = jQuery( this ).find( 'span' ).first( ).outerWidth( );
-		scroll = jQuery( this ).closest( '.kompassi_schedule_wrapper ').scrollLeft( );
+		scroll = jQuery( this ).closest( '.kompassi_schedule_wrapper' ).scrollLeft( );
 		offset = jQuery( this )[0].offsetLeft;
 		next_offset = jQuery( this ).next( )[0].offsetLeft;
 
@@ -968,6 +969,20 @@ function kompassi_schedule_timeline_reposition_headers( ) {
 			jQuery( this ).css( 'padding-left', ( scroll - offset ) + 'px' );
 		} else {
 			jQuery( this ).css( 'padding-left', '' );
+		}
+	} );
+
+	// Reposition program titles that are left of visible area
+	jQuery( '#kompassi_schedule article' ).each( function( ) {
+		program_pos = parseInt( jQuery( this ).css( 'left' ) );
+
+		if( program_pos !== 'NaN' && program_pos < scroll ) {
+			program_pad = scroll - program_pos;
+			jQuery( this ).find( '.title' ).css( 'padding-left', program_pad + 'px' );
+			jQuery( this ).addClass( 'continues' );
+		} else {
+			jQuery( this ).find( '.title' ).css( 'padding-left', 0 );
+			jQuery( this ).removeClass( 'continues' );
 		}
 	} );
 }

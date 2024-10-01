@@ -1,7 +1,7 @@
 :root {
 	/*  Timeline */
 	--kompassi-schedule-timeline-row-padding: 0.2em;
-	--kompassi-schedule-timeline-row-height: 2em;
+	--kompassi-schedule-timeline-row-height: 2em; /* includes padding and margin */
 	--kompassi-schedule-timeline-ruler: var(--kompassi-hairline);
 	--kompassi-schedule-timeline-time: rgba(0,0,0,0.4);
 	--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,90%);
@@ -552,7 +552,19 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			#kompassi_schedule[data-display="timeline"] article :is(.title) {
 				display: block;
 			}
-
+			#kompassi_schedule[data-display="timeline"] article.continues :is(.title)::before {
+				content: '';
+				display: block;
+				float: left;
+				width: var(--kompassi-line-height);
+				height: var(--kompassi-line-height);
+				margin-left: calc(-1 * var(--kompassi-schedule-timeline-row-padding));
+				margin-right: var(--kompassi-schedule-timeline-row-padding);
+				background: transparent url(../images/icons/arrow_left.svg);
+				background-size: contain;
+				background-repeat: no-repeat;
+				filter: invert();
+			}
 /*
  *  Modal
  *
