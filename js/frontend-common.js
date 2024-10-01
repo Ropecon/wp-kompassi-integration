@@ -42,7 +42,7 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 	}
 
 	menu = jQuery( '<section ' + id + ' class="kompassi-dropdown-menu" />' );
-	menu_button = jQuery( '<a class="' + options.icon + '" title="' + options.title + '">&nbsp;</a>' );
+	menu_button = jQuery( '<a class="' + options.icon + '" title="' + options.title + '" />' );
 	menu.append( menu_button );
 	list = jQuery( '<ul class="kompassi-dropdown-menu-items" />' );
 	Object.keys( menu_items ).forEach( function( item ) {

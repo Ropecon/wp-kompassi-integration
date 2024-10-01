@@ -256,6 +256,7 @@
 		background: var(--kompassi-bg);
 		border-radius: var(--kompassi-radius);
 		box-shadow: var(--kompassi-box-shadow);
+      text-decoration: none;
 	}
       .kompassi-dropdown-menu > a {
          display: block;
