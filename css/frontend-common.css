@@ -22,6 +22,7 @@
    --kompassi-padding: 0.6em;
    --kompassi-padding-large: 1.5em;
    --kompassi-hairline: hsla(0,0%,0%,0.1);
+   --kompassi-hairline-bold: hsla(0,0%,0%,0.2);
 
    /*  Button groups  */
    --kompassi-button-icon-size: 21px;
@@ -57,6 +58,7 @@
       --kompassi-bg-alt: hsl(var(--kompassi-hue),100%,10%);
 
       --kompassi-hairline: hsla(0,0%,100%,0.1);
+      --kompassi-hairline-bold: hsla(0,0%,100%,0.2);
 
       --kompassi-box-shadow: 0 0 3px hsla(0,0%,100%,0.1);
       --kompassi-box-shadow-hover: 0 0 3px hsla(0,0%,100%,0.4);
