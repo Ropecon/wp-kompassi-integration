@@ -249,7 +249,7 @@ function kompassi_schedule_init_toolbar( ) {
 	filters = jQuery( '<section id="kompassi_schedule_filters" />' );
 
 	//  Text filter
-	filters.append( jQuery( '<input class="filter filter-text" name="filter_text" data-filter="text" placeholder="' + __( 'Text...', 'kompassi-integration' ) + '" />' ) );
+	filters.append( jQuery( '<div class="input"><input class="filter filter-text" name="filter_text" data-filter="text" placeholder="' + __( 'Text...', 'kompassi-integration' ) + '" /></div>' ) );
 
 	//  Dimension filters
 	jQuery.each( kompassi_schedule_dimensions, function( index, dimension ) {

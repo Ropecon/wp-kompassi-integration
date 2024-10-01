@@ -122,13 +122,15 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		#kompassi_schedule_filters > [class*="kompassi-icon"]::before {
 			filter: invert();
 		}
-		#kompassi_schedule_filters > *,
+		#kompassi_schedule_filters > .input > input {
+			width: calc(100% - var(--kompassi-padding) * 2);
+		}
 		#kompassi_schedule_filters > .select > * {
 			display: inline-block;
 			width: 100%;
 		}
 			#kompassi_schedule_filters :is(input, select, .ms-options-wrap button) {
-				padding: 0.5em;
+				padding: var(--kompassi-padding);
 				color: var(--kompassi-schedule-filter-fg);
 				background-color: var(--kompassi-schedule-filter-bg);
 				border: none;
@@ -310,6 +312,10 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	overflow: hidden;
 	user-select: none;
 	position: relative;
+}
+
+#kompassi_schedule {
+	width: calc(100% - 0.4em);
 }
 
 #kompassi_schedule article > * {
