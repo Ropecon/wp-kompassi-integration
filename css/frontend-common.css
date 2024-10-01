@@ -346,7 +346,7 @@
 	}
 		#kompassi_modal .header .title {
 			font-size: 120%;
-			line-height: 1.3em;
+         line-height: var(--kompassi-line-height);
 			align-self: center;
 		}
 		#kompassi_modal .header .close {

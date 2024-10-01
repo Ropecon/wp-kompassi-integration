@@ -565,18 +565,40 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				background-repeat: no-repeat;
 				filter: invert();
 			}
+
 /*
  *  Modal
  *
  */
+
+#kompassi_modal.kompassi-program .content .actions {
+	background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
+}
+	#kompassi_modal.kompassi-program .content .actions::before {
+		content: ' ';
+		display: block;
+		float: right;
+
+		height: calc(100% + var(--kompassi-padding) * 2);
+		width: calc(var(--kompassi-button-icon-size) + var(--kompassi-padding-large) * 2);
+
+		margin-top: calc(-1 * var(--kompassi-padding));
+		margin-right: calc(-1 * var(--kompassi-padding-large));
+		margin-left: var(--kompassi-padding);
+
+		background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
+		background-size: calc(var(--kompassi-button-icon-size) * 1.5);
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+	}
 
 #kompassi_modal.kompassi-program .content .main {
 	justify-content: space-between;
 }
 
 #kompassi_modal .content .main .annotations {
-	margin-top: var(--kompassi-modal-padding);
-	padding-top: var(--kompassi-modal-padding);
+	margin-top: var(--kompassi-padding-large);
+	padding-top: var(--kompassi-padding-large);
 	border-top: 1px solid rgba(0,0,0,0.2);
 }
 	#kompassi_modal .content .main .annotations :is(dt,dd) {

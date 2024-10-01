@@ -1010,10 +1010,19 @@ function kompassi_schedule_revert_display_layouts( ) {
 function kompassi_schedule_program_modal( program ) {
 	kompassi_close_modal( );
 
+	styles = '';
+	if( program.css( '--kompassi-program-color' ) !== undefined ) {
+		styles += '--kompassi-program-color: ' + program.css( '--kompassi-program-color' ) + '; ';
+	}
+	if( program.css( '--kompassi-program-icon' ) !== undefined ) {
+		styles += '--kompassi-program-icon: ' + program.css( '--kompassi-program-icon' ) + '; ';
+	}
+
 	options = {
 		attrs: {
 			'class': program.attr( 'class' ),
 			'data-id': program.data( 'id' ),
+			'style': styles,
 		},
 		title: program.children( '.title' ).text( ),
 		actions: program.children( '.actions' ).html( ),
