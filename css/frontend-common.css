@@ -64,6 +64,7 @@
       --kompassi-box-shadow-hover: 0 0 3px hsla(0,0%,100%,0.4);
 
       --kompassi-modal-bg: hsl(var(--kompassi-hue),10%,15%);
+      --kompassi-modal-underlay-bg: hsla(var(--kompassi-hue),20%,20%,0.75);
       --kompassi-modal-actions-bg: hsl(var(--kompassi-hue),20%,20%);
 
       --kompassi-popover-bg: hsl(var(--kompassi-hue),50%,25%);

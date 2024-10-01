@@ -22,6 +22,10 @@
 	/*  Notes  */
 	--kompassi-schedule-notes-fg: var(--kompassi-fg);
 	--kompassi-schedule-notes-bg: hsl(60,100%,90%,1);
+
+	/*  Dimensions */
+	--kompassi-dimension-fg-color-default: #fff;
+	--kompassi-dimension-bg-color-default: #222;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,10 +35,15 @@
 		--kompassi-schedule-notes-bg: hsl(60,100%,45%);
 		--kompassi-schedule-filter-hover-bg: hsla(0,0%,100%,0.1);
 		--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,15%);
+		--kompassi-dimension-fg-color-default: #222;
+		--kompassi-dimension-bg-color-default: #ddd;
 	}
 	#kompassi_schedule article::before,
 	#kompassi_schedule[data-display="timeline"] article {
 		filter: brightness(90%);
+	}
+	#kompassi_modal.kompassi-program .content .actions::after {
+		filter: brightness(50%);
 	}
 }
 
@@ -654,8 +663,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		padding: 0.2em 0.6em;
 		margin-right: 0.5em;
 		margin-bottom: 0.3em;
-		background-color: var(--dimension-bg-color, #222);
-		color: var(--dimension-fg-color, #fff);
+		background-color: var(--kompassi-dimension-bg-color,var(--kompassi-dimension-bg-color-default));
+		color: var(--kompassi-dimension-fg-color,var(--kompassi-dimension-fg-color-default));
 		border-radius: 9999px;
 		overflow-wrap: break-word;
 		line-height: 1.2em;
