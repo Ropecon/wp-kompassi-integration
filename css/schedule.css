@@ -32,9 +32,6 @@
 		--kompassi-schedule-filter-hover-bg: hsla(0,0%,100%,0.1);
 		--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,15%);
 	}
-	#kompassi_schedule_filters .clear-filters::before {
-		filter: none !important;
-	}
 	#kompassi_schedule article::before,
 	#kompassi_schedule[data-display="timeline"] article {
 		filter: brightness(90%);
@@ -113,6 +110,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	#kompassi_schedule_filters.visible {
 		display: block;
 	}
+		#kompassi_schedule_filters > [class*="kompassi-icon"]::before {
+			filter: invert();
+		}
 		#kompassi_schedule_filters > *,
 		#kompassi_schedule_filters > .select > * {
 			display: inline-block;
@@ -134,7 +134,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					appearance: none;
 					cursor: pointer;
 
-					background-image: url(../images/icons/dropdown.svg);
+					background-image: url(../images/icons/dropdown.svg); /* can this be separated and inverted? */
 					background-size: 1em auto;
 					background-repeat: no-repeat;
 					background-position: calc( 100% - 0.5em ) 0.65em;
