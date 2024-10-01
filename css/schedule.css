@@ -140,17 +140,28 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					color: var(--kompassi-schedule-filter-placeholder);
 				}
 				#kompassi_schedule_filters :is(select, .ms-options-wrap button) {
+					position: relative;
 					appearance: none;
 					cursor: pointer;
 
-					background-image: url(../images/icons/dropdown.svg); /* can this be separated and inverted? */
-					background-size: 1em auto;
-					background-repeat: no-repeat;
-					background-position: calc( 100% - 0.5em ) 0.65em;
 					padding: 0.5em 2em 0.5em 0.5em;
 				}
-					#kompassi_schedule_filters .ms-options-wrap button::after {
-						display: none;
+					#kompassi_schedule_filters :is(select, .ms-options-wrap button)::after {
+						display: block;
+						position: absolute;
+						top: 0;
+						bottom: 0;
+						right: 0.5em;
+						width: 1em;
+						height: 100%;
+						margin: 0 auto;
+
+						border: none;
+						background-image: url(../images/icons/dropdown.svg);
+						background-size: contain;
+						background-repeat: no-repeat;
+						background-position: 50% 50%;
+						filter: invert();
 					}
 					#kompassi_schedule_filters option {
 						color: var(--kompassi-fg);
@@ -162,9 +173,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					color: var(--kompassi-bg-alt);
 					background-color: var(--kompassi-fg-alt);
 				}
-					#kompassi_schedule_filters select:has(option:checked:not([value="0"])),
-					#kompassi_schedule_filters .ms-options-wrap.ms-has-selections button {
-						background-image: url(../images/icons/dropdown_black.svg);
+					#kompassi_schedule_filters select:has(option:checked:not([value="0"]))::after,
+					#kompassi_schedule_filters .ms-options-wrap.ms-has-selections button::after {
+						filter: none;
 					}
 				#kompassi_schedule_filters .ms-options {
 					z-index: 20;
