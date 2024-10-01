@@ -869,6 +869,9 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	}
 	jQuery( '#kompassi_schedule' ).prepend( headers );
 
+	// Reset zoom
+	kompassi_schedule_timeline_zoom_set( 1 );
+
 	// Enable zooming
 	jQuery( '#kompassi_schedule' ).data( 'scale', 1 );
 	var hammer = new Hammer( jQuery( '#kompassi_schedule' )[0], { touchAction: 'pan-x pan-y' } );
