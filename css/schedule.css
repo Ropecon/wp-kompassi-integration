@@ -35,6 +35,10 @@
 	#kompassi_schedule_filters .clear-filters::before {
 		filter: none !important;
 	}
+	#kompassi_schedule article::before,
+	#kompassi_schedule[data-display="timeline"] article {
+		filter: brightness(90%);
+	}
 }
 
 /* Icon opacities */
