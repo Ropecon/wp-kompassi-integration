@@ -183,6 +183,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					z-index: 20;
 					color: var(--kompassi-fg);
 					background-color: var(--kompassi-bg);
+					min-height: 0 !important;
 				}
 					#kompassi_schedule_filters .ms-options > .ms-options-header {
 						padding: var(--kompassi-padding);
