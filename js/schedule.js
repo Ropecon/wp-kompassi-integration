@@ -978,10 +978,10 @@ function kompassi_schedule_timeline_reposition_labels( ) {
 
 		if( program_pos !== 'NaN' && program_pos < scroll ) {
 			program_pad = scroll - program_pos;
-			jQuery( this ).find( '.title' ).css( 'padding-left', program_pad + 'px' );
+			jQuery( this ).find( '.title' ).css( 'margin-left', program_pad + 'px' );
 			jQuery( this ).addClass( 'continues' );
 		} else {
-			jQuery( this ).find( '.title' ).css( 'padding-left', 0 );
+			jQuery( this ).find( '.title' ).css( 'margin-left', 0 );
 			jQuery( this ).removeClass( 'continues' );
 		}
 	} );
