@@ -855,12 +855,12 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	// Rulers
 	headers = jQuery( '<div class="headers" />' );
 	j = 1;
+	offset = 100 / Math.ceil( kompassi_schedule.filters.date.length_hours );
 	for( i = 0; i < Math.ceil( kompassi_schedule.filters.date.length_hours ); i++ ) {
-		offset = 100 / Math.ceil( kompassi_schedule.filters.date.length_hours );
 		label = ( kompassi_schedule.filters.date.start.getHours( ) + i ) % 24;
 		label.toString( ).padStart( 2, '0' );
-		jQuery( '#kompassi_schedule' ).append( '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% );" />' ); // + label + '</div>' );
-		headers.append( '<div class="hint time_hint" style="left: calc( ' + offset + ' * ' + i + '%); width: calc( ' + offset + '% );">' + label + '</div>' );
+		jQuery( '#kompassi_schedule' ).append( '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );" />' ); // + label + '</div>' );
+		headers.append( '<div class="hint time_hint" style="left: calc( ' + offset + ' * ' + i + '%); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );">' + label + '</div>' );
 		if( label == '00' || i == 0 ) {
 			d = kompassi_schedule.filters.date.start.valueOf( ) / 1000 + ( i * 60 * 60 );
 			headers.append( '<strong class="hint day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% ); z-index: ' + j + ';"><span>' + kompassi_get_date_formatted( d ) + '</span></div>' );

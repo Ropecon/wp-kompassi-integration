@@ -489,8 +489,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	}
 		#kompassi_schedule[data-display="timeline"] .headers .hint {
 			position: absolute;
-			border-left: 1px solid var(--kompassi-schedule-timeline-ruler);
-			height: var(--kompassi-schedule-timeline-row-height);
+			height: calc(var(--kompassi-schedule-timeline-row-height) - var(--kompassi-schedule-timeline-row-padding) * 2);
 			padding: var(--kompassi-schedule-timeline-row-padding);
 			background-color: var(--kompassi-schedule-timeline-bg);
 			overflow: hidden;
@@ -499,7 +498,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				width: 100%;
 			}
 			#kompassi_schedule[data-display="timeline"] .headers .time_hint {
-				border-top: 1px solid var(--kompassi-schedule-timeline-ruler);
 				top: var(--kompassi-schedule-timeline-row-height);
 			}
 		#kompassi_schedule[data-display="timeline"] .headers.sticky {
@@ -522,7 +520,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		}
 	#kompassi_schedule[data-display="timeline"] :is(.group-name,article) {
 		padding: var(--kompassi-schedule-timeline-row-padding);
-/*		height: calc( var(--kompassi-schedule-timeline-row-height) - 3px ); */
 		position: absolute;
 	}
 		#kompassi_schedule[data-display="timeline"] .group-name {
