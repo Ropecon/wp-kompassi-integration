@@ -688,7 +688,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 #kompassi_modal .content .main .annotations {
 	margin-top: var(--kompassi-padding-large);
 	padding-top: var(--kompassi-padding-large);
-	border-top: 1px solid var(--kompassi-fg-20);
+	border-top: 1px solid var(--kompassi-fg-25);
 }
 	#kompassi_modal .content .main .annotations :is(dt,dd) {
 		font-size: 90%;
