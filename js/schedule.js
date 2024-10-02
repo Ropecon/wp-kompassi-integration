@@ -188,9 +188,12 @@ function kompassi_schedule_init_toolbar( ) {
 
 	/*  Date filter  */
 	date_section = jQuery( '<section id="kompassi_schedule_dates" class="kompassi-button-group" />' );
-	//  TODO: Only show "Next" if there is anything to show?
-	date_next_toggle = jQuery( '<a class="date-toggle no-icon" data-date="next">' + _x( 'Next', 'date filter', 'kompassi-integration' ) + '</a>' );
-	date_section.append( date_next_toggle );
+	//  Only show "Now" during event
+	now = dayjs( );
+	if( now > kompassi_schedule.event.start.subtract( 2, 'hour' ) && now < kompassi_schedule.event.end ) {
+		date_now_toggle = jQuery( '<a class="date-toggle no-icon" data-date="now">' + _x( 'Now', 'date filter', 'kompassi-integration' ) + '</a>' );
+		date_section.append( date_now_toggle );
+	}
 
 	//  Get list of dates
 	date = kompassi_schedule.event.start;
@@ -481,19 +484,20 @@ function kompassi_schedule_update_program_count( ) {
  */
 
 function kompassi_schedule_update_date_view_parameters( ) {
+	jQuery( '#kompassi_schedule' ).removeClass( 'now' );
+
 	kompassi_schedule.filters.date = { };
 	if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).length > 0 ) {
 		selected_date = jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).first( );
-		if( selected_date.data( 'date' ) == 'next' ) {
+		if( selected_date.data( 'date' ) == 'now' ) {
 			// TODO: Allow user to select how much program to show?
-			next_view_length = 2;
+			now_view_length = 2;
 			kompassi_schedule.filters.date.start = dayjs( );
-			kompassi_schedule.filters.date.end = kompassi_schedule.filters.date.start.add( next_view_length, 'hour' );
-			// This is for debugging purposes...
-			// if( kompassi_user_options.now ) {
-			//	kompassi_schedule.filters.date.start.setTime( kompassi_user_options.now * 1000 ).setMinutes( 0, 0, 0 );
-			// }
-			kompassi_schedule.filters.date.length_hours = next_view_length;
+			kompassi_schedule.filters.date.end = kompassi_schedule.filters.date.start.add( now_view_length, 'hour' );
+			kompassi_schedule.filters.date.length_hours = now_view_length;
+
+			//
+			jQuery( '#kompassi_schedule' ).addClass( 'now' );
 		} else {
 			date = dayjs( selected_date.data( 'date' ) );
 
@@ -523,9 +527,6 @@ function kompassi_schedule_update_date_view_parameters( ) {
 				kompassi_schedule.filters.date.length_hours = 24;
 			}
 
-			console.log( kompassi_schedule.filters.date.length_hours );
-
-
 			// Calculate End of Day
 			kompassi_schedule.filters.date.end = kompassi_schedule.filters.date.start.add( kompassi_schedule.filters.date.length_hours, 'hour' );
 			if( kompassi_schedule.filters.date.end > kompassi_schedule.event.end ) {
@@ -550,13 +551,17 @@ function kompassi_schedule_update_date_view_parameters( ) {
 				ends.push( jQuery( this ).data( 'end' ) );
 			} );
 
-			// ??
+			// Restrict view to filtered programs
 			kompassi_schedule.filters.date.start = dayjs( Math.min( ...starts ) );
 			kompassi_schedule.filters.date.end = dayjs( Math.min( ...ends ) );
 		}
 
 		kompassi_schedule.filters.date.length_hours = kompassi_schedule.filters.date.end.diff( kompassi_schedule.filters.date.start, 'hour' );
 	}
+
+	// Always start on whole hours, end on whole hours
+	kompassi_schedule.filters.date.start = kompassi_schedule.filters.date.start.startOf( 'hour' );
+	kompassi_schedule.filters.date.end = kompassi_schedule.filters.date.end.add( 1, 'hour' ).startOf( 'hour' );
 }
 
 /**
@@ -566,7 +571,7 @@ function kompassi_schedule_update_date_view_parameters( ) {
 
 function kompassi_schedule_apply_filters( ) {
 	//  Show all and remove notification if exists
-	jQuery( '#kompassi_schedule article' ).removeClass( 'filtered multiday-overlap' );
+	jQuery( '#kompassi_schedule article' ).removeClass( 'filtered continues' );
 	// TODO: Do this on setup_display?
 	jQuery( '#kompassi_schedule_notes .filter, #kompassi_programs_continuing' ).remove( );
 
@@ -638,7 +643,7 @@ function kompassi_schedule_apply_filters( ) {
 				} );
 				filter_count += 1;
 			} else {
-				jQuery( '#kompassi_schedule article' ).css( 'order', 0 );
+				jQuery( '#kompassi_schedule article' ).css( { 'order': '' } );
 			}
 		}
 	} );
@@ -663,7 +668,8 @@ function kompassi_schedule_apply_filters( ) {
 			program.addClass( 'filtered' );
 		}
 		if( program_start < kompassi_schedule.filters.date.start.unix( ) && program_end > kompassi_schedule.filters.date.start.unix( ) ) {
-			program.addClass( 'multiday-overlap' );
+			// TODO: When on "Now" view, all programs that started before this exact minute should be "continues"!
+			program.addClass( 'continues' );
 		}
 	} );
 
@@ -676,18 +682,21 @@ function kompassi_schedule_apply_filters( ) {
 	// If there is no text search and there is a date search, and there is programs that have started before the filtered timerange, show notification
 	if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).length > 0 ) {
 		if( kompassi_options.schedule_start_of_day != 0 || kompassi_options.schedule_end_of_day != 0 ) {
-			program_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
-			if( program_count > 0 ) {
-				// translators: start of day hour, end of day hour
-				jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-between display-not-timeline">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), start_of_day, end_of_day ) + '</span>' );
+			// Do not show message on "Now" view
+			if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).first( ).data( 'date' ) != 'now' ) {
+				program_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
+				if( program_count > 0 ) {
+					// translators: start of day hour, end of day hour
+					jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-between display-not-timeline">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), kompassi_options.schedule_start_of_day, kompassi_options.schedule_end_of_day ) + '</span>' );
+				}
 			}
 		}
 		// Show note about the Start/End of Day times
-		if( jQuery( '#kompassi_schedule_filters [name="filter_text"]' ).val( ).length < 1 && jQuery( '#kompassi_schedule article.multiday-overlap' ).length > 0 ) {
-			count = jQuery( '#kompassi_schedule article.multiday-overlap:visible' ).length;
+		if( jQuery( '#kompassi_schedule_filters [name="filter_text"]' ).val( ).length < 1 && jQuery( '#kompassi_schedule article.continues' ).length > 0 ) {
+			count = jQuery( '#kompassi_schedule article.continues:visible' ).length;
 			// translators: amount of repositioned events
-			jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-continuing display-not-timeline"><a class="kompassi-jump-to" href="#kompassi_programs_continuing">' + sprintf( _n( 'Show %d program starting earlier', 'Show %d programs starting earlier', count, 'kompassi-integration' ), count ) + '</a></span>' );
-			jQuery( '#kompassi_schedule article.multiday-overlap' ).first( ).before( '<h3 id="kompassi_programs_continuing"">' + __( 'Programs continuing', 'kompassi-integration' ) + '</h3>' );
+			jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-continuing display-not-timeline"><a class="kompassi-jump-to" href="#kompassi_programs_continuing">' + sprintf( _n( 'Show %d program that started earlier', 'Show %d programs that started earlier', count, 'kompassi-integration' ), count ) + '</a></span>' );
+			jQuery( '#kompassi_schedule article.continues' ).first( ).before( '<h3 id="kompassi_programs_continuing">' + __( 'Programs continuing', 'kompassi-integration' ) + '</h3>' );
 		}
 	}
 
@@ -784,7 +793,6 @@ function kompassi_schedule_setup_timeline_layout( ) {
 
 	// Calculate shown view in minutes
 	length = kompassi_schedule.filters.date.length_hours * 60;
-	console.log( kompassi_schedule.filters.date.length_hours );
 
 	jQuery( '#kompassi_schedule article:visible' ).sort( kompassi_schedule_sort_by_group ).each( function( index ) {
 		program = jQuery( this );
@@ -845,7 +853,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		program.css( 'left', 'calc( ' + offset + '% + 3px )' );
 		program.css( 'top', 'calc( ' + program_row + ' * var(--kompassi-schedule-timeline-row-height)' ); // Grouping
 		if( offset < 0 ) {
-			program.find( '.title' ).css( 'position', 'absolute' ).css( 'left', ( ( -1 * program.position( ).left ) + 6 ) + 'px' );
+			program.find( '.title' ).css( 'left', ( ( -1 * program.position( ).left ) + 6 ) + 'px' );
 		}
 
 		if( grouping ) {
@@ -858,7 +866,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 
 	// Rulers
 	headers = jQuery( '<div class="headers" />' );
-	j = 1;
+	j = 0;
 	offset = 100 / Math.ceil( kompassi_schedule.filters.date.length_hours );
 	for( i = 0; i < Math.ceil( kompassi_schedule.filters.date.length_hours ); i++ ) {
 		label = kompassi_schedule.filters.date.start.add( i, 'hour' ).format( 'H' );

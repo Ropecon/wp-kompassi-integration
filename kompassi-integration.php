@@ -313,6 +313,9 @@ class WP_Plugin_Kompassi_Integration {
 		$context = stream_context_create( $options );
 		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
 		$response = json_decode( $json, true );
+
+		$response['data']['event'] = apply_filters( 'kompassi_schedule_data', $response['data']['event'] );
+
 		return $response['data']['event'];
 	}
 

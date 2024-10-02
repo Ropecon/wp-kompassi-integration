@@ -372,9 +372,14 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 }
 
 /*  Programs continuing  */
-#kompassi_schedule:not([data-display="timeline"]) article.multiday-overlap {
+#kompassi_schedule:not([data-display="timeline"]) article.continues {
 	order: 3;
 }
+#kompassi_schedule[data-display="timeline"].now article.continues {
+/*	opacity: 0.5; */
+/*	background-image: linear-gradient( to bottom, hsl(0,0%,60%), hsl(0,0%,75%) ); */
+}
+
 #kompassi_schedule:not([data-display="timeline"]) #kompassi_programs_continuing {
 	order: 2;
 }
