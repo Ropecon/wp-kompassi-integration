@@ -2,6 +2,8 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
   event(slug: $eventSlug) {
     name
     slug
+    startTime
+    endTime
     program {
       annotations(lang: $locale) {
          slug

@@ -147,7 +147,10 @@ class WP_Plugin_Kompassi_Integration {
 		if( !is_admin( ) ) {
 			// Scripts: Libraries
 			wp_register_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
-			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( ), '1.11.10' );
+			wp_register_script( 'dayjs-localizedformat', plugins_url( 'lib/dayjs.localizedFormat.min.js', __FILE__ ), array( ), '1.11.10' );
+			wp_register_script( 'dayjs-updatelocale', plugins_url( 'lib/dayjs.updateLocale.min.js', __FILE__ ), array( ), '1.11.10' );
+			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( 'dayjs-localizedformat', 'dayjs-updatelocale' ), '1.11.10' );
+			wp_register_script( 'dayjs-locale-fi', plugins_url( 'lib/dayjs.locale-fi.min.js', __FILE__ ), array( 'dayjs' ), '1.11.10' );
 			wp_register_script( 'hammer', plugins_url( 'lib/hammer.min.js', __FILE__ ), array( ), '2.0.8' );
 			wp_register_script( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.js', __FILE__ ), array( 'jquery' ), '2.4.23' );
 			wp_register_script( 'showdown', plugins_url( 'lib/showdown.min.js', __FILE__ ), array( ), '2.1.0' );
@@ -168,7 +171,7 @@ class WP_Plugin_Kompassi_Integration {
 
 			// SCHEDULE BLOCK
 			if( has_block( 'kompassi-integration/schedule' ) ) {
-				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'dayjs', 'hammer', 'jquery-multiselect', 'wp-i18n', 'showdown' ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'dayjs', 'dayjs-locale-fi', 'hammer', 'jquery-multiselect', 'wp-i18n', 'showdown' ), $this->ver );
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
 					'locale' => get_locale( ),
@@ -310,7 +313,7 @@ class WP_Plugin_Kompassi_Integration {
 		$context = stream_context_create( $options );
 		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
 		$response = json_decode( $json, true );
-		return $response['data']['event']['program'];
+		return $response['data']['event'];
 	}
 
 	/*
@@ -336,18 +339,18 @@ class WP_Plugin_Kompassi_Integration {
 		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . '>';
 
 		/*  Schedule  */
-		$out .= '<section class="kompassi_schedule_wrapper">';
-		$out .= '<section id="kompassi_schedule" data-display="' . $attributes['default_display'] . '">';
-
 		$data = $this->get_schedule_data_graphql( );
 		if( !$data || count( $data ) < 1 ) {
 			return;
 		}
 
+		$out .= '<section class="kompassi_schedule_wrapper">';
+		$out .= '<section id="kompassi_schedule" data-display="' . $attributes['default_display'] . '" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '">';
+
 		$options = array( );
 		// Map dimension value labels and flags to arrays
 		$options['dimensions'] = array( );
-		foreach( $data['dimensions'] as $dimension ) {
+		foreach( $data['program']['dimensions'] as $dimension ) {
 			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
 			foreach( $dimension['values'] as $value ) {
 				$d['value_labels'][$value['slug']] = $value['title'];
@@ -362,7 +365,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		// Map annotation labels and flags to arrays
 		$options['annotations'] = array( );
-		foreach( $data['annotations'] as $annotation ) {
+		foreach( $data['program']['annotations'] as $annotation ) {
 			$options['annotations'][$annotation['slug']] = $annotation;
 		}
 
@@ -382,13 +385,13 @@ class WP_Plugin_Kompassi_Integration {
 			}
 		}
 
-		foreach( $data['programs'] as $p ) {
-			$out .= $this->markup_program( $p, $options );
+		foreach( $data['program']['programs'] as $p ) {
+			$out .= $this->markup_single_program( $p, $options );
 		}
 		$out .= '</section>';
 		$out .= '</section>';
 
-		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['dimensions'] ) . '</script>';
+		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['program']['dimensions'] ) . '</script>';
 
 		$out .= '<div class="kompassi-footer">';
 		$out .= $this->contact( );
@@ -407,7 +410,7 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function markup_program( $program, $options ) {
+	function markup_single_program( $program, $options ) {
 		if( !is_array( $program['scheduleItems'] ) || count( $program['scheduleItems'] ) < 1 ) {
 			return;
 		}
@@ -419,7 +422,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		$attrs = array(
 			'data-id' => $program['slug'],
-			'data-length' => $program['length'], // Required for timeline calculations
+			'data-length' => $program['length'], // Required for timeline calculations // Can be calculated easily by day.js...
 			'data-start' => $program['start'],
 			'data-end' => $program['end'],
 		);
