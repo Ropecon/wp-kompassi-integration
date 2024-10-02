@@ -172,8 +172,8 @@ class WP_Plugin_Kompassi_Integration {
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
 					'locale' => get_locale( ),
-					'schedule_start_of_day' => get_option( 'kompassi_integration_schedule_start_of_day', '0' ),
-					'schedule_end_of_day' => get_option( 'kompassi_integration_schedule_end_of_day', '0' ),
+					'schedule_start_of_day' => (int) get_option( 'kompassi_integration_schedule_start_of_day', 0 ),
+					'schedule_end_of_day' => (int) get_option( 'kompassi_integration_schedule_end_of_day', 0 ),
 					'hidden_dimensions' => explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) ),
 					'timeline_grouping' => get_option( 'kompassi_integration_timeline_grouping' ),
 				);

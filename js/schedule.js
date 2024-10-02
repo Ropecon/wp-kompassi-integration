@@ -671,9 +671,7 @@ function kompassi_schedule_apply_filters( ) {
 
 	// If there is no text search and there is a date search, and there is programs that have started before the filtered timerange, show notification
 	if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).length > 0 ) {
-		if( parseInt( kompassi_options.schedule_start_of_day ) !== 0 || parseInt( kompassi_options.schedule_end_of_day ) !== 0 ) {
-			start_of_day = parseInt( kompassi_options.schedule_start_of_day );
-			end_of_day = parseInt( kompassi_options.schedule_end_of_day );
+		if( kompassi_options.schedule_start_of_day != 0 || kompassi_options.schedule_end_of_day != 0 ) {
 			program_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
 			if( program_count > 0 ) {
 				// translators: start of day hour, end of day hour
