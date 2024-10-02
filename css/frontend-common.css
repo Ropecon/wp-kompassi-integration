@@ -5,36 +5,38 @@
    --kompassi-line-height: 1.3em;
 
    /*  Colors  */
-   --kompassi-hue: 197;
+   --kompassi-fg-lightness: 13%;
+   --kompassi-fg: hsla(0,0%,var(--kompassi-fg-lightness),1);
+   --kompassi-fg-10: hsla(0,0%,var(--kompassi-fg-lightness),0.1);
+   --kompassi-fg-25: hsla(0,0%,var(--kompassi-fg-lightness),0.2);
+   --kompassi-fg-50: hsla(0,0%,var(--kompassi-fg-lightness),0.5);
+   --kompassi-fg-75: hsla(0,0%,var(--kompassi-fg-lightness),0.75);
+   --kompassi-fg-invert: hsla(0,0%,100%,1);
 
-   --kompassi-fg: #222;
    --kompassi-bg: #fff;
-   --kompassi-fg-alt: #fff;
-   --kompassi-bg-alt: #225f8c; /* from kompassi brand colors */
-   --kompassi-fg-indicator: #fff;
-   --kompassi-bg-indicator: hsl(0,100%,40%);
-   --kompassi-fg-lesser: hsl(0,0%,0%,0.6);
+
+   /*  Palette  */
+   --kompassi-hue: 205;
+   --kompassi-palette-1: hsl(var(--kompassi-hue),60%,20%);
+   --kompassi-palette-2: hsl(var(--kompassi-hue),60%,35%);
+   --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
+   --kompassi-palette-thin: hsl(var(--kompassi-hue),10%,95%);
+   --kompassi-palette-none: #fff;
+
+   /*  Indicator  */
+   --kompassi-indicator-fg: #fff;
+   --kompassi-indicator-bg: hsl(0,100%,40%);
 
    /*  Common definitions  */
-   --kompassi-box-shadow: 0 0 3px hsla(0,0%,0%,0.1);
-   --kompassi-box-shadow-hover: 0 0 3px hsla(0,0%,0%,0.4);
+   --kompassi-box-shadow: 0 0 3px var(--kompassi-fg-10);
    --kompassi-radius: 0.3em;
    --kompassi-padding: 0.6em;
    --kompassi-padding-large: 1.5em;
-   --kompassi-hairline: hsla(0,0%,0%,0.1);
-   --kompassi-hairline-bold: hsla(0,0%,0%,0.2);
-
-   /*  Button groups  */
-   --kompassi-button-icon-size: 21px;
+   --kompassi-icon-size: 21px;
+   --kompassi-modal-max-width: 1000px;
 
    /*  Modal  */
-   --kompassi-modal-max-width: 1000px;
-   --kompassi-modal-bg: hsl(var(--kompassi-hue),10%,95%);
-   --kompassi-modal-underlay-bg: hsla(0,0%,0%,0.75);
-   --kompassi-modal-actions-bg: hsl(var(--kompassi-hue),25%,85%);
-
-   /*  Popover  */
-   --kompassi-popover-bg: hsl(var(--kompassi-hue),50%,95%);
+   --kompassi-modal-underlay-bg: var(--kompassi-fg-75);
 }
 
 [class*="wp-block-kompassi"], #kompassi_modal {
@@ -50,24 +52,16 @@
 
 @media (prefers-color-scheme: dark) {
    :root {
-      --kompassi-fg-lightness: 0%;
-
-      --kompassi-fg: #ddd;
+      --kompassi-fg-lightness: 87%;
+      --kompassi-fg-invert: #222;
       --kompassi-bg: hsl(var(--kompassi-hue),5%,10%);
-      --kompassi-fg-alt: hsl(var(--kompassi-hue),70%,70%);
-      --kompassi-bg-alt: hsl(var(--kompassi-hue),100%,10%);
 
-      --kompassi-hairline: hsla(0,0%,100%,0.1);
-      --kompassi-hairline-bold: hsla(0,0%,100%,0.2);
+      --kompassi-palette-1: hsl(var(--kompassi-hue),70%,40%);
+      --kompassi-palette-2: hsl(var(--kompassi-hue),70%,25%);
+      --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
+      --kompassi-palette-thin: hsl(var(--kompassi-hue),10%,17%);
 
-      --kompassi-box-shadow: 0 0 3px hsla(0,0%,100%,0.1);
-      --kompassi-box-shadow-hover: 0 0 3px hsla(0,0%,100%,0.4);
-
-      --kompassi-modal-bg: hsl(var(--kompassi-hue),10%,15%);
       --kompassi-modal-underlay-bg: hsla(var(--kompassi-hue),20%,20%,0.75);
-      --kompassi-modal-actions-bg: hsl(var(--kompassi-hue),20%,20%);
-
-      --kompassi-popover-bg: hsl(var(--kompassi-hue),50%,25%);
    }
    [class*="kompassi-icon"]::before {
       filter: invert() !important;
@@ -125,10 +119,10 @@
     display: inline-block;
     float: right;
     margin-left: var(--kompassi-padding);
-    width: var(--kompassi-button-icon-size);
-    height: var(--kompassi-button-icon-size);
-    color: var(--kompassi-fg-indicator);
-    background-color: var(--kompassi-bg-indicator);
+    width: var(--kompassi-icon-size);
+    height: var(--kompassi-icon-size);
+    color: var(--kompassi-indicator-fg);
+    background-color: var(--kompassi-indicator-bg);
     text-align: center;
     border-radius: 9999px;
     align-content: center;
@@ -146,7 +140,7 @@
       font-size: 85%;
       letter-spacing: 0.02em;
       font-weight: 600;
-      color: var(--kompassi-fg-lesser);
+      color: var(--kompassi-fg-75);
    }
    .kompassi-provided {
    	text-align: right;
@@ -179,7 +173,7 @@
 		position: relative;
 		display: inline-block;
 		padding: var(--kompassi-padding);
-      color: var(--kompassi-fg) !important;
+      color: var(--kompassi-fg); /* !important; */
 		background: var(--kompassi-bg);
 		border-radius: var(--kompassi-radius);
 		margin-right: var(--kompassi-padding);
@@ -188,7 +182,7 @@
       text-decoration: none;
    }
 		.kompassi-button-group.has-icon-and-label > a:is([class*="kompassi-icon"]) {
-			padding-left: calc( ( var(--kompassi-padding) * 2 ) + var(--kompassi-button-icon-size) );
+			padding-left: calc( ( var(--kompassi-padding) * 2 ) + var(--kompassi-icon-size) );
 		}
 			.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) > a::before {
 				content: '';
@@ -196,22 +190,22 @@
 				position: absolute;
 				top: var(--kompassi-padding);
 				left: var(--kompassi-padding);
-				width: var(--kompassi-button-icon-size);
-				height: var(--kompassi-button-icon-size);
+				width: var(--kompassi-icon-size);
+				height: var(--kompassi-icon-size);
 				background-repeat: no-repeat;
 				background-position: 50% 50%;
 				background-size: contain;
 				opacity: 0.5;
 			}
 			.kompassi-button-group.has-icon-only > a {
-				width: calc( var(--kompassi-button-icon-size) + var(--kompassi-padding) * 2 );
-				height: calc( var(--kompassi-button-icon-size) + var(--kompassi-padding) * 2 );
+				width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
+				height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
             user-select: none;
 			}
 
 		.kompassi-button-group > a.active {
-			color: var(--kompassi-fg-alt) !important;
-			background: var(--kompassi-bg-alt) !important;
+         color: var(--kompassi-palette-none) !important;
+         background: var(--kompassi-palette-2) !important;
 		}
 
 @container kompassi-integration (min-width: 0px) {
@@ -225,7 +219,7 @@
 			margin-bottom: 0;
 		}
 			.kompassi-button-group > a:not(:last-of-type) {
-            border-right: 1px solid var(--kompassi-hairline);
+            border-right: 1px solid var(--kompassi-fg-10);
 			}
 			.kompassi-button-group > a:first-child {
 				border-bottom-left-radius: var(--kompassi-radius);
@@ -267,8 +261,8 @@
          position: relative;
          user-select: none;
 
-         width: calc( var(--kompassi-button-icon-size) + var(--kompassi-padding) * 2 );
-         height: calc( var(--kompassi-button-icon-size) + var(--kompassi-padding) * 2 );
+         width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
+         height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
       }
          .kompassi-dropdown-menu > a::before {
             content: '';
@@ -276,8 +270,8 @@
             position: absolute;
             top: var(--kompassi-padding);
             left: var(--kompassi-padding);
-            width: var(--kompassi-button-icon-size);
-            height: var(--kompassi-button-icon-size);
+            width: var(--kompassi-icon-size);
+            height: var(--kompassi-icon-size);
             background-repeat: no-repeat;
             background-position: 50% 50%;
             background-size: contain;
@@ -289,7 +283,7 @@
          min-width: max-content;
       }
          .kompassi-dropdown-menu-items li {
-            border-bottom: 1px solid var(--kompassi-hairline);
+            border-bottom: 1px solid var(--kompassi-fg-10);
          }
          .kompassi-dropdown-menu-items a {
             display: block;
@@ -301,8 +295,8 @@
    border-bottom-left-radius: 0;
    border-bottom-right-radius: 0;
 
-   color: var(--kompassi-fg-alt);
-   background-color: var(--kompassi-bg-alt);
+   color: var(--kompassi-palette-none);
+   background-color: var(--kompassi-palette-2);
 }
 
 
@@ -359,7 +353,7 @@
 			bottom: 0;
 			cursor: pointer;
 			display: block;
-			width: var(--kompassi-button-icon-size);
+			width: var(--kompassi-icon-size);
 			padding: 0 var(--kompassi-padding-large);
 		}
 			#kompassi_modal .header .close::before {
@@ -374,7 +368,7 @@
 			}
 
 		#kompassi_modal .content .actions {
-         background-color: var(--kompassi-modal-actions-bg);
+         background-color: var(--kompassi-palette-3);
          padding: var(--kompassi-padding) var(--kompassi-padding-large);
 			margin-right: 0;
          margin-bottom: 0;
@@ -399,8 +393,8 @@
 					border-top-left-radius: var(--kompassi-radius);
 				}
 				#kompassi_modal.is-favorite .content .actions .favorite {
-               color: var(--kompassi-fg-alt);
-					background-color: var(--kompassi-bg-alt);
+               color: var(--kompassi-palette-none);
+               background-color: var(--kompassi-palette-2);
 				}
       #kompassi_modal .content .main,
 		#kompassi_modal .content .meta {
@@ -428,15 +422,15 @@
 			overflow-y: auto;
 			background:
 				/* Shadow covers */
-				linear-gradient(var(--kompassi-modal-bg) 30%, rgba(255,255,255,0)),
-				linear-gradient(rgba(255,255,255,0), var(--kompassi-modal-bg) 70%) 0 100%,
+            linear-gradient(hsl(0,0%,0%,0.05) 30%, rgba(255,255,255,0)),
+            linear-gradient(rgba(255,255,255,0), hsl(0,0%,0%,0.05) 70%) 0 100%,
 
 				/* Shadows */
 				radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
 				radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
 
 			background-repeat: no-repeat;
-			background-color: var(--kompassi-modal-bg);
+         background-color: hsl(0,0%,0%,0.05);
 			background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
 			/* Opera doesn't support this in the shorthand */
@@ -521,8 +515,8 @@
 
 	padding: 0.5em;
 
-   color: var(--kompassi-fg);
-   background-color: var(--kompassi-popover-bg);
+   color: var(--kompassi-palette-none);
+   background-color: var(--kompassi-palette-1);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-radius);
 }

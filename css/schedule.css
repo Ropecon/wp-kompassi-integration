@@ -1,44 +1,33 @@
 :root {
 	/*  Timeline */
-	--kompassi-schedule-timeline-row-padding: 0.2em;
+	--kompassi-schedule-timeline-row-padding: 0.2em; /* cannot change this without things overlapping! */
 	--kompassi-schedule-timeline-row-height: 2em; /* includes padding and margin */
-	--kompassi-schedule-timeline-time: rgba(0,0,0,0.4);
 	--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,90%);
 
 	/*  Program guide  */
-	--kompassi-program-padding: 1em;
 	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
-	--kompassi-program-bar-fg: #fff;
 	--kompassi-program-icon-default: url(../images/kompassi_white.svg);
-	--kompassi-program-length: hsla(0,0%,100%,0.5);
+	--kompassi-program-bar-fg: #fff;
 
 	/*  Filters  */
 	--kompassi-schedule-filter-fg: #fff;
-	--kompassi-schedule-filter-bg: rgba(0,0,0,0.25);
-	--kompassi-schedule-filter-hover-bg: hsla(0,0%,0%,0.1);
-	--kompassi-schedule-filter-placeholder: hsla(0,0%,100%,0.5);
+	--kompassi-schedule-filter-bg: var(--kompassi-fg-25);
+	--kompassi-schedule-filter-hover-bg: var(--kompassi-fg-10);
 
 	/*  Notes  */
+	/* TODO: Move to -common */
 	--kompassi-schedule-notes-fg: var(--kompassi-fg);
 	--kompassi-schedule-notes-bg: hsl(60,100%,90%,1);
 
 	/*  Dimensions */
-	--kompassi-dimension-fg-color-default: #fff;
-	--kompassi-dimension-bg-color-default: #222;
-
-	/*  Timeline  */
-	--kompassi-schedule-timeline-bg: var(--kompassi-bg);
+	--kompassi-dimension-fg-color-default: var(--kompassi-bg);
+	--kompassi-dimension-bg-color-default: var(--kompassi-fg);
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--kompassi-program-length: hsla(0,0%,100%,0.5);
-		--kompassi-schedule-notes-fg: #222;
 		--kompassi-schedule-notes-bg: hsl(60,100%,45%);
-		--kompassi-schedule-filter-hover-bg: hsla(0,0%,100%,0.1);
 		--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,15%);
-		--kompassi-dimension-fg-color-default: #222;
-		--kompassi-dimension-bg-color-default: #ddd;
 	}
 	#kompassi_schedule article::before,
 	#kompassi_schedule[data-display="timeline"] article {
@@ -46,6 +35,13 @@
 	}
 	#kompassi_modal.kompassi-program .content .actions::after {
 		filter: brightness(50%);
+	}
+	#kompassi_schedule_dates a.date-toggle.current::before {
+		background-color: var(--kompassi-fg);
+		filter: opacity(0.6);
+	}
+	#kompassi_schedule_dates a.date-toggle.current::after {
+		background-color: var(--kompassi-bg);
 	}
 }
 
@@ -101,7 +97,45 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	}
 }
 
+/*
+ *  Date filters
+ *
+ */
 
+#kompassi_schedule_dates .date-toggle.current {
+	position: relative;
+	z-index: 3;
+}
+	#kompassi_schedule_dates .date-toggle.current::before,
+	#kompassi_schedule_dates .date-toggle.current::after {
+		content: '';
+		display: block;
+		position: absolute;
+	}
+		#kompassi_schedule_dates .date-toggle.current::before {
+			height: 0.75em;
+			width: 0.75em;
+			top: 0;
+			right: -1px;
+			background-color: var(--kompassi-palette-2);
+			z-index: -2;
+			filter: opacity(0.8);
+		}
+			#kompassi_schedule_dates .date-toggle.current.active::before {
+				background-color: var(--kompassi-bg);
+			}
+		#kompassi_schedule_dates .date-toggle.current::after {
+			transform: rotate(45deg);
+			height: 1.25em;
+			width: 1.25em;
+			top: calc(0.75em / 4 + 1px);
+			right: calc(0.75em / 4);
+			z-index: -1;
+			background-color: var(--kompassi-bg);
+		}
+			#kompassi_schedule_dates .date-toggle.current.active::after {
+				background-color: var(--kompassi-palette-2);
+			}
 
 /*
  *  Filters
@@ -112,8 +146,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	position: relative;
 	display: none;
 	margin-bottom: var(--kompassi-padding);
-	color: var(--kompassi-fg-alt);
-	background-color: var(--kompassi-bg-alt);
+	color: var(--kompassi-palette-none);
+	background-color: var(--kompassi-palette-2);
 	padding: var(--kompassi-padding);
 	border-radius: var(--kompassi-radius);
 	box-shadow: var(--kompassi-box-shadow);
@@ -133,15 +167,15 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		}
 			#kompassi_schedule_filters :is(input, select, .ms-options-wrap button) {
 				padding: var(--kompassi-padding);
-				color: var(--kompassi-schedule-filter-fg);
-				background-color: var(--kompassi-schedule-filter-bg);
+				color: var(--kompassi-palette-none);
+				background-color: hsl(0,0%,0%,0.2);
 				border: none;
 				border-radius: var(--kompassi-radius);
-				font-family: var(--kompassi-schedule-font);
+				font-family: var(--kompassi-font);
 				font-size: 100%;
 			}
 				#kompassi_schedule_filters input::placeholder {
-					color: var(--kompassi-schedule-filter-placeholder);
+					color: var(--kompassi-palette-none);
 				}
 				#kompassi_schedule_filters :is(select, .ms-options-wrap button) {
 					position: relative;
@@ -149,6 +183,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					cursor: pointer;
 
 					padding: 0.5em 2em 0.5em 0.5em;
+					outline-color: var(--kompassi-palette-none);
 				}
 					#kompassi_schedule_filters :is(select, .ms-options-wrap button)::after {
 						display: block;
@@ -174,8 +209,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				#kompassi_schedule_filters input:not(:placeholder-shown),
 				#kompassi_schedule_filters select:has(option:checked:not([value="0"])),
 			   #kompassi_schedule_filters .ms-options-wrap.ms-has-selections button {
-					color: var(--kompassi-bg-alt);
-					background-color: var(--kompassi-fg-alt);
+					color: #222;
+					background-color: hsl(0,0%,100%,80%);
 				}
 					#kompassi_schedule_filters select:has(option:checked:not([value="0"]))::after,
 					#kompassi_schedule_filters .ms-options-wrap.ms-has-selections button::after {
@@ -190,7 +225,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					#kompassi_schedule_filters .ms-options > .ms-options-header {
 						padding: var(--kompassi-padding);
 						font-size: 90%;
-						border-bottom: 1px solid var(--kompassi-hairline);
+						border-bottom: 1px solid var(--kompassi-fg-10);
 					}
 					#kompassi_schedule_filters .ms-options > ul {
 						display: flex;
@@ -198,7 +233,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					}
 						#kompassi_schedule_filters .ms-options > ul li {
 							padding: 0;
-							border-bottom: 1px solid var(--kompassi-hairline);
+							border-bottom: 1px solid var(--kompassi-fg-10);
 						}
 							#kompassi_schedule_filters .ms-options > ul li:last-child {
 								border-bottom: none;
@@ -240,11 +275,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				}
 				#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters::before {
 					height: 100%;
-				}
-				#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters::after {
-					position: absolute;
-					content: attr(title);
-					color: var(--kompassi-fg-alt);
 				}
 
 @container kompassi-integration (min-width: 700px) {
@@ -349,8 +379,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 #kompassi_schedule article .actions > ::before {
 	content: '';
 	display: inline-block;
-	width: var(--kompassi-button-icon-size);
-	height: var(--kompassi-button-icon-size);
+	width: var(--kompassi-icon-size);
+	height: var(--kompassi-icon-size);
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -367,7 +397,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 [id^="kompassi"] .times .length {
 	font-size: max(85%, 8pt);
 	text-transform: none;
-	color: var(--kompassi-program-length);
+	color: var(--kompassi-fg-50);
 	margin-left: 0.4em;
 }
 
@@ -499,7 +529,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			position: absolute;
 			height: calc(var(--kompassi-schedule-timeline-row-height) - var(--kompassi-schedule-timeline-row-padding) * 2);
 			padding: var(--kompassi-schedule-timeline-row-padding);
-			background-color: var(--kompassi-schedule-timeline-bg);
+			background-color: var(--kompassi-bg);
 			overflow: hidden;
 		}
 			#kompassi_schedule[data-display="timeline"] .headers .day_hint {
@@ -509,8 +539,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				top: var(--kompassi-schedule-timeline-row-height);
 			}
 				#kompassi_schedule[data-display="timeline"] .headers.sticky .time_hint {
-					border-left: 1px solid var(--kompassi-hairline);
-					border-top: 1px solid var(--kompassi-hairline);
+					border-left: 1px solid var(--kompassi-fg-10);
+					border-top: 1px solid var(--kompassi-fg-10);
 				}
 		#kompassi_schedule[data-display="timeline"] .headers.sticky {
 			z-index: 10;
@@ -519,10 +549,10 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	#kompassi_schedule[data-display="timeline"] .ruler {
 		width: auto;
 		height: 100%;
-		border-top: 1px solid var(--kompassi-hairline);
-		border-left: 1px solid var(--kompassi-hairline);
+		border-top: 1px solid var(--kompassi-fg-10);
+		border-left: 1px solid var(--kompassi-fg-10);
 		padding: 3px;
-		color: var(--kompassi-schedule-timeline-time);
+		color: var(--kompassi-schedule-fg-50);
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -627,14 +657,14 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		float: right;
 
 		height: calc(100% + var(--kompassi-padding) * 2);
-		width: calc(var(--kompassi-button-icon-size) + var(--kompassi-padding-large) * 2);
+		width: calc(var(--kompassi-icon-size) + var(--kompassi-padding-large) * 2);
 
 		margin-top: calc(-1 * var(--kompassi-padding));
 		margin-right: calc(-1 * var(--kompassi-padding-large));
 		margin-left: var(--kompassi-padding);
 
 		background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
-		background-size: calc(var(--kompassi-button-icon-size) * 1.5);
+		background-size: calc(var(--kompassi-icon-size) * 1.5);
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 	}
@@ -658,7 +688,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 #kompassi_modal .content .main .annotations {
 	margin-top: var(--kompassi-padding-large);
 	padding-top: var(--kompassi-padding-large);
-	border-top: 1px solid var(--kompassi-hairline-bold);
+	border-top: 1px solid var(--kompassi-fg-20);
 }
 	#kompassi_modal .content .main .annotations :is(dt,dd) {
 		font-size: 90%;

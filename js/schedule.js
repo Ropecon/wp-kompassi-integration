@@ -196,6 +196,13 @@ function kompassi_schedule_init_toolbar( ) {
 	date = kompassi_schedule.event.start;
 	while( date.format( 'YYYY-MM-DD' ) <= kompassi_schedule.event.end.format( 'YYYY-MM-DD' ) ) {
 		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + date.format( 'YYYY-MM-DD' ) + '" title="' + date.format( 'ddd l' ) + '">' + date.format( 'ddd' ) + '</a>' );
+		if( date.format( 'YYYY-MM-DD' ) < now.format( 'YYYY-MM-DD' ) ) {
+			date_toggle.addClass( 'past' );
+		} else if( date.format( 'YYYY-MM-DD' ) == now.format( 'YYYY-MM-DD' ) ) {
+			date_toggle.addClass( 'current' );
+		} else {
+			date_toggle.addClass( 'future' );
+		}
 		date_section.append( date_toggle );
 		date = date.add( 1, 'day' );
 	}
@@ -485,6 +492,7 @@ function kompassi_schedule_update_date_view_parameters( ) {
 
 	kompassi_schedule.filters.date = { };
 	if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).length > 0 ) {
+		// Date selected
 		selected_date = jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).first( );
 		if( selected_date.data( 'date' ) == 'now' ) {
 			// TODO: Allow user to select how much program to show?
@@ -536,9 +544,11 @@ function kompassi_schedule_update_date_view_parameters( ) {
 		kompassi_schedule.filters.date.filtered = true;
 		kompassi_schedule.filters.enabled += 1;
 	} else {
+		// No date selected
 		kompassi_schedule.filters.date.start = kompassi_schedule.event.start;
 		kompassi_schedule.filters.date.end = kompassi_schedule.event.end;
 
+		// Restrict view to filtered programs
 		if( kompassi_schedule.filters.enabled > 0 && jQuery( '#kompassi_schedule article:visible' ).length > 0 ) {
 			starts = [];
 			ends = [];
@@ -548,17 +558,15 @@ function kompassi_schedule_update_date_view_parameters( ) {
 				ends.push( jQuery( this ).data( 'end' ) );
 			} );
 
-			// Restrict view to filtered programs
-			kompassi_schedule.filters.date.start = dayjs( Math.min( ...starts ) );
-			kompassi_schedule.filters.date.end = dayjs( Math.min( ...ends ) );
+			kompassi_schedule.filters.date.start = dayjs.unix( Math.min( ...starts ) );
+			kompassi_schedule.filters.date.end = dayjs.unix( Math.max( ...ends ) );
 		}
-
-		kompassi_schedule.filters.date.length_hours = kompassi_schedule.filters.date.end.diff( kompassi_schedule.filters.date.start, 'hour' );
 	}
 
-	// Always start on whole hours, end on whole hours
+	// Always start and end on whole hours
 	kompassi_schedule.filters.date.start = kompassi_schedule.filters.date.start.startOf( 'hour' );
 	kompassi_schedule.filters.date.end = kompassi_schedule.filters.date.end.add( 1, 'hour' ).startOf( 'hour' );
+	kompassi_schedule.filters.date.length_hours = kompassi_schedule.filters.date.end.diff( kompassi_schedule.filters.date.start, 'hour' );
 }
 
 /**
@@ -654,6 +662,12 @@ function kompassi_schedule_apply_filters( ) {
 
 	kompassi_schedule.filters.enabled = filter_count;
 
+	// Favorite filter
+	if( jQuery( '#kompassi_block_schedule' ).find( '.favorites-toggle' ).hasClass( 'active' ) ) {
+		jQuery( '#kompassi_schedule article:not(.is-favorite)' ).addClass( 'filtered' );
+		kompassi_schedule.filters.enabled += 1;
+	}
+
 	// Date filter
 	kompassi_schedule_update_date_view_parameters( );
 
@@ -669,12 +683,6 @@ function kompassi_schedule_apply_filters( ) {
 			program.addClass( 'continues' );
 		}
 	} );
-
-	// Favorite filter
-	if( jQuery( '#kompassi_block_schedule' ).find( '.favorites-toggle' ).hasClass( 'active' ) ) {
-		jQuery( '#kompassi_schedule article:not(.is-favorite)' ).addClass( 'filtered' );
-		kompassi_schedule.filters.enabled += 1;
-	}
 
 	// If there is no text search and there is a date search, and there is programs that have started before the filtered timerange, show notification
 	if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).length > 0 ) {
@@ -796,7 +804,6 @@ function kompassi_schedule_setup_timeline_layout( ) {
 
 		// Count the width % and offset % for program
 		width = program.data( 'length' ) / length * 100;
-		// TODO: Timestamp
 		offset_in_s = program.data( 'start' ) - ( kompassi_schedule.filters.date.start.unix( ) );
 		offset_in_m = offset_in_s / 60;
 		offset = offset_in_m / length * 100;
