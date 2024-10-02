@@ -1,13 +1,11 @@
 :root {
 	/*  Timeline */
-	--kompassi-schedule-timeline-row-padding: 0.2em; /* cannot change this without things overlapping! */
-	--kompassi-schedule-timeline-row-height: 2em; /* includes padding and margin */
-	--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,90%);
+	--kompassi-schedule-timeline-row-padding: 0.2em;
+	--kompassi-schedule-timeline-row-height: calc( var(--kompassi-line-height) + var(--kompassi-schedule-timeline-row-padding) * 3 );
 
 	/*  Program guide  */
-	--kompassi-program-color-default: var(--kompassi-color-blue-dark);
+	--kompassi-program-color-default: var(--kompassi-palette-main);
 	--kompassi-program-icon-default: url(../images/kompassi_white.svg);
-	--kompassi-program-bar-fg: #fff;
 
 	/*  Filters  */
 	--kompassi-schedule-filter-fg: #fff;
@@ -22,12 +20,14 @@
 	/*  Dimensions */
 	--kompassi-dimension-fg-color-default: var(--kompassi-bg);
 	--kompassi-dimension-bg-color-default: var(--kompassi-fg);
+
+	/*  Calculate row height  */
+
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
 		--kompassi-schedule-notes-bg: hsl(60,100%,45%);
-		--kompassi-schedule-timeline-group-bg: hsl(var(--kompassi-hue),50%,15%);
 	}
 	#kompassi_schedule article::before,
 	#kompassi_schedule[data-display="timeline"] article {
@@ -146,7 +146,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	position: relative;
 	display: none;
 	margin-bottom: var(--kompassi-padding);
-	color: var(--kompassi-palette-none);
+	color: #fff;
 	background-color: var(--kompassi-palette-2);
 	padding: var(--kompassi-padding);
 	border-radius: var(--kompassi-radius);
@@ -167,7 +167,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		}
 			#kompassi_schedule_filters :is(input, select, .ms-options-wrap button) {
 				padding: var(--kompassi-padding);
-				color: var(--kompassi-palette-none);
+				color: #fff;
 				background-color: hsl(0,0%,0%,0.2);
 				border: none;
 				border-radius: var(--kompassi-radius);
@@ -175,7 +175,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				font-size: 100%;
 			}
 				#kompassi_schedule_filters input::placeholder {
-					color: var(--kompassi-palette-none);
+					color: #fff;
 				}
 				#kompassi_schedule_filters :is(select, .ms-options-wrap button) {
 					position: relative;
@@ -183,7 +183,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					cursor: pointer;
 
 					padding: 0.5em 2em 0.5em 0.5em;
-					outline-color: var(--kompassi-palette-none);
+					outline-color: #fff;
 				}
 					#kompassi_schedule_filters :is(select, .ms-options-wrap button)::after {
 						display: block;
@@ -515,7 +515,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	color: var(--kompassi-fg);
 	background-color: var(--kompassi-bg);
 	overflow: hidden;
-	padding-top: calc( var(--kompassi-schedule-timeline-row-height) + var(--kompassi-schedule-timeline-row-padding ) );
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-radius);
 }
@@ -523,11 +522,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		position: absolute;
 		top: 0;
 		width: 100%;
-		height: calc( 2 * var(--kompassi-schedule-timeline-row-height) );
 	}
 		#kompassi_schedule[data-display="timeline"] .headers .hint {
 			position: absolute;
-			height: calc(var(--kompassi-schedule-timeline-row-height) - var(--kompassi-schedule-timeline-row-padding) * 2);
 			padding: var(--kompassi-schedule-timeline-row-padding);
 			background-color: var(--kompassi-bg);
 			overflow: hidden;
@@ -567,7 +564,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		#kompassi_schedule[data-display="timeline"] .group-name {
 			display: block;
 			color: var(--kompassi-fg);
-			background-color: var(--kompassi-schedule-timeline-group-bg);
+			background-color: var(--kompassi-palette-4);
 			border-radius: var(--kompassi-radius);
 			position: absolute;
 			left: 3px;
@@ -581,7 +578,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			display: inline-block;
 			background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
 			background-image: linear-gradient(to bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.15));
-			color: var(--kompassi-program-bar-fg);
+			color: #fff;
 
 			z-index: 1;
 			white-space: nowrap;

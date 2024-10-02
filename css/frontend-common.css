@@ -17,14 +17,14 @@
 
    /*  Palette  */
    --kompassi-hue: 205;
+   --kompassi-palette-0: hsl(var(--kompassi-hue),20%,10%);
    --kompassi-palette-1: hsl(var(--kompassi-hue),60%,20%);
    --kompassi-palette-2: hsl(var(--kompassi-hue),60%,35%);
    --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
-   --kompassi-palette-thin: hsl(var(--kompassi-hue),10%,95%);
-   --kompassi-palette-none: #fff;
+   --kompassi-palette-4: hsl(var(--kompassi-hue),50%,90%);
+   --kompassi-palette-5: hsl(var(--kompassi-hue),10%,95%);
 
    /*  Indicator  */
-   --kompassi-indicator-fg: #fff;
    --kompassi-indicator-bg: hsl(0,100%,40%);
 
    /*  Common definitions  */
@@ -34,9 +34,6 @@
    --kompassi-padding-large: 1.5em;
    --kompassi-icon-size: 21px;
    --kompassi-modal-max-width: 1000px;
-
-   /*  Modal  */
-   --kompassi-modal-underlay-bg: var(--kompassi-fg-75);
 }
 
 [class*="wp-block-kompassi"], #kompassi_modal {
@@ -56,12 +53,12 @@
       --kompassi-fg-invert: #222;
       --kompassi-bg: hsl(var(--kompassi-hue),5%,10%);
 
+      --kompassi-palette-0: hsl(var(--kompassi-hue),20%,15%);
       --kompassi-palette-1: hsl(var(--kompassi-hue),70%,40%);
       --kompassi-palette-2: hsl(var(--kompassi-hue),70%,25%);
       --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
-      --kompassi-palette-thin: hsl(var(--kompassi-hue),10%,17%);
-
-      --kompassi-modal-underlay-bg: hsla(var(--kompassi-hue),20%,20%,0.75);
+      --kompassi-palette-4: hsl(var(--kompassi-hue),50%,15%);
+      --kompassi-palette-5: hsl(var(--kompassi-hue),10%,17%);
    }
    [class*="kompassi-icon"]::before {
       filter: invert() !important;
@@ -121,7 +118,7 @@
     margin-left: var(--kompassi-padding);
     width: var(--kompassi-icon-size);
     height: var(--kompassi-icon-size);
-    color: var(--kompassi-indicator-fg);
+    color: #fff;
     background-color: var(--kompassi-indicator-bg);
     text-align: center;
     border-radius: 9999px;
@@ -204,7 +201,7 @@
 			}
 
 		.kompassi-button-group > a.active {
-         color: var(--kompassi-palette-none) !important;
+         color: #fff !important;
          background: var(--kompassi-palette-2) !important;
 		}
 
@@ -295,7 +292,7 @@
    border-bottom-left-radius: 0;
    border-bottom-right-radius: 0;
 
-   color: var(--kompassi-palette-none);
+   color: #fff;
    background-color: var(--kompassi-palette-2);
 }
 
@@ -393,7 +390,7 @@
 					border-top-left-radius: var(--kompassi-radius);
 				}
 				#kompassi_modal.is-favorite .content .actions .favorite {
-               color: var(--kompassi-palette-none);
+               color: #fff;
                background-color: var(--kompassi-palette-2);
 				}
       #kompassi_modal .content .main,
@@ -430,7 +427,7 @@
 				radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
 
 			background-repeat: no-repeat;
-         background-color: hsl(0,0%,0%,0.05);
+         background-color: var(--kompassi-palette-5);
 			background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
 			/* Opera doesn't support this in the shorthand */
@@ -500,7 +497,8 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-   background-color: var(--kompassi-modal-underlay-bg);
+   background-color: var(--kompassi-palette-0);
+   opacity: 0.85;
 	z-index: 4999;
 }
 
@@ -515,7 +513,7 @@
 
 	padding: 0.5em;
 
-   color: var(--kompassi-palette-none);
+   color: #fff;
    background-color: var(--kompassi-palette-1);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-radius);
