@@ -147,10 +147,10 @@ class WP_Plugin_Kompassi_Integration {
 		if( !is_admin( ) ) {
 			// Scripts: Libraries
 			wp_register_script( 'js-cookie', plugins_url( 'lib/js.cookie.min.js', __FILE__ ), array( ), '3.0.5' );
-			wp_register_script( 'dayjs-localizedformat', plugins_url( 'lib/dayjs.localizedFormat.min.js', __FILE__ ), array( ), '1.11.10' );
-			wp_register_script( 'dayjs-updatelocale', plugins_url( 'lib/dayjs.updateLocale.min.js', __FILE__ ), array( ), '1.11.10' );
-			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.min.js', __FILE__ ), array( 'dayjs-localizedformat', 'dayjs-updatelocale' ), '1.11.10' );
-			wp_register_script( 'dayjs-locale-fi', plugins_url( 'lib/dayjs.locale-fi.min.js', __FILE__ ), array( 'dayjs' ), '1.11.10' );
+//			wp_register_script( 'dayjs-localizedformat', plugins_url( 'lib/dayjs.localizedFormat.min.js', __FILE__ ), array( ), '1.11.10' );
+//			wp_register_script( 'dayjs-updatelocale', plugins_url( 'lib/dayjs.updateLocale.min.js', __FILE__ ), array( ), '1.11.10' );
+			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.bundle.min.js', __FILE__ ), array( ), '1.11.10' );
+//			wp_register_script( 'dayjs-locale-fi', plugins_url( 'lib/dayjs.locale-fi.min.js', __FILE__ ), array( 'dayjs' ), '1.11.10' );
 			wp_register_script( 'hammer', plugins_url( 'lib/hammer.min.js', __FILE__ ), array( ), '2.0.8' );
 			wp_register_script( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.js', __FILE__ ), array( 'jquery' ), '2.4.23' );
 			wp_register_script( 'showdown', plugins_url( 'lib/showdown.min.js', __FILE__ ), array( ), '2.1.0' );
@@ -171,7 +171,7 @@ class WP_Plugin_Kompassi_Integration {
 
 			// SCHEDULE BLOCK
 			if( has_block( 'kompassi-integration/schedule' ) ) {
-				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'dayjs', 'dayjs-locale-fi', 'hammer', 'jquery-multiselect', 'wp-i18n', 'showdown' ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'dayjs', 'hammer', 'jquery-multiselect', 'wp-i18n', 'showdown' ), $this->ver );
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
 					'locale' => get_locale( ),
