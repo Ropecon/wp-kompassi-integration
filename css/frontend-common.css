@@ -24,8 +24,9 @@
    --kompassi-palette-4: hsl(var(--kompassi-hue),50%,90%);
    --kompassi-palette-5: hsl(var(--kompassi-hue),10%,95%);
 
-   /*  Indicator  */
+   /*  Non-main palette colors  */
    --kompassi-indicator-bg: hsl(0,100%,40%);
+   --kompassi-note-bg: hsl(60,100%,90%);
 
    /*  Common definitions  */
    --kompassi-box-shadow: 0 0 3px var(--kompassi-fg-10);
@@ -59,6 +60,8 @@
       --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
       --kompassi-palette-4: hsl(var(--kompassi-hue),50%,15%);
       --kompassi-palette-5: hsl(var(--kompassi-hue),10%,17%);
+
+      --kompassi-note-bg: hsl(50,100%,20%);
    }
    [class*="kompassi-icon"]::before {
       filter: invert() !important;
@@ -112,7 +115,7 @@
  *
  */
 
- .indicator:not(:empty) {
+.kompassi-indicator:not(:empty) {
     display: inline-block;
     float: right;
     margin-left: var(--kompassi-padding);
@@ -124,6 +127,28 @@
     border-radius: 9999px;
     align-content: center;
 }
+
+/*
+ *  Notes
+ *
+ */
+
+.kompassi-notes:not(:empty) {
+	padding: 0.5em;
+	border-radius: var(--kompassi-radius);
+	box-shadow: var(--kompassi-box-shadow);
+	background-color: var(--kompassi-note-bg);
+	color: var(--kompassi-fg);
+	margin-bottom: 0.5em;
+}
+   .kompassi-notes span {
+		display: inline-block;
+		margin-right: 1em;
+	}
+      .kompassi-notes .program-count {
+			font-weight: 600;
+		}
+
 
 /*
  *  Footer

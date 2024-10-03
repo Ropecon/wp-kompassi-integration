@@ -58,7 +58,7 @@ function kompassi_schedule_init( ) {
 	} );
 
 	//  Container for notes
-	jQuery( '<section id="kompassi_schedule_notes" />' ).insertAfter( filters );
+	jQuery( '<section id="kompassi_schedule_notes" class="kompassi-notes"/>' ).insertAfter( filters );
 
 	//  EVENTS
 
@@ -222,7 +222,7 @@ function kompassi_schedule_init_toolbar( ) {
 	/*  Filtering section  */
 	filtering_section = jQuery( '<section id="kompassi_schedule_filtering" class="kompassi-button-group has-icon-and-label" />' );
 	toggle_favorites = jQuery( '<a class="favorites-toggle kompassi-icon-favorite">' + __( 'Favorites', 'kompassi-integration' ) + '</a>' ).appendTo( filtering_section );
-	toggle_filters = jQuery( '<a class="filters-toggle kompassi-icon-filter">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="indicator"></span></a>' ).appendTo( filtering_section );
+	toggle_filters = jQuery( '<a class="filters-toggle kompassi-icon-filter">' + _x( 'Filter', 'verb (shown before filters)', 'kompassi-integration' ) + '<span class="kompassi-indicator"></span></a>' ).appendTo( filtering_section );
 	filtering_section.appendTo( toolbar );
 
 	toggle_favorites.on( 'click', function( ) {
@@ -655,9 +655,9 @@ function kompassi_schedule_apply_filters( ) {
 
 	// Show how many filters from the dropdown area are activated
 	if( filter_count > 0 ) {
-		jQuery( '#kompassi_block_schedule' ).find( '.filters-toggle .indicator' ).text( filter_count );
+		jQuery( '#kompassi_block_schedule' ).find( '.filters-toggle .kompassi-indicator' ).text( filter_count );
 	} else {
-		jQuery( '#kompassi_block_schedule' ).find( '.filters-toggle .indicator' ).empty( );
+		jQuery( '#kompassi_block_schedule' ).find( '.filters-toggle .kompassi-indicator' ).empty( );
 	}
 
 	kompassi_schedule.filters.enabled = filter_count;
@@ -731,10 +731,9 @@ function kompassi_schedule_update_multiselect_label( element ) {
 
 	html = this.texts.select_label;
 	if( selected_options > 0 ) {
-		html += ' <span class="indicator">' + selected_options + '</span>';
+		html += ' <span class="kompassi-indicator">' + selected_options + '</span>';
 	}
 	jQuery( element ).next( ).find( 'button' ).first( ).html( html );
-	jQuery( element ).data( 'indicator', selected_options );
 }
 
 /*
