@@ -99,6 +99,11 @@ function kompassi_schedule_init( ) {
 			return;
 		}
 
+		// This is a link, open it
+		if( e.target.tagName == 'A' ) {
+			return;
+		}
+
 		// Prevent details from opening
 		e.preventDefault( );
 
