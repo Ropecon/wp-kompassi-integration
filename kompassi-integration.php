@@ -458,7 +458,8 @@ class WP_Plugin_Kompassi_Integration {
 						<div class="secondary" style="grid-area: secondary;">
 							<?php
 								// TODO: Allow admins to select, which fields to show here
-								foreach( array( 'times', 'cachedHosts' ) as $key ) {
+								$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'cachedHosts' ) );
+								foreach( $fields_in_summary as $key ) {
 									echo $this->get_program_value( $program, $key );
 								}
 							?>
@@ -503,8 +504,13 @@ class WP_Plugin_Kompassi_Integration {
 							<?php
 								// TODO: Kompassi: List of all meta fields?
 								// TODO: In a non-modal situation, do not show fields that are already shown in summary?
-								foreach( array( 'times', 'cachedHosts' ) as $key ) {
-									echo $this->get_program_value( $program, $key );
+								$all_meta_fields = array( 'times', 'cachedHosts' );
+								foreach( $all_meta_fields as $key ) {
+									if( in_array( $key, $fields_in_summary ) ) {
+										echo '<div class="in-summary">' . $this->get_program_value( $program, $key ) . '</div>';
+									} else {
+										echo $this->get_program_value( $program, $key );
+									}
 								}
 							?>
 							<div class="kompassi-dimensions">
@@ -532,7 +538,7 @@ class WP_Plugin_Kompassi_Integration {
 								?>
 							</div>
 						</div>
-						<div class="actions kompassi-no-icons" style="grid-area: actions;">
+						<div class="actions" style="grid-area: actions;">
 							<?php
 								foreach( $program['links'] as $link ) {
 									$class = strtolower( $link['type'] );

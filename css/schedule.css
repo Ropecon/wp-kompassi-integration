@@ -445,6 +445,18 @@ summary::marker {
 				#kompassi_schedule[data-display="list"] article section .main {
 					padding: var(--kompassi-padding);
 				}
+		#kompassi_schedule[data-display="list"] article section .meta:has(+ .actions) {
+			margin-bottom: 0;
+		}
+		#kompassi_schedule[data-display="list"] article section .actions > a::before {
+			content: unset;
+		}
+		#kompassi_schedule[data-display="list"] article section .actions > a::after {
+			content: attr(title);
+		}
+		#kompassi_schedule[data-display="list"] article section .meta .in-summary {
+			display: none;
+		}
 
 /*  Show icon  */
 /*  TODO: Prefer container query  */
