@@ -100,7 +100,7 @@ function kompassi_schedule_init( ) {
 		}
 
 		// This is a link, open it
-		if( e.target.tagName == 'A' ) {
+		if( e.target.tagName == 'A' && !jQuery( e.target ).hasClass( 'favorite' ) ) {
 			return;
 		}
 
