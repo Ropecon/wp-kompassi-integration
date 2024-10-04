@@ -300,6 +300,13 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  *
  */
 
+summary {
+	list-style: none;
+}
+summary::marker {
+	display: none;
+}
+
 .kompassi_schedule_wrapper {
 	/* TODO: Clean up width/padding/margin */
 	width: calc( 100% + 0.4em ); /* shadow×2 */
@@ -312,10 +319,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 #kompassi_schedule {
 	width: calc(100% - 0.4em);
-}
-
-#kompassi_schedule article > * {
-	display: none;
 }
 
 #kompassi_schedule article.filtered {
@@ -364,6 +367,14 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	margin-left: 0.4em;
 }
 
+#kompassi_schedule article summary {
+	outline: none;
+}
+
+#kompassi_schedule article .main {
+	background-color: var(--kompassi-palette-5);
+}
+
 /*  Programs continuing  */
 #kompassi_schedule:not([data-display="timeline"]) article.continues {
 	order: 3;
@@ -391,44 +402,12 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 }
 	#kompassi_schedule[data-display="list"] article {
 		position: relative;
-		display: grid;
-		grid-template-columns: 1fr min-content;
-		grid-template-areas: "title actions" "meta actions";
+		padding-left: calc( var(--kompassi-program-list-visual-width) );
 		color: var(--kompassi-fg);
 		background-color: var(--kompassi-bg);
-		padding-left: calc( var(--kompassi-program-list-visual-width) + 0.25em );
 		box-shadow: var(--kompassi-box-shadow);
 		border-radius: var(--kompassi-radius);
 	}
-		#kompassi_schedule[data-display="list"] article :is(.title,.meta,.actions) {
-			display: block;
-			margin: var(--kompassi-program-list-padding);
-		}
-			/*  TODO: Kompassi: Define meta to show  */
-			#kompassi_schedule[data-display="list"] article .meta > :not(.times, .room) {
-				display: none;
-			}
-		#kompassi_schedule[data-display="list"] article .title,
-		#kompassi_schedule[data-display="list"] article .actions {
-			margin-bottom: 0;
-		}
-			#kompassi_schedule[data-display="list"] article .actions {
-				display: flex;
-				justify-content: end;
-			}
-				#kompassi_schedule[data-display="list"] article .actions a {
-					margin-left: 0.3em;
-				}
-					#kompassi_schedule[data-display="list"] article .actions .favorite {
-						order: 1000;
-					}
-					#kompassi_schedule[data-display="list"] article .actions :not(.favorite) {
-						display: none;
-					}
-
-		#kompassi_schedule[data-display="list"] article .meta {
-			margin-top: 0;
-		}
 		#kompassi_schedule[data-display="list"] article::before {
 			content: '';
 			position: absolute;
@@ -436,39 +415,50 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			width: var(--kompassi-program-list-visual-width);
 			top: 0;
 			bottom: 0;
+			left: 0;
 			background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
 			background-size: calc( 100% - 2.5em ) auto;
-			background-position: 50% 50%;
+			background-position: 50% 0.5em; /* TODO: Why is this the correct value? */
 			border-top-left-radius: var(--kompassi-radius);
 			border-bottom-left-radius: var(--kompassi-radius);
 		}
+		#kompassi_schedule[data-display="list"] article summary {
+			display: grid;
+			grid-template-columns: 1fr min-content;
+			grid-template-areas: "title actions" "secondary secondary";
+			padding: var(--kompassi-padding);
+		}
+			#kompassi_schedule[data-display="list"] article summary .favorite::before {
+				margin-right: 0;
+			}
+			#kompassi_schedule[data-display="list"] article summary .secondary {
+				display: flex;
+				justify-content: space-between;
+			}
+		#kompassi_schedule[data-display="list"] article section {
+			border-top: 1px solid var(--kompassi-fg-10);
+		}
+			#kompassi_schedule[data-display="list"] article section > * {
+				padding: 0 var(--kompassi-padding);
+				margin-bottom: var(--kompassi-padding);
+			}
+				#kompassi_schedule[data-display="list"] article section .main {
+					padding: var(--kompassi-padding);
+				}
 
 /*  Show icon  */
+/*  TODO: Prefer container query  */
 @media screen and (min-width:600px) {
 	#kompassi_schedule[data-display="list"] {
 		--kompassi-program-list-padding: 0.6em;
 		--kompassi-program-list-visual-width: 5.5em;
 	}
 	#kompassi_schedule[data-display="list"] article {
-		padding-left: calc( var(--kompassi-program-list-visual-width) + 0.5em );
+		padding-left: var(--kompassi-program-list-visual-width);
 		grid-template-columns: 50% auto auto;
 		grid-template-areas:
 			"title title actions"
 			"meta meta meta";
-	}
-		#kompassi_schedule[data-display="list"] article .actions {
-			text-align: right;
-		}
-}
-
-@media screen and (min-width:800px) {
-	#kompassi_schedule[data-display="list"] article .meta {
-		display: flex;
-		gap: 1em;
-	}
-	/*  TODO: Kompassi: Define meta to show  */
-	#kompassi_schedule[data-display="list"] article .meta .room {
-		margin-left: auto;
 	}
 }
 
@@ -547,6 +537,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			white-space: nowrap;
 			overflow: hidden;
 		}
+			#kompassi_schedule[data-display="timeline"] article summary :is(.favorite, .secondary) {
+				display: none;
+			}
 			#kompassi_schedule[data-display="timeline"] article.is-favorite .title {
 				position: relative;
 				padding-left: calc( 1em + 8px );
@@ -566,10 +559,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 					#kompassi_schedule[data-display="timeline"] article.is-favorite.continues .title::after {
 						left: calc(4px + 1em);
 					}
-			#kompassi_schedule[data-display="timeline"] article .actions {
-				display: none;
-			}
-
 			#kompassi_schedule[data-display="timeline"] article:hover {
 				margin-top: -2px;
 				box-shadow: 0 0 1em rgba(0,0,0,0.2);
@@ -647,20 +636,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	justify-content: space-between;
 }
 
-#kompassi_modal .content .main .annotations {
-	margin-top: var(--kompassi-padding-large);
-	padding-top: var(--kompassi-padding-large);
-	border-top: 1px solid var(--kompassi-fg-25);
-}
-	#kompassi_modal .content .main .annotations :is(dt,dd) {
-		font-size: 90%;
-	}
-		#kompassi_modal .content .main .annotations dt {
-			font-weight: bold;
-		}
-		#kompassi_modal .content .main .annotations > :last-child {
-			margin-bottom: 0;
-		}
 
 /* TODO: Prefer container query */
 @media screen and (max-width:599px) {
@@ -669,28 +644,64 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	}
 }
 
+#kompassi_modal .footer > :not(.dimension) {
+	display: block;
+	margin-bottom: 0.3em;
+}
+
+#kompassi_modal .program-title-list li::before {
+	display: inline-block;
+	width: 1.25em;
+	content: "–";
+}
+
+/*
+ *  Annotations
+ *
+ */
+
+.kompassi-annotations {
+	margin: var(--kompassi-padding-large) 0 0 0;
+	padding-top: var(--kompassi-padding);
+	border-top: 1px solid var(--kompassi-fg-25);
+}
+	.kompassi-annotations :is(dt,dd) {
+		font-size: 90%;
+	}
+		.kompassi-annotations dt {
+			font-weight: bold;
+		}
+		.kompassi-annotations > :last-child {
+			margin-bottom: 0;
+		}
+
+#kompassi_modal.kompassi-program .kompassi-annotations {
+	margin-top: var(--kompassi-padding-large);
+	padding-top: var(--kompassi-padding-large);
+}
+
 /* TODO: Prefer container query */
 @media screen and (min-width: 800px) {
-	#kompassi_modal .content .main .annotations {
+	.kompassi-annotations {
 		display: grid;
 		grid-template-columns: max-content auto;
 		grid-gap: 0 2em;
 	}
 }
 
-#kompassi_modal .meta > :not(.dimension) {
-	display: block;
-	margin-bottom: 0.3em;
-}
+/*
+ *  Dimensions
+ *
+ */
 
-#kompassi_modal .meta .dimension {
+.kompassi-dimensions .dimension {
 	display: inline-block;
 	margin-top: 0.3em;
 }
-	#kompassi_modal .meta .dimension:empty {
+	.kompassi-dimensions .dimension:empty {
 		display: none;
 	}
-	#kompassi_modal .dimension .value {
+	.kompassi-dimensions .dimension .value {
 		display: inline-block;
 		max-width: 100%;
 		padding: 0.2em 0.6em;
@@ -702,9 +713,3 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		overflow-wrap: break-word;
 		line-height: 1.2em;
 	}
-
-#kompassi_modal .program-title-list li::before {
-	display: inline-block;
-	width: 1.25em;
-	content: "–";
-}

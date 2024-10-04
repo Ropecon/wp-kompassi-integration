@@ -3,6 +3,9 @@ _x = wp.i18n._x;
 _n = wp.i18n._n;
 sprintf = wp.i18n.sprintf;
 
+var kompassi_common;
+var kompassi_storage;
+
 var kompassi_schedule = {
 	'event': {},
 	'filters': {},
@@ -57,13 +60,14 @@ function kompassi_schedule_init( ) {
 
 	//  Add favorite action to each article
 	jQuery( '#kompassi_schedule article' ).each( function( ) {
+		title = jQuery( this ).find( 'summary .title' );
 		actions = jQuery( this ).find( '.actions' );
 		favorite = jQuery( '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
-		actions.prepend( favorite );
+		favorite.insertAfter( title );
 	} );
 
 	//  Container for notes
-	jQuery( '<section id="kompassi_schedule_notes" class="kompassi-notes"/>' ).insertAfter( filters );
+	jQuery( '<section id="kompassi_schedule_notes" class="kompassi-notes" />' ).insertAfter( filters );
 
 	//  EVENTS
 
@@ -90,7 +94,15 @@ function kompassi_schedule_init( ) {
 
 	//  Events (click): Modal
 	jQuery( '#kompassi_schedule article' ).on( 'click', function( e ) {
-		if( jQuery( e.target ).closest( 'div' ).hasClass( 'actions' ) ) {
+		// If shift key is pressed and we are not on timeline, open the details inline
+		if( kompassi_common.shift_pressed && 'timeline' != jQuery( '#kompassi_schedule' ).data( 'display' ) ) {
+			return;
+		}
+
+		// Prevent details from opening
+		e.preventDefault( );
+
+		if( jQuery( e.target ).hasClass( 'favorite' ) ) {
 			return;
 		}
 		kompassi_schedule_program_modal( jQuery( this ) );
@@ -1034,16 +1046,19 @@ function kompassi_schedule_program_modal( program ) {
 		styles += '--kompassi-program-icon: ' + program.css( '--kompassi-program-icon' ) + '; ';
 	}
 
+	actions = program.find( '.actions' ).clone( );
+	actions.prepend( program.find( '.favorite' ).clone( ) );
+
 	options = {
 		attrs: {
 			'class': program.attr( 'class' ),
 			'data-id': program.data( 'id' ),
 			'style': styles,
 		},
-		title: program.children( '.title' ).text( ),
-		actions: program.children( '.actions' ).html( ),
-		content: program.children( '.main' ).html( ),
-		meta: program.children( '.meta' ).html( ),
+		title: program.find( '.title' ).text( ),
+		actions: actions.html( ),
+		content: program.find( '.main' ).html( ),
+		footer: program.find( '.meta' ).html( ),
 	}
 	kompassi_show_modal( options );
 

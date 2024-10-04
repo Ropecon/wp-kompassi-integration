@@ -452,116 +452,148 @@ class WP_Plugin_Kompassi_Integration {
 		$program['description'] = nl2br( $program['description'] );
 		?>
 			<article id="<?php echo $program['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
-				<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
-				<div class="main" style="grid-area: main;">
-					<div class="description">
-						<?php echo make_clickable( $program['description'] ); ?>
-					</div>
-					<?php
-						$annotations = array( );
-						foreach( $program['cachedAnnotations'] as $field => $value ) {
-							if( !in_array( $field, $options['hidden_annotations'] ) && $options['annotations'][$field]['isShownInDetail'] !== false && $value !== false ) {
-								if( $value === true ) {
-									$value = _x( 'Yes', 'boolean field: true', 'kompassi-integration' );
+				<details>
+					<summary>
+						<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
+						<div class="secondary" style="grid-area: secondary;">
+							<?php
+								// TODO: Allow admins to select, which fields to show here
+								foreach( array( 'times', 'cachedHosts' ) as $key ) {
+									echo $this->get_program_value( $program, $key );
 								}
-								$annotations[] = array(
-									'title' => $options['annotations'][$field]['title'],
-									'description' => $value,
-									'class' => 'annotation-' . str_replace( ':', '-', $field )
-								);
-							}
-						}
-						// Allow sites to programmatically add annotations
-						$annotations = apply_filters( 'kompassi_integration_program_annotations', $annotations, $program );
-						if( count( $annotations ) > 0 ) {
-							echo '<dl class="annotations">';
-							foreach( $annotations as $annotation ) {
-								echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
-								foreach( (array) $annotation['description'] as $desc ) {
-									echo '<dd class="' . $annotation['class'] . '">' . $desc . '</dd>';
-								}
-							}
-							echo '</dl>';
-						}
-					?>
-				</div>
-				<div class="meta" style="grid-area: meta;">
-					<?php
-						// TODO: Kompassi: List meta fields to show
-						foreach( array( 'times', 'cachedHosts' ) as $key ) {
-							$value = '';
-							if( isset( $program[$key] ) ) {
-								$value = $program[$key];
-								if( is_array( $value ) ) {
-									$value = implode( ',', $value );
-								}
-							} else {
-								// TODO: #11 - Get directly from Kompassi?
-								if( 'times' == $key ) {
-									$offset = get_option( 'gmt_offset' ) * 60 * 60;
-									$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['start'] + $offset );
-									$value .= ' – ';
-									if( date_i18n( 'Ymd', $program['start'] + $offset ) == date_i18n( 'Ymd', $program['end'] + $offset ) ) {
-										$value .= date_i18n( get_option( 'time_format' ), $program['end'] + $offset );
-									} else {
-										// If multiday, show both days
-										$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['end'] + $offset );
+							?>
+						</div>
+					</summary>
+					<section>
+						<div class="main" style="grid-area: main;">
+							<div class="description">
+								<?php echo make_clickable( $program['description'] ); ?>
+							</div>
+							<div class="annotations" style="grid-area: annotations;">
+								<?php
+									$annotations = array( );
+									foreach( $program['cachedAnnotations'] as $field => $value ) {
+										if( !in_array( $field, $options['hidden_annotations'] ) && $options['annotations'][$field]['isShownInDetail'] !== false && $value !== false ) {
+											if( $value === true ) {
+												$value = _x( 'Yes', 'boolean field: true', 'kompassi-integration' );
+											}
+											$annotations[] = array(
+												'title' => $options['annotations'][$field]['title'],
+												'description' => $value,
+												'class' => 'annotation-' . str_replace( ':', '-', $field )
+											);
+										}
 									}
-									$value .= ' <span class="length">';
-									$h = $program['length'] / 60;
-									$min = $program['length'] % 60;
-									if( $h < 1 ) {
-										$value .= $min . 'min';
-									} elseif( $min == 0 ) {
-										$value .= floor( $h ) . 'h';
-									} else {
-										$value .= floor( $h ) . 'h ' . $min . 'min';
+									// Allow sites to programmatically add annotations
+									$annotations = apply_filters( 'kompassi_integration_program_annotations', $annotations, $program );
+									if( count( $annotations ) > 0 ) {
+										echo '<dl class="kompassi-annotations">';
+										foreach( $annotations as $annotation ) {
+											echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
+											foreach( (array) $annotation['description'] as $desc ) {
+												echo '<dd class="' . $annotation['class'] . '">' . $desc . '</dd>';
+											}
+										}
+										echo '</dl>';
 									}
-									$value .= '</span>';
+								?>
+							</div>
+						</div>
+						<div class="meta" style="grid-area: meta;">
+							<?php
+								// TODO: Kompassi: List of all meta fields?
+								// TODO: In a non-modal situation, do not show fields that are already shown in summary?
+								foreach( array( 'times', 'cachedHosts' ) as $key ) {
+									echo $this->get_program_value( $program, $key );
 								}
-							}
-							if( isset( $value ) ) {
-								echo '<div class="' . $key . '">' . $value . '</div>';
-							}
-						}
-					?>
-					<?php
-						// Traverse through dimensions
-						foreach( $program['cachedDimensions'] as $dimension => $values ) {
-							if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
-								continue;
-							}
+							?>
+							<div class="kompassi-dimensions">
+								<?php
+									// Traverse through dimensions
+									foreach( $program['cachedDimensions'] as $dimension => $values ) {
+										if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+											continue;
+										}
 
-							if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
-								continue;
-							}
+										if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
+											continue;
+										}
 
-							echo '<div class="dimension ' . $dimension . '">';
-							foreach( $values as $slug ) {
-								if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
-									echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
-								} else {
-									echo '<span class="value">' . $slug . '</span> ';
+										echo '<div class="dimension ' . $dimension . '">';
+										foreach( $values as $slug ) {
+											if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
+												echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
+											} else {
+												echo '<span class="value">' . $slug . '</span> ';
+											}
+										}
+										echo '</div>';
+									}
+								?>
+							</div>
+						</div>
+						<div class="actions kompassi-no-icons" style="grid-area: actions;">
+							<?php
+								foreach( $program['links'] as $link ) {
+									$class = strtolower( $link['type'] );
+									if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
+										$class .= ' kompassi-icon-' . strtolower( $link['type'] );
+									}
+									echo '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
 								}
-							}
-							echo '</div>';
-						}
-					?>
-				</div>
-				<?php
-					echo '<div class="actions" style="grid-area: actions;">';
-					foreach( $program['links'] as $link ) {
-						$class = strtolower( $link['type'] );
-						if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
-							$class .= ' kompassi-icon-' . strtolower( $link['type'] );
-						}
-						echo '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
-					}
-					echo '</div>';
-				?>
+							?>
+						</div>
+					</section>
+				</details>
 			</article>
 		<?php
 		return ob_get_clean( );
+	}
+
+	/**
+	 *  Returns a program field
+	 *
+	 */
+
+	function get_program_value( $program, $key, $wrap = true ) {
+		$value = '';
+		if( isset( $program[$key] ) ) {
+			$value = $program[$key];
+			if( is_array( $value ) ) {
+				$value = implode( ',', $value );
+			}
+		} else {
+			// TODO: #11 - Get directly from Kompassi?
+			if( 'times' == $key ) {
+				$offset = get_option( 'gmt_offset' ) * 60 * 60;
+				$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['start'] + $offset );
+				$value .= ' – ';
+				if( date_i18n( 'Ymd', $program['start'] + $offset ) == date_i18n( 'Ymd', $program['end'] + $offset ) ) {
+					$value .= date_i18n( get_option( 'time_format' ), $program['end'] + $offset );
+				} else {
+					// If multiday, show both days
+					$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['end'] + $offset );
+				}
+				$value .= ' <span class="length">';
+				$h = $program['length'] / 60;
+				$min = $program['length'] % 60;
+				if( $h < 1 ) {
+					$value .= $min . 'min';
+				} elseif( $min == 0 ) {
+					$value .= floor( $h ) . 'h';
+				} else {
+					$value .= floor( $h ) . 'h ' . $min . 'min';
+				}
+				$value .= '</span>';
+			}
+		}
+		if( isset( $value ) ) {
+			if( $wrap ) {
+				return '<div class="' . $key . '">' . $value . '</div>';
+			} else {
+				return $value;
+			}
+		}
 	}
 
 	/**

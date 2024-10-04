@@ -416,7 +416,7 @@
                background-color: var(--kompassi-palette-2);
 				}
       #kompassi_modal .content .main,
-		#kompassi_modal .content .meta {
+      #kompassi_modal .content .footer {
          padding: var(--kompassi-padding-large);
       }
 
@@ -484,7 +484,7 @@
                #kompassi_modal .content .main > :last-child {
                   margin-bottom: 0;
                }
-				#kompassi_modal .content .meta {
+            #kompassi_modal .content .footer {
 					flex: 0 0 min-content;
                background-color: var(--kompassi-bg);
 				}
