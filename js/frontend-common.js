@@ -1,24 +1,19 @@
-var kompassi_cookie;
-
 /*
- *  Cookie
+ *  localStorage
  *
  */
 
-kompassi_cookie = Cookies.get( 'kompassi_integration' );
-if( kompassi_cookie == undefined ) {
-	kompassi_cookie = {
-		favorites: []
-	};
-	kompassi_update_cookie( );
+var kompassi_storage;
+kompassi_storage = localStorage.getItem( 'kompassi_' + kompassi_common.event_slug );
+if( kompassi_storage == null ) {
+	kompassi_storage = {};
+	kompassi_storage = wp.hooks.applyFilters( 'kompassi_init_storage', kompassi_storage );
 } else {
-	kompassi_cookie = JSON.parse( kompassi_cookie );
+	kompassi_storage = JSON.parse( kompassi_storage );
 }
 
-/*  Update cookie  */
-
-function kompassi_update_cookie( ) {
-	Cookies.set( 'kompassi_integration', JSON.stringify( kompassi_cookie ), { expires: 365, sameSite: 'strict', secure: true } );
+function kompassi_update_storage( ) {
+	localStorage.setItem( 'kompassi_' + kompassi_common.event_slug, JSON.stringify( kompassi_storage ) );
 }
 
 /*

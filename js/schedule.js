@@ -11,6 +11,11 @@ var kompassi_schedule = {
 
 dayjs.locale( kompassi_options.locale );
 
+wp.hooks.addFilter( 'kompassi_init_storage', 'kompassi_schedule', function( storage ) {
+	storage['favorites'] = [];
+	return storage;
+} );
+
 jQuery( function( e ) {
 	/*
 	 *  Get date/time related information about program
@@ -32,7 +37,7 @@ jQuery( function( e ) {
 	}
 
 	/** **/
-	kompassi_schedule_cookie_init( );
+	kompassi_schedule_get_favorites_from_storage( );
 	kompassi_schedule_init( );
 
 	//  Apply options from URL
@@ -143,17 +148,17 @@ function kompassi_schedule_init( ) {
 
 		favorites_updated = false;
 		if( jQuery( this ).hasClass( 'replace' ) ) {
-			kompassi_cookie.favorites = url_options.favorite.split( ',' );
+			kompassi_storage.favorites = url_options.favorite.split( ',' );
 			favorites_updated = true;
 		}
 		if( jQuery( this ).hasClass( 'append' ) ) {
-			old_favorites = kompassi_cookie.favorites;
+			old_favorites = kompassi_storage.favorites;
 			new_favorites = url_options.favorite.split( ',' );
 			new_favorites.filter( function( item ) {
 				return old_favorites.indexOf( item );
 			} );
 			merged_favorites = old_favorites.concat( new_favorites );
-			kompassi_cookie.favorites = merged_favorites;
+			kompassi_storage.favorites = merged_favorites;
 
 			if( old_favorites !== merged_favorites ) {
 				favorites_updated = true;
@@ -161,12 +166,9 @@ function kompassi_schedule_init( ) {
 		}
 
 		if( favorites_updated ) {
-			kompassi_update_cookie( );
-
+			kompassi_update_storage( );
 			jQuery( '#kompassi_schedule article' ).removeClass( 'is-favorite' );
-			jQuery.each( kompassi_cookie.favorites, function( ) {
-				jQuery( '#' + this ).addClass( 'is-favorite' );
-			} );
+			kompassi_schedule_get_favorites_from_storage( );
 		}
 
 		kompassi_close_modal( );
@@ -350,12 +352,12 @@ function kompassi_schedule_init_toolbar( ) {
 }
 
 /**
- *  Gets favorite programs from cookie
+ *  Gets favorite programs from localStorage
  *
  */
 
-function kompassi_schedule_cookie_init( ) {
-	jQuery.each( kompassi_cookie.favorites, function( ) {
+function kompassi_schedule_get_favorites_from_storage( ) {
+	jQuery.each( kompassi_storage.favorites, function( ) {
 		jQuery( '#' + this ).addClass( 'is-favorite' );
 	} );
 }
@@ -368,12 +370,13 @@ function kompassi_schedule_cookie_init( ) {
 function kompassi_schedule_toggle_favorite( ) {
 	program = jQuery( this ).closest( '.kompassi-program' ).data( 'id' );
 	jQuery( '.kompassi-program[data-id="' + program + '"]' ).toggleClass( 'is-favorite' );
-	if( kompassi_cookie.favorites.includes( program ) ) {
-		kompassi_cookie.favorites = kompassi_cookie.favorites.filter( function( id ) { return id !== program; } );
+
+	if( kompassi_storage.favorites.includes( program ) ) {
+		kompassi_storage.favorites = kompassi_storage.favorites.filter( function( id ) { return id !== program; } );
 	} else {
-		kompassi_cookie.favorites.push( program );
+		kompassi_storage.favorites.push( program );
 	}
-	kompassi_update_cookie( );
+	kompassi_update_storage( );
 }
 
 /**
