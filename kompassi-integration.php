@@ -232,7 +232,7 @@ class WP_Plugin_Kompassi_Integration {
 			$filename = plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md';
 		}
 		$doc = file_get_contents( $filename );
-		$doc = apply_filters( 'kompassi_integration_document_' . $parameters['document'], $doc, $parameters );
+		$doc = apply_filters( 'kompassi_document_' . $parameters['document'], $doc, $parameters );
 
 		return array( 'status' => true, 'content' => $doc );
 	}
@@ -363,12 +363,14 @@ class WP_Plugin_Kompassi_Integration {
 			}
 			$options['dimensions'][$dimension['slug']] = $d;
 		}
+		$this->event_dimensions = $options['dimensions'];
 
 		// Map annotation labels and flags to arrays
 		$options['annotations'] = array( );
 		foreach( $data['program']['annotations'] as $annotation ) {
 			$options['annotations'][$annotation['slug']] = $annotation;
 		}
+		$this->event_annotations = $options['annotations'];
 
 		// Get a list of hidden dimensions
 		$options['hidden_dimensions'] = explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) );
@@ -458,8 +460,8 @@ class WP_Plugin_Kompassi_Integration {
 						<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
 						<div class="secondary" style="grid-area: secondary;">
 							<?php
-								// TODO: Allow admins to select, which fields to show here
-								$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'cachedHosts' ) );
+								// Note: Also dimensions and annotations can be queried here
+								$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'room' ) );
 								foreach( $fields_in_summary as $key ) {
 									echo $this->get_program_value( $program, $key );
 								}
@@ -487,7 +489,7 @@ class WP_Plugin_Kompassi_Integration {
 										}
 									}
 									// Allow sites to programmatically add annotations
-									$annotations = apply_filters( 'kompassi_integration_program_annotations', $annotations, $program );
+									$annotations = apply_filters( 'kompassi_program_annotations', $annotations, $program );
 									if( count( $annotations ) > 0 ) {
 										echo '<dl class="kompassi-annotations">';
 										foreach( $annotations as $annotation ) {
@@ -504,14 +506,9 @@ class WP_Plugin_Kompassi_Integration {
 						<div class="meta" style="grid-area: meta;">
 							<?php
 								// TODO: Kompassi: List of all meta fields?
-								// TODO: In a non-modal situation, do not show fields that are already shown in summary?
 								$all_meta_fields = array( 'times', 'cachedHosts' );
 								foreach( $all_meta_fields as $key ) {
-									if( in_array( $key, $fields_in_summary ) ) {
-										echo '<div class="in-summary">' . $this->get_program_value( $program, $key ) . '</div>';
-									} else {
-										echo $this->get_program_value( $program, $key );
-									}
+									echo $this->get_program_value( $program, $key );
 								}
 							?>
 							<div class="kompassi-dimensions">
@@ -556,7 +553,7 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/**
-	 *  Returns a program field
+	 *  Returns a program field, dimension or annotation value
 	 *
 	 */
 
@@ -567,6 +564,14 @@ class WP_Plugin_Kompassi_Integration {
 			if( is_array( $value ) ) {
 				$value = implode( ',', $value );
 			}
+		} elseif( isset( $program['cachedDimensions'][$key] ) ) {
+			$values = array( );
+			foreach( $program['cachedDimensions'][$key] as $dimension_value_slug ) {
+				$values[] = $this->event_dimensions[$key]['value_labels'][$dimension_value_slug];
+			}
+			$value = implode( ', ', $values );
+		} elseif( isset( $program['cachedAnnotations'][$key] ) ) {
+			$value = $program['cachedAnnotations'][$key];
 		} else {
 			// TODO: #11 - Get directly from Kompassi?
 			if( 'times' == $key ) {
