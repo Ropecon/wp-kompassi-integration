@@ -347,6 +347,7 @@
 	box-shadow: var(--kompassi-box-shadow);
 
 	overflow: hidden;
+   user-select: text !important;
 }
 
 @supports (height:100dvh) {

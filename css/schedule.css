@@ -301,6 +301,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  */
 
 .kompassi_schedule_wrapper {
+	/* TODO: Clean up width/padding/margin */
 	width: calc( 100% + 0.4em ); /* shadow×2 */
 	padding: 0.2em;
 	margin: -0.2em;

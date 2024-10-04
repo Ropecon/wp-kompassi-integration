@@ -92,16 +92,14 @@ function kompassi_show_modal( options ) {
 	}
 
 	modal.appendTo( jQuery( 'body' ) );
-	jQuery( 'body' ).append( '<div id="kompassi_modal_underlay" />' ).css( 'overflow', 'hidden' );
-
-	return;
+	jQuery( 'body' ).css( { 'overflow': 'hidden', 'user-select': 'none' } ).append( '<div id="kompassi_modal_underlay" />' );
 }
 
 /*  Close  */
 
 function kompassi_close_modal( ) {
 	jQuery( '#kompassi_modal_underlay, #kompassi_modal' ).remove( );
-	jQuery( 'body' ).css( 'overflow', 'auto' );
+	jQuery( 'body' ).css( { 'overflow': 'auto', 'user-select': '' } );
 }
 
 /*
