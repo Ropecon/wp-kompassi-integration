@@ -538,8 +538,7 @@ class WP_Plugin_Kompassi_Integration {
 								?>
 							</div>
 						</div>
-						<div class="actions" style="grid-area: actions;">
-							<?php
+						<div class="actions" style="grid-area: actions;"><?php
 								foreach( $program['links'] as $link ) {
 									$class = strtolower( $link['type'] );
 									if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
@@ -547,8 +546,7 @@ class WP_Plugin_Kompassi_Integration {
 									}
 									echo '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
 								}
-							?>
-						</div>
+						?></div>
 					</section>
 				</details>
 			</article>

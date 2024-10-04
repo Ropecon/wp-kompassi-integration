@@ -435,6 +435,9 @@ summary::marker {
 				display: flex;
 				justify-content: space-between;
 			}
+				#kompassi_schedule[data-display="list"] article summary .secondary > :last-child {
+					text-align: right;
+				}
 		#kompassi_schedule[data-display="list"] article section {
 			border-top: 1px solid var(--kompassi-fg-10);
 		}
