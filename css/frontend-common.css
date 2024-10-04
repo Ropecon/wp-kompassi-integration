@@ -76,6 +76,12 @@
    }
 }
 
+@media screen and (max-width:599px) {
+   :root {
+      --kompassi-padding-large: 1em;
+   }
+}
+
 /*
  *  Icons
  *
@@ -339,7 +345,6 @@
    color: var(--kompassi-fg);
 	background-color: var(--kompassi-bg);
 	box-shadow: var(--kompassi-box-shadow);
-	border-radius: var(--kompassi-radius);
 
 	overflow: hidden;
 }
@@ -405,15 +410,6 @@
          #kompassi_modal .content .actions:is(.has-icon-and-label) a::after {
             content: attr(title);
          }
-			#kompassi_modal .content .actions .favorite {
-				margin-right: 1em;
-				border-top-right-radius: var(--kompassi-radius);
-				border-bottom-right-radius: var(--kompassi-radius);
-			}
-				#kompassi_modal .content .actions .favorite + a {
-					border-bottom-left-radius: var(--kompassi-radius);
-					border-top-left-radius: var(--kompassi-radius);
-				}
 				#kompassi_modal.is-favorite .content .actions .favorite {
                color: #fff;
                background-color: var(--kompassi-palette-2);
@@ -423,19 +419,37 @@
          padding: var(--kompassi-padding-large);
       }
 
+/* TODO: Prefer container query */
 @media screen and (max-width:599px) {
 	#kompassi_modal .actions a {
 		display: block;
-		width: 100%;
+      width: calc(100% - var(--kompassi-padding) * 2);
 	}
-		#kompassi_modal .actions a:not(:last-child) {
-			border-bottom-right-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-		#kompassi_modal .actions a:not(:first-child) {
-			border-top-left-radius: 0;
-			border-top-right-radius: 0;
-		}
+      #kompassi_modal .content .actions a[class*="kompassi-icon"] {
+         width: calc(100% - var(--kompassi-padding) * 3 - var(--kompassi-icon-size));
+      }
+      #kompassi_modal .content .actions a {
+         border-radius: 0;
+      }
+         #kompassi_modal .content .actions a:first-child {
+            border-top-right-radius: var(--kompassi-radius);
+            border-top-left-radius: var(--kompassi-radius);
+         }
+         #kompassi_modal .content .actions a:last-child {
+            border-bottom-right-radius: var(--kompassi-radius);
+            border-bottom-left-radius: var(--kompassi-radius);
+         }
+      #kompassi_modal .content .actions .favorite {
+         margin-right: 0;
+      }
+      #kompassi_modal .content .actions a {
+         border-right: none;
+         box-shadow: none;
+      }
+         #kompassi_modal > .content > .actions a:not(:last-child) {
+            border-bottom: 1px solid var(--kompassi-fg-10);
+         }
+
 }
 		#kompassi_modal .content {
 			display: flex;
@@ -483,6 +497,7 @@
 		left: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
 		top: 3.5em;
 		bottom: 3.5em;
+      border-radius: var(--kompassi-radius);
 	}
       #kompassi_modal.small-modal {
          right: max( 4em, 15vw );

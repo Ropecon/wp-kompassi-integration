@@ -4,12 +4,15 @@
 	--kompassi-schedule-timeline-row-height: calc( var(--kompassi-line-height) + var(--kompassi-schedule-timeline-row-padding) * 3 );
 
 	/*  Defaults  */
-	--kompassi-program-color-default: var(--kompassi-palette-main);
+	--kompassi-program-color-default: var(--kompassi-palette-2);
 	--kompassi-program-icon-default: url(../images/kompassi_white.svg);
-	--kompassi-dimension-color-default: var(--kompassi-bg);
+	--kompassi-dimension-color-default: #222;
 }
 
 @media (prefers-color-scheme: dark) {
+	:root {
+		--kompassi-dimension-color-default: #ddd;
+	}
 	#kompassi_schedule article::before,
 	#kompassi_schedule[data-display="timeline"] article {
 		filter: brightness(90%);
@@ -610,7 +613,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	#kompassi_modal.kompassi-program .content .actions::before {
 		content: ' ';
 		display: block;
-		float: right;
+		position: absolute;
+		top: 0;
+		right: var(--kompassi-padding-large);
 
 		height: calc(100% + var(--kompassi-padding) * 2);
 		width: calc(var(--kompassi-icon-size) + var(--kompassi-padding-large) * 2);
@@ -656,6 +661,14 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			margin-bottom: 0;
 		}
 
+/* TODO: Prefer container query */
+@media screen and (max-width:599px) {
+	#kompassi_modal.kompassi-program > .content > .actions {
+		padding-right: calc(var(--kompassi-icon-size) + var(--kompassi-padding-large) * 2);
+	}
+}
+
+/* TODO: Prefer container query */
 @media screen and (min-width: 800px) {
 	#kompassi_modal .content .main .annotations {
 		display: grid;
