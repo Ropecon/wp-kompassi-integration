@@ -548,7 +548,7 @@ summary::marker {
 			background-image: linear-gradient(to bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.15));
 			color: #fff;
 
-			z-index: 1;
+			z-index: 5;
 			white-space: nowrap;
 			overflow: hidden;
 		}
@@ -728,3 +728,17 @@ summary::marker {
 		overflow-wrap: break-word;
 		line-height: 1.2em;
 	}
+
+/*
+ *  Current time indicator
+ *
+ */
+
+#kompassi_schedule .current-time {
+	position: absolute;
+	display: block;
+	height: 100%;
+	width: 1px;
+	border-right: 1px dashed var(--kompassi-indicator-bg);
+	z-index: 4;
+}

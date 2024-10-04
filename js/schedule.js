@@ -215,6 +215,7 @@ function kompassi_schedule_init_toolbar( ) {
 	date = kompassi_schedule.event.start;
 	while( date.format( 'YYYY-MM-DD' ) <= kompassi_schedule.event.end.format( 'YYYY-MM-DD' ) ) {
 		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + date.format( 'YYYY-MM-DD' ) + '" title="' + date.format( 'ddd l' ) + '">' + date.format( 'ddd' ) + '</a>' );
+		// TODO: Need to take into account start/end of day, as the current time might not equal current date view
 		if( date.format( 'YYYY-MM-DD' ) < now.format( 'YYYY-MM-DD' ) ) {
 			date_toggle.addClass( 'past' );
 		} else if( date.format( 'YYYY-MM-DD' ) == now.format( 'YYYY-MM-DD' ) ) {
@@ -830,7 +831,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		}
 
 		if( grouping ) {
-			group_name = program.find( '.' + grouping ).text( );
+			group_name = program.find( '.' + grouping ).first( ).text( );
 			if( group_name != prev_group ) {
 				check_index = rows.push( 'group: ' + group_name );
 				group_index = check_index;
@@ -898,6 +899,9 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	}
 	jQuery( '#kompassi_schedule' ).prepend( headers );
 
+	// Current time indicator
+	kompassi_schedule_timeline_update_time_indicator( );
+
 	// Reset zoom
 	kompassi_schedule_timeline_zoom_set( 1 );
 
@@ -940,6 +944,22 @@ function kompassi_schedule_setup_timeline_layout( ) {
 				break;
 		}
 	} );
+}
+
+function kompassi_schedule_timeline_update_time_indicator( ) {
+	time_now = dayjs( );
+	if( time_now >= kompassi_schedule.filters.date.start && time_now <= kompassi_schedule.filters.date.end ) {
+		current_offset = time_now.diff( kompassi_schedule.filters.date.start, 'minute' );
+		percentage_offset = current_offset / length * 100;
+
+		current = jQuery( '<div class="current-time" />' );
+		current.css( { 'left': percentage_offset + '%' } );
+		jQuery( '#kompassi_schedule' ).prepend( current );
+	} else {
+		jQuery( '#kompassi_schedule .current-time' ).remove( );
+	}
+
+	kompassi_schedule.timeouts['current_time'] = setTimeout( kompassi_schedule_timeline_update_time_indicator, 60000 );
 }
 
 function kompassi_schedule_timeline_zoom( direction ) {
@@ -1026,6 +1046,8 @@ function kompassi_schedule_revert_display_layouts( ) {
 	jQuery( '#kompassi_schedule article' ).css( { 'width': '', 'min-width': '', 'left': '', 'top': '' } );
 	jQuery( '#kompassi_schedule .title' ).css( { 'left': '', 'position': '', 'margin-left': '' } );
 	jQuery( '#kompassi_schedule .headers, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
+	jQuery( '#kompassi_schedule .current-time' ).remove( );
+	clearTimeout( kompassi_schedule.timeouts['current_time'] );
 }
 
 /**
