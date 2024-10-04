@@ -1,9 +1,12 @@
+var kompassi_common = {};
+
 /*
  *  localStorage
  *
  */
 
 var kompassi_storage;
+
 kompassi_storage = localStorage.getItem( 'kompassi_' + kompassi_common.event_slug );
 if( kompassi_storage == null ) {
 	kompassi_storage = {};
@@ -82,8 +85,8 @@ function kompassi_show_modal( options ) {
 		content.append( '<div class="actions kompassi-button-group has-icon-and-label">' + options.actions + '</div>' );
 	}
 	content.append( '<div class="main">' + options.content + '</div>' );
-	if( typeof options.meta !== 'undefined' ) {
-		content.append( '<div class="meta">' + options.meta + '</div>' );
+	if( typeof options.footer !== 'undefined' ) {
+		content.append( '<div class="footer">' + options.footer + '</div>' );
 	}
 
 	modal.appendTo( jQuery( 'body' ) );
@@ -202,3 +205,21 @@ function kompassi_ajax_query( opts ) {
 	/*  Fire AJAX query  */
 	return jQuery.ajax( Object.assign( kompassi_ajax_opts, opts ) );
 }
+
+/*
+ *  Detect whether modifier keys are pressed
+ *
+ */
+
+jQuery( function( e ) {
+	jQuery( window ).on( 'keydown', function( e ) {
+		if( e.keyCode == 16 ) {
+			kompassi_common.shift_pressed = true;
+		}
+	} );
+	jQuery( window ).on( 'keyup', function( e ) {
+		if( e.keyCode == 16 ) {
+			kompassi_common.shift_pressed = false;
+		}
+	} );
+} );

@@ -3,13 +3,16 @@ _x = wp.i18n._x;
 _n = wp.i18n._n;
 sprintf = wp.i18n.sprintf;
 
+var kompassi_common;
+var kompassi_storage;
+
 var kompassi_schedule = {
 	'event': {},
 	'filters': {},
 	'timeouts': {},
 };
 
-dayjs.locale( kompassi_options.locale );
+dayjs.locale( kompassi_schedule_options.locale );
 
 wp.hooks.addFilter( 'kompassi_init_storage', 'kompassi_schedule', function( storage ) {
 	storage['favorites'] = [];
@@ -57,13 +60,14 @@ function kompassi_schedule_init( ) {
 
 	//  Add favorite action to each article
 	jQuery( '#kompassi_schedule article' ).each( function( ) {
+		title = jQuery( this ).find( 'summary .title' );
 		actions = jQuery( this ).find( '.actions' );
 		favorite = jQuery( '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
-		actions.prepend( favorite );
+		favorite.insertAfter( title );
 	} );
 
 	//  Container for notes
-	jQuery( '<section id="kompassi_schedule_notes" class="kompassi-notes"/>' ).insertAfter( filters );
+	jQuery( '<section id="kompassi_schedule_notes" class="kompassi-notes" />' ).insertAfter( filters );
 
 	//  EVENTS
 
@@ -90,7 +94,20 @@ function kompassi_schedule_init( ) {
 
 	//  Events (click): Modal
 	jQuery( '#kompassi_schedule article' ).on( 'click', function( e ) {
-		if( jQuery( e.target ).closest( 'div' ).hasClass( 'actions' ) ) {
+		// If shift key is pressed and we are not on timeline, open the details inline
+		if( kompassi_common.shift_pressed && 'timeline' != jQuery( '#kompassi_schedule' ).data( 'display' ) ) {
+			return;
+		}
+
+		// This is a link, open it
+		if( e.target.tagName == 'A' && !jQuery( e.target ).hasClass( 'favorite' ) ) {
+			return;
+		}
+
+		// Prevent details from opening
+		e.preventDefault( );
+
+		if( jQuery( e.target ).hasClass( 'favorite' ) ) {
 			return;
 		}
 		kompassi_schedule_program_modal( jQuery( this ) );
@@ -198,6 +215,7 @@ function kompassi_schedule_init_toolbar( ) {
 	date = kompassi_schedule.event.start;
 	while( date.format( 'YYYY-MM-DD' ) <= kompassi_schedule.event.end.format( 'YYYY-MM-DD' ) ) {
 		date_toggle = jQuery( '<a class="date-toggle no-icon" data-date="' + date.format( 'YYYY-MM-DD' ) + '" title="' + date.format( 'ddd l' ) + '">' + date.format( 'ddd' ) + '</a>' );
+		// TODO: Need to take into account start/end of day, as the current time might not equal current date view
 		if( date.format( 'YYYY-MM-DD' ) < now.format( 'YYYY-MM-DD' ) ) {
 			date_toggle.addClass( 'past' );
 		} else if( date.format( 'YYYY-MM-DD' ) == now.format( 'YYYY-MM-DD' ) ) {
@@ -260,7 +278,7 @@ function kompassi_schedule_init_toolbar( ) {
 		if( dimension.isListFilter == false ) {
 			return;
 		}
-		if( kompassi_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
+		if( kompassi_schedule_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
 			return;
 		}
 		select = jQuery( '<select class="filter filter-dimension" name="filter_' + dimension.slug + '" data-filter="' + dimension.slug + '" data-dimension="' + dimension.slug + '" placeholder="' + dimension.title + '" multiple="multiple" />' );
@@ -509,8 +527,8 @@ function kompassi_schedule_update_date_view_parameters( ) {
 		} else {
 			date = dayjs( selected_date.data( 'date' ) );
 
-			start_of_day = parseInt( kompassi_options.schedule_start_of_day );
-			end_of_day = parseInt( kompassi_options.schedule_end_of_day );
+			start_of_day = parseInt( kompassi_schedule_options.schedule_start_of_day );
+			end_of_day = parseInt( kompassi_schedule_options.schedule_end_of_day );
 			if( isNaN( start_of_day ) ) { start_of_day = 0; }
 			if( isNaN( end_of_day ) ) { end_of_day = 0; }
 
@@ -621,11 +639,6 @@ function kompassi_schedule_apply_filters( ) {
 		}
 
 		// Text filter
-		search_targets = {
-			'title': 100,
-			'cachedHosts': 10,
-			'description': 1
-		};
 		if( filter.hasClass( 'filter-text' ) ) {
 			if( filter.val( ) !== '' ) {
 				words = filter.val( ).toLowerCase( ).split( ' ' ).filter( function( el ) { return el.length > 0; } ); // words to look for
@@ -634,7 +647,7 @@ function kompassi_schedule_apply_filters( ) {
 					program = jQuery( this );
 					program_relevance = 0;
 					word_matches = 0;
-					jQuery.each( search_targets, function( target, target_relevance_score ) {
+					jQuery.each( kompassi_schedule_options.search_targets, function( target, target_relevance_score ) {
 						text = program.find( '.' + target ).first( ).text( ).toLowerCase( );
 						jQuery.each( words, function( ) {
 							if( text.includes( this ) ) {
@@ -689,13 +702,13 @@ function kompassi_schedule_apply_filters( ) {
 
 	// If there is no text search and there is a date search, and there is programs that have started before the filtered timerange, show notification
 	if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).length > 0 ) {
-		if( kompassi_options.schedule_start_of_day != 0 || kompassi_options.schedule_end_of_day != 0 ) {
+		if( kompassi_schedule_options.schedule_start_of_day != 0 || kompassi_schedule_options.schedule_end_of_day != 0 ) {
 			// Do not show message on "Now" view
 			if( jQuery( '#kompassi_block_schedule' ).find( '.date-toggle.active' ).first( ).data( 'date' ) != 'now' ) {
 				program_count = jQuery( '#kompassi_schedule article:not(.filtered)' ).length;
 				if( program_count > 0 ) {
 					// translators: start of day hour, end of day hour
-					jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-between display-not-timeline">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), kompassi_options.schedule_start_of_day, kompassi_options.schedule_end_of_day ) + '</span>' );
+					jQuery( '#kompassi_schedule_notes' ).append( '<span class="filter programs-between display-not-timeline">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), kompassi_schedule_options.schedule_start_of_day, kompassi_schedule_options.schedule_end_of_day ) + '</span>' );
 				}
 			}
 		}
@@ -811,14 +824,14 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		offset = offset_in_m / length * 100;
 
 		// See if we need to add a group headings
-		if( kompassi_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_options.timeline_grouping ) ) {
-			grouping = kompassi_options.timeline_grouping;
+		if( kompassi_schedule_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_schedule_options.timeline_grouping ) ) {
+			grouping = kompassi_schedule_options.timeline_grouping;
 		} else {
 			grouping = false;
 		}
 
 		if( grouping ) {
-			group_name = program.find( '.' + grouping ).text( );
+			group_name = program.find( '.' + grouping ).first( ).text( );
 			if( group_name != prev_group ) {
 				check_index = rows.push( 'group: ' + group_name );
 				group_index = check_index;
@@ -886,6 +899,9 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	}
 	jQuery( '#kompassi_schedule' ).prepend( headers );
 
+	// Current time indicator
+	kompassi_schedule_timeline_update_time_indicator( );
+
 	// Reset zoom
 	kompassi_schedule_timeline_zoom_set( 1 );
 
@@ -928,6 +944,22 @@ function kompassi_schedule_setup_timeline_layout( ) {
 				break;
 		}
 	} );
+}
+
+function kompassi_schedule_timeline_update_time_indicator( ) {
+	time_now = dayjs( );
+	if( time_now >= kompassi_schedule.filters.date.start && time_now <= kompassi_schedule.filters.date.end ) {
+		current_offset = time_now.diff( kompassi_schedule.filters.date.start, 'minute' );
+		percentage_offset = current_offset / length * 100;
+
+		current = jQuery( '<div class="current-time" />' );
+		current.css( { 'left': percentage_offset + '%' } );
+		jQuery( '#kompassi_schedule' ).prepend( current );
+	} else {
+		jQuery( '#kompassi_schedule .current-time' ).remove( );
+	}
+
+	kompassi_schedule.timeouts['current_time'] = setTimeout( kompassi_schedule_timeline_update_time_indicator, 60000 );
 }
 
 function kompassi_schedule_timeline_zoom( direction ) {
@@ -1014,6 +1046,8 @@ function kompassi_schedule_revert_display_layouts( ) {
 	jQuery( '#kompassi_schedule article' ).css( { 'width': '', 'min-width': '', 'left': '', 'top': '' } );
 	jQuery( '#kompassi_schedule .title' ).css( { 'left': '', 'position': '', 'margin-left': '' } );
 	jQuery( '#kompassi_schedule .headers, #kompassi_schedule .ruler, #kompassi_schedule .group-name' ).remove( );
+	jQuery( '#kompassi_schedule .current-time' ).remove( );
+	clearTimeout( kompassi_schedule.timeouts['current_time'] );
 }
 
 /**
@@ -1034,16 +1068,19 @@ function kompassi_schedule_program_modal( program ) {
 		styles += '--kompassi-program-icon: ' + program.css( '--kompassi-program-icon' ) + '; ';
 	}
 
+	actions = program.find( '.actions' ).clone( );
+	actions.prepend( program.find( '.favorite' ).clone( ) );
+
 	options = {
 		attrs: {
 			'class': program.attr( 'class' ),
 			'data-id': program.data( 'id' ),
 			'style': styles,
 		},
-		title: program.children( '.title' ).text( ),
-		actions: program.children( '.actions' ).html( ),
-		content: program.children( '.main' ).html( ),
-		meta: program.children( '.meta' ).html( ),
+		title: program.find( '.title' ).text( ),
+		actions: actions.html( ),
+		content: program.find( '.main' ).html( ),
+		footer: program.find( '.meta' ).html( ),
 	}
 	kompassi_show_modal( options );
 
@@ -1074,7 +1111,7 @@ function kompassi_schedule_program_modal( program ) {
 
 function kompassi_schedule_help_modal( ) {
 	opts = {
-		rest_route: 'kompassi-integration/v1/docs/schedule_	help/' + kompassi_options.locale,
+		rest_route: 'kompassi-integration/v1/docs/schedule_	help/' + kompassi_schedule_options.locale,
 		success: function( response ) {
 			var sdc = new showdown.Converter( );
 			options = {
@@ -1279,10 +1316,10 @@ function kompassi_schedule_update_url_hash( ) {
  */
 
 function kompassi_schedule_sort_by_group( a, b ) {
-	if( kompassi_options.timeline_grouping.length > 0 ) {
-		if( jQuery( a ).find( '.' + kompassi_options.timeline_grouping ).text( ) > jQuery( b ).find( '.' + kompassi_options.timeline_grouping ).text( ) ) {
+	if( kompassi_schedule_options.timeline_grouping.length > 0 ) {
+		if( jQuery( a ).find( '.' + kompassi_schedule_options.timeline_grouping ).text( ) > jQuery( b ).find( '.' + kompassi_schedule_options.timeline_grouping ).text( ) ) {
 			return 1;
-		} else if( jQuery( a ).find( '.' + kompassi_options.timeline_grouping ).text( ) < jQuery( b ).find( '.' + kompassi_options.timeline_grouping ).text( ) ) {
+		} else if( jQuery( a ).find( '.' + kompassi_schedule_options.timeline_grouping ).text( ) < jQuery( b ).find( '.' + kompassi_schedule_options.timeline_grouping ).text( ) ) {
 			return -1;
 		}
 	}
