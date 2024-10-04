@@ -176,8 +176,9 @@ class WP_Plugin_Kompassi_Integration {
 					'schedule_end_of_day' => (int) get_option( 'kompassi_integration_schedule_end_of_day', 0 ),
 					'hidden_dimensions' => explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) ),
 					'timeline_grouping' => get_option( 'kompassi_integration_timeline_grouping' ),
+					'search_targets' => apply_filters( 'kompassi_schedule_search_targets', array( 'title' => 100, 'cachedHosts' => 10, 'description' => 1 ) ),
 				);
-				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_options', $js_strings );
+				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_schedule_options', $js_strings );
 
 				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common', 'jquery-multiselect' ), $this->ver );
 			}
