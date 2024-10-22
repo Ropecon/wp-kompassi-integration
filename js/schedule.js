@@ -59,12 +59,12 @@ function kompassi_schedule_init( ) {
 	kompassi_schedule_init_toolbar( );
 
 	//  Add favorite action to each article
-	jQuery( '#kompassi_schedule article' ).each( function( ) {
-		title = jQuery( this ).find( 'summary .title' );
-		actions = jQuery( this ).find( '.actions' );
-		favorite = jQuery( '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
-		favorite.insertAfter( title );
-	} );
+	schedule = document.getElementById( 'kompassi_schedule' );
+	programs = schedule.getElementsByTagName( 'summary' );
+	for( p of programs ) {
+		title = p.getElementsByClassName( 'title' )[0];
+		title.insertAdjacentHTML( 'afterend', '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
+	}
 
 	//  Container for notes
 	jQuery( '<section id="kompassi_schedule_notes" class="kompassi-notes" />' ).insertAfter( filters );
