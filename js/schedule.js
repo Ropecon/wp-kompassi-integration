@@ -69,6 +69,9 @@ function kompassi_schedule_init( ) {
 	//  Container for notes
 	jQuery( '<section id="kompassi_schedule_notes" class="kompassi-notes" />' ).insertAfter( filters );
 
+	//  On completely white backgrounds, switch the --kompassi-bg color to an alternative
+	kompassi_check_bg_contrast( jQuery( '#kompassi_block_schedule' ) );
+
 	//  EVENTS
 
 	//  Events (click): Favorite

@@ -76,7 +76,7 @@ function kompassi_show_modal( options ) {
 		}
 	}
 	modal.addClass( 'kompassi-integration' );
-	
+
 	header = jQuery( '<div class="header" />' ).appendTo( modal );
 	title = jQuery( '<div class="title">' + options.title + '</div>' ).appendTo( header );
 	header_actions = jQuery( '<div class="actions" />' ).appendTo( header );
@@ -206,6 +206,29 @@ function kompassi_ajax_query( opts ) {
 
 	/*  Fire AJAX query  */
 	return jQuery.ajax( Object.assign( kompassi_ajax_opts, opts ) );
+}
+
+/*
+ *  Check if the computed background color for given element matches the background color
+ *  If yes, add the class "fix-bg-contrast" to switch to a different color
+ *
+ */
+
+function kompassi_check_bg_contrast( elem ) {
+	original = elem;
+	if( elem.length == 1 ) {
+		ourBackgroundColor = window.getComputedStyle( elem[0] ).getPropertyValue( '--kompassi-bg' );
+		do {
+			cs = window.getComputedStyle( elem[0] );
+			if( cs.background != 'none' ) {
+				if( cs.backgroundColor == ourBackgroundColor ) {
+					original.addClass( 'fix-bg-contrast' );
+				}
+			} else {
+				elem = elem.parent( );
+			}
+		} while( cs.background == 'none' );
+	}
 }
 
 /*

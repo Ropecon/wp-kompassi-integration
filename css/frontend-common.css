@@ -5,6 +5,8 @@
    --kompassi-line-height: 1.3em;
 
    /*  Colors  */
+   --kompassi-hue: 205;
+
    --kompassi-fg-lightness: 13%;
    --kompassi-fg: hsla(0,0%,var(--kompassi-fg-lightness),1);
    --kompassi-fg-10: hsla(0,0%,var(--kompassi-fg-lightness),0.1);
@@ -13,10 +15,10 @@
    --kompassi-fg-75: hsla(0,0%,var(--kompassi-fg-lightness),0.75);
    --kompassi-fg-invert: hsla(0,0%,100%,1);
 
-   --kompassi-bg: #fff;
+   --kompassi-bg: rgb(255, 255, 255); /* Need to use rgb() value! */
+   --kompassi-bg-alt: hsl(var(--kompassi-hue),30%,97%);
 
    /*  Palette  */
-   --kompassi-hue: 205;
    --kompassi-palette-0: hsl(var(--kompassi-hue),20%,10%);
    --kompassi-palette-1: hsl(var(--kompassi-hue),60%,20%);
    --kompassi-palette-2: hsl(var(--kompassi-hue),60%,35%);
@@ -115,6 +117,11 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 	font-family: var(--kompassi-font);
    font-size: var(--kompassi-font-size);
    line-height: var(--kompassi-line-height);
+}
+
+.kompassi-integration.fix-bg-contrast {
+   --kompassi-bg: var(--kompassi-bg-alt);
+   --kompassi-box-shadow: 0 0 3px var(--kompassi-fg-25);
 }
 
 /*
