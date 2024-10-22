@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2024-10-02T14:41:41+00:00\n"
+"POT-Creation-Date: 2024-10-22T06:58:46+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:101 kompassi-integration.php:115
+#: kompassi-integration.php:111 kompassi-integration.php:125
 msgid "Kompassi Integration"
 msgstr "Kompassi-integraatio"
 
@@ -29,82 +29,101 @@ msgstr "Yhdistä tietoja Kompassista WordPress-sivustollesi helposti"
 msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
-#: kompassi-integration.php:50
+#: kompassi-integration.php:51
 msgid "Event Technical Name"
 msgstr "Tapahtuman tekninen nimi"
 
-#: kompassi-integration.php:51
+#: kompassi-integration.php:52
 msgid "Technical name for the event in Kompassi (eg. tracon2024)."
 msgstr "Tapahtuman tekinen nimi Kompassissa (esim. tracon2024)."
 
-#: kompassi-integration.php:54
+#: kompassi-integration.php:55
 msgid "Contact"
 msgstr "Yhteyshenkilö"
 
-#: kompassi-integration.php:55
+#: kompassi-integration.php:56
 msgid "Email address for contacts (eg. errors in the program data)."
 msgstr "Sähköpostiosoite yhteydenotoille (esim. virheet ohjelmatiedoissa)."
 
-#: kompassi-integration.php:58
+#: kompassi-integration.php:59
 msgid "Cache"
 msgstr "Välimuisti"
 
-#: kompassi-integration.php:61
+#: kompassi-integration.php:62
 msgctxt "caching: none"
 msgid "None"
 msgstr "Ei mitään"
 
-#: kompassi-integration.php:62
+#: kompassi-integration.php:63
 msgctxt "caching: transient"
 msgid "Transient"
 msgstr "Transientit"
 
-#: kompassi-integration.php:64
+#: kompassi-integration.php:65
 msgid "Method used for caching."
 msgstr "Välimuistituksesessa käytettävä menetelmä."
 
-#: kompassi-integration.php:65
+#: kompassi-integration.php:66
 msgid "Clear cache now"
 msgstr "Tyhjennä välimuisti nyt"
 
-#: kompassi-integration.php:68
+#: kompassi-integration.php:69
+msgid "Color Scheme"
+msgstr "Väriteema"
+
+#: kompassi-integration.php:72
+msgctxt "color scheme: follow user browser preference"
+msgid "Automatic (user preference)"
+msgstr "Automaattinen (käyttäjän asetus)"
+
+#: kompassi-integration.php:73
+msgctxt "color scheme: light"
+msgid "Light"
+msgstr "Vaalea"
+
+#: kompassi-integration.php:74
+msgctxt "color scheme: dark"
+msgid "Dark"
+msgstr "Tumma"
+
+#: kompassi-integration.php:78
 msgid "Start of Day"
 msgstr "Päivän alku"
 
-#: kompassi-integration.php:69
+#: kompassi-integration.php:79
 msgid "Start of Day when a single day is shown."
 msgstr "Päivän alku, kun yksi päivä näytetään."
 
-#: kompassi-integration.php:72
+#: kompassi-integration.php:82
 msgid "End of Day"
 msgstr "Päivän loppu"
 
-#: kompassi-integration.php:73
+#: kompassi-integration.php:83
 msgid "End of Day when a single day is shown."
 msgstr "Päivän loppu, kun yksi päivä näytetään."
 
-#: kompassi-integration.php:76
+#: kompassi-integration.php:86
 msgid "Hidden Dimensions"
 msgstr "Piilotetut dimensiot"
 
-#: kompassi-integration.php:77
+#: kompassi-integration.php:87
 msgid ""
 "Comma-separated list of dimension slugs that should be hidden from filters."
 msgstr "Pilkuilla erotettu lista dimensioista, jotka eivät näy suodattimina."
 
-#: kompassi-integration.php:80
+#: kompassi-integration.php:90
 msgid "Hidden Annotations"
 msgstr "Piilotetut annotaatiot"
 
-#: kompassi-integration.php:81
+#: kompassi-integration.php:91
 msgid "Comma-separated list of annotation fields that should be hidden."
 msgstr "Pilkuilla erotettu lista annotaatiokentistä, jotka tulisi piilottaa."
 
-#: kompassi-integration.php:84
+#: kompassi-integration.php:94
 msgid "Timeline Grouping"
 msgstr "Aikajanan ryhmittely"
 
-#: kompassi-integration.php:85
+#: kompassi-integration.php:95
 msgid ""
 "Dimension slug for the dimension that should be used to group program with "
 "subheadings in timeline."
@@ -112,24 +131,24 @@ msgstr ""
 "Dimensiotunnus, jonka perusteella ohjelma ryhmitellään alaotsikoin "
 "aikajanalla."
 
-#: kompassi-integration.php:118
+#: kompassi-integration.php:128
 msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
 #. translators: amount of transients deleted
-#: kompassi-integration.php:286
+#: kompassi-integration.php:301
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] "%s transientti poistettu."
 msgstr[1] "%s transienttia poistettu."
 
-#: kompassi-integration.php:468
+#: kompassi-integration.php:499
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr "Kyllä"
 
 #. translators: email link
-#: kompassi-integration.php:595
+#: kompassi-integration.php:651
 msgid "If you find errors in the program data, contact us at %s."
 msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 
@@ -137,7 +156,7 @@ msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 msgid "Program Schedule"
 msgstr "Ohjelma-aikataulu"
 
-#: js/frontend-common.js:31
+#: js/frontend-common.js:29
 msgid "More actions"
 msgstr "Lisää toimintoja"
 
@@ -146,115 +165,115 @@ msgctxt "button label"
 msgid "Close"
 msgstr "Sulje"
 
-#: js/frontend-common.js:203
+#: js/frontend-common.js:201
 msgid "Error processing AJAX query."
 msgstr "Virhe käsiteltäessä AJAX-kyselyä."
 
-#: js/schedule.js:59
+#: js/schedule.js:65
 msgctxt "button label"
 msgid "Favorite"
 msgstr "Suosikki"
 
-#: js/schedule.js:194
+#: js/schedule.js:210
 msgctxt "date filter"
 msgid "Now"
 msgstr "Nyt"
 
-#: js/schedule.js:220
+#: js/schedule.js:244
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: js/schedule.js:221
+#: js/schedule.js:245
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: js/schedule.js:237
+#: js/schedule.js:261
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:238 js/schedule.js:1120
+#: js/schedule.js:262 js/schedule.js:1160
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
-#: js/schedule.js:250
+#: js/schedule.js:274
 msgid "Text..."
 msgstr "Teksti..."
 
-#: js/schedule.js:286
+#: js/schedule.js:310
 msgid "Program matching selection will be hidden from results."
 msgstr "Valintaa vastaava ohjelma piilotetaan tuloksista."
 
-#: js/schedule.js:293
+#: js/schedule.js:317
 msgid "Clear filters"
 msgstr "Tyhjennä suodattimet"
 
-#: js/schedule.js:323
+#: js/schedule.js:347
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: js/schedule.js:324
+#: js/schedule.js:348
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
 #. translators: count of programs visible
-#: js/schedule.js:473
+#: js/schedule.js:498
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] "%s ohjelma näkyvissä."
 msgstr[1] "%s ohjelmaa näkyvissä."
 
-#: js/schedule.js:476
+#: js/schedule.js:501
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:689
+#: js/schedule.js:711
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr "Näytetään ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
 
 #. translators: amount of repositioned events
-#: js/schedule.js:697
+#: js/schedule.js:719
 msgid "Show %d program that started earlier"
 msgid_plural "Show %d programs that started earlier"
 msgstr[0] "Näytä %d aiemmin alkanut ohjelma"
 msgstr[1] "Näytä %d aiemmin alkanutta ohjelmaa"
 
-#: js/schedule.js:698
+#: js/schedule.js:720
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:824
+#: js/schedule.js:840
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1078
+#: js/schedule.js:1118
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1107
+#: js/schedule.js:1147
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1108
+#: js/schedule.js:1148
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1115
+#: js/schedule.js:1155
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1148
+#: js/schedule.js:1188
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1149
+#: js/schedule.js:1189
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1154
+#: js/schedule.js:1194
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 

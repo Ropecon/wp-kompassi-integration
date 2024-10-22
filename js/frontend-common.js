@@ -75,6 +75,8 @@ function kompassi_show_modal( options ) {
 			modal.attr( attr, value );
 		}
 	}
+	modal.addClass( 'kompassi-integration' );
+	
 	header = jQuery( '<div class="header" />' ).appendTo( modal );
 	title = jQuery( '<div class="title">' + options.title + '</div>' ).appendTo( header );
 	header_actions = jQuery( '<div class="actions" />' ).appendTo( header );

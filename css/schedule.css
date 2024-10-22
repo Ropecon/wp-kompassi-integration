@@ -1,4 +1,4 @@
-:root {
+body {
 	/*  Timeline */
 	--kompassi-schedule-timeline-row-padding: 0.2em;
 	--kompassi-schedule-timeline-row-height: calc( var(--kompassi-line-height) + var(--kompassi-schedule-timeline-row-padding) * 3 );
@@ -10,23 +10,41 @@
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {
-		--kompassi-dimension-color-default: #ddd;
+	body:not(.kompassi-color-scheme-light) {
+		--kompassi-dimension-color-default: #444;
 	}
-	#kompassi_schedule article::before,
-	#kompassi_schedule[data-display="timeline"] article {
+	body:not(.kompassi-color-scheme-light) #kompassi_schedule article::before,
+	body:not(.kompassi-color-scheme-light) #kompassi_schedule[data-display="timeline"] article {
 		filter: brightness(90%);
 	}
-	#kompassi_modal.kompassi-program .content .actions::after {
+	body:not(.kompassi-color-scheme-light) #kompassi_modal.kompassi-program .content .actions::after {
 		filter: brightness(50%);
 	}
-	#kompassi_schedule_dates a.date-toggle.current::before {
+	body:not(.kompassi-color-scheme-light) #kompassi_schedule_dates a.date-toggle.current::before {
 		background-color: var(--kompassi-fg);
 		filter: opacity(0.6);
 	}
-	#kompassi_schedule_dates a.date-toggle.current::after {
+	body:not(.kompassi-color-scheme-light) #kompassi_schedule_dates a.date-toggle.current::after {
 		background-color: var(--kompassi-bg);
 	}
+}
+
+body.kompassi-color-scheme-dark {
+	--kompassi-dimension-color-default: #444;
+}
+body.kompassi-color-scheme-dark #kompassi_schedule article::before,
+body.kompassi-color-scheme-dark #kompassi_schedule[data-display="timeline"] article {
+	filter: brightness(90%);
+}
+body.kompassi-color-scheme-dark #kompassi_modal.kompassi-program .content .actions::after {
+	filter: brightness(50%);
+}
+body.kompassi-color-scheme-dark #kompassi_schedule_dates a.date-toggle.current::before {
+	background-color: var(--kompassi-fg);
+	filter: opacity(0.6);
+}
+body.kompassi-color-scheme-dark #kompassi_schedule_dates a.date-toggle.current::after {
+	background-color: var(--kompassi-bg);
 }
 
 /* Icon opacities */
