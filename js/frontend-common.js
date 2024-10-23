@@ -11,6 +11,7 @@ kompassi_storage = localStorage.getItem( 'kompassi_' + kompassi_common.event_slu
 if( kompassi_storage == null ) {
 	kompassi_storage = {};
 	kompassi_storage = wp.hooks.applyFilters( 'kompassi_init_storage', kompassi_storage );
+	kompassi_storage['favorites'] = []; // TODO
 } else {
 	kompassi_storage = JSON.parse( kompassi_storage );
 }
@@ -108,16 +109,16 @@ function kompassi_close_modal( ) {
  */
 
 function kompassi_popover( options, event, element ) {
-	popover = jQuery( '<div id="kompassi_popover" />' );
-	popover.append( '<p><strong>' + options.title + '</strong></p>' );
-	popover.append( '<p>' + options.content + '</p>' );
+	let popover = document.createElement( 'div' );
+	popover.id = 'kompassi_popover';
+	popover.classList.add( 'kompassi-integration' );
+	popover.insertAdjacentHTML( 'beforeend', '<p><strong>' + options.title + '</strong></p><p>' + options.content + '</p>' );
 
-	jQuery( 'body' ).append( popover );
+	document.body.append( popover );
 
-	offset_top = parseInt( jQuery( element ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) );
-	popover.css( 'top', 'calc( ' + offset_top + 'px - ' + popover.outerHeight( ) + 'px - 0.5em )' );
-	popover.css( 'left', 'calc( ' + event.pageX + 'px - ' + popover.outerWidth( ) / 2  + 'px )');
-
+	offset_top = parseInt( jQuery( element ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) ); // TODO
+	popover.style.top = 'calc( ' + offset_top + 'px - ' + popover.offsetHeight + 'px - 0.5em )';
+	popover.style.left = 'calc( ' + event.pageX + 'px - ' + popover.offsetWidth / 2  + 'px )';
 }
 
 /*
@@ -214,20 +215,20 @@ function kompassi_ajax_query( opts ) {
  *
  */
 
-function kompassi_check_bg_contrast( elem ) {
-	original = elem;
-	if( elem.length == 1 ) {
-		ourBackgroundColor = window.getComputedStyle( elem[0] ).getPropertyValue( '--kompassi-bg' );
+function kompassi_check_bg_contrast( element ) {
+	original = element;
+	if( element.length == 1 ) {
+		ourBackgroundColor = window.getComputedStyle( element ).getPropertyValue( '--kompassi-bg' );
 		do {
-			cs = window.getComputedStyle( elem[0] );
-			if( cs.background != 'none' ) {
-				if( cs.backgroundColor == ourBackgroundColor ) {
+			computed = window.getComputedStyle( element );
+			if( computed.background != 'none' ) {
+				if( computed.backgroundColor == ourBackgroundColor ) {
 					original.addClass( 'fix-bg-contrast' );
 				}
 			} else {
-				elem = elem.parent( );
+				element = element.parent( );
 			}
-		} while( cs.background == 'none' );
+		} while( computed.background == 'none' );
 	}
 }
 
