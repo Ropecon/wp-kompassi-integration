@@ -166,6 +166,7 @@ function kompassi_popover( options, event, element ) {
 	popover.insertAdjacentHTML( 'beforeend', '<p><strong>' + options.title + '</strong></p><p>' + options.content + '</p>' );
 
 	document.body.append( popover );
+<<<<<<< HEAD
 
 	let offset_top = element.getBoundingClientRect().top + window.pageYOffset;
 	popover.style.top = 'calc( ' + offset_top + 'px - ' + popover.offsetHeight + 'px - 0.5em )';
@@ -242,6 +243,12 @@ function kompassi_dropdown( options ) {
 	wrapper.append( button );
 	wrapper.append( list );
 	return wrapper;
+=======
+
+	offset_top = parseInt( jQuery( element ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) ); // TODO
+	popover.style.top = 'calc( ' + offset_top + 'px - ' + popover.offsetHeight + 'px - 0.5em )';
+	popover.style.left = 'calc( ' + event.pageX + 'px - ' + popover.offsetWidth / 2  + 'px )';
+>>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
 }
 
 /*
@@ -341,18 +348,31 @@ async function kompassi_ajax( opts ) {
  */
 
 function kompassi_check_bg_contrast( element ) {
+<<<<<<< HEAD
 	if( element ) {
 		let original = element;
 		let ourBackgroundColor = window.getComputedStyle( element ).getPropertyValue( '--kompassi-bg' );
 		let computed;
+=======
+	original = element;
+	if( element.length == 1 ) {
+		ourBackgroundColor = window.getComputedStyle( element ).getPropertyValue( '--kompassi-bg' );
+>>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
 		do {
 			computed = window.getComputedStyle( element );
 			if( computed.background != 'none' ) {
 				if( computed.backgroundColor == ourBackgroundColor ) {
+<<<<<<< HEAD
 					original.classList.add( 'fix-bg-contrast' );
 				}
 			} else {
 				element = element.parentNode;
+=======
+					original.addClass( 'fix-bg-contrast' );
+				}
+			} else {
+				element = element.parent( );
+>>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
 			}
 		} while( computed.background == 'none' );
 	}
