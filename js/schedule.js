@@ -882,11 +882,11 @@ function kompassi_schedule_apply_filters( ) {
 	}
 
 	//
-	let filters = document.getElementById( 'kompassi_schedule_filters' );
+	let filter_popup = document.getElementById( 'kompassi_schedule_filters' );
 	if( kompassi_schedule.filters.enabled > 0 ) {
-		filters.classList.add( 'has-filters-enabled' );
+		filter_popup.classList.add( 'has-filters-enabled' );
 	} else {
-		filters.classList.remove( 'has-filters-enabled' );
+		filter_popup.classList.remove( 'has-filters-enabled' );
 	}
 
 	kompassi_schedule_setup_display( );
@@ -997,7 +997,6 @@ function kompassi_schedule_setup_timeline_layout( ) {
 
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
 	programs = [...programs].sort( kompassi_schedule_sort_by_group );
-	let prev_group = null;
 	for( let program of programs ) {
 		// Count the width % and offset % for program
 		let width = program.dataset.length / length * 100;
@@ -1396,7 +1395,7 @@ function kompassi_schedule_export_modal( ) {
  */
 
 function kompassi_schedule_import_modal( programs ) {
-	let programs = programs.split( ',' );
+	programs = programs.split( ',' );
 	let valid_programs = [];
 	for( let program of programs ) {
 		let element = document.getElementById( program );
