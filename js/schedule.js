@@ -1211,6 +1211,7 @@ function kompassi_schedule_apply_filters( ) {
 	//
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	let filter_popup = document.getElementById( 'kompassi_schedule_filters' );
 	if( kompassi_schedule.filters.enabled > 0 ) {
 		filter_popup.classList.add( 'has-filters-enabled' );
@@ -1221,11 +1222,18 @@ function kompassi_schedule_apply_filters( ) {
 =======
 	let filters = document.getElementById( 'kompassi_schedule_filters' );
 >>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
+=======
+	let filter_popup = document.getElementById( 'kompassi_schedule_filters' );
+>>>>>>> 22c60f2 (Small fixes)
 	if( kompassi_schedule.filters.enabled > 0 ) {
-		filters.classList.add( 'has-filters-enabled' );
+		filter_popup.classList.add( 'has-filters-enabled' );
 	} else {
+<<<<<<< HEAD
 		filters.classList.remove( 'has-filters-enabled' );
 >>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
+=======
+		filter_popup.classList.remove( 'has-filters-enabled' );
+>>>>>>> 22c60f2 (Small fixes)
 	}
 
 	kompassi_schedule_setup_display( );
@@ -1339,7 +1347,6 @@ function kompassi_schedule_setup_timeline_layout( ) {
 
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
 	programs = [...programs].sort( kompassi_schedule_sort_by_group );
-	let prev_group = null;
 	for( let program of programs ) {
 		// Count the width % and offset % for program
 <<<<<<< HEAD
@@ -2001,10 +2008,14 @@ function kompassi_schedule_export_modal( ) {
 
 function kompassi_schedule_import_modal( programs ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	programs = programs.split( ',' );
 =======
 	let programs = programs.split( ',' );
 >>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
+=======
+	programs = programs.split( ',' );
+>>>>>>> 22c60f2 (Small fixes)
 	let valid_programs = [];
 	for( let program of programs ) {
 		let element = document.getElementById( program );
