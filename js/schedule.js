@@ -385,13 +385,16 @@ function kompassi_schedule_init_toolbar( ) {
 	clear_toggle.title = __( 'Clear filters', 'kompassi-integration' );
 
 	clear_toggle.addEventListener( 'click', function( event ) {
-		let filters = filter_popup.querySelectorAll( 'input, select' );
+		let filters = filter_popup.querySelectorAll( '.filter' );
 		for( let filter of filters ) {
-			if( filter.classList.contains( 'filter-dimension' ) ) {
+			if( filter.classList.contains( 'kompassi-dropdown' ) ) {
 				let options = filter.querySelectorAll( 'input' );
 				for( let option of options ) {
-					option.removeAttribute( 'checked' );
+					option.checked = false;
 				}
+				// Refresh dropdown button
+				let change_event = new Event( 'change', { view: window, bubbles: true, cancelable: true } );
+				options[0].dispatchEvent( change_event );
 			} else if( filter.classList.contains( 'filter-text' ) ) {
 				filter.value = null;
 			}
