@@ -1,11 +1,9 @@
-var kompassi_common = {};
-
 /*
  *  localStorage
  *
  */
 
-var kompassi_storage;
+let kompassi_storage;
 
 kompassi_storage = localStorage.getItem( 'kompassi_' + kompassi_common.event_slug );
 if( kompassi_storage == null ) {
@@ -72,7 +70,6 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 	menu_button.addEventListener( 'click', function( event ) {
 		this.classList.toggle( 'active' );
 		this.closest( 'section' ).classList.toggle( 'open' );
-		//		jQuery( this ).parent( ).toggleClass( 'open' );
 	} );
 
 	return menu;
@@ -86,37 +83,79 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 /*  Open  */
 
 function kompassi_show_modal( options ) {
-	modal = jQuery( '<div id="kompassi_modal" />' );
+	let modal = document.createElement( 'div' );
+	modal.id = 'kompassi_modal';
 	if( typeof options.attrs == 'object' && Object.keys(options.attrs).length > 0 ) {
-		for( [attr, value] of Object.entries( options.attrs ) ) {
-			modal.attr( attr, value );
+		for( let attr in options.attrs ) {
+			modal.setAttribute( attr, options.attrs[attr] );
 		}
 	}
-	modal.addClass( 'kompassi-integration' );
+	modal.classList.add( 'kompassi-integration' );
 
-	header = jQuery( '<div class="header" />' ).appendTo( modal );
-	title = jQuery( '<div class="title">' + options.title + '</div>' ).appendTo( header );
-	header_actions = jQuery( '<div class="actions" />' ).appendTo( header );
-	// header_actions from options
-	header_actions.append( '<a class="close kompassi-icon-close" title="' + _x( 'Close', 'button label', 'kompassi-integration' ) + '" />' );
-	content = jQuery( '<div class="content" />' ).appendTo( modal );
+	let header = document.createElement( 'div' );
+	header.classList.add( 'header' );
+	modal.append( header );
+
+	let title = document.createElement( 'div' );
+	title.classList.add( 'title' );
+	title.textContent = options.title;
+	header.append( title );
+
+	let header_actions = document.createElement( 'div' );
+	header.append( header_actions );
+	// TODO: header_actions from options ?
+	let close = document.createElement( 'a' );
+	close.classList.add( 'close', 'kompassi-icon-close' );
+	close.textContent = _x( 'Close', 'button label', 'kompassi-integration' );
+	header_actions.append( close );
+
+	let content = document.createElement( 'div' );
+	content.classList.add( 'content' );
+	modal.append( content );
+
 	if( typeof options.actions !== 'undefined' ) {
-		content.append( '<div class="actions kompassi-button-group has-icon-and-label">' + options.actions + '</div>' );
-	}
-	content.append( '<div class="main">' + options.content + '</div>' );
-	if( typeof options.footer !== 'undefined' ) {
-		content.append( '<div class="footer">' + options.footer + '</div>' );
+		let content_actions = document.createElement( 'div' );
+		content_actions.classList.add( 'actions', 'kompassi-button-group', 'has-icon-and-label' );
+		content_actions.innerHTML = options.actions;
+		content.append( content_actions );
 	}
 
-	modal.appendTo( jQuery( 'body' ) );
-	jQuery( 'body' ).css( { 'overflow': 'hidden', 'user-select': 'none' } ).append( '<div id="kompassi_modal_underlay" />' );
+	let main = document.createElement( 'div' );
+	main.classList.add( 'main' );
+	main.innerHTML = options.content;
+	content.append( main );
+
+	if( typeof options.footer !== 'undefined' ) {
+		let footer = document.createElement( 'div' );
+		footer.classList.add( 'footer' );
+		footer.innerHTML = options.footer;
+		content.append( footer );
+	}
+
+	document.body.append( modal );
+	document.body.style.overflow = 'hidden';
+	document.body.style.userSelect = 'none';
+
+	let underlay = document.createElement( 'div' );
+	underlay.id = 'kompassi_modal_underlay';
+	document.body.append( underlay );
 }
 
 /*  Close  */
 
 function kompassi_close_modal( ) {
-	jQuery( '#kompassi_modal_underlay, #kompassi_modal' ).remove( );
-	jQuery( 'body' ).css( { 'overflow': 'auto', 'user-select': '' } );
+	let modal = document.getElementById( 'kompassi_modal' );
+	if( modal ) {
+		modal.remove( );
+	}
+
+	let underlay = document.getElementById( 'kompassi_modal_underlay')
+	if( underlay ) {
+		underlay.remove( );
+	}
+
+	document.body.style.overflow = 'auto';
+	document.body.style.userSelect = null;
 }
 
 /*
