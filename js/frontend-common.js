@@ -35,7 +35,11 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 		options.icon = 'kompassi-icon-' + options.icon;
 	}
 	if( typeof options.id != 'undefined' ) {
+<<<<<<< HEAD
 		id = options.id;
+=======
+		id = 'id="' + options.id + '"';
+>>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 	}
 
 	let menu = document.createElement( 'section' );
@@ -57,7 +61,14 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 
 		list_item.addEventListener( 'click', menu_items[item].callback );
 		list_item.addEventListener( 'click', function( event ) {
+<<<<<<< HEAD
 			this.closest( '.kompassi-dropdown-menu' ).querySelector( 'a' ).classList.toggle( 'active' );
+=======
+//			let links = this.closest( '.kompassi-dropdown-menu' ).children;
+//			for( let link of links ) {
+//				link.classList.remove( 'active' );
+//			}
+>>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 			this.closest( '.kompassi-dropdown-menu' ).classList.remove( 'open' );
 		} );
 	}
@@ -67,6 +78,10 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 	menu_button.addEventListener( 'click', function( event ) {
 		this.classList.toggle( 'active' );
 		this.closest( 'section' ).classList.toggle( 'open' );
+<<<<<<< HEAD
+=======
+		//		jQuery( this ).parent( ).toggleClass( 'open' );
+>>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 	} );
 
 	return menu;
@@ -349,19 +364,26 @@ async function kompassi_ajax( opts ) {
 
 function kompassi_check_bg_contrast( element ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 	if( element ) {
 		let original = element;
 		let ourBackgroundColor = window.getComputedStyle( element ).getPropertyValue( '--kompassi-bg' );
 		let computed;
+<<<<<<< HEAD
 =======
 	original = element;
 	if( element.length == 1 ) {
 		ourBackgroundColor = window.getComputedStyle( element ).getPropertyValue( '--kompassi-bg' );
 >>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
+=======
+>>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 		do {
 			computed = window.getComputedStyle( element );
 			if( computed.background != 'none' ) {
 				if( computed.backgroundColor == ourBackgroundColor ) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 					original.classList.add( 'fix-bg-contrast' );
 				}
@@ -373,6 +395,12 @@ function kompassi_check_bg_contrast( element ) {
 			} else {
 				element = element.parent( );
 >>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
+=======
+					original.classList.add( 'fix-bg-contrast' );
+				}
+			} else {
+				element = element.parentNode;
+>>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 			}
 		} while( computed.background == 'none' );
 	}
