@@ -35,7 +35,7 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 		options.icon = 'kompassi-icon-' + options.icon;
 	}
 	if( typeof options.id != 'undefined' ) {
-		id = 'id="' + options.id + '"';
+		id = options.id;
 	}
 
 	let menu = document.createElement( 'section' );
@@ -57,10 +57,7 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 
 		list_item.addEventListener( 'click', menu_items[item].callback );
 		list_item.addEventListener( 'click', function( event ) {
-//			let links = this.closest( '.kompassi-dropdown-menu' ).children;
-//			for( let link of links ) {
-//				link.classList.remove( 'active' );
-//			}
+			this.closest( '.kompassi-dropdown-menu' ).querySelector( 'a' ).classList.toggle( 'active' );
 			this.closest( '.kompassi-dropdown-menu' ).classList.remove( 'open' );
 		} );
 	}
@@ -106,7 +103,6 @@ function kompassi_show_modal( options ) {
 	// TODO: header_actions from options ?
 	let close = document.createElement( 'a' );
 	close.classList.add( 'close', 'kompassi-icon-close' );
-	close.textContent = _x( 'Close', 'button label', 'kompassi-integration' );
 	header_actions.append( close );
 
 	let content = document.createElement( 'div' );
@@ -171,7 +167,7 @@ function kompassi_popover( options, event, element ) {
 
 	document.body.append( popover );
 
-	offset_top = parseInt( jQuery( element ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) ); // TODO
+	let offset_top = element.getBoundingClientRect().top + window.pageYOffset;
 	popover.style.top = 'calc( ' + offset_top + 'px - ' + popover.offsetHeight + 'px - 0.5em )';
 	popover.style.left = 'calc( ' + event.pageX + 'px - ' + popover.offsetWidth / 2  + 'px )';
 }
@@ -182,16 +178,17 @@ function kompassi_popover( options, event, element ) {
  */
 
 function kompassi_get_url_options( ) {
-	url_options = {};
-	hash = new URL( window.location ).hash.substring( 1 ).split( '/' );
-	jQuery( hash ).each( function( opt_pair ) {
-		opt = this.split( ':' );
-		if( !opt[1] ) {
-			url_options[opt[0]] = true;
+	let url_options = {};
+	let hash = new URL( window.location ).hash.substring( 1 ).split( '/' );
+	for( let option of hash ) {
+		option = option.split( ':' );
+		if( !option[1] ) {
+			url_options[option[0]] = true;
 		} else {
-			url_options[opt[0]] = opt[1];
+			url_options[option[0]] = option[1];
 		}
-	} );
+	}
+
 	return url_options;
 }
 
@@ -232,36 +229,37 @@ async function kompassi_href_to_clipboard( event, link ) {
  */
 
 function kompassi_ajax_query( opts ) {
-	kompassi_ajax_opts = {
-		type: 'GET',
-		retryLimit: 3,
-		data: { },
-		beforeSend: function( xhr ) {
-			// TODO: Allow overriding default nonce for extra security
-			// xhr.setRequestHeader( 'X-WP-Nonce', kompassi_common.rest_nonce );
-		},
-		error: function( xhr, textStatus, errorThrown ) {
-			this.retryLimit--;
-			if( this.retryLimit ) {
-				jQuery.ajax( this );
-				return;
-			} else {
-				console.log( errorThrown );
-				/*  On errors, the "real" action should be a function in .errorAction  */
-				if( this.errorAction instanceof Function ) {
-					this.errorAction( );
-				}
-			}
-			return;
-		},
-		errorActionMessage: __( 'Error processing AJAX query.', 'kompassi-integration' ),
-	}
+	let kompassi_ajax_opts = { retryLimit: 3 }
 
 	/*  Prepend REST URL base to rest_route  */
 	opts.url = kompassi_common.rest_url_base + opts.rest_route;
 
 	/*  Fire AJAX query  */
-	return jQuery.ajax( Object.assign( kompassi_ajax_opts, opts ) );
+	kompassi_ajax( Object.assign( kompassi_ajax_opts, opts ) );
+}
+
+async function kompassi_ajax( opts ) {
+	try {
+		const response = await fetch( opts.url );
+		if( !response.ok ) {
+			throw new Error( 'Response:' + response.status );
+		}
+
+		response.json( ).then( function( r ) {
+			opts.success( r );
+		} );
+	} catch( error ) {
+		opts.retryLimit--;
+		if( this.retryLimit ) {
+			kompassi_ajax( opts );
+			return;
+		} else {
+			console.log( 'Error: ' + error.message, error );
+			if( opts.errorAction instanceof Function ) {
+				opts.errorAction( );
+			}
+		}
+	}
 }
 
 /*
@@ -293,15 +291,14 @@ function kompassi_check_bg_contrast( element ) {
  *
  */
 
-jQuery( function( e ) {
-	jQuery( window ).on( 'keydown', function( e ) {
-		if( e.keyCode == 16 ) {
-			kompassi_common.shift_pressed = true;
-		}
-	} );
-	jQuery( window ).on( 'keyup', function( e ) {
-		if( e.keyCode == 16 ) {
-			kompassi_common.shift_pressed = false;
-		}
-	} );
+window.addEventListener( 'keydown', function( event ) {
+	if( event.keyCode == 16 ) {
+		kompassi_common.shift_pressed = true;
+	}
+} );
+
+window.addEventListener( 'keyup', function( event ) {
+	if( event.keyCode == 16 ) {
+		kompassi_common.shift_pressed = false;
+	}
 } );

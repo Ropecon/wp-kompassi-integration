@@ -65,7 +65,7 @@ function kompassi_schedule_init( ) {
 	kompassi_schedule_init_toolbar( );
 
 	//  Add favorite action to each article
-	let programs = schedule.children;
+	let programs = schedule.querySelectorAll( 'article' );
 	for( let program of programs ) {
 		let title = program.querySelector( '.title' );
 		title.insertAdjacentHTML( 'afterend', '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
@@ -731,7 +731,7 @@ function kompassi_schedule_update_date_view_parameters( ) {
 
 function kompassi_schedule_apply_filters( ) {
 	//  Show all and remove notification if exists
-	let programs = document.getElementById( 'kompassi_schedule' ).children;
+	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 	for( let program of programs ) {
 		program.classList.remove( 'filtered', 'continues' );
 	}
@@ -812,7 +812,7 @@ function kompassi_schedule_apply_filters( ) {
 				}
 				filter_count += 1;
 			} else {
-				let programs = document.getElementById( 'kompassi_schedule' ).children;
+				let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 				for( let program of programs ) {
 					program.style.order = null;
 				}
@@ -1071,7 +1071,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	headers.classList.add( 'headers' );
 	let days = 0;
 	let offset = 100 / Math.ceil( kompassi_schedule.filters.date.length_hours );
-	for( let hours = 0; i < Math.ceil( kompassi_schedule.filters.date.length_hours ); i++ ) {
+	for( let hours = 0; hours < Math.ceil( kompassi_schedule.filters.date.length_hours ); hours++ ) {
 		let time_label = kompassi_schedule.filters.date.start.add( hours, 'hour' ).format( 'H' );
 		schedule.insertAdjacentHTML( 'beforeend', '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + hours + '% ); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );"></div>' );
 		let hint = document.createElement( 'div' );
@@ -1225,7 +1225,7 @@ function kompassi_schedule_timeline_reposition_labels( ) {
 	}
 
 	// Reposition program titles that are left of visible area
-	let programs = document.getElementById( 'kompassi_schedule' ).children;
+	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 	for( let program of programs ) {
 		let program_pos = parseInt( program.style.left );
 
@@ -1249,7 +1249,7 @@ function kompassi_schedule_revert_display_layouts( ) {
 	// Timeline
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	schedule.style.height = 'auto';
-	let programs = schedule.children;
+	let programs = schedule.querySelectorAll( 'article' );
 	for( let program of programs ) {
 		program.style.width = null;
 		program.style.minWidth = null;
