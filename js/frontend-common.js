@@ -173,6 +173,78 @@ function kompassi_popover( options, event, element ) {
 }
 
 /*
+ *  Dropdown list
+ *
+ */
+
+function kompassi_dropdown( options ) {
+	let wrapper = document.createElement( 'div' );
+	wrapper.classList.add( 'kompassi-dropdown' );
+	if( options.classes ) {
+		wrapper.classList.add( ...options.classes );
+	}
+	if( options.dataset ) {
+		for( let data in options.dataset ) {
+			wrapper.setAttribute( 'data-' + data, options.dataset[data] );
+		}
+	}
+
+	let button = document.createElement( 'button' );
+	button.textContent = options.label;
+	button.addEventListener( 'click', function( event ) {
+		wrapper.classList.toggle( 'open' );
+	} );
+	let indicator = document.createElement( 'span' );
+	indicator.classList.add( 'kompassi-indicator' );
+	button.append( indicator );
+
+	let list = document.createElement( 'ul' );
+	if( options.description ) {
+		let item = document.createElement( 'li' );
+		item.classList.add( 'description' );
+		item.textContent = options.description;
+		list.append( item );
+	}
+
+	for( let option in options.values ) {
+		let item = document.createElement( 'li' );
+		let input = document.createElement( 'input' );
+		let label = document.createElement( 'label' );
+		input.name = options.slug + '[]';
+		input.id = options.slug + '_' + options.values[option].slug;
+		input.type = 'checkbox';
+		input.value = options.values[option].slug;
+		label.textContent = options.values[option].title;
+		label.setAttribute( 'for', options.slug + '_' + options.values[option].slug );
+		label.prepend( input );
+
+		item.append( label );
+		list.append( item );
+
+		input.addEventListener( 'change', function( event ) {
+			let options = list.querySelectorAll( 'input' );
+			let selected = 0;
+			for( let option of options ) {
+				if( option.checked ) {
+					selected += 1;
+				}
+			}
+			if( selected > 0 ) {
+				button.classList.add( 'active' );
+				indicator.textContent = selected;
+			} else {
+				button.classList.remove( 'active' );
+				indicator.textContent = null;
+			}
+		} );
+	}
+
+	wrapper.append( button );
+	wrapper.append( list );
+	return wrapper;
+}
+
+/*
  *  Get URL options
  *
  */

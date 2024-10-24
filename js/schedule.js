@@ -363,51 +363,20 @@ function kompassi_schedule_init_toolbar( ) {
 			continue;
 		}
 
-		let select = document.createElement( 'select' );
-		select.classList.add( 'filter', 'filter-dimension' );
-		select.setAttribute( 'name', 'filter_' + dimension.slug );
-		select.dataset.filter = dimension.slug;
-		select.dataset.dimension = dimension.slug;
-		select.dataset.placeholder = dimension.title;
-		select.setAttribute( 'multiple', 'multiple' );
-
-		for( let value of dimension.values ) {
-			let option = document.createElement( 'option' );
-			option.value = value.slug;
-			option.textContent = value.title;
-			select.append( option );
-		}
-
-		let select_wrapper = document.createElement( 'div' );
-		select_wrapper.classList.add( 'select' );
-		select_wrapper.dataset.dimension = dimension.slug;
-		select_wrapper.append( select );
-		filter_popup.append( select_wrapper );
-
-		// TODO: Replace jQuery-multiselect
-		options = {
-			texts: {
-				placeholder: dimension.title,
-				select_label: dimension.title,
-			},
-			maxWidth: 500,
-			onPlaceholder: kompassi_schedule_update_multiselect_label,
-			onOptionClick: kompassi_schedule_update_multiselect_label,
-			onControlOpen: function( element ) {
-				if( typeof this.texts.options_header !== 'undefined' && jQuery( element ).next( ).find( '.ms-options-header' ).length == 0 ) {
-					header = jQuery( '<div class="ms-options-header">' + this.texts.options_header + '</div>' );
-					jQuery( element ).next( ).find( '.ms-options' ).prepend( header );
-				}
-			}
+		let dropdown_options = {
+			slug: dimension.slug,
+			label: dimension.title,
+			values: dimension.values,
+			classes: [ 'filter', 'filter-dimension' ],
+			dataset: { dimension: dimension.slug, filter: dimension.slug }
 		};
 
-		// Negative selection filter
-		if( dimension.isNegativeSelection == true ) {
-			select.classList.add( 'flag-negative' );
-			options.texts.options_header = __( 'Program matching selection will be hidden from results.', 'kompassi-integration' );
+		if( dimension.isNegativeSelection ) {
+			dropdown_options.classes.push( 'flag-negative' );
+			dropdown_options.description = __( 'Program matching selection will be hidden from results.', 'kompassi-integration' );
 		}
 
-		jQuery( select ).multiselect( options );
+		filter_popup.append( kompassi_dropdown( dropdown_options ) );
 	}
 
 	// Clear filters
@@ -419,11 +388,10 @@ function kompassi_schedule_init_toolbar( ) {
 		let filters = filter_popup.querySelectorAll( 'input, select' );
 		for( let filter of filters ) {
 			if( filter.classList.contains( 'filter-dimension' ) ) {
-				for( let option of filter.children ) {
-					option.removeAttribute( 'selected' );
+				let options = filter.querySelectorAll( 'input' );
+				for( let option of options ) {
+					option.removeAttribute( 'checked' );
 				}
-				// TODO: Replace jQuery-multiselect
-				jQuery( select ).multiselect( 'reload' );
 			} else if( filter.classList.contains( 'filter-text' ) ) {
 				filter.value = null;
 			}
@@ -438,7 +406,7 @@ function kompassi_schedule_init_toolbar( ) {
 
 	//  Handle filtering
 	filter_popup.addEventListener( 'change', function( event ) {
-		if( event.target.closest( 'div.select' ).querySelector( 'select' ).classList.contains( 'filter-dimension' ) ) {
+		if( event.target.closest( 'div' ).classList.contains( 'kompassi-dropdown' ) ) {
 			kompassi_schedule_apply_filters( );
 		}
 	} );
@@ -532,24 +500,25 @@ function kompassi_schedule_update_filters_from_options( opts = {} ) {
 	let filters = document.querySelectorAll( '#kompassi_schedule_filters .filter' );
 	for( let filter of filters ) {
 		let filter_name = filter.dataset.filter;
-		if( filter.tagName == 'SELECT' ) {
-			let options = filter.querySelectorAll( 'option' );
+		if( filter.tagName == 'DIV' && filter.classList.contains( 'filter-dimension' ) ) {
+			let options = filter.querySelectorAll( 'input' );
 			if( opts[filter_name] ) {
 				for( let option of options ) {
 					if( opts[filter_name].includes( option.value ) ) {
-						option.selected = true;
+						option.checked = true;
 						filters_set = true;
 					} else {
-						option.selected = false;
+						option.checked = false;
 					}
 				}
 			} else {
 				for( let option of options ) {
-					option.selected = false;
+					option.checked = false;
 				}
 			}
-			// TODO: Replace jQuery-multiselect
-			jQuery( filter ).multiselect( 'reload' );
+			// Refresh dropdown button
+			let change_event = new Event( 'change', { view: window, bubbles: true, cancelable: true } );
+			options[0].dispatchEvent( change_event );
 		} else if( filter.tagName == 'INPUT' ) {
 			if( opts[filter_name] ) {
 				filter.value = decodeURIComponent( opts[filter_name] );
@@ -753,8 +722,14 @@ function kompassi_schedule_apply_filters( ) {
 	for( let filter of filters ) {
 		// Dimension filters
 		if( filter.classList.contains( 'filter-dimension' ) ) {
-			if( filter.value.length > 0 ) {
+			let selected = filter.querySelectorAll( 'input:checked' );
+			if( selected.length > 0 ) {
 				let filter_dimension = filter.dataset.dimension;
+				let filter_values = [];
+				for( let sel of selected ) {
+					filter_values.push( sel.value );
+				}
+
 				let programs = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' );
 				for( let program of programs ) {
 					let match = false;
@@ -763,7 +738,7 @@ function kompassi_schedule_apply_filters( ) {
 						let program_dimensions = program.getAttribute( 'data-' + filter_dimension ).split( ',' );
 						let dimension_match = false;
 						for( let dimension of program_dimensions ) {
-							if( filter.value.includes( dimension ) ) {
+							if( filter_values.includes( dimension ) ) {
 								dimension_match = true;
 								break;
 							}
@@ -782,8 +757,6 @@ function kompassi_schedule_apply_filters( ) {
 				}
 				filter_count += 1;
 			}
-			// TODO: Replace jQuery-multiselect
-			jQuery( filter ).multiselect( 'reload' );
 		}
 
 		// Text filter
@@ -891,27 +864,6 @@ function kompassi_schedule_apply_filters( ) {
 
 	kompassi_schedule_setup_display( );
 	kompassi_schedule_update_url_hash( );
-}
-
-/**
- *  Update multiselect labels
- *  - Show indicator
- *  - Show select label instead of "Multiple selected"
- *  TODO: Replace jQuery-multiselect
- *
- *  @param {Object} element JS element to update
- *
- */
-
-function kompassi_schedule_update_multiselect_label( element ) {
-	options = jQuery( element ).find( 'option' ).length;
-	selected_options = jQuery( element ).next( ).find( '.selected' ).length;
-
-	html = this.texts.select_label;
-	if( selected_options > 0 ) {
-		html += ' <span class="kompassi-indicator">' + selected_options + '</span>';
-	}
-	jQuery( element ).next( ).find( 'button' ).first( ).html( html );
 }
 
 /*
@@ -1538,9 +1490,14 @@ function kompassi_schedule_collect_url_hash( ) {
 	let filters = block.querySelectorAll( '#kompassi_schedule_filters .filter' );
 	for( let filter of filters ) {
 		let opt_name = filter.dataset.filter;
-		if( filter.tagName == 'SELECT' ) {
-			if( filter.value.length > 0 ) {
-				opts.push( opt_name + ':' + filter.value );
+		if( filter.tagName == 'DIV' && filter.classList.contains( 'kompassi-dropdown' ) ) {
+			let options = filter.querySelectorAll( 'input:checked' );
+			let selected = [];
+			for( let option of options ) {
+				selected.push( option.value );
+			}
+			if( selected.length > 0 ) {
+				opts.push( opt_name + ':' + selected.join( ',' ) );
 			}
 		} else if( filter.tagName == 'INPUT' ) {
 			if( filter.value ) {

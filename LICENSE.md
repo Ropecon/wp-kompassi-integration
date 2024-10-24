@@ -18,5 +18,4 @@ Libraries bundled with the plugin are subject to their own licenses.
 | ------------------ | ------- | ---------------------------------------------------- |
 | Day.js             | MIT     | https://day.js.org/                                  |
 | Hammer.js          | MIT     | https://hammerjs.github.io/                          |
-| jQuery-MultiSelect | MIT     | https://springstubbe.us/projects/jquery-multiselect/ |
 | Showdown           | MIT     | https://showdownjs.com/                              |

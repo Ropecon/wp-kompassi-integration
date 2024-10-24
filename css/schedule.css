@@ -167,7 +167,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			display: inline-block;
 			width: 100%;
 		}
-			#kompassi_schedule_filters :is(input, select, .ms-options-wrap button) {
+			#kompassi_schedule_filters :is(input, button) {
 				padding: var(--kompassi-padding);
 				color: #fff;
 				background-color: hsl(0,0%,0%,0.2);
@@ -179,87 +179,23 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				#kompassi_schedule_filters input::placeholder {
 					color: #fff;
 				}
-				#kompassi_schedule_filters :is(select, .ms-options-wrap button) {
-					position: relative;
-					appearance: none;
-					cursor: pointer;
-
+				#kompassi_schedule_filters button {
 					padding: 0.5em 2em 0.5em 0.5em;
 					outline-color: #fff;
+					ojt
 				}
-					#kompassi_schedule_filters :is(select, .ms-options-wrap button)::after {
-						display: block;
-						position: absolute;
-						top: 0;
-						bottom: 0;
-						right: 0.5em;
-						width: 1em;
-						height: 100%;
-						margin: 0 auto;
-
-						border: none;
-						background-image: url(../images/icons/dropdown.svg);
-						background-size: contain;
-						background-repeat: no-repeat;
-						background-position: 50% 50%;
-						filter: invert();
-					}
 					#kompassi_schedule_filters option {
 						color: var(--kompassi-fg);
 						background-color: var(--kompassi-bg);
 					}
 				#kompassi_schedule_filters input:not(:placeholder-shown),
-				#kompassi_schedule_filters select:has(option:checked:not([value="0"])),
-			   #kompassi_schedule_filters .ms-options-wrap.ms-has-selections button {
+				#kompassi_schedule_filters .kompassi-dropdown button.active {
 					color: #222;
 					background-color: hsl(0,0%,100%,80%);
 				}
-					#kompassi_schedule_filters select:has(option:checked:not([value="0"]))::after,
-					#kompassi_schedule_filters .ms-options-wrap.ms-has-selections button::after {
+					#kompassi_schedule_filters .kompassi-dropdown button.active::after {
 						filter: none;
 					}
-				#kompassi_schedule_filters .ms-options {
-					z-index: 20;
-					color: var(--kompassi-fg);
-					background-color: var(--kompassi-bg);
-					min-height: 0 !important;
-				}
-					#kompassi_schedule_filters .ms-options > .ms-options-header {
-						padding: var(--kompassi-padding);
-						font-size: 90%;
-						border-bottom: 1px solid var(--kompassi-fg-10);
-					}
-					#kompassi_schedule_filters .ms-options > ul {
-						display: flex;
-						flex-direction: column;
-					}
-						#kompassi_schedule_filters .ms-options > ul li {
-							padding: 0;
-							border-bottom: 1px solid var(--kompassi-fg-10);
-						}
-							#kompassi_schedule_filters .ms-options > ul li:last-child {
-								border-bottom: none;
-							}
-							#kompassi_schedule_filters .ms-options > ul label {
-								cursor: pointer;
-								padding: calc( var(--kompassi-padding) / 2 ) var(--kompassi-padding);
-								padding-left: calc( var(--kompassi-padding) + 1.5em );
-								border: none;
-							}
-								#kompassi_schedule_filters .ms-options > ul label.focused,
-								#kompassi_schedule_filters .ms-options > ul label:hover {
-									background-color: var(--kompassi-palette-5);
-								}
-							#kompassi_schedule_filters .ms-options > ul li.selected {
-								order: -1;
-							}
-								#kompassi_schedule_filters .ms-options > ul li.selected label {
-									background-color: inherit;
-								}
-							#kompassi_schedule_filters .ms-options > ul input {
-								width: 1.5em;
-								margin: calc( var(--kompassi-padding) / 2 - 3px ) var(--kompassi-padding) calc( var(--kompassi-padding) / 2 ) 0;
-							}
 
 	#kompassi_schedule_filters.visible.has-filters-enabled {
 		padding-bottom: calc( 1.5em + var(--kompassi-padding) * 2 );
