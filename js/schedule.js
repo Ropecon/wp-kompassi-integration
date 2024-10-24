@@ -81,7 +81,7 @@ function kompassi_schedule_init( ) {
 	kompassi_schedule_init_toolbar( );
 
 	//  Add favorite action to each article
-	let programs = schedule.children;
+	let programs = schedule.querySelectorAll( 'article' );
 	for( let program of programs ) {
 		let title = program.querySelector( '.title' );
 		title.insertAdjacentHTML( 'afterend', '<a class="favorite kompassi-icon-favorite" title="' + _x( 'Favorite', 'button label', 'kompassi-integration' ) + '"/>' );
@@ -938,6 +938,7 @@ function kompassi_schedule_apply_filters( ) {
 	//  Show all and remove notification if exists
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 =======
 	programs = document.querySelectorAll( '#kompassi_schedule article' );
@@ -945,6 +946,9 @@ function kompassi_schedule_apply_filters( ) {
 =======
 	let programs = document.getElementById( 'kompassi_schedule' ).children;
 >>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
+=======
+	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
+>>>>>>> 15351a1 (Rewrite as vanilla JS instead of jQuery, part 5)
 	for( let program of programs ) {
 		program.classList.remove( 'filtered', 'continues' );
 	}
@@ -1074,6 +1078,7 @@ function kompassi_schedule_apply_filters( ) {
 			} else {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 				for( let program of programs ) {
 =======
@@ -1081,6 +1086,9 @@ function kompassi_schedule_apply_filters( ) {
 >>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
 =======
 				let programs = document.getElementById( 'kompassi_schedule' ).children;
+=======
+				let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
+>>>>>>> 15351a1 (Rewrite as vanilla JS instead of jQuery, part 5)
 				for( let program of programs ) {
 >>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 					program.style.order = null;
@@ -1529,7 +1537,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 =======
 	let days = 0;
 	let offset = 100 / Math.ceil( kompassi_schedule.filters.date.length_hours );
-	for( let hours = 0; i < Math.ceil( kompassi_schedule.filters.date.length_hours ); i++ ) {
+	for( let hours = 0; hours < Math.ceil( kompassi_schedule.filters.date.length_hours ); hours++ ) {
 		let time_label = kompassi_schedule.filters.date.start.add( hours, 'hour' ).format( 'H' );
 		schedule.insertAdjacentHTML( 'beforeend', '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + hours + '% ); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );"></div>' );
 >>>>>>> 73dd98d (Rewrite as vanilla JS instead of jQuery, part 3)
@@ -1780,6 +1788,7 @@ function kompassi_schedule_timeline_reposition_labels( ) {
 	// Reposition program titles that are left of visible area
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 	for( let program of programs ) {
 		let program_pos = parseInt( program.style.left );
@@ -1795,6 +1804,9 @@ function kompassi_schedule_timeline_reposition_labels( ) {
 >>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
 =======
 	let programs = document.getElementById( 'kompassi_schedule' ).children;
+=======
+	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
+>>>>>>> 15351a1 (Rewrite as vanilla JS instead of jQuery, part 5)
 	for( let program of programs ) {
 		let program_pos = parseInt( program.style.left );
 
@@ -1831,7 +1843,7 @@ function kompassi_schedule_revert_display_layouts( ) {
 =======
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	schedule.style.height = 'auto';
-	let programs = schedule.children;
+	let programs = schedule.querySelectorAll( 'article' );
 	for( let program of programs ) {
 >>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
 		program.style.width = null;

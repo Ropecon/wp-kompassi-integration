@@ -36,10 +36,14 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 	}
 	if( typeof options.id != 'undefined' ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		id = options.id;
 =======
 		id = 'id="' + options.id + '"';
 >>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
+=======
+		id = options.id;
+>>>>>>> 15351a1 (Rewrite as vanilla JS instead of jQuery, part 5)
 	}
 
 	let menu = document.createElement( 'section' );
@@ -62,6 +66,7 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 		list_item.addEventListener( 'click', menu_items[item].callback );
 		list_item.addEventListener( 'click', function( event ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			this.closest( '.kompassi-dropdown-menu' ).querySelector( 'a' ).classList.toggle( 'active' );
 =======
 //			let links = this.closest( '.kompassi-dropdown-menu' ).children;
@@ -69,6 +74,9 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 //				link.classList.remove( 'active' );
 //			}
 >>>>>>> c77b970 (Rewrite as vanilla JS instead of jQuery, part 3)
+=======
+			this.closest( '.kompassi-dropdown-menu' ).querySelector( 'a' ).classList.toggle( 'active' );
+>>>>>>> 15351a1 (Rewrite as vanilla JS instead of jQuery, part 5)
 			this.closest( '.kompassi-dropdown-menu' ).classList.remove( 'open' );
 		} );
 	}
@@ -260,7 +268,7 @@ function kompassi_dropdown( options ) {
 	return wrapper;
 =======
 
-	offset_top = parseInt( jQuery( element ).offset( ).top ) - parseInt( jQuery( window ).scrollTop( ) ); // TODO
+	let offset_top = element.getBoundingClientRect().top + window.pageYOffset;
 	popover.style.top = 'calc( ' + offset_top + 'px - ' + popover.offsetHeight + 'px - 0.5em )';
 	popover.style.left = 'calc( ' + event.pageX + 'px - ' + popover.offsetWidth / 2  + 'px )';
 >>>>>>> 93d549d (Rewrite as vanilla JS instead of jQuery, part 1)
