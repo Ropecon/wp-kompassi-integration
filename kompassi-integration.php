@@ -436,8 +436,8 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		ob_start( );
-		$program['start'] = $program['scheduleItems'][0]['startTimeUnixSeconds'];
-		$program['end'] = $program['scheduleItems'][0]['endTimeUnixSeconds'];
+		$program['start'] = $program['scheduleItems'][0]['startTime'];
+		$program['end'] = $program['scheduleItems'][0]['endTime'];
 		$program['length'] = $program['scheduleItems'][0]['lengthMinutes'];
 
 		$attrs = array(
@@ -593,14 +593,20 @@ class WP_Plugin_Kompassi_Integration {
 		} else {
 			// TODO: #11 - Get directly from Kompassi?
 			if( 'times' == $key ) {
-				$offset = get_option( 'gmt_offset' ) * 60 * 60;
-				$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['start'] + $offset );
+				$timezone = wp_timezone( );
+				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $program['start'], $timezone );
+				$end = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $program['end'], $timezone );
+
+				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
+				$end_timestamp = $end->format( 'U' ) + $timezone->getOffset( $end );
+
+				$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp );
 				$value .= ' – ';
-				if( date_i18n( 'Ymd', $program['start'] + $offset ) == date_i18n( 'Ymd', $program['end'] + $offset ) ) {
-					$value .= date_i18n( get_option( 'time_format' ), $program['end'] + $offset );
+				if( date_i18n( 'Ymd', $start_timestamp ) == date_i18n( 'Ymd', $end_timestamp ) ) {
+					$value .= date_i18n( get_option( 'time_format' ), $end_timestamp );
 				} else {
 					// If multiday, show both days
-					$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $program['end'] + $offset );
+					$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $end_timestamp );
 				}
 				$value .= ' <span class="length">';
 				$h = $program['length'] / 60;
@@ -630,9 +636,9 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function sort_by_starting_time( $a, $b ) {
-		if( $a['start_timestamp'] > $b['start_timestamp'] ) {
+		if( $a['start'] > $b['start'] ) {
 			return 1;
-		} elseif( $b['start_timestamp'] > $a['start_timestamp'] ) {
+		} elseif( $b['start'] > $a['start'] ) {
 			return -1;
 		} else {
 			return 0;

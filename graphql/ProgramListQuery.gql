@@ -32,8 +32,8 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
         cachedHosts
         cachedAnnotations
         scheduleItems {
-          startTimeUnixSeconds
-          endTimeUnixSeconds
+          startTime
+          endTime
           lengthMinutes
           title
           subtitle

@@ -578,12 +578,12 @@ function kompassi_schedule_update_date_view_parameters( ) {
 			ends = [];
 
 			jQuery( '#kompassi_schedule article:visible' ).each( function ( ) {
-				starts.push( jQuery( this ).data( 'start' ) );
-				ends.push( jQuery( this ).data( 'end' ) );
+				starts.push( dayjs( jQuery( this ).data( 'start' ) ).unix( ) );
+				ends.push( dayjs( jQuery( this ).data( 'end' ) ).unix( ) );
 			} );
 
-			kompassi_schedule.filters.date.start = dayjs.unix( Math.min( ...starts ) );
-			kompassi_schedule.filters.date.end = dayjs.unix( Math.max( ...ends ) );
+			kompassi_schedule.filters.date.start = dayjs( Math.min( ...starts ) );
+			kompassi_schedule.filters.date.end = dayjs( Math.max( ...ends ) );
 		}
 	}
 
@@ -692,12 +692,12 @@ function kompassi_schedule_apply_filters( ) {
 
 	jQuery( '#kompassi_schedule article:visible' ).each( function( index ) {
 		program = jQuery( this );
-		program_start = parseInt( program.data( 'start' ) );
-		program_end = parseInt( program.data( 'end' ) );
-		if( program_start > kompassi_schedule.filters.date.end.unix( ) || program_end <= kompassi_schedule.filters.date.start.unix( ) ) {
+		program_start = program.data( 'start' );
+		program_end = program.data( 'end' );
+		if( program_start > kompassi_schedule.filters.date.end || program_end <= kompassi_schedule.filters.date.start ) {
 			program.addClass( 'filtered' );
 		}
-		if( program_start < kompassi_schedule.filters.date.start.unix( ) && program_end > kompassi_schedule.filters.date.start.unix( ) ) {
+		if( program_start < kompassi_schedule.filters.date.start && program_end > kompassi_schedule.filters.date.start ) {
 			// TODO: When on "Now" view, all programs that started before this exact minute should be "continues"!
 			program.addClass( 'continues' );
 		}
@@ -822,9 +822,9 @@ function kompassi_schedule_setup_timeline_layout( ) {
 
 		// Count the width % and offset % for program
 		width = program.data( 'length' ) / length * 100;
-		offset_in_s = program.data( 'start' ) - ( kompassi_schedule.filters.date.start.unix( ) );
-		offset_in_m = offset_in_s / 60;
-		offset = offset_in_m / length * 100;
+		start = dayjs( program.data( 'start' ) );
+		offset_min = start.diff( kompassi_schedule.filters.date.start, 'minute' );
+		offset = offset_min / length * 100;
 
 		// See if we need to add a group headings
 		if( kompassi_schedule_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_schedule_options.timeline_grouping ) ) {
@@ -857,12 +857,12 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		while( has_row == false ) {
 			if( rows.length == check_index - 1 ) {
 				// Row does not exist, create new
-				rows.push( parseInt( program.data( 'end' ) ) );
+				rows.push( dayjs( program.data( 'end' ) ).unix( ) );
 				program_row = rows.length - 1;
 				has_row = true;
-			} else if( rows[check_index] <= program.data( 'start' ) ) {
+			} else if( rows[check_index] <= dayjs( program.data( 'start' ) ).unix( ) ) {
 				// Rows last event ends before or at the same time as this one starts
-				rows[check_index] = parseInt( program.data( 'end' ) );
+				rows[check_index] = dayjs( program.data( 'end' ) ).unix( );
 				program_row = check_index;
 				has_row = true;
 			}
