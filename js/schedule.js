@@ -582,8 +582,8 @@ function kompassi_schedule_update_date_view_parameters( ) {
 				ends.push( dayjs( jQuery( this ).data( 'end' ) ).unix( ) );
 			} );
 
-			kompassi_schedule.filters.date.start = dayjs( Math.min( ...starts ) );
-			kompassi_schedule.filters.date.end = dayjs( Math.max( ...ends ) );
+			kompassi_schedule.filters.date.start = dayjs.unix( Math.min( ...starts ) );
+			kompassi_schedule.filters.date.end = dayjs.unix( Math.max( ...ends ) );
 		}
 	}
 
