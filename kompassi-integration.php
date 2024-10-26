@@ -3,7 +3,7 @@
  *  Plugin Name: Kompassi Integration
  *  Description: Integrate data from Kompassi to your WordPress site easily
  *  Author: Pasi Lallinaho
- *  Version: 2024-06-12
+ *  Version: 2024-10-26
  *  Text Domain: kompassi-integration
  *
  */
@@ -76,11 +76,11 @@ class WP_Plugin_Kompassi_Integration {
 			),
 			'schedule_start_of_day' => array(
 				'label' =>  __( 'Start of Day', 'kompassi-integration' ),
-				'description' => __( 'Start of Day when a single day is shown.', 'kompassi-integration' )
+				'description' => __( 'The earliest time shown when filtering programs by date.', 'kompassi-integration' )
 			),
 			'schedule_end_of_day' => array(
 				'label' =>  __( 'End of Day', 'kompassi-integration' ),
-				'description' => __( 'End of Day when a single day is shown.', 'kompassi-integration' )
+				'description' => __( 'The latest time shown when filtering programs by date, eg. only programs that start before this hour will be visible.', 'kompassi-integration' )
 			),
 			'hidden_dimensions' => array(
 				'label' => __( 'Hidden Dimensions', 'kompassi-integration' ),
