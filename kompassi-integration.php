@@ -478,7 +478,8 @@ class WP_Plugin_Kompassi_Integration {
 						<div class="secondary" style="grid-area: secondary;">
 							<?php
 								// Note: Also dimensions and annotations can be queried here
-								$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'room' ) );
+								// TODO: If these fields refer to fields that are not loaded in the default GraphQL, make sure to append them to the query
+								$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'location' ) );
 								foreach( $fields_in_summary as $key ) {
 									echo $this->get_program_value( $program, $key );
 								}
