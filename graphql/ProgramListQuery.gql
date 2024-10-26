@@ -26,6 +26,7 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
         slug
         title
         description
+        location
         color
         cachedDimensions
         cachedHosts
