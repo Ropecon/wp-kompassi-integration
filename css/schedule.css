@@ -444,8 +444,6 @@ summary::marker {
 		position: absolute;
 		top: 0;
 		width: 100%;
-		height: calc(var(--kompassi-schedule-timeline-row-height) * 2);
-		background-color: var(--kompassi-bg);
 	}
 		#kompassi_schedule[data-display="timeline"] .headers .hint {
 			position: absolute;
