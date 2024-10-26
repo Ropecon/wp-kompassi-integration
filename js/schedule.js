@@ -283,7 +283,7 @@ function kompassi_schedule_init_toolbar( ) {
 		}
 
 		if( activated_toggle.classList.contains( 'active' ) ) {
-			activated_toggle.classList.removeClass( 'active' );
+			activated_toggle.classList.remove( 'active' );
 		} else {
 			let toggles = activated_toggle.closest( 'section' ).querySelectorAll( '.date-toggle' );
 			for( let toggle of toggles ) {
@@ -461,7 +461,9 @@ function kompassi_schedule_init_toolbar( ) {
 
 function kompassi_schedule_get_favorites_from_storage( ) {
 	for( let program of kompassi_storage.favorites ) {
-		document.getElementById( program ).classList.add( 'is-favorite' );
+		if( document.getElementById( program ) ) {
+			document.getElementById( program ).classList.add( 'is-favorite' );
+		}
 	};
 }
 
@@ -471,7 +473,7 @@ function kompassi_schedule_get_favorites_from_storage( ) {
  */
 
 function kompassi_schedule_toggle_favorite( element ) {
-	let program = element.closest( '.kompassi-program' ).id;
+	let program = element.closest( '.kompassi-program' ).dataset.id;
 	let elements = document.querySelectorAll( '.kompassi-program[data-id="' + program + '"]' );
 	for( let element of elements ) {
 		element.classList.toggle( 'is-favorite' );
@@ -682,8 +684,8 @@ function kompassi_schedule_update_date_view_parameters( ) {
 			let ends = [];
 
 			for( let program of programs_visible ) {
-				starts.push( dayjs.unix( program.dataset.start ) );
-				ends.push( dayjs.unix( program.dataset.end ) );
+				starts.push( dayjs( program.dataset.start ).unix( ) );
+				ends.push( dayjs( program.dataset.end ).unix( ) );
 			}
 			kompassi_schedule.filters.date.start = dayjs.unix( Math.min( ...starts ) );
 			kompassi_schedule.filters.date.end = dayjs.unix( Math.max( ...ends ) );
@@ -1262,7 +1264,12 @@ function kompassi_schedule_program_modal( program ) {
 		content: program.querySelector( '.main' ).innerHTML,
 		footer: program.querySelector( '.meta' ).innerHTML,
 	}
-	kompassi_show_modal( options );
+	modal = kompassi_show_modal( options );
+
+	favorite = modal.querySelector( '.actions .favorite' );
+	favorite.addEventListener( 'click', function( event ) {
+		kompassi_schedule_toggle_favorite( event.target );
+	} );
 
 	// Swipe
 	let hammer_modal = new Hammer( document.getElementById( 'kompassi_modal' ), { touchAction: 'swipe' } );

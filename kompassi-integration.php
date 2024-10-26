@@ -560,7 +560,7 @@ class WP_Plugin_Kompassi_Integration {
 						<section>
 							<div class="main" style="grid-area: main;">
 								<div class="description"><?php echo $program_data['description']; ?></div>
-								<div class="annotations" style="grid-area: annotations;"><?php echo $program_data['annotations']; ?></div>
+								<div class="annotations" style="grid-area: annotations;"><?php echo ( isset( $program_data['annotations'] ) ? $program_data['annotations'] : '' ); ?></div>
 							</div>
 							<div class="meta" style="grid-area: meta;">
 								<?php

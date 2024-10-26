@@ -72,6 +72,34 @@ function kompassi_dropdown_menu( menu_items, options = {} ) {
 	return menu;
 }
 
+/*  Close logic  */
+
+window.addEventListener( 'click', function( event ) {
+	let dropdown = event.target.closest( '.kompassi-dropdown' );
+	let close_dropdowns;
+	if( !dropdown ) {
+		// Close all dropdowns
+		close_dropdowns = document.querySelectorAll( '.kompassi-dropdown.open' );
+	} else {
+		// jos klikattu dd on auki, suljetaan muut dd
+		if( dropdown.classList.contains( 'open' ) ) {
+			dropdown.classList.add( 'current' );
+			close_dropdowns = document.querySelectorAll( '.kompassi-dropdown.open:not(.current)' );
+		}
+	}
+
+	if( close_dropdowns ) {
+		for( let dd of close_dropdowns ) {
+			dd.classList.remove( 'open' );
+		}
+	}
+
+	if( dropdown ) {
+		dropdown.classList.remove( 'current' );
+	}
+} );
+
+
 /*
  *  Modal
  *
@@ -135,6 +163,8 @@ function kompassi_show_modal( options ) {
 	let underlay = document.createElement( 'div' );
 	underlay.id = 'kompassi_modal_underlay';
 	document.body.append( underlay );
+
+	return modal;
 }
 
 /*  Close  */
