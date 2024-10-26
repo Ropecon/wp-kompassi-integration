@@ -698,9 +698,14 @@ function kompassi_schedule_update_date_view_parameters( ) {
 				ends.push( dayjs( jQuery( this ).data( 'end' ) ).unix( ) );
 			} );
 
+<<<<<<< HEAD
 			kompassi_schedule.filters.date.start = dayjs( Math.min( ...starts ) );
 			kompassi_schedule.filters.date.end = dayjs( Math.max( ...ends ) );
 >>>>>>> 3410b6c (Show correct times even when site timezone and event timezone do not match (closes #69))
+=======
+			kompassi_schedule.filters.date.start = dayjs.unix( Math.min( ...starts ) );
+			kompassi_schedule.filters.date.end = dayjs.unix( Math.max( ...ends ) );
+>>>>>>> 87bbf09 (Fix: Timeline view does not work with filters)
 		}
 	}
 
