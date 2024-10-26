@@ -431,15 +431,61 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function markup_single_program( $program, $options ) {
+		// There are no scheduleItems for the program, return
 		if( !is_array( $program['scheduleItems'] ) || count( $program['scheduleItems'] ) < 1 ) {
 			return;
 		}
 
-		ob_start( );
+		//  Gather common program data
+		$program_attributes = array( );
+		$program_data = array( );
 
-		$attrs = array(
-			'data-id' => $program['slug'],
-		);
+		//  Program color
+		if( $program['color'] ) {
+			$program_attributes['style'] = '--kompassi-program-color: ' . $program['color'] . ';';
+		}
+
+		//  If multiple scheduleItems, parent slug
+		if( count( $program['scheduleItems'] ) > 1 ) {
+			$program_attributes['data-parent-id'] = $program['slug'];
+		}
+
+		//  Title and description
+		$program_data['title'] = $program['title'];
+		$program_data['description'] = make_clickable( nl2br( $program['description'] ) );
+
+		//  Annotations
+		$annotations = array( );
+		foreach( $program['cachedAnnotations'] as $field => $value ) {
+			if( !in_array( $field, $options['hidden_annotations'] ) && $options['annotations'][$field]['isShownInDetail'] !== false && $value !== false ) {
+				if( $value === true ) {
+					$value = _x( 'Yes', 'boolean field: true', 'kompassi-integration' );
+				}
+				$annotations[] = array(
+					'title' => $options['annotations'][$field]['title'],
+					'description' => $value,
+					'class' => 'annotation-' . str_replace( ':', '-', $field )
+				);
+			}
+		}
+		// Allow sites to programmatically add annotations
+		$annotations = apply_filters( 'kompassi_program_annotations', $annotations, $program );
+		if( count( $annotations ) > 0 ) {
+			ob_start( );
+			echo '<dl class="kompassi-annotations">';
+			foreach( $annotations as $annotation ) {
+				echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
+				foreach( (array) $annotation['description'] as $desc ) {
+					echo '<dd class="' . $annotation['class'] . '">' . $desc . '</dd>';
+				}
+			}
+			echo '</dl>';
+			$program_data['annotations'] = ob_get_clean( );
+		}
+
+		//  Dimensions
+		//  TODO: Only traverse once (for attrs and data)
+		ob_start( );
 		foreach( $program['cachedDimensions'] as $dimension => $values ) {
 			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
 				continue;
@@ -451,124 +497,82 @@ class WP_Plugin_Kompassi_Integration {
 
 			if( count( $values ) > 0 ) {
 				$attr = 'data-' . $dimension;
-				$attrs[$attr] = implode( ',', $values );
+				$program_attributes[$attr] = implode( ',', $values );
+
+				echo '<div class="dimension ' . $dimension . '">';
+				foreach( $values as $slug ) {
+					if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
+						echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
+					} else {
+						echo '<span class="value">' . $slug . '</span> ';
+					}
+				}
+				echo '</div>';
 			}
 		}
+		$program_data['dimensions'] = ob_get_clean( );
 
-		if( $program['color'] ) {
-			$attrs['style'] = '--kompassi-program-color: ' . $program['color'] . ';';
+		//  Actions
+		$program_data['actions'] = '';
+		foreach( $program['links'] as $link ) {
+			$class = strtolower( $link['type'] );
+			if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
+				$class .= ' kompassi-icon-' . strtolower( $link['type'] );
+			}
+			$program_data['actions'] .= '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
 		}
 
-		$program['description'] = nl2br( $program['description'] );
-
-		// TODO: Gather data once before iterating through scheduleItems
+		// Output
+		ob_start( );
 		foreach( $program['scheduleItems'] as $scheduleItem ) {
-			$program['start'] = $scheduleItem['startTime'];
-			$program['end'] = $scheduleItem['endTime'];
-			$program['length'] = $scheduleItem['lengthMinutes'];
+			// Gather scheduleItem specific data
+			$program_data['start'] = $scheduleItem['startTime'];
+			$program_data['end'] = $scheduleItem['endTime'];
+			$program_data['length'] = $scheduleItem['lengthMinutes'];
+			$program_data['slug'] = $scheduleItem['slug'];
 
-			$attrs['data-start'] = $program['start'];
-			$attrs['data-end'] = $program['end'];
-			$attrs['data-length'] = $program['length'];
+			$program_attributes['data-id'] = $scheduleItem['slug'];
+			$program_attributes['data-start'] = $program_data['start'];
+			$program_attributes['data-end'] = $program_data['end'];
+			$program_attributes['data-length'] = $program_data['length'];
 
 			// Convert attrs to HTML attrs
 			$html_attrs = '';
-			foreach( $attrs as $attr => $value ) {
+			foreach( $program_attributes as $attr => $value ) {
 				$html_attrs .= ' ' . $attr . '="' . $value . '"';
 			}
 			?>
-				<article id="<?php echo $program['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
+				<article id="<?php echo $program_data['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 					<details>
 						<summary>
-							<div class="title" style="grid-area: title;"><?php echo $program['title']; ?></div>
+							<div class="title" style="grid-area: title;"><?php echo $program_data['title']; ?></div>
 							<div class="secondary" style="grid-area: secondary;">
 								<?php
-									// Note: Also dimensions and annotations can be queried here
-									// TODO: If these fields refer to fields that are not loaded in the default GraphQL, make sure to append them to the query
+									//  Get summary fields; this needs to be done here, as fields can be dependent of scheduleItem data
+									//  TODO: If these fields refer to fields that are not loaded in the default GraphQL, make sure to append them to the query
 									$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'location' ) );
 									foreach( $fields_in_summary as $key ) {
-										echo $this->get_program_value( $program, $key ); // Merge scheduleItem values to $program
+										echo $this->get_program_value( $program_data, $key );
 									}
 								?>
 							</div>
 						</summary>
 						<section>
 							<div class="main" style="grid-area: main;">
-								<div class="description">
-									<?php echo make_clickable( $program['description'] ); ?>
-								</div>
-								<div class="annotations" style="grid-area: annotations;">
-									<?php
-										$annotations = array( );
-										foreach( $program['cachedAnnotations'] as $field => $value ) {
-											if( !in_array( $field, $options['hidden_annotations'] ) && $options['annotations'][$field]['isShownInDetail'] !== false && $value !== false ) {
-												if( $value === true ) {
-													$value = _x( 'Yes', 'boolean field: true', 'kompassi-integration' );
-												}
-												$annotations[] = array(
-													'title' => $options['annotations'][$field]['title'],
-													'description' => $value,
-													'class' => 'annotation-' . str_replace( ':', '-', $field )
-												);
-											}
-										}
-										// Allow sites to programmatically add annotations
-										$annotations = apply_filters( 'kompassi_program_annotations', $annotations, $program );
-										if( count( $annotations ) > 0 ) {
-											echo '<dl class="kompassi-annotations">';
-											foreach( $annotations as $annotation ) {
-												echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
-												foreach( (array) $annotation['description'] as $desc ) {
-													echo '<dd class="' . $annotation['class'] . '">' . $desc . '</dd>';
-												}
-											}
-											echo '</dl>';
-										}
-									?>
-								</div>
+								<div class="description"><?php echo $program_data['description']; ?></div>
+								<div class="annotations" style="grid-area: annotations;"><?php echo $program_data['annotations']; ?></div>
 							</div>
 							<div class="meta" style="grid-area: meta;">
 								<?php
-									// TODO: Kompassi: List of all meta fields?
-									$all_meta_fields = array( 'times', 'cachedHosts' );
-									foreach( $all_meta_fields as $key ) {
-										echo $this->get_program_value( $program, $key );
+									//  Get meta; this needs to be done here, as fields can be dependent of scheduleItem data
+									$show_meta_fields = array( 'times', 'cachedHosts' );
+									foreach( $show_meta_fields as $key ) {
+										echo $this->get_program_value( $program_data, $key );
 									}
-								?>
-								<div class="kompassi-dimensions">
-									<?php
-										// Traverse through dimensions
-										foreach( $program['cachedDimensions'] as $dimension => $values ) {
-											if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
-												continue;
-											}
-
-											if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
-												continue;
-											}
-
-											echo '<div class="dimension ' . $dimension . '">';
-											foreach( $values as $slug ) {
-												if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
-													echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
-												} else {
-													echo '<span class="value">' . $slug . '</span> ';
-												}
-											}
-											echo '</div>';
-										}
-									?>
-								</div>
+ 								?>
+								<div class="kompassi-dimensions"><?php echo $program_data['dimensions']; ?></div>
 							</div>
-							<div class="actions" style="grid-area: actions;"><?php
-									foreach( $program['links'] as $link ) {
-										$class = strtolower( $link['type'] );
-										if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
-											$class .= ' kompassi-icon-' . strtolower( $link['type'] );
-										}
-										echo '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
-									}
-							?></div>
+							<div class="actions" style="grid-area: actions;"><?php echo $program_data['actions']; ?></div>
 						</section>
 					</details>
 				</article>
