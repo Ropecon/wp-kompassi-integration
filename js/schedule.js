@@ -968,19 +968,23 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		}
 
 		if( grouping ) {
-			group_name = program.querySelector( '.' + grouping ).textContent;
-			if( group_name != prev_group ) {
+			let current_program_grouping = program.querySelector( '.' + grouping );
+			if( !current_program_grouping ) {
+				group_name = __( 'Ungrouped', 'kompassi-integration' );
+				group_name = false;
+			} else {
+				// TODO: Currently, we pick the first dimension value
+				// This might not always be the "correct" one to choose
+				group_name = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
+			}
+			if( group_name != prev_group && group_name != false ) {
 				check_index = rows.push( 'group: ' + group_name );
 				group_index = check_index;
 				let group = document.createElement( 'p' );
 				group.classList.add( 'group-name' );
 				group.style.top = 'calc( ' + ( rows.length - 1 ) + ' * var(--kompassi-schedule-timeline-row-height)';
 				// TODO: Case: All items have no grouping value or have multiple
-				if( group_name.length == 0 ) {
-					group.innerHTML = __( 'Ungrouped', 'kompassi-integration' );
-				} else {
-					group.innerHTML = group_name;
-				}
+				group.innerHTML = group_name;
 				schedule.append( group );
 			} else {
 				check_index = group_index;
@@ -993,12 +997,12 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		while( has_row == false ) {
 			if( rows.length == check_index - 1 ) {
 				// Row does not exist, create new
-				rows.push( dayjs.unix( program.dataset.end ) );
+				rows.push( dayjs( program.dataset.end ).unix( ) );
 				program_row = rows.length - 1;
 				has_row = true;
-			} else if( rows[check_index] <= dayjs.unix( program.dataset.start ) ) {
+			} else if( rows[check_index] <= dayjs( program.dataset.start ).unix( ) ) {
 				// Rows last event ends before or at the same time as this one starts
-				rows[check_index] = dayjs.unix( program.dataset.end );
+				rows[check_index] = dayjs( program.dataset.end ).unix( );
 				program_row = check_index;
 				has_row = true;
 			}
@@ -1532,8 +1536,18 @@ function kompassi_schedule_update_url_hash( ) {
 
 function kompassi_schedule_sort_by_group( a, b ) {
 	if( kompassi_schedule_options.timeline_grouping.length > 0 ) {
-		let a_text = a.querySelector( '.' + kompassi_schedule_options.timeline_grouping ).textContent;
-		let b_text = b.querySelector( '.' + kompassi_schedule_options.timeline_grouping ).textContent;
+		let a_group = a.querySelector( '.' + kompassi_schedule_options.timeline_grouping );
+		let b_group = b.querySelector( '.' + kompassi_schedule_options.timeline_grouping );
+
+		if( ( !a_group && !b_group ) || ( !a_group && b_group ) ) {
+			return -1;
+		} else if( a_group && !b_group ) {
+			return 1;
+		}
+
+		let a_text = a_group.textContent;
+		let b_text = b_group.textContent;
+
 		if( a_text > b_text ) {
 			return 1;
 		} else if( a_text < b_text ) {
