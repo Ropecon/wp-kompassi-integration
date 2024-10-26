@@ -893,7 +893,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	for( i = 0; i < Math.ceil( kompassi_schedule.filters.date.length_hours ); i++ ) {
 		label = kompassi_schedule.filters.date.start.add( i, 'hour' ).format( 'H' );
 		jQuery( '#kompassi_schedule' ).append( '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + i + '% ); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );" />' ); // + label + '</div>' );
-		headers.append( '<div class="hint time_hint" style="left: calc( ' + offset + ' * ' + i + '%); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );">' + label + '</div>' );
+		headers.append( '<div class="hint time_hint" style="left: calc( ' + offset + ' * ' + i + '%); width: ' + offset + '%;">' + label + '</div>' );
 		if( label == '0' || i == 0 ) {
 			day = kompassi_schedule.filters.date.start.add( j, 'day' ).format( 'LL' );
 			headers.append( '<strong class="hint day_hint" style="top: 0; left: calc( ' + offset + ' * ' + i + '% ); z-index: ' + j + ';"><span>' + day + '</span></div>' );
