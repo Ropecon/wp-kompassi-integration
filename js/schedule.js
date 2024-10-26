@@ -676,6 +676,7 @@ function kompassi_schedule_update_date_view_parameters( ) {
 		kompassi_schedule.filters.date.end = kompassi_schedule.event.end;
 
 		// Restrict view to filtered programs
+<<<<<<< HEAD
 		let programs_visible = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' );
 		if( kompassi_schedule.filters.enabled > 0 && programs_visible ) {
 			let starts = [];
@@ -687,6 +688,19 @@ function kompassi_schedule_update_date_view_parameters( ) {
 			}
 			kompassi_schedule.filters.date.start = dayjs.unix( Math.min( ...starts ) );
 			kompassi_schedule.filters.date.end = dayjs.unix( Math.max( ...ends ) );
+=======
+		if( kompassi_schedule.filters.enabled > 0 && jQuery( '#kompassi_schedule article:visible' ).length > 0 ) {
+			starts = [];
+			ends = [];
+
+			jQuery( '#kompassi_schedule article:visible' ).each( function ( ) {
+				starts.push( dayjs( jQuery( this ).data( 'start' ) ).unix( ) );
+				ends.push( dayjs( jQuery( this ).data( 'end' ) ).unix( ) );
+			} );
+
+			kompassi_schedule.filters.date.start = dayjs( Math.min( ...starts ) );
+			kompassi_schedule.filters.date.end = dayjs( Math.max( ...ends ) );
+>>>>>>> 3410b6c (Show correct times even when site timezone and event timezone do not match (closes #69))
 		}
 	}
 
@@ -817,14 +831,23 @@ function kompassi_schedule_apply_filters( ) {
 	// Date filter
 	kompassi_schedule_update_date_view_parameters( );
 
+<<<<<<< HEAD
 	let programs_visible = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' );
 	for( let program of programs_visible ) {
 		let program_start = parseInt( program.dataset.start );
 		let program_end = parseInt( program.dataset.end );
 		if( program_start > kompassi_schedule.filters.date.end.unix( ) || program_end <= kompassi_schedule.filters.date.start.unix( ) ) {
 			program.classList.add( 'filtered' );
+=======
+	jQuery( '#kompassi_schedule article:visible' ).each( function( index ) {
+		program = jQuery( this );
+		program_start = program.data( 'start' );
+		program_end = program.data( 'end' );
+		if( program_start > kompassi_schedule.filters.date.end || program_end <= kompassi_schedule.filters.date.start ) {
+			program.addClass( 'filtered' );
+>>>>>>> 3410b6c (Show correct times even when site timezone and event timezone do not match (closes #69))
 		}
-		if( program_start < kompassi_schedule.filters.date.start.unix( ) && program_end > kompassi_schedule.filters.date.start.unix( ) ) {
+		if( program_start < kompassi_schedule.filters.date.start && program_end > kompassi_schedule.filters.date.start ) {
 			// TODO: When on "Now" view, all programs that started before this exact minute should be "continues"!
 			program.classList.add( 'continues' );
 		}
@@ -954,6 +977,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	programs = [...programs].sort( kompassi_schedule_sort_by_group );
 	for( let program of programs ) {
 		// Count the width % and offset % for program
+<<<<<<< HEAD
 		let width = program.dataset.length / length * 100;
 		let offset_in_s = program.dataset.start - kompassi_schedule.filters.date.start.unix( );
 		let offset_in_m = offset_in_s / 60;
@@ -961,6 +985,12 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		let grouping = false;
 		let has_row = false;
 		let program_row;
+=======
+		width = program.data( 'length' ) / length * 100;
+		start = dayjs( program.data( 'start' ) );
+		offset_min = start.diff( kompassi_schedule.filters.date.start, 'minute' );
+		offset = offset_min / length * 100;
+>>>>>>> 3410b6c (Show correct times even when site timezone and event timezone do not match (closes #69))
 
 		// See if we need to add a group heading
 		if( kompassi_schedule_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_schedule_options.timeline_grouping ) ) {
@@ -993,12 +1023,21 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		while( has_row == false ) {
 			if( rows.length == check_index - 1 ) {
 				// Row does not exist, create new
+<<<<<<< HEAD
 				rows.push( parseInt( program.dataset.end ) );
 				program_row = rows.length - 1;
 				has_row = true;
 			} else if( rows[check_index] <= program.dataset.start ) {
 				// Rows last event ends before or at the same time as this one starts
 				rows[check_index] = parseInt( program.dataset.end );
+=======
+				rows.push( dayjs( program.data( 'end' ) ).unix( ) );
+				program_row = rows.length - 1;
+				has_row = true;
+			} else if( rows[check_index] <= dayjs( program.data( 'start' ) ).unix( ) ) {
+				// Rows last event ends before or at the same time as this one starts
+				rows[check_index] = dayjs( program.data( 'end' ) ).unix( );
+>>>>>>> 3410b6c (Show correct times even when site timezone and event timezone do not match (closes #69))
 				program_row = check_index;
 				has_row = true;
 			}
