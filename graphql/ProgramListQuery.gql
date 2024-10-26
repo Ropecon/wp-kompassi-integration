@@ -26,16 +26,19 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
         slug
         title
         description
+        location
         color
         cachedDimensions
         cachedHosts
         cachedAnnotations
         scheduleItems {
-          startTimeUnixSeconds
-          endTimeUnixSeconds
-          lengthMinutes
+          slug
           title
           subtitle
+          location
+          startTime
+          endTime
+          lengthMinutes
         }
         links(lang: $locale) {
           title

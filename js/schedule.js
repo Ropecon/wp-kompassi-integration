@@ -682,8 +682,8 @@ function kompassi_schedule_update_date_view_parameters( ) {
 			let ends = [];
 
 			for( let program of programs_visible ) {
-				starts.push( parseInt( program.dataset.start ) );
-				ends.push( parseInt( program.dataset.end ) );
+				starts.push( dayjs.unix( program.dataset.start ) );
+				ends.push( dayjs.unix( program.dataset.end ) );
 			}
 			kompassi_schedule.filters.date.start = dayjs.unix( Math.min( ...starts ) );
 			kompassi_schedule.filters.date.end = dayjs.unix( Math.max( ...ends ) );
@@ -819,12 +819,12 @@ function kompassi_schedule_apply_filters( ) {
 
 	let programs_visible = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' );
 	for( let program of programs_visible ) {
-		let program_start = parseInt( program.dataset.start );
-		let program_end = parseInt( program.dataset.end );
+		let program_start = dayjs.unix( program.dataset.start );
+		let program_end = dayjs.unix( program.dataset.end );
 		if( program_start > kompassi_schedule.filters.date.end.unix( ) || program_end <= kompassi_schedule.filters.date.start.unix( ) ) {
 			program.classList.add( 'filtered' );
 		}
-		if( program_start < kompassi_schedule.filters.date.start.unix( ) && program_end > kompassi_schedule.filters.date.start.unix( ) ) {
+		if( program_start < kompassi_schedule.filters.date.start && program_end > kompassi_schedule.filters.date.start ) {
 			// TODO: When on "Now" view, all programs that started before this exact minute should be "continues"!
 			program.classList.add( 'continues' );
 		}
@@ -955,9 +955,9 @@ function kompassi_schedule_setup_timeline_layout( ) {
 	for( let program of programs ) {
 		// Count the width % and offset % for program
 		let width = program.dataset.length / length * 100;
-		let offset_in_s = program.dataset.start - kompassi_schedule.filters.date.start.unix( );
-		let offset_in_m = offset_in_s / 60;
-		let offset = offset_in_m / length * 100;
+		let start = dayjs( program.dataset.start );
+		let offset_min = start.diff( kompassi_schedule.filters.date.start, 'minute' );
+		let offset = offset_min / length * 100;
 		let grouping = false;
 		let has_row = false;
 		let program_row;
@@ -993,12 +993,12 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		while( has_row == false ) {
 			if( rows.length == check_index - 1 ) {
 				// Row does not exist, create new
-				rows.push( parseInt( program.dataset.end ) );
+				rows.push( dayjs.unix( program.dataset.end ) );
 				program_row = rows.length - 1;
 				has_row = true;
-			} else if( rows[check_index] <= program.dataset.start ) {
+			} else if( rows[check_index] <= dayjs.unix( program.dataset.start ) ) {
 				// Rows last event ends before or at the same time as this one starts
-				rows[check_index] = parseInt( program.dataset.end );
+				rows[check_index] = dayjs.unix( program.dataset.end );
 				program_row = check_index;
 				has_row = true;
 			}
@@ -1032,7 +1032,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		let hint = document.createElement( 'div' );
 		hint.classList.add( 'hint', 'time_hint' );
 		hint.style.left = 'calc( ' + offset + ' * ' + hours + '%)';
-		hint.style.width = 'calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 )';
+//		hint.style.width = 'calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 )';
 		hint.textContent = time_label;
 		headers.appendChild( hint );
 		if( time_label == '0' || hours == 0 ) {
