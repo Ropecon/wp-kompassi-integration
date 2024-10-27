@@ -194,6 +194,15 @@ function kompassi_schedule_init( ) {
 		kompassi_close_modal( );
 		kompassi_update_url_hash( );
 	} );
+
+	//  Events (click): Related links
+	jQuery( 'body' ).on( 'click', '#kompassi_modal.kompassi-program .related-link', function( e ) {
+		if( jQuery( e.target.getAttribute( 'href' ) ).length > 0 ) {
+			kompassi_schedule_program_modal( jQuery( e.target.getAttribute( 'href' ) ) );
+		}
+
+		e.preventDefault( );
+	} );
 }
 
 /**

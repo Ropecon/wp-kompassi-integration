@@ -695,33 +695,10 @@ summary::marker {
  *
  */
 
-.kompassi-annotations {
+#kompassi_modal.kompassi-program dl {
 	margin: var(--kompassi-padding-large) 0 0 0;
-	padding-top: var(--kompassi-padding);
-	border-top: 1px solid var(--kompassi-fg-25);
-}
-	.kompassi-annotations :is(dt,dd) {
-		font-size: 90%;
-	}
-		.kompassi-annotations dt {
-			font-weight: bold;
-		}
-		.kompassi-annotations > :last-child {
-			margin-bottom: 0;
-		}
-
-#kompassi_modal.kompassi-program .kompassi-annotations {
-	margin-top: var(--kompassi-padding-large);
 	padding-top: var(--kompassi-padding-large);
-}
-
-/* TODO: Prefer container query */
-@media screen and (min-width: 800px) {
-	.kompassi-annotations {
-		display: grid;
-		grid-template-columns: max-content auto;
-		grid-gap: 0 2em;
-	}
+	border-top: 1px solid var(--kompassi-fg-25);
 }
 
 /*
