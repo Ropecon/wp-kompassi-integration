@@ -161,7 +161,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			filter: invert();
 		}
 		#kompassi_schedule_filters > .input > input {
-			width: calc(100% - var(--kompassi-padding) * 2);
+			width: 100%; /* calc(100% - var(--kompassi-padding) * 2); */
 		}
 		#kompassi_schedule_filters > .select > * {
 			display: inline-block;
