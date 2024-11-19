@@ -182,7 +182,6 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				#kompassi_schedule_filters button {
 					padding: 0.5em 2em 0.5em 0.5em;
 					outline-color: #fff;
-					ojt
 				}
 					#kompassi_schedule_filters option {
 						color: var(--kompassi-fg);
