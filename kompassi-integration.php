@@ -445,9 +445,23 @@ class WP_Plugin_Kompassi_Integration {
 			$program_attributes['style'] = '--kompassi-program-color: ' . $program['color'] . ';';
 		}
 
-		//  If multiple scheduleItems, parent slug
+		//  If multiple scheduleItems...
 		if( count( $program['scheduleItems'] ) > 1 ) {
+			//  Parent slug
 			$program_attributes['data-parent-id'] = $program['slug'];
+
+			// Other scheduleItems as Related
+			$prgoram_data['related'] = array( );
+
+			foreach( $program['scheduleItems'] as $index => $item ) {
+				$related = $this->get_program_value( $program, $index, 'time_start', false );
+				if( $item['subtitle'] ) {
+					$related = $item['subtitle'] . ' (' . $related . ')';
+				}
+				$related = '<a class="related-link" href="#' . $item['slug'] . '">' . $related . '</a>';
+
+				$program_data['related'][$index] = $related;
+			}
 		}
 
 		//  Title and description
@@ -524,7 +538,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		// Output
 		ob_start( );
-		foreach( $program['scheduleItems'] as $scheduleItem ) {
+		foreach( $program['scheduleItems'] as $scheduleItem_index => $scheduleItem ) {
 			// Gather scheduleItem specific data
 			$program_data['start'] = $scheduleItem['startTime'];
 			$program_data['end'] = $scheduleItem['endTime'];
@@ -552,22 +566,36 @@ class WP_Plugin_Kompassi_Integration {
 									//  TODO: If these fields refer to fields that are not loaded in the default GraphQL, make sure to append them to the query
 									$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'location' ) );
 									foreach( $fields_in_summary as $key ) {
-										echo $this->get_program_value( $program_data, $key );
+										echo $this->get_program_value( $program, $scheduleItem_index, $key );
 									}
 								?>
 							</div>
 						</summary>
 						<section>
 							<div class="main" style="grid-area: main;">
-								<div class="description"><?php echo $program_data['description']; ?></div>
-								<div class="annotations" style="grid-area: annotations;"><?php echo ( isset( $program_data['annotations'] ) ? $program_data['annotations'] : '' ); ?></div>
+								<div class="description"><?php echo $data['description']; ?></div>
+								<?php
+									if( isset( $data['related'] ) ) {
+										echo '<div class="related">';
+										echo '<dl>';
+										echo '<dt>' . __( 'Related', 'kompassi-integration' ) . '</dt>';
+										echo '<dd>';
+											$show = $data['related'];
+											unset( $show[$scheduleItem_index] );
+											echo implode( '<br />', $show );
+										echo '</dd>';
+										echo '</dl>';
+										echo '</div>';
+									}
+								?>
+								<div class="annotations" style="grid-area: annotations;"><?php echo $data['annotations']; ?></div>
 							</div>
 							<div class="meta" style="grid-area: meta;">
 								<?php
 									//  Get meta; this needs to be done here, as fields can be dependent of scheduleItem data
 									$show_meta_fields = array( 'times', 'cachedHosts' );
 									foreach( $show_meta_fields as $key ) {
-										echo $this->get_program_value( $program_data, $key );
+										echo $this->get_program_value( $program_data, $scheduleItem_index, $key );
 									}
  								?>
 								<div class="kompassi-dimensions"><?php echo $program_data['dimensions']; ?></div>
@@ -582,14 +610,21 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/**
-	 *  Returns a program field, dimension or annotation value
+	 *  Returns a program (or scheduleItem) field, dimension or annotation value
 	 *
 	 */
 
-	function get_program_value( $program, $key, $wrap = true ) {
+	function get_program_value( $program, $scheduleItem_index = false, $key, $wrap = true ) {
+		if( $scheduleItem_index !== false ) {
+			$scheduleItem = $program['scheduleItems'][$scheduleItem_index];
+		}
 		$value = '';
-		if( isset( $program[$key] ) ) {
-			$value = $program[$key];
+		if( ( isset( $scheduleItem ) && isset( $scheduleItem[$key] ) ) || isset( $program[$key] ) ) {
+			if( ( isset( $scheduleItem ) && isset( $scheduleItem[$key] ) ) ) {
+				$value = $scheduleItem[$key];
+			} else {
+				$value = $program[$key];
+			}
 			if( is_array( $value ) ) {
 				$value = implode( ',', $value );
 			}
@@ -602,11 +637,11 @@ class WP_Plugin_Kompassi_Integration {
 		} elseif( isset( $program['cachedAnnotations'][$key] ) ) {
 			$value = $program['cachedAnnotations'][$key];
 		} else {
-			// TODO: #11 - Get directly from Kompassi?
+			//  Special cases
 			if( 'times' == $key ) {
 				$timezone = wp_timezone( );
-				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $program['start'], $timezone );
-				$end = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $program['end'], $timezone );
+				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
+				$end = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['endTime'], $timezone );
 
 				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
 				$end_timestamp = $end->format( 'U' ) + $timezone->getOffset( $end );
@@ -620,8 +655,8 @@ class WP_Plugin_Kompassi_Integration {
 					$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $end_timestamp );
 				}
 				$value .= ' <span class="length">';
-				$h = $program['length'] / 60;
-				$min = $program['length'] % 60;
+				$h = $scheduleItem['lengthMinutes'] / 60;
+				$min = $scheduleItem['lengthMinutes'] % 60;
 				if( $h < 1 ) {
 					$value .= $min . 'min';
 				} elseif( $min == 0 ) {
@@ -630,6 +665,11 @@ class WP_Plugin_Kompassi_Integration {
 					$value .= floor( $h ) . 'h ' . $min . 'min';
 				}
 				$value .= '</span>';
+			} elseif( 'time_start' == $key ) {
+				$timezone = wp_timezone( );
+				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
+				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
+				$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp );
 			}
 		}
 		if( isset( $value ) ) {
