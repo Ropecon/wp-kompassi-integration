@@ -658,17 +658,17 @@ function kompassi_schedule_apply_filters( ) {
 				jQuery( '#kompassi_schedule article:visible' ).each( function( index ) {
 					program = jQuery( this );
 					program_relevance = 0;
-					word_matches = 0;
+					word_matches = {};
 					jQuery.each( kompassi_schedule_options.search_targets, function( target, target_relevance_score ) {
 						text = program.find( '.' + target ).first( ).text( ).toLowerCase( );
 						jQuery.each( words, function( ) {
 							if( text.includes( this ) ) {
 								program_relevance += target_relevance_score;
-								word_matches += 1;
+								word_matches[this] = true;
 							}
 						} );
 					} );
-					if( program_relevance > 0 && word_matches == words.length ) {
+					if( program_relevance > 0 && Object.keys(word_matches).length == words.length ) {
 						program.css( 'order', '-' + program_relevance ); // Sort text searches by relevance
 					} else {
 						program.addClass( 'filtered' );
