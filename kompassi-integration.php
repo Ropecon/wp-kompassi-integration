@@ -463,7 +463,6 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		//  Title and description
-		$program_data['title'] = $program['title'];
 		$program_data['description'] = make_clickable( nl2br( $program['description'] ) );
 
 		//  Annotations
@@ -541,6 +540,7 @@ class WP_Plugin_Kompassi_Integration {
 			$program_data['start'] = $scheduleItem['startTime'];
 			$program_data['end'] = $scheduleItem['endTime'];
 			$program_data['length'] = $scheduleItem['lengthMinutes'];
+			$program_data['title'] = $scheduleItem['title'];
 			$program_data['slug'] = $scheduleItem['slug'];
 
 			$program_attributes['data-id'] = $scheduleItem['slug'];
