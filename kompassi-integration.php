@@ -161,7 +161,7 @@ class WP_Plugin_Kompassi_Integration {
 			wp_register_script( 'showdown', plugins_url( 'lib/showdown.min.js', __FILE__ ), array( ), '2.1.0' );
 
 			// Scripts: Common frontend
-			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( 'jquery', 'wp-hooks' ), $this->ver );
+			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( 'wp-hooks' ), $this->ver );
 			wp_set_script_translations( 'kompassi-integration-frontend-common', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 			$js_strings = array(
 				'rest_url_base' => rest_url( ),
@@ -176,7 +176,7 @@ class WP_Plugin_Kompassi_Integration {
 
 			// SCHEDULE BLOCK
 			if( has_block( 'kompassi-integration/schedule' ) ) {
-				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'wp-hooks', 'wp-i18n', 'dayjs', 'hammer', 'jquery-multiselect', 'showdown' ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'wp-hooks', 'wp-i18n', 'dayjs', 'hammer', 'showdown' ), $this->ver );
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
 					'locale' => get_locale( ),
@@ -188,7 +188,7 @@ class WP_Plugin_Kompassi_Integration {
 				);
 				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_schedule_options', $js_strings );
 
-				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common', 'jquery-multiselect' ), $this->ver );
+				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
 			}
 		} else {
 			wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'css/editor.css', __FILE__ ), array( ), $this->ver );
@@ -449,7 +449,7 @@ class WP_Plugin_Kompassi_Integration {
 			$program_attributes['data-parent-id'] = $program['slug'];
 
 			// Other scheduleItems as Related
-			$prgoram_data['related'] = array( );
+			$program_data['related'] = array( );
 
 			foreach( $program['scheduleItems'] as $index => $item ) {
 				$related = $this->get_program_value( $program, $index, 'time_start', false );
