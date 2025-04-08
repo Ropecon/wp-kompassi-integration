@@ -571,14 +571,14 @@ class WP_Plugin_Kompassi_Integration {
 						</summary>
 						<section>
 							<div class="main" style="grid-area: main;">
-								<div class="description"><?php echo $data['description']; ?></div>
+								<div class="description"><?php echo $program_data['description']; ?></div>
 								<?php
-									if( isset( $data['related'] ) ) {
+									if( isset( $program_data['related'] ) ) {
 										echo '<div class="related">';
 										echo '<dl>';
 										echo '<dt>' . __( 'Related', 'kompassi-integration' ) . '</dt>';
 										echo '<dd>';
-											$show = $data['related'];
+											$show = $program_data['related'];
 											unset( $show[$scheduleItem_index] );
 											echo implode( '<br />', $show );
 										echo '</dd>';
@@ -586,7 +586,9 @@ class WP_Plugin_Kompassi_Integration {
 										echo '</div>';
 									}
 								?>
-								<div class="annotations" style="grid-area: annotations;"><?php echo $data['annotations']; ?></div>
+								<?php if( isset( $program_data['annotations'] ) ) { ?>
+									<div class="annotations" style="grid-area: annotations;"><?php echo $program_data['annotations']; ?></div>
+								<?php } ?>
 							</div>
 							<div class="meta" style="grid-area: meta;">
 								<?php
