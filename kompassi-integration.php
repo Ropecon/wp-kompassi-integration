@@ -636,7 +636,7 @@ class WP_Plugin_Kompassi_Integration {
 			$value = $program['cachedAnnotations'][$key];
 		} else {
 			//  Special cases
-			if( 'times' == $key ) {
+			if( isset( $scheduleItem ) && 'times' == $key ) {
 				$timezone = wp_timezone( );
 				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
 				$end = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['endTime'], $timezone );
@@ -663,7 +663,7 @@ class WP_Plugin_Kompassi_Integration {
 					$value .= floor( $h ) . 'h ' . $min . 'min';
 				}
 				$value .= '</span>';
-			} elseif( 'time_start' == $key ) {
+			} elseif( isset( $scheduleItem ) && 'time_start' == $key ) {
 				$timezone = wp_timezone( );
 				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
 				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
