@@ -230,12 +230,13 @@ function kompassi_schedule_init( ) {
 	} );
 
 	//  Events (click): Related links
-	jQuery( 'body' ).on( 'click', '#kompassi_modal.kompassi-program .related-link', function( e ) {
-		if( jQuery( e.target.getAttribute( 'href' ) ).length > 0 ) {
-			kompassi_schedule_program_modal( jQuery( e.target.getAttribute( 'href' ) ) );
+	document.body.addEventListener( 'click', function( event ) {
+		if( event.target.classList.contains( 'related-link' ) ) {
+			if( event.target.getAttribute( 'href' ).length > 0 ) {
+				kompassi_schedule_program_modal( event.target.getAttribute( 'href' ) );
+			}
+			event.preventDefault( );
 		}
-
-		e.preventDefault( );
 	} );
 }
 
@@ -791,7 +792,7 @@ function kompassi_schedule_apply_filters( ) {
 									program_relevance += kompassi_schedule_options.search_targets[target];
 									word_matches[this] = true;
 								}
-							}							
+							}
 						}
 					}
 					if( program_relevance > 0 && Object.keys(word_matches).length == words.length ) {
