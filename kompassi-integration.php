@@ -158,11 +158,10 @@ class WP_Plugin_Kompassi_Integration {
 			// Scripts: Libraries
 			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.bundle.min.js', __FILE__ ), array( ), '1.11.10' );
 			wp_register_script( 'hammer', plugins_url( 'lib/hammer.min.js', __FILE__ ), array( ), '2.0.8' );
-			wp_register_script( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.js', __FILE__ ), array( 'jquery' ), '2.4.23' );
 			wp_register_script( 'showdown', plugins_url( 'lib/showdown.min.js', __FILE__ ), array( ), '2.1.0' );
 
 			// Scripts: Common frontend
-			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( 'jquery', 'wp-hooks' ), $this->ver );
+			wp_register_script( 'kompassi-integration-frontend-common', plugins_url( 'js/frontend-common.js', __FILE__ ), array( 'wp-hooks' ), $this->ver );
 			wp_set_script_translations( 'kompassi-integration-frontend-common', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 			$js_strings = array(
 				'rest_url_base' => rest_url( ),
@@ -174,11 +173,10 @@ class WP_Plugin_Kompassi_Integration {
 			// Styles
 			wp_register_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
 			wp_register_style( 'kompassi-integration-frontend-common', plugins_url( 'css/frontend-common.css', __FILE__ ), array( 'kompassi-integration-fonts' ), $this->ver );
-			wp_register_style( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.css', __FILE__ ), array( ), '2.4.23' );
 
 			// SCHEDULE BLOCK
 			if( has_block( 'kompassi-integration/schedule' ) ) {
-				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'wp-hooks', 'wp-i18n', 'dayjs', 'hammer', 'jquery-multiselect', 'showdown' ), $this->ver );
+				wp_enqueue_script( 'kompassi-integration-schedule', plugins_url( 'js/schedule.js', __FILE__ ), array( 'kompassi-integration-frontend-common', 'wp-hooks', 'wp-i18n', 'dayjs', 'hammer', 'showdown' ), $this->ver );
 				wp_set_script_translations( 'kompassi-integration-schedule', 'kompassi-integration', plugin_dir_path( __FILE__ ) . 'languages/' );
 				$js_strings = array(
 					'locale' => get_locale( ),
@@ -190,7 +188,7 @@ class WP_Plugin_Kompassi_Integration {
 				);
 				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_schedule_options', $js_strings );
 
-				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common', 'jquery-multiselect' ), $this->ver );
+				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
 			}
 		} else {
 			wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'css/editor.css', __FILE__ ), array( ), $this->ver );
@@ -437,35 +435,35 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		//  Gather common program data
-		$attributes = array( );
-		$data = array( );
+		$program_attributes = array( );
+		$program_data = array( );
 
 		//  Program color
 		if( $program['color'] ) {
-			$attributes['style'] = '--kompassi-program-color: ' . $program['color'] . ';';
+			$program_attributes['style'] = '--kompassi-program-color: ' . $program['color'] . ';';
 		}
 
 		//  If multiple scheduleItems...
 		if( count( $program['scheduleItems'] ) > 1 ) {
 			//  Parent slug
-			$attributes['data-parent-id'] = $program['slug'];
+			$program_attributes['data-parent-id'] = $program['slug'];
 
-			// Related scheduleItems
-			$data['related'] = array( );
+			// Other scheduleItems as Related
+			$program_data['related'] = array( );
 
 			foreach( $program['scheduleItems'] as $index => $item ) {
-				$related = $this->get_program_value( $program, $index, 'time_start', false );
+				$related = $this->get_program_value( $program, 'time_start', $index, false );
 				if( $item['subtitle'] ) {
 					$related = $item['subtitle'] . ' (' . $related . ')';
 				}
 				$related = '<a class="related-link" href="#' . $item['slug'] . '">' . $related . '</a>';
 
-				$data['related'][$index] = $related;
+				$program_data['related'][$index] = $related;
 			}
 		}
 
 		//  Title and description
-		$data['description'] = make_clickable( nl2br( $program['description'] ) );
+		$program_data['description'] = make_clickable( nl2br( $program['description'] ) );
 
 		//  Annotations
 		$annotations = array( );
@@ -483,9 +481,9 @@ class WP_Plugin_Kompassi_Integration {
 		}
 		// Allow sites to programmatically add annotations
 		$annotations = apply_filters( 'kompassi_program_annotations', $annotations, $program );
-		ob_start( );
 		if( count( $annotations ) > 0 ) {
-			echo '<dl>';
+			ob_start( );
+			echo '<dl class="kompassi-annotations">';
 			foreach( $annotations as $annotation ) {
 				echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
 				foreach( (array) $annotation['description'] as $desc ) {
@@ -493,8 +491,8 @@ class WP_Plugin_Kompassi_Integration {
 				}
 			}
 			echo '</dl>';
+			$program_data['annotations'] = ob_get_clean( );
 		}
-		$data['annotations'] = ob_get_clean( );
 
 		//  Dimensions
 		//  TODO: Only traverse once (for attrs and data)
@@ -523,27 +521,32 @@ class WP_Plugin_Kompassi_Integration {
 				echo '</div>';
 			}
 		}
-		$data['dimensions'] = ob_get_clean( );
+		$program_data['dimensions'] = ob_get_clean( );
 
 		//  Actions
-		//  TODO: per scheduleItem
-		ob_start( );
+		$program_data['actions'] = '';
 		foreach( $program['links'] as $link ) {
 			$class = strtolower( $link['type'] );
 			if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
 				$class .= ' kompassi-icon-' . strtolower( $link['type'] );
 			}
-			echo '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
+			$program_data['actions'] .= '<a href="' . $link['href'] . '" class="' . $class . '" title="' . $link['title'] . '"></a>';
 		}
-		$data['actions'] = ob_get_clean( );
 
 		// Output
 		ob_start( );
 		foreach( $program['scheduleItems'] as $scheduleItem_index => $scheduleItem ) {
+			// Gather scheduleItem specific data
+			$program_data['start'] = $scheduleItem['startTime'];
+			$program_data['end'] = $scheduleItem['endTime'];
+			$program_data['length'] = $scheduleItem['lengthMinutes'];
+			$program_data['title'] = $scheduleItem['title'];
+			$program_data['slug'] = $scheduleItem['slug'];
+
 			$program_attributes['data-id'] = $scheduleItem['slug'];
-			$program_attributes['data-start'] = $scheduleItem['startTime'];
-			$program_attributes['data-end'] = $scheduleItem['endTime'];
-			$program_attributes['data-length'] = $scheduleItem['lengthMinutes'];
+			$program_attributes['data-start'] = $program_data['start'];
+			$program_attributes['data-end'] = $program_data['end'];
+			$program_attributes['data-length'] = $program_data['length'];
 
 			// Convert attrs to HTML attrs
 			$html_attrs = '';
@@ -551,31 +554,31 @@ class WP_Plugin_Kompassi_Integration {
 				$html_attrs .= ' ' . $attr . '="' . $value . '"';
 			}
 			?>
-				<article id="<?php echo $scheduleItem['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
+				<article id="<?php echo $program_data['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 					<details>
 						<summary>
-							<div class="title" style="grid-area: title;"><?php echo $scheduleItem['title']; ?></div>
+							<div class="title" style="grid-area: title;"><?php echo $program_data['title']; ?></div>
 							<div class="secondary" style="grid-area: secondary;">
 								<?php
 									//  Get summary fields; this needs to be done here, as fields can be dependent of scheduleItem data
 									//  TODO: If these fields refer to fields that are not loaded in the default GraphQL, make sure to append them to the query
 									$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'location' ) );
 									foreach( $fields_in_summary as $key ) {
-										echo $this->get_program_value( $program, $scheduleItem_index, $key );
+										echo $this->get_program_value( $program, $key, $scheduleItem_index );
 									}
 								?>
 							</div>
 						</summary>
 						<section>
 							<div class="main" style="grid-area: main;">
-								<div class="description"><?php echo $data['description']; ?></div>
+								<div class="description"><?php echo $program_data['description']; ?></div>
 								<?php
-									if( isset( $data['related'] ) ) {
+									if( isset( $program_data['related'] ) ) {
 										echo '<div class="related">';
 										echo '<dl>';
 										echo '<dt>' . __( 'Related', 'kompassi-integration' ) . '</dt>';
 										echo '<dd>';
-											$show = $data['related'];
+											$show = $program_data['related'];
 											unset( $show[$scheduleItem_index] );
 											echo implode( '<br />', $show );
 										echo '</dd>';
@@ -583,19 +586,21 @@ class WP_Plugin_Kompassi_Integration {
 										echo '</div>';
 									}
 								?>
-								<div class="annotations" style="grid-area: annotations;"><?php echo $data['annotations']; ?></div>
+								<?php if( isset( $program_data['annotations'] ) ) { ?>
+									<div class="annotations" style="grid-area: annotations;"><?php echo $program_data['annotations']; ?></div>
+								<?php } ?>
 							</div>
 							<div class="meta" style="grid-area: meta;">
 								<?php
 									//  Get meta; this needs to be done here, as fields can be dependent of scheduleItem data
 									$show_meta_fields = array( 'times', 'cachedHosts' );
 									foreach( $show_meta_fields as $key ) {
-										echo $this->get_program_value( $program, $scheduleItem_index, $key );
+										echo $this->get_program_value( $program_data, $key, $scheduleItem_index );
 									}
  								?>
-								<div class="kompassi-dimensions"><?php echo $data['dimensions']; ?></div>
+								<div class="kompassi-dimensions"><?php echo $program_data['dimensions']; ?></div>
 							</div>
-							<div class="actions" style="grid-area: actions;"><?php echo $data['actions']; ?></div>
+							<div class="actions" style="grid-area: actions;"><?php echo $program_data['actions']; ?></div>
 						</section>
 					</details>
 				</article>
@@ -609,8 +614,8 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function get_program_value( $program, $scheduleItem_index = false, $key, $wrap = true ) {
-		if( $scheduleItem_index !== false ) {
+	function get_program_value( $program, $key, $scheduleItem_index = false, $wrap = true ) {
+		if( isset( $program['scheduleItems'] ) && $scheduleItem_index !== false ) {
 			$scheduleItem = $program['scheduleItems'][$scheduleItem_index];
 		}
 		$value = '';
@@ -633,7 +638,7 @@ class WP_Plugin_Kompassi_Integration {
 			$value = $program['cachedAnnotations'][$key];
 		} else {
 			//  Special cases
-			if( 'times' == $key ) {
+			if( isset( $scheduleItem ) && 'times' == $key ) {
 				$timezone = wp_timezone( );
 				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
 				$end = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['endTime'], $timezone );
@@ -660,7 +665,7 @@ class WP_Plugin_Kompassi_Integration {
 					$value .= floor( $h ) . 'h ' . $min . 'min';
 				}
 				$value .= '</span>';
-			} elseif( 'time_start' == $key ) {
+			} elseif( isset( $scheduleItem ) && 'time_start' == $key ) {
 				$timezone = wp_timezone( );
 				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
 				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );

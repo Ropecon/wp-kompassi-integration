@@ -1,4 +1,4 @@
-# Copyright (C) 2024 Pasi Lallinaho
+# Copyright (C) 2025 Pasi Lallinaho
 # This file is distributed under the same license as the Kompassi Integration plugin.
 msgid ""
 msgstr ""
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-27T10:47:15+00:00\n"
+"POT-Creation-Date: 2025-03-03T09:29:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
@@ -136,143 +136,120 @@ msgid_plural "%s transients deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kompassi-integration.php:475
-msgctxt "boolean field: true"
-msgid "Yes"
-msgstr ""
-
-#: kompassi-integration.php:576
-msgid "Related"
-msgstr ""
-
-#. translators: email link
-#: kompassi-integration.php:704
-msgid "If you find errors in the program data, contact us at %s."
-msgstr ""
-
 #: js/blocks.js:20
 #: js/blocks.js:33
 msgid "Program Schedule"
 msgstr ""
 
-#: js/frontend-common.js:29
+#: js/frontend-common.js:30
 msgid "More actions"
 msgstr ""
 
-#: js/frontend-common.js:84
-msgctxt "button label"
-msgid "Close"
-msgstr ""
-
-#: js/frontend-common.js:201
-msgid "Error processing AJAX query."
-msgstr ""
-
-#: js/schedule.js:65
+#: js/schedule.js:71
 msgctxt "button label"
 msgid "Favorite"
 msgstr ""
 
-#: js/schedule.js:222
+#: js/schedule.js:264
 msgctxt "date filter"
 msgid "Now"
 msgstr ""
 
-#: js/schedule.js:256
+#: js/schedule.js:317
 msgid "Favorites"
 msgstr ""
 
-#: js/schedule.js:257
+#: js/schedule.js:321
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr ""
 
-#: js/schedule.js:273
+#: js/schedule.js:342
 msgid "Help"
 msgstr ""
 
-#: js/schedule.js:274
-#: js/schedule.js:1172
+#: js/schedule.js:343
+#: js/schedule.js:1360
 msgid "Export Favorites"
 msgstr ""
 
-#: js/schedule.js:286
+#: js/schedule.js:360
 msgid "Text..."
 msgstr ""
 
-#: js/schedule.js:322
+#: js/schedule.js:385
 msgid "Program matching selection will be hidden from results."
 msgstr ""
 
-#: js/schedule.js:329
+#: js/schedule.js:394
 msgid "Clear filters"
 msgstr ""
 
-#: js/schedule.js:359
+#: js/schedule.js:432
 msgctxt "display style"
 msgid "List"
 msgstr ""
 
-#: js/schedule.js:360
+#: js/schedule.js:433
 msgctxt "display style"
 msgid "Timeline"
 msgstr ""
 
 #. translators: count of programs visible
-#: js/schedule.js:510
+#: js/schedule.js:615
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:513
+#: js/schedule.js:618
 msgid "Nothing matched your search!"
 msgstr ""
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:723
+#: js/schedule.js:854
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr ""
 
 #. translators: amount of repositioned events
-#: js/schedule.js:731
+#: js/schedule.js:865
 msgid "Show %d program that started earlier"
 msgid_plural "Show %d programs that started earlier"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:732
+#: js/schedule.js:867
 msgid "Programs continuing"
 msgstr ""
 
-#: js/schedule.js:852
+#: js/schedule.js:984
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:1130
+#: js/schedule.js:1316
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:1159
+#: js/schedule.js:1347
 msgid "Create an import link to export your favorites to another device."
 msgstr ""
 
-#: js/schedule.js:1160
+#: js/schedule.js:1348
 msgid "Favorites to be exported:"
 msgstr ""
 
-#: js/schedule.js:1167
+#: js/schedule.js:1355
 msgid "Copy import link to clipboard"
 msgstr ""
 
-#: js/schedule.js:1200
+#: js/schedule.js:1389
 msgid "Replace Favorites"
 msgstr ""
 
-#: js/schedule.js:1201
+#: js/schedule.js:1390
 msgid "Append to Favorites"
 msgstr ""
 
-#: js/schedule.js:1206
+#: js/schedule.js:1395
 msgid "Import Favorites"
 msgstr ""

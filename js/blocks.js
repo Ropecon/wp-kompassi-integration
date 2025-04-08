@@ -1,6 +1,6 @@
-var el = wp.element.createElement;
-var __ = wp.i18n.__;
-var _x = wp.i18n._x;
+const el = wp.element.createElement;
+const __ = wp.i18n.__;
+const _x = wp.i18n._x;
 
 const icon = el( 'svg', { width: '24', height: '24' },
    el( 'path', {

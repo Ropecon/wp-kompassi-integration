@@ -607,7 +607,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
  */
 
 #kompassi_popover {
-	position: fixed;
+   container-type: normal;
+   position: absolute;
 	z-index: 4998;
 
 	padding: 0.5em;
@@ -619,4 +620,82 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 }
    #kompassi_popover p {
       margin: 0;
+   }
+
+/*
+ *  Dropdown lists
+ *
+ */
+
+.kompassi-dropdown {
+   position: relative;
+}
+   .kompassi-dropdown > * {
+      width: 100%;
+   }
+   .kompassi-dropdown button {
+      position: relative;
+      appearance: none;
+      cursor: pointer;
+
+      padding: var(--kompassi-padding);
+      color: #fff;
+      background-color: hsl(0,0%,0%,0.2);
+      border: none;
+      border-radius: var(--kompassi-radius);
+      font-family: var(--kompassi-font);
+      font-size: 100%;
+      text-align: left;
+   }
+      .kompassi-dropdown button::after {
+         content: '';
+         display: block;
+         position: absolute;
+         top: 0;
+         bottom: 0;
+         right: 0.5em;
+         width: 1em;
+         height: 100%;
+         margin: 0 auto;
+
+         border: none;
+         background-image: url(../images/icons/dropdown.svg);
+         background-size: contain;
+         background-repeat: no-repeat;
+         background-position: 50% 50%;
+         filter: invert();
+      }
+   .kompassi-dropdown ul {
+      display: none;
+      list-style-type: none;
+      margin-top: 0;
+      padding-left: 0;
+      border: 1px solid var(--kompassi-fg-50);
+   }
+      .kompassi-dropdown li {
+         color: var(--kompassi-fg);
+         background-color: var(--kompassi-bg);
+         border-top: 1px solid var(--kompassi-fg-10);
+      }
+         .kompassi-dropdown li.description,
+         .kompassi-dropdown li label {
+            padding: calc(var(--kompassi-padding) / 2);
+         }
+         .kompassi-dropdown li label {
+            cursor: pointer;
+            display: grid;
+            grid-template-columns: 2em auto;
+         }
+            .kompassi-dropdown li label input {
+               vertical-align: top;
+               height: 1em;
+               outline: none;
+            }
+
+   .kompassi-dropdown.open ul {
+      display: block;
+      position: absolute;
+      left: 0;
+      z-index: 2000;
+      background-color: #eee;
    }
