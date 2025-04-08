@@ -452,7 +452,7 @@ class WP_Plugin_Kompassi_Integration {
 			$program_data['related'] = array( );
 
 			foreach( $program['scheduleItems'] as $index => $item ) {
-				$related = $this->get_program_value( $program, $index, 'time_start', false );
+				$related = $this->get_program_value( $program, 'time_start', $index, false );
 				if( $item['subtitle'] ) {
 					$related = $item['subtitle'] . ' (' . $related . ')';
 				}
@@ -564,7 +564,7 @@ class WP_Plugin_Kompassi_Integration {
 									//  TODO: If these fields refer to fields that are not loaded in the default GraphQL, make sure to append them to the query
 									$fields_in_summary = apply_filters( 'kompassi_schedule_fields_in_summary', array( 'times', 'location' ) );
 									foreach( $fields_in_summary as $key ) {
-										echo $this->get_program_value( $program, $scheduleItem_index, $key );
+										echo $this->get_program_value( $program, $key, $scheduleItem_index );
 									}
 								?>
 							</div>
@@ -593,7 +593,7 @@ class WP_Plugin_Kompassi_Integration {
 									//  Get meta; this needs to be done here, as fields can be dependent of scheduleItem data
 									$show_meta_fields = array( 'times', 'cachedHosts' );
 									foreach( $show_meta_fields as $key ) {
-										echo $this->get_program_value( $program_data, $scheduleItem_index, $key );
+										echo $this->get_program_value( $program_data, $key, $scheduleItem_index );
 									}
  								?>
 								<div class="kompassi-dimensions"><?php echo $program_data['dimensions']; ?></div>
@@ -612,8 +612,8 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function get_program_value( $program, $scheduleItem_index = false, $key, $wrap = true ) {
-		if( $scheduleItem_index !== false ) {
+	function get_program_value( $program, $key, $scheduleItem_index = false, $wrap = true ) {
+		if( isset( $program['scheduleItems'] ) && $scheduleItem_index !== false ) {
 			$scheduleItem = $program['scheduleItems'][$scheduleItem_index];
 		}
 		$value = '';
