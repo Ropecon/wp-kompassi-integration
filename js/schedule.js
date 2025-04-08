@@ -1051,7 +1051,6 @@ function kompassi_schedule_setup_timeline_layout( ) {
 		let hint = document.createElement( 'div' );
 		hint.classList.add( 'hint', 'time_hint' );
 		hint.style.left = 'calc( ' + offset + ' * ' + hours + '%)';
-//		hint.style.width = 'calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 )';
 		hint.textContent = time_label;
 		headers.appendChild( hint );
 		if( time_label == '0' || hours == 0 ) {
@@ -1409,23 +1408,24 @@ function kompassi_schedule_import_modal( programs ) {
  */
 
 function kompassi_schedule_timeline_sticky_header( ) {
-	let schedule = document.getElementById( 'kompassi_block_schedule' );
+	let schedule = document.getElementById( 'kompassi_schedule' );
 
 	if( schedule.dataset.display != 'timeline' ) {
 		return;
 	}
 
-	let wrapper = schedule.querySelector( '.kompassi_schedule_wrapper' );
+	let block = schedule.closest( '#kompassi_block_schedule')
+	let wrapper = schedule.closest( '.kompassi_schedule_wrapper' );
 	let headers = schedule.querySelector( '.headers' );
 
-	let schedule_top = schedule.offsetTop + wrapper.offsetTop;
+	let schedule_top = block.offsetTop + wrapper.offsetTop;
 	let schedule_bottom = schedule_top + wrapper.scrollHeight;
 	let scroll = window.scrollY;
 	let buffer = headers.offsetHeight;
 
 	if( scroll > schedule_top + buffer && scroll < schedule_bottom - buffer ) {
 		headers.classList.add( 'sticky' );
-		headers.style.top = scroll - schedule_top;
+		headers.style.top = scroll - schedule_top + 'px';
 	} else {
 		headers.classList.remove( 'sticky' );
 		headers.style.top = 0;
