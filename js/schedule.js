@@ -133,7 +133,10 @@ function kompassi_schedule_init( ) {
 		}
 
 		// Open modal
-		kompassi_schedule_program_modal( event.target.closest( 'article' ) );
+		let program = event.target.closest( 'article.kompassi-program' );
+		if( program ) {
+			kompassi_schedule_program_modal( program );
+		}
 	} );
 
 	//  Events (keyup): Modal navigation
