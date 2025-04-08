@@ -161,7 +161,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			filter: invert();
 		}
 		#kompassi_schedule_filters > .input > input {
-			width: 100%; /* calc(100% - var(--kompassi-padding) * 2); */
+			width: calc(100% - var(--kompassi-padding) * 2);
 		}
 		#kompassi_schedule_filters > .select > * {
 			display: inline-block;
@@ -261,17 +261,11 @@ summary::marker {
 }
 
 .kompassi_schedule_wrapper {
-	/* TODO: Clean up width/padding/margin */
-	width: calc( 100% + 0.4em ); /* shadow×2 */
+	width: calc( 100% - 0.2em );
 	padding: 0.2em;
-	margin: -0.2em;
 	overflow: hidden;
 	user-select: none;
 	position: relative;
-}
-
-#kompassi_schedule {
-	width: calc(100% - 0.4em);
 }
 
 #kompassi_schedule article.filtered {
