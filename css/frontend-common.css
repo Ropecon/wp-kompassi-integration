@@ -608,7 +608,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 #kompassi_popover {
    container-type: normal;
-	position: fixed;
+   position: absolute;
 	z-index: 4998;
 
 	padding: 0.5em;
