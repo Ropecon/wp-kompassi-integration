@@ -783,12 +783,15 @@ function kompassi_schedule_apply_filters( ) {
 					let program_relevance = 0;
 					let word_matches = {};
 					for( let target in kompassi_schedule_options.search_targets ) {
-						let text = program.getElementsByClassName( target )[0].textContent.toLowerCase( );
-						for( let word of words ) {
-							if( text.includes( word ) ) {
-								program_relevance += kompassi_schedule_options.search_targets[target];
-								word_matches[this] = true;
-							}
+						let element = program.getElementsByClassName( target )[0];
+						if( element ) {
+							text = element.textContent.toLowerCase( );
+							for( let word of words ) {
+								if( text.includes( word ) ) {
+									program_relevance += kompassi_schedule_options.search_targets[target];
+									word_matches[this] = true;
+								}
+							}							
 						}
 					}
 					if( program_relevance > 0 && Object.keys(word_matches).length == words.length ) {
