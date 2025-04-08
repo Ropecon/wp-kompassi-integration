@@ -1418,7 +1418,7 @@ function kompassi_schedule_timeline_sticky_header( ) {
 	let wrapper = schedule.closest( '.kompassi_schedule_wrapper' );
 	let headers = schedule.querySelector( '.headers' );
 
-	let schedule_top = block.offsetTop + wrapper.offsetTop;
+	let schedule_top = block.offsetTop + wrapper.offsetTop + schedule.offsetTop;
 	let schedule_bottom = schedule_top + wrapper.scrollHeight;
 	let scroll = window.scrollY;
 	let buffer = headers.offsetHeight;
