@@ -158,7 +158,6 @@ class WP_Plugin_Kompassi_Integration {
 			// Scripts: Libraries
 			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.bundle.min.js', __FILE__ ), array( ), '1.11.10' );
 			wp_register_script( 'hammer', plugins_url( 'lib/hammer.min.js', __FILE__ ), array( ), '2.0.8' );
-			wp_register_script( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.js', __FILE__ ), array( 'jquery' ), '2.4.23' );
 			wp_register_script( 'showdown', plugins_url( 'lib/showdown.min.js', __FILE__ ), array( ), '2.1.0' );
 
 			// Scripts: Common frontend
@@ -174,7 +173,6 @@ class WP_Plugin_Kompassi_Integration {
 			// Styles
 			wp_register_style( 'kompassi-integration-fonts', plugins_url( 'fonts/fonts.css', __FILE__ ), array( ), $this->ver );
 			wp_register_style( 'kompassi-integration-frontend-common', plugins_url( 'css/frontend-common.css', __FILE__ ), array( 'kompassi-integration-fonts' ), $this->ver );
-			wp_register_style( 'jquery-multiselect', plugins_url( 'lib/jquery.multiselect.css', __FILE__ ), array( ), '2.4.23' );
 
 			// SCHEDULE BLOCK
 			if( has_block( 'kompassi-integration/schedule' ) ) {
