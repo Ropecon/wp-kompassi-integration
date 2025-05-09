@@ -300,7 +300,9 @@ function kompassi_get_url_options( ) {
  */
 
 function kompassi_set_url_options( opts = [] ) {
-	window.location.hash = opts.join( '/' );
+	let url = new URL( location );
+	url.hash = opts.join( '/' );
+	window.history.pushState( { 'opts': opts }, '', url );
 }
 
 /**
