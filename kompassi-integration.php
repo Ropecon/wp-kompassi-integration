@@ -352,7 +352,7 @@ class WP_Plugin_Kompassi_Integration {
 		$html_attrs = array( 'class' => 'kompassi-integration', );
 		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
 
-		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . '>';
+		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . ' ' . wp_interactivity_data_wp_context( $attributes ) . '>';
 
 		/*  Schedule  */
 		$data = $this->get_schedule_data_graphql( );

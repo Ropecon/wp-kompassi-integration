@@ -1,7 +1,7 @@
-const __ = wp.i18n.__;
-const _x = wp.i18n._x;
-const _n = wp.i18n._n;
-const sprintf = wp.i18n.sprintf;
+var __ = wp.i18n.__;
+var _x = wp.i18n._x;
+var _n = wp.i18n._n;
+var sprintf = wp.i18n.sprintf;
 
 let kompassi_schedule = {
 	'event': {},
@@ -51,6 +51,7 @@ document.addEventListener( 'DOMContentLoaded', function( event ) {
 
 function kompassi_schedule_init( ) {
 	let block = document.getElementById( 'kompassi_block_schedule' );
+	let block_options = JSON.parse( block.dataset.wpContext );
 	let schedule = document.getElementById( 'kompassi_schedule' );
 
 	//  MARKUP
@@ -62,7 +63,9 @@ function kompassi_schedule_init( ) {
 	block.prepend( notes );
 
 	//  Schedule toolbar
-	kompassi_schedule_init_toolbar( );
+	if( block_options.showToolbar ) {		
+		kompassi_schedule_init_toolbar( );
+	}
 
 	//  Add favorite action to each article
 	let programs = schedule.querySelectorAll( 'article' );
@@ -904,7 +907,6 @@ function kompassi_schedule_setup_display( display = false ) {
 	}
 
 	//  Refresh display layout
-	//  TODO: wp hook
 	kompassi_schedule_revert_display_layouts( );
 	if( display_type == 'list' ) {
 		kompassi_schedule_setup_list_layout( );
