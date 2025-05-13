@@ -3,6 +3,10 @@ body {
 	--kompassi-schedule-timeline-row-padding: 0.2em;
 	--kompassi-schedule-timeline-row-height: calc( var(--kompassi-line-height) + var(--kompassi-schedule-timeline-row-padding) * 3 );
 
+	/*  Timetable  */
+	--kompassi-schedule-timetable-group-width: 100px;
+	--kompassi-schedule-timetable-program-padding: 0.3em;
+
 	/*  Defaults  */
 	--kompassi-program-color-default: var(--kompassi-palette-2);
 	--kompassi-program-icon-default: url(../images/kompassi_white.svg);
@@ -554,32 +558,46 @@ summary::marker {
 
 #kompassi_schedule[data-display="timetable"] .group .table {
 	display: grid;
-	grid-gap: var(--kompassi-padding);
+	grid-gap: 0 var(--kompassi-padding);
+	grid-template-rows: auto;
 	margin: var(--kompassi-padding) 0;
+	padding: var(--kompassi-padding);
+	padding-top: 0;
 	background-color: var(--kompassi-bg);
 	box-shadow: var(--kompassi-box-shadow);
-	padding-bottom: var(--kompassi-padding);
 }
 
 #kompassi_schedule[data-display="timetable"] article {
 	margin-top: 6px;
-	padding: var(--kompassi-padding);
+	margin-bottom: 6px;
+	padding: var(--kompassi-schedule-timetable-program-padding);
 	background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
 	background-image: linear-gradient(to bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.15));
 	color: #fff;
 	box-shadow: var(--kompassi-box-shadow);
-	grid-template-areas: "title favorite";
 	z-index: 2;
 }
-	#kompassi_schedule[data-display="timetable"] article .secondary {
+	#kompassi_schedule[data-display="timetable"] article :is(.favorite,.secondary) {
 		display: none;
+	}
+	#kompassi_schedule[data-display="timetable"] article .title {
+		word-wrap: anywhere;
 	}
 
 #kompassi_schedule[data-display="timetable"] .time {
 	z-index: 1;
-	padding: var(--kompassi-padding);
-	border-top: 1px solid var(--kompassi-fg-25);
+	margin: 0 calc(-1 * var(--kompassi-padding));
+	padding: var(--kompassi-schedule-timetable-program-padding);
+	border-top: 1px solid var(--kompassi-fg-10);
 }
+
+#kompassi_block_schedule:has(#kompassi_schedule[data-display="timetable"]) {
+	max-width: 100%;
+}
+	#kompassi_block_schedule > :not(.kompassi_schedule_wrapper) {
+		max-width: var(--wp--style--global--wide-size);
+		margin-inline: auto;
+	}
 
 
 /*

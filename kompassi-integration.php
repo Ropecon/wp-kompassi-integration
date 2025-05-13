@@ -37,6 +37,8 @@ class WP_Plugin_Kompassi_Integration {
 				'is_dynamic' => true,
 				'render_callback' => array( &$this, 'block_schedule' ),
 				'attributes' => array(
+					'showToolbar' => array( 'type' => 'boolean', 'default' => 'true' ),
+					'defaultOptions' => array( 'type' => 'string', 'default' => '' ),
 					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
 				),
 			)
@@ -595,7 +597,7 @@ class WP_Plugin_Kompassi_Integration {
 									//  Get meta; this needs to be done here, as fields can be dependent of scheduleItem data
 									$show_meta_fields = array( 'times', 'cachedHosts' );
 									foreach( $show_meta_fields as $key ) {
-										echo $this->get_program_value( $program_data, $key, $scheduleItem_index );
+										echo $this->get_program_value( $program, $key, $scheduleItem_index );
 									}
  								?>
 								<div class="kompassi-dimensions"><?php echo $program_data['dimensions']; ?></div>

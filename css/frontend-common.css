@@ -137,6 +137,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 .kompassi-icon-list::before { background-image: url(../images/icons/list.svg); }
 .kompassi-icon-signup::before { background-image: url(../images/icons/signup.svg); }
 .kompassi-icon-timeline::before { background-image: url(../images/icons/timeline.svg); }
+.kompassi-icon-timetable::before { background-image: url(../images/icons/timetable.svg); }
 
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,

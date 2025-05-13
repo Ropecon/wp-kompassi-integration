@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2025-03-03T09:29:44+00:00\n"
+"POT-Creation-Date: 2025-05-13T11:45:53+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -140,137 +140,154 @@ msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
 #. translators: amount of transients deleted
-#: kompassi-integration.php:301
+#: kompassi-integration.php:299
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] "%s transientti poistettu."
 msgstr[1] "%s transienttia poistettu."
 
-#: js/blocks.js:20 js/blocks.js:33
+#: kompassi-integration.php:473
+msgctxt "boolean field: true"
+msgid "Yes"
+msgstr "Kyllä"
+
+#: kompassi-integration.php:579
+msgid "Related"
+msgstr "Liittyvät"
+
+#. translators: email link
+#: kompassi-integration.php:709
+msgid "If you find errors in the program data, contact us at %s."
+msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
+
+#: js/blocks.js:20 js/blocks.js:35
 msgid "Program Schedule"
 msgstr "Ohjelma-aikataulu"
+
+#: js/blocks.js:39
+msgid "Options"
+msgstr "Asetukset"
+
+#: js/blocks.js:42
+msgid "Show toolbar"
+msgstr "Näytä työkalupalkki"
 
 #: js/frontend-common.js:30
 msgid "More actions"
 msgstr "Lisää toimintoja"
 
-#: js/schedule.js:71
+#: js/schedule.js:85
 msgctxt "button label"
 msgid "Favorite"
 msgstr "Suosikki"
 
-#: js/schedule.js:264
+#: js/schedule.js:282
 msgctxt "date filter"
 msgid "Now"
 msgstr "Nyt"
 
-#: js/schedule.js:317
+#: js/schedule.js:335
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: js/schedule.js:321
+#: js/schedule.js:339
 msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: js/schedule.js:342
+#: js/schedule.js:360
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:343 js/schedule.js:1360
+#: js/schedule.js:361 js/schedule.js:1463
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
-#: js/schedule.js:360
+#: js/schedule.js:378
 msgid "Text..."
 msgstr "Teksti..."
 
-#: js/schedule.js:385
+#: js/schedule.js:403
 msgid "Program matching selection will be hidden from results."
 msgstr "Valintaa vastaava ohjelma piilotetaan tuloksista."
 
-#: js/schedule.js:394
+#: js/schedule.js:412
 msgid "Clear filters"
 msgstr "Tyhjennä suodattimet"
 
-#: js/schedule.js:432
+#: js/schedule.js:450
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: js/schedule.js:433
+#: js/schedule.js:451
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
+#: js/schedule.js:452
+msgctxt "display style"
+msgid "Timetable"
+msgstr "Lukujärjestys"
+
 #. translators: count of programs visible
-#: js/schedule.js:615
+#: js/schedule.js:636
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] "%s ohjelma näkyvissä."
 msgstr[1] "%s ohjelmaa näkyvissä."
 
-#: js/schedule.js:618
+#: js/schedule.js:639
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:854
+#: js/schedule.js:882
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr "Näytetään ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
 
 #. translators: amount of repositioned events
-#: js/schedule.js:865
+#: js/schedule.js:893
 msgid "Show %d program that started earlier"
 msgid_plural "Show %d programs that started earlier"
 msgstr[0] "Näytä %d aiemmin alkanut ohjelma"
 msgstr[1] "Näytä %d aiemmin alkanutta ohjelmaa"
 
-#: js/schedule.js:867
+#: js/schedule.js:895
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:984
+#: js/schedule.js:999
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1316
+#: js/schedule.js:1419
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1347
+#: js/schedule.js:1450
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1348
+#: js/schedule.js:1451
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1355
+#: js/schedule.js:1458
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1389
+#: js/schedule.js:1492
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1390
+#: js/schedule.js:1493
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1395
+#: js/schedule.js:1498
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
-
-#~ msgctxt "boolean field: true"
-#~ msgid "Yes"
-#~ msgstr "Kyllä"
-
-#~ msgid "Related"
-#~ msgstr "Liittyvät"
-
-#~ msgid "If you find errors in the program data, contact us at %s."
-#~ msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 
 #~ msgctxt "button label"
 #~ msgid "Close"
@@ -402,9 +419,6 @@ msgstr "Tuo suosikit"
 #~ msgid "Feed URL where program data is loaded from."
 #~ msgstr "Syötteen URL, josta ohjelmatiedot ladataan."
 
-#~ msgid "Options"
-#~ msgstr "Asetukset"
-
 #~ msgid "Default Display"
 #~ msgstr "Oletusnäyttötyyli"
 
@@ -446,10 +460,6 @@ msgstr "Tuo suosikit"
 #~ msgid "All dates"
 #~ msgstr "Kaikki päivät"
 
-#~ msgctxt "display style"
-#~ msgid "Table"
-#~ msgstr "Taulukko"
-
 #~ msgid "Category"
 #~ msgstr "Kategoria"
 
@@ -462,9 +472,6 @@ msgstr "Tuo suosikit"
 
 #~ msgid "Program Map"
 #~ msgstr "Ohjelmakartta"
-
-#~ msgid "Show all"
-#~ msgstr "Näytä kaikki"
 
 #~ msgid "Day"
 #~ msgstr "Päivä"

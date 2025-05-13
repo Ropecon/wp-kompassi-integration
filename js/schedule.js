@@ -41,8 +41,22 @@ document.addEventListener( 'DOMContentLoaded', function( event ) {
 	kompassi_schedule_init( );
 	kompassi_schedule_get_favorites_from_storage( );
 
-	//  Apply options from URL
-	kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
+	//  Apply options from block options or URL
+	let block = document.getElementById( 'kompassi_block_schedule' );
+	let block_options = JSON.parse( block.dataset.wpContext );
+	block_options = block_options.defaultOptions.split( '/' );
+	let block_opts = {};
+	for( let option of block_options ) {
+		option = option.split( ':' );
+		if( !option[1] ) {
+			block_opts[option[0]] = true;
+		} else {
+			block_opts[option[0]] = option[1];
+		}
+	}
+	kompassi_schedule_update_filters_from_options( block_opts );
+
+//	kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
 } );
 
 /**
@@ -738,6 +752,9 @@ function kompassi_schedule_apply_filters( ) {
 		return;
 	}
 
+	let block = document.getElementById( 'kompassi_block_schedule' );
+	let block_options = JSON.parse( block.dataset.wpContext );
+
 	//  Show all and remove notification if exists
 	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 	for( let program of programs ) {
@@ -835,22 +852,27 @@ function kompassi_schedule_apply_filters( ) {
 		}
 	}
 
-	// Show how many filters from the dropdown area are activated
-	if( filter_count > 0 ) {
-		document.querySelector( '#kompassi_block_schedule .filters-toggle .kompassi-indicator' ).textContent = filter_count;
-	} else {
-		document.querySelector( '#kompassi_block_schedule .filters-toggle .kompassi-indicator' ).textContent = '';
+		// Show how many filters from the dropdown area are activated
+		if( block_options.showToolbar ) {
+		if( filter_count > 0 ) {
+			document.querySelector( '#kompassi_block_schedule .filters-toggle .kompassi-indicator' ).textContent = filter_count;
+		} else {
+			document.querySelector( '#kompassi_block_schedule .filters-toggle .kompassi-indicator' ).textContent = '';
+		}
 	}
 
 	kompassi_schedule.filters.enabled = filter_count;
 
 	// Favorite filter
-	if( document.querySelector( '#kompassi_block_schedule .favorites-toggle' ).classList.contains( 'active' ) ) {
-		let not_favorite_programs = document.querySelectorAll( '#kompassi_schedule article:not(.is-favorite)' );
-		for( let program of not_favorite_programs ) {
-			program.classList.add( 'filtered' );
+	// TODO: Favorite filter might be enabled from block options
+	if( block_options.showToolbar ) {
+		if( document.querySelector( '#kompassi_block_schedule .favorites-toggle' ).classList.contains( 'active' ) ) {
+			let not_favorite_programs = document.querySelectorAll( '#kompassi_schedule article:not(.is-favorite)' );
+			for( let program of not_favorite_programs ) {
+				program.classList.add( 'filtered' );
+			}
+			kompassi_schedule.filters.enabled += 1;
 		}
-		kompassi_schedule.filters.enabled += 1;
 	}
 
 	// Date filter
@@ -897,11 +919,13 @@ function kompassi_schedule_apply_filters( ) {
 	}
 
 	//
-	let filter_popup = document.getElementById( 'kompassi_schedule_filters' );
-	if( kompassi_schedule.filters.enabled > 0 ) {
-		filter_popup.classList.add( 'has-filters-enabled' );
-	} else {
-		filter_popup.classList.remove( 'has-filters-enabled' );
+	if( block_options.showToolbar ) {
+		let filter_popup = document.getElementById( 'kompassi_schedule_filters' );
+		if( kompassi_schedule.filters.enabled > 0 ) {
+			filter_popup.classList.add( 'has-filters-enabled' );
+		} else {
+			filter_popup.classList.remove( 'has-filters-enabled' );
+		}
 	}
 
 	kompassi_schedule_setup_display( );
@@ -1237,8 +1261,10 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let groups = kompassi_schedule_get_grouped_program( );
 
+	// TODO: Date subheadings
 	for( let group in groups ) {
 		let group_times = [];
+		let prev_day = false;
 		let group_wrapper = document.createElement( 'div' );
 		group_wrapper.className = 'group';
 		let group_name = document.createElement( 'strong' );
@@ -1246,7 +1272,8 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 		let group_table = document.createElement( 'div' );
 		let group_length = ( groups[group].end - groups[group].start ) / 60 / 15;
 
-		group_table.style.gridTemplateColumns = '80px repeat( ' + groups[group].items.length + ', 1fr )';
+		group_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-group-width) repeat( ' + groups[group].items.length + ', 1fr )';
+		// TODO: 1fr: each element size is relative to length / auto: each element is compact
 		group_table.style.gridTemplateRows = 'repeat( ' + group_length + ', auto )';
 		group_table.className = 'table';
 
@@ -1256,27 +1283,46 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 		for( let column in groups[group].items ) {
 			for( let program of groups[group]['items'][column].programs ) {
-//				console.log( program, column );
 				group_table.append( program );
-				pr_st = dayjs( program.dataset.start );
-				g_st = dayjs.unix( groups[group].start );
-				off = ( pr_st.diff( g_st, 'minute' ) / 15 ) + 1;
-				pr_l = program.dataset.length / 15;
+				program_start = dayjs( program.dataset.start );
+				group_start = dayjs.unix( groups[group].start );
+				offset_in_rows = ( program_start.diff( group_start, 'minute' ) / 15 ) + 1;
+				program_length_in_rows = program.dataset.length / 15; // TODO: + 1 per day?
 				let col = parseInt( column ) + 2;
 				program.style.gridColumn = col + ' / ' + col;
-				program.style.gridRow = off + ' / ' + ( off + pr_l );
+				program.style.gridRow = offset_in_rows + ' / ' + ( offset_in_rows + program_length_in_rows );
 
 				// Check if we need to print time
-				if( !group_times.includes( pr_st.unix( ) ) ) {
+				if( !group_times.includes( program_start.unix( ) ) ) {
 					let time = document.createElement( 'span' );
-					time.textContent = pr_st.format( 'LT' );
+					let format = 'LT';
+					if( program_start.format( 'dd' ) != prev_day ) {
+						format = 'dd ' + format;
+						prev_day = program_start.format( 'dd' );
+					}
+					time.innerHTML = program_start.format( format );
 					time.style.gridColumn = '1 / -1';
+					time.style.gridRow = offset_in_rows + ' / ' + offset_in_rows;
+					time.className = 'time';
+					group_table.append( time );
+
+					group_times.push( program_start.unix( ) );
+				}
+				/*
+				let pr_en = dayjs( program.dataset.end );
+				if( !group_times.includes( pr_en.unix( ) ) ) {
+					// TODO: Program ends after filtered time
+					let time = document.createElement( 'span' );
+					time.textContent = pr_en.format( 'LT' );
+					time.style.gridColumn = '1 / -1';
+					let off = ( pr_en.diff( g_st, 'minute' ) / 15 ) + 1;
 					time.style.gridRow = off + ' / ' + off;
 					time.className = 'time';
 					group_table.append( time );
 
-					group_times.push( pr_st.unix( ) );
+					group_times.push( pr_en.unix( ) );
 				}
+				*/
 			}
 		}
 
