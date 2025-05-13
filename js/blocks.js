@@ -27,9 +27,14 @@ wp.blocks.registerBlockType(
       attributes: {
          showToolbar: { type: 'boolean', default: 'true' },
          defaultOptions: { type: 'string', default: '' },
+         eventSlug: { type: 'string', default: '' },
+//         availableDisplayTypes: { type: 'array', default: ['list','timeline'] },
          default_display: { type: 'string', default: 'list' },
       },
       edit: function( props ) {
+         if( !props ) {
+            return;
+         }
          return( [
             el( wp.components.Placeholder, {
                icon: icon,
@@ -47,21 +52,47 @@ wp.blocks.registerBlockType(
 								}
                      } ),
                   ),
+/*
+                     el( wp.components.CheckboxControl, {
+                        label: _x( 'List', 'display type', 'kompassi-integration' ),
+                        checked: list_enabled,
+                     } ),
+                     el( wp.components.CheckboxControl, {
+                        label: _x( 'Timeline', 'display type', 'kompassi-integration' ),
+                        onChange: function( value ) {
+                        }
+                     } ),
+                     el( wp.components.CheckboxControl, {
+                        label: _x( 'Timetable', 'display type', 'kompassi-integration' ),
+                        onChange: function( value ) {
+                        }
+                     } ),
+						),
+*/
                   el( wp.components.PanelRow, null,
                      el( wp.components.TextControl, {
                         label: __( 'Default Options', 'kompassi-integration' ),
-                        description: '..',
+                        value: props.attributes.defaultOptions,
                         onChange: function( value ) {
                            props.setAttributes( { defaultOptions: value } )
                         }
                      } ),
 						),
+                  el( wp.components.PanelRow, null,
+                     el( wp.components.TextControl, {
+                        label: __( 'Event Technical Name', 'kompassi-integration' ),
+                        value: props.attributes.eventSlug,
+                        onChange: function( value ) {
+                           props.setAttributes( { eventSlug: value } )
+                        }
+                     } ),
+                  ),
 					)
 				),
          ] );
       },
       save: function( props ) {
          return null;
-      }
+      },
    }
 );
