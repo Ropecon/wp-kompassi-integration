@@ -63,7 +63,7 @@ function kompassi_schedule_init( ) {
 	block.prepend( notes );
 
 	//  Schedule toolbar
-	if( block_options.showToolbar ) {		
+	if( block_options.showToolbar ) {
 		kompassi_schedule_init_toolbar( );
 	}
 
@@ -840,8 +840,8 @@ function kompassi_schedule_apply_filters( ) {
 
 	let programs_visible = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' );
 	for( let program of programs_visible ) {
-		let program_start = dayjs.unix( program.dataset.start );
-		let program_end = dayjs.unix( program.dataset.end );
+		let program_start = dayjs( program.dataset.start ).unix( );
+		let program_end = dayjs( program.dataset.end ).unix( );
 		if( program_start > kompassi_schedule.filters.date.end.unix( ) || program_end <= kompassi_schedule.filters.date.start.unix( ) ) {
 			program.classList.add( 'filtered' );
 		}
@@ -972,6 +972,7 @@ function kompassi_schedule_setup_timeline_layout( ) {
 
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
 	programs = [...programs].sort( kompassi_schedule_sort_by_group );
+
 	for( let program of programs ) {
 		// Count the width % and offset % for program
 		let width = program.dataset.length / length * 100;
