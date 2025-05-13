@@ -300,7 +300,6 @@ function kompassi_get_url_options( ) {
  */
 
 function kompassi_set_url_options( opts = [] ) {
-	console.log( 'setting url options: ' + opts.join( '/' ) );
 	let url = new URL( location );
 	url.hash = opts.join( '/' );
 	window.history.pushState( { 'opts': opts }, '', url );
