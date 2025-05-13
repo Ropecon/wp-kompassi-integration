@@ -7,6 +7,7 @@ let kompassi_schedule = {
 	'event': {},
 	'filters': {},
 	'timeouts': {},
+	'first_load': true,
 };
 
 dayjs.locale( kompassi_schedule_options.locale );
@@ -600,6 +601,8 @@ function kompassi_schedule_update_filters_from_options( opts = {} ) {
 		kompassi_schedule_setup_display( opts.display );
 	}
 
+	kompassi_schedule.first_load = false;
+
 	// Apply filters
 	kompassi_schedule_apply_filters( );
 }
@@ -720,6 +723,10 @@ function kompassi_schedule_update_date_view_parameters( ) {
  */
 
 function kompassi_schedule_apply_filters( ) {
+	if( kompassi_schedule.first_load ) {
+		return;
+	}
+
 	//  Show all and remove notification if exists
 	let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 	for( let program of programs ) {
