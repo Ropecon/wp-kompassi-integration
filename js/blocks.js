@@ -45,7 +45,7 @@ wp.blocks.registerBlockType(
                el( wp.components.PanelBody, { title: __( 'Options', 'kompassi-integration' ) },
 						el( wp.components.PanelRow, null,
 							el( wp.components.ToggleControl, {
-                        label: __( 'Show toolbar', 'kompassi-integration' ),
+                        label: __( 'Show Toolbar', 'kompassi-integration' ),
                         checked: props.attributes.showToolbar,
 								onChange: function( value ) {
                            props.setAttributes( { showToolbar: !props.attributes.showToolbar } );
