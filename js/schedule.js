@@ -7,7 +7,7 @@ let kompassi_schedule = {
 	'event': {},
 	'filters': {},
 	'timeouts': {},
-	'first_load': true,
+	'init': true,
 };
 
 dayjs.locale( kompassi_schedule_options.locale );
@@ -43,6 +43,16 @@ document.addEventListener( 'DOMContentLoaded', function( event ) {
 
 	//  Apply options from URL
 	kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
+} );
+
+/**
+ *  Reset init state when navigating with back/forwards
+ *
+ */
+
+window.addEventListener( 'popstate', function( event ) {
+	kompassi_schedule.init = true;
+	event.preventDefault( );
 } );
 
 /**
@@ -601,7 +611,7 @@ function kompassi_schedule_update_filters_from_options( opts = {} ) {
 		kompassi_schedule_setup_display( opts.display );
 	}
 
-	kompassi_schedule.first_load = false;
+	kompassi_schedule.init = false;
 
 	// Apply filters
 	kompassi_schedule_apply_filters( );
@@ -723,7 +733,7 @@ function kompassi_schedule_update_date_view_parameters( ) {
  */
 
 function kompassi_schedule_apply_filters( ) {
-	if( kompassi_schedule.first_load ) {
+	if( kompassi_schedule.init ) {
 		return;
 	}
 
