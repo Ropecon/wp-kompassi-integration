@@ -39,6 +39,8 @@ class WP_Plugin_Kompassi_Integration {
 				'attributes' => array(
 					'showToolbar' => array( 'type' => 'boolean', 'default' => 'true' ),
 					'defaultOptions' => array( 'type' => 'string', 'default' => '' ),
+					'eventSlug' => array( 'type' => 'string', 'default' => '' ),
+//					'availableDisplayTypes' => array( 'type' => 'array', 'default' => array( 'list', 'timeline' ) ),
 					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
 				),
 			)
@@ -259,10 +261,10 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function get_schedule_cache( ) {
+	function get_schedule_cache( $event_slug ) {
 		switch( get_option( 'kompassi_integration_caching' ) ) {
 			case 'transient':
-				$transient = get_site_transient( 'kompassi_integration_schedule_' . get_option( 'kompassi_integration_event_slug' ) . '_' . get_locale( ) );
+				$transient = get_site_transient( 'kompassi_integration_schedule_' . $event_slug . '_' . get_locale( ) );
 				if( $transient ) {
 					return $transient;
 				}
@@ -276,11 +278,11 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function save_schedule_cache( $data ) {
+	function save_schedule_cache( $data, $event_slug ) {
 		$cache_time_in_min = 5;
 		switch( get_option( 'kompassi_integration_caching' ) ) {
 			case 'transient':
-				set_site_transient( 'kompassi_integration_schedule_' . get_option( 'kompassi_integration_event_slug' ) . '_' . get_locale( ), $data, $cache_time_in_min * 60 );
+				set_site_transient( 'kompassi_integration_schedule_' . $event_slug . '_' . get_locale( ), $data, $cache_time_in_min * 60 );
 				break;
 		}
 	}
@@ -309,11 +311,11 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function get_schedule_data_graphql( ) {
+	function get_schedule_data_graphql( $event_slug ) {
 		$query = array(
 			'query' => file_get_contents( plugins_url( 'graphql/ProgramListQuery.gql', __FILE__ ) ),
 			'variables' => array(
-				'eventSlug' => get_option( 'kompassi_integration_event_slug' ),
+				'eventSlug' => $event_slug,
 				'locale' => get_locale( )
 			)
 		);
@@ -340,13 +342,17 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function block_schedule( $attributes ) {
-		$event_slug = get_option( 'kompassi_integration_event_slug' );
+		if( strlen( $attributes['eventSlug'] ) > 0 ) {
+			$event_slug = $attributes['eventSlug'];
+		} else {
+			$event_slug = get_option( 'kompassi_integration_event_slug' );
+		}
 		if( strlen( $event_slug ) < 1 ) {
 			return;
 		}
 
 		// Get cache
-		$cached_data = $this->get_schedule_cache( );
+		$cached_data = $this->get_schedule_cache( $event_slug );
 		if( $cached_data ) {
 			return $cached_data;
 		}
@@ -357,7 +363,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . ' ' . wp_interactivity_data_wp_context( $attributes ) . '>';
 
 		/*  Schedule  */
-		$data = $this->get_schedule_data_graphql( );
+		$data = $this->get_schedule_data_graphql( $event_slug );
 		if( !$data || count( $data ) < 1 ) {
 			return;
 		}
@@ -420,7 +426,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</div>';
 
 		// Save cache
-		$this->save_schedule_cache( $out );
+		$this->save_schedule_cache( $out, $event_slug );
 
 		return $out;
 	}

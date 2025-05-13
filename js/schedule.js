@@ -463,7 +463,7 @@ function kompassi_schedule_init_toolbar( ) {
 	let display_styles = {
 		'list': _x( 'List', 'display style', 'kompassi-integration' ),
 		'timeline': _x( 'Timeline', 'display style', 'kompassi-integration' ),
-		'timetable': _x( 'Timetable', 'display style', 'kompassi-integration' ),
+//		'timetable': _x( 'Timetable', 'display style', 'kompassi-integration' ),
 	};
 	let display = document.createElement( 'section' );
 	display.id = 'kompassi_schedule_display';
