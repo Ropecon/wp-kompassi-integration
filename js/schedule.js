@@ -194,12 +194,14 @@ function kompassi_schedule_init( ) {
 			( event.target.classList.contains( 'close' ) && event.target.closest( '#kompassi_modal' ) ) ) {
 			kompassi_close_modal( );
 			kompassi_schedule_update_url_hash( );
-		}
+			kompassi_schedule.modal_hammer.destroy( );
+			}
 	} );
 	document.body.addEventListener( 'keyup', function( event ) {
 		if( event.keyCode == 27 ) {
 			kompassi_close_modal( );
 			kompassi_schedule_update_url_hash( );
+			kompassi_schedule.modal_hammer.destroy( );
 		}
 	} );
 
@@ -901,7 +903,7 @@ function kompassi_schedule_apply_filters( ) {
 				if( program_count > 0 ) {
 					let notes = document.getElementById( 'kompassi_schedule_notes' );
 					// translators: start of day hour, end of day hour
-					notes.insertAdjacentHTML( 'beforeend', '<span class="filter programs-between display-not-timeline">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), kompassi_schedule_options.schedule_start_of_day, kompassi_schedule_options.schedule_end_of_day ) + '</span>' );
+					notes.insertAdjacentHTML( 'beforeend', '<span class="filter programs-between display-only-list">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), kompassi_schedule_options.schedule_start_of_day, kompassi_schedule_options.schedule_end_of_day ) + '</span>' );
 				}
 			}
 		}
@@ -912,7 +914,7 @@ function kompassi_schedule_apply_filters( ) {
 			let count = document.querySelectorAll( '#kompassi_schedule article.continues:not(.filtered)' ).length;
 			let notes = document.getElementById( 'kompassi_schedule_notes' );
 			// translators: amount of repositioned events
-			notes.insertAdjacentHTML( 'beforeend', '<span class="filter programs-continuing display-not-timeline"><a class="kompassi-jump-to" href="#kompassi_programs_continuing">' + sprintf( _n( 'Show %d program that started earlier', 'Show %d programs that started earlier', count, 'kompassi-integration' ), count ) + '</a></span>' );
+			notes.insertAdjacentHTML( 'beforeend', '<span class="filter programs-continuing display-only-list"><a class="kompassi-jump-to" href="#kompassi_programs_continuing">' + sprintf( _n( 'Show %d program that started earlier', 'Show %d programs that started earlier', count, 'kompassi-integration' ), count ) + '</a></span>' );
 			let first_continuing = document.querySelector( '#kompassi_schedule article.continues' );
 			first_continuing.insertAdjacentHTML( 'beforebegin', '<h3 id="kompassi_programs_continuing">' + __( 'Programs continuing', 'kompassi-integration' ) + '</h3>' );
 		}
@@ -954,7 +956,7 @@ function kompassi_schedule_setup_display( display = false ) {
 
 	//  Hide/show relevant notes
 	//  TODO: Are these not always written anyway?
-	let notes = document.getElementById( 'kompassi_schedule_notes' );
+/*	let notes = document.getElementById( 'kompassi_schedule_notes' );
 	let hide = notes.querySelectorAll( '.display-not-' + display_type );
 	let show = notes.querySelectorAll( '.display-only-' + display_type );
 	for( let note of hide ) {
@@ -963,7 +965,7 @@ function kompassi_schedule_setup_display( display = false ) {
 	for( let note of show ) {
 		note.style.display = 'block';
 	}
-
+*/
 	//  Make selected display type toggle active
 	let toggles = document.querySelectorAll( '#kompassi_schedule_display a' );
 	for( let toggle of toggles ) {
@@ -1112,12 +1114,12 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 
 	// Enable zooming
 	schedule.dataset.scale = 1;
-	var hammer = new Hammer( schedule, { touchAction: 'pan-x pan-y' } );
-	hammer.get( 'pinch' ).set( { enable: true } );
-	hammer.get( 'pan' ).set( { direction: Hammer.DIRECTION_ALL } );
+	kompassi_schedule.timeline_hammer = new Hammer( schedule, { touchAction: 'pan-x pan-y' } );
+	kompassi_schedule.timeline_hammer.get( 'pinch' ).set( { enable: true } );
+	kompassi_schedule.timeline_hammer.get( 'pan' ).set( { direction: Hammer.DIRECTION_ALL } );
 
 	// Zoom (pinch)
-	hammer.on( 'pinch', function( ev ) {
+	kompassi_schedule.timeline_hammer.on( 'pinch', function( ev ) {
 		if( ev.additionalEvent == 'pinchin' ) {
 			kompassi_schedule_timeline_zoom( 1 );
 		} else {
@@ -1133,7 +1135,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 	} );
 
 	// Pan
-	hammer.on( 'pan', function( ev ) {
+	kompassi_schedule.timeline_hammer.on( 'pan', function( ev ) {
 		switch( ev.additionalEvent ) {
 			case 'panleft':
 				kompassi_schedule_timeline_pan( 1, 0, ev );
@@ -1260,9 +1262,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let groups = kompassi_schedule_get_grouped_program( );
+	let minutes_in_row = 5;
 
 	for( let group in groups ) {
-		let group_times = [];
 		let group_wrapper = document.createElement( 'div' );
 		group_wrapper.className = 'group';
 		schedule.append( group_wrapper );
@@ -1273,6 +1275,10 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 				 return prev.start < curr.start ? prev : curr;
 			} );
 			day_start = dayjs.unix( day_start.start );
+			let day_end = groups[group]['days'][day].reduce( function( prev, curr ) {
+				 return prev.end > curr.end ? prev : curr;
+			} );
+			day_end = dayjs.unix( day_end.end );
 
 			let table_name = document.createElement( 'p' );
 			table_name.innerHTML = '<strong>' + groups[group]['name'] + '</strong> <em>' + day_start.format( 'dd' ) + '</em>';
@@ -1281,7 +1287,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			let day_table = document.createElement( 'div' );
 			day_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + groups[group]['days'][day].length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
 			// TODO: 1fr: each element size is relative to length / auto: each element is compact
-			day_table.style.gridTemplateRows = 'repeat( ' + day_length + ', 1em )';
+			day_table.style.gridTemplateRows = 'repeat( ' + day_length + ', 2em )';
 			day_table.className = 'table';
 
 			group_wrapper.append( day_table );
@@ -1289,26 +1295,52 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			for( let column in groups[group]['days'][day] ) {
 				for( let program of groups[group]['days'][day][column].programs ) {
 					let program_start = dayjs( program.dataset.start );
-					let offset_in_rows = ( program_start.diff( day_start, 'minute' ) / 15 ) + 1;
-					let program_length_in_rows = parseInt( program.dataset.length / 15 );
-					let col = parseInt( column ) + 2;
+					let offset_in_rows = ( program_start.diff( day_start, 'minute' ) / minutes_in_row ) + 1;
+					let program_length_in_rows = parseInt( program.dataset.length / minutes_in_row );
+					let col = parseInt( column ) + 2; // column indexing starts at 0, column 1 reserved for times
 					program.style.gridColumn = col + ' / ' + col;
 					program.style.gridRow = offset_in_rows + ' / ' + ( offset_in_rows + program_length_in_rows );
 
 					day_table.append( program );
 
-					// Check if we need to print time
-					if( !group_times.includes( program_start.unix( ) ) ) {
+					// TODO: Check if the program starts at minute 0
+					if( program_start.format( 'm' ) != 0 ) {
 						let time = document.createElement( 'span' );
-						time.innerHTML = program_start.format( 'LT' );
+						time.innerHTML = '<span>' + program_start.format( 'HH.' ) + '</span>' + program_start.format( 'mm' );
 						time.style.gridColumn = '1 / -1';
 						time.style.gridRow = offset_in_rows + ' / ' + offset_in_rows;
-						time.className = 'time';
-						day_table.append( time );
+						time.className = 'time time-minute';
 
-						group_times.push( program_start.unix( ) );
+						day_table.append( time );
 					}
 				}
+			}
+
+			/* Print times */
+			let times_frequency = 60;
+			let times = day_start.startOf( 'hour' );
+			let row = 1;
+			let increment = times_frequency / minutes_in_row;
+			let bars = [];
+			while( times < day_end.endOf( 'hour' ) ) {
+				let time = document.createElement( 'span' );
+				time.innerHTML = times.format( 'HH.mm' );
+				time.style.gridColumn = '1 / -1';
+				time.style.gridRow = row + ' / ' + row;
+				time.className = 'time time-hour';
+				day_table.append( time );
+
+				let time_bar = document.createElement( 'span' );
+				time_bar.style.gridColumn = '1 / -1';
+				time_bar.style.gridRow = row + ' / ' + ( row + increment );
+				time_bar.className = 'time-bar';
+				bars.push( time_bar );
+
+				times = times.add( times_frequency, 'minute' );
+				row += increment;
+			}
+			for( let bar of bars ) {
+				day_table.append( bar );
 			}
 		}
 	}
@@ -1340,6 +1372,9 @@ function kompassi_schedule_revert_layout( ) {
 		element.remove( );
 	}
 	clearTimeout( kompassi_schedule.timeouts['current_time'] );
+	if( kompassi_schedule.timeline_hammer ) {
+		kompassi_schedule.timeline_hammer.destroy( );
+	}
 
 	// Timetable
 	for( let program of programs ) {
@@ -1395,8 +1430,8 @@ function kompassi_schedule_program_modal( program ) {
 	} );
 
 	// Swipe
-	let hammer_modal = new Hammer( document.getElementById( 'kompassi_modal' ), { touchAction: 'swipe' } );
-	hammer_modal.on( 'swipe', function( ev ) {
+	kompassi_schedule.modal_hammer = new Hammer( document.getElementById( 'kompassi_modal' ), { touchAction: 'swipe' } );
+	kompassi_schedule.modal_hammer.on( 'swipe', function( ev ) {
 		let modal = document.getElementById( 'kompassi_modal' );
 		let current_program = modal.dataset.id;
 		let open_program = null;
@@ -1604,17 +1639,9 @@ function kompassi_schedule_get_grouped_program( ) {
 				groups[group_name]['days'][program_date][check_index]['programs'].push( program );
 				found_slot = true;
 			}
-//			if( groups[group_name]['items'][program_date][check_index]['end'] > groups[group_name].end ) {
-//				groups[group_name].end = groups[group_name][program_date]['items'][check_index]['end'];
-//			}
-			// if( !groups[group_name].start || dayjs( program.dataset.start ).unix( ) < groups[group_name].start ) {
-			//	groups[group_name].start = dayjs( program.dataset.start ).unix( );
-			// }
 			check_index += 1;
 		}
 	}
-
-	console.log( groups );
 
 	return groups;
 }
