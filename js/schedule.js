@@ -463,7 +463,7 @@ function kompassi_schedule_init_toolbar( ) {
 	let display_styles = {
 		'list': _x( 'List', 'display style', 'kompassi-integration' ),
 		'timeline': _x( 'Timeline', 'display style', 'kompassi-integration' ),
-//		'timetable': _x( 'Timetable', 'display style', 'kompassi-integration' ),
+		'timetable': _x( 'Timetable', 'display style', 'kompassi-integration' ),
 	};
 	let display = document.createElement( 'section' );
 	display.id = 'kompassi_schedule_display';
@@ -1261,74 +1261,55 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let groups = kompassi_schedule_get_grouped_program( );
 
-	// TODO: Date subheadings
 	for( let group in groups ) {
 		let group_times = [];
-		let prev_day = false;
 		let group_wrapper = document.createElement( 'div' );
 		group_wrapper.className = 'group';
-		let group_name = document.createElement( 'strong' );
-		group_name.textContent = groups[group].name;
-		let group_table = document.createElement( 'div' );
-		let group_length = ( groups[group].end - groups[group].start ) / 60 / 15;
-
-		group_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-group-width) repeat( ' + groups[group].items.length + ', 1fr )';
-		// TODO: 1fr: each element size is relative to length / auto: each element is compact
-		group_table.style.gridTemplateRows = 'repeat( ' + group_length + ', auto )';
-		group_table.className = 'table';
-
-		group_wrapper.append( group_name );
-		group_wrapper.append( group_table );
 		schedule.append( group_wrapper );
 
-		for( let column in groups[group].items ) {
-			for( let program of groups[group]['items'][column].programs ) {
-				group_table.append( program );
-				program_start = dayjs( program.dataset.start );
-				group_start = dayjs.unix( groups[group].start );
-				offset_in_rows = ( program_start.diff( group_start, 'minute' ) / 15 ) + 1;
-				program_length_in_rows = program.dataset.length / 15; // TODO: + 1 per day?
-				let col = parseInt( column ) + 2;
-				program.style.gridColumn = col + ' / ' + col;
-				program.style.gridRow = offset_in_rows + ' / ' + ( offset_in_rows + program_length_in_rows );
+		for( let day in groups[group]['days'] ) {
+			let day_length = ( groups[group]['days'][day].end - groups[group]['days'][day].start ) / 60 / 15;
+			let day_start = groups[group]['days'][day].reduce( function( prev, curr ) {
+				 return prev.start < curr.start ? prev : curr;
+			} );
+			day_start = dayjs.unix( day_start.start );
 
-				// Check if we need to print time
-				if( !group_times.includes( program_start.unix( ) ) ) {
-					let time = document.createElement( 'span' );
-					let format = 'LT';
-					if( program_start.format( 'dd' ) != prev_day ) {
-						format = 'dd ' + format;
-						prev_day = program_start.format( 'dd' );
+			let table_name = document.createElement( 'p' );
+			table_name.innerHTML = '<strong>' + groups[group]['name'] + '</strong> <em>' + day_start.format( 'dd' ) + '</em>';
+			group_wrapper.append( table_name );
+
+			let day_table = document.createElement( 'div' );
+			day_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + groups[group]['days'][day].length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
+			// TODO: 1fr: each element size is relative to length / auto: each element is compact
+			day_table.style.gridTemplateRows = 'repeat( ' + day_length + ', 1em )';
+			day_table.className = 'table';
+
+			group_wrapper.append( day_table );
+
+			for( let column in groups[group]['days'][day] ) {
+				for( let program of groups[group]['days'][day][column].programs ) {
+					let program_start = dayjs( program.dataset.start );
+					let offset_in_rows = ( program_start.diff( day_start, 'minute' ) / 15 ) + 1;
+					let program_length_in_rows = parseInt( program.dataset.length / 15 );
+					let col = parseInt( column ) + 2;
+					program.style.gridColumn = col + ' / ' + col;
+					program.style.gridRow = offset_in_rows + ' / ' + ( offset_in_rows + program_length_in_rows );
+
+					day_table.append( program );
+
+					// Check if we need to print time
+					if( !group_times.includes( program_start.unix( ) ) ) {
+						let time = document.createElement( 'span' );
+						time.innerHTML = program_start.format( 'LT' );
+						time.style.gridColumn = '1 / -1';
+						time.style.gridRow = offset_in_rows + ' / ' + offset_in_rows;
+						time.className = 'time';
+						day_table.append( time );
+
+						group_times.push( program_start.unix( ) );
 					}
-					time.innerHTML = program_start.format( format );
-					time.style.gridColumn = '1 / -1';
-					time.style.gridRow = offset_in_rows + ' / ' + offset_in_rows;
-					time.className = 'time';
-					group_table.append( time );
-
-					group_times.push( program_start.unix( ) );
 				}
-				/*
-				let pr_en = dayjs( program.dataset.end );
-				if( !group_times.includes( pr_en.unix( ) ) ) {
-					// TODO: Program ends after filtered time
-					let time = document.createElement( 'span' );
-					time.textContent = pr_en.format( 'LT' );
-					time.style.gridColumn = '1 / -1';
-					let off = ( pr_en.diff( g_st, 'minute' ) / 15 ) + 1;
-					time.style.gridRow = off + ' / ' + off;
-					time.className = 'time';
-					group_table.append( time );
-
-					group_times.push( pr_en.unix( ) );
-				}
-				*/
 			}
-		}
-
-		continue;
-		for( let row = 1; row < group_length; row++ ) {
-			// TODO: Only print if any program starts exactly at this time?
 		}
 	}
 } );
@@ -1577,7 +1558,6 @@ function kompassi_schedule_get_grouped_program( ) {
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
 	programs = [...programs].sort( kompassi_schedule_sort_by_group );
 
-	let prev_group = undefined;
 	let group_name = false; // yes
 	let groups = {};
 	let grouping;
@@ -1590,46 +1570,51 @@ function kompassi_schedule_get_grouped_program( ) {
 
 	for( let program of programs ) {
 		if( grouping ) {
-			let group = program.querySelector( '.' + grouping ); // TODO
+			let group = program.querySelector( '.' + grouping );
 			if( group ) {
 				group_name = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
 			}
 		}
 
 		if( !groups[group_name] ) {
-			groups[group_name] = { 'name': group_name, 'start': 0, 'end': 0, 'items': [] };
+			groups[group_name] = { 'name': group_name, 'days': [] };
 		}
 
 		let check_index = 0;
 		let found_slot = false;
+		let program_date = dayjs( program.dataset.start ).format( 'YYYY-MM-DD' );
 
 		while( found_slot == false ) {
-			if( !groups[group_name]['items'][check_index] ) {
+			if( !groups[group_name]['days'][program_date] ) {
+				groups[group_name]['days'][program_date] = [];
+			}
+			if( !groups[group_name]['days'][program_date][check_index] ) {
 				// Row does not exist, create new
-				groups[group_name]['items'][check_index] = {
+				groups[group_name]['days'][program_date][check_index] = {
+					'start': dayjs( program.dataset.start ).unix( ),
 					'end': dayjs( program.dataset.end ).unix( ),
 					'programs': [
 						program
 					],
 				};
 				found_slot = true;
-			} else if( groups[group_name]['items'][check_index]['end'] <= dayjs( program.dataset.start ).unix( ) ) {
-				// Rows last event ends before or at the same time as this one starts
-				groups[group_name]['items'][check_index]['end'] = dayjs( program.dataset.end ).unix( );
-				groups[group_name]['items'][check_index]['programs'].push( program );
+			} else if( groups[group_name]['days'][program_date][check_index]['end'] <= dayjs( program.dataset.start ).unix( ) ) {
+				// Groups last event ends before or at the same time as this one starts
+				groups[group_name]['days'][program_date][check_index]['end'] = dayjs( program.dataset.end ).unix( );
+				groups[group_name]['days'][program_date][check_index]['programs'].push( program );
 				found_slot = true;
 			}
-			if( groups[group_name]['items'][check_index]['end'] > groups[group_name].end ) {
-				groups[group_name].end = groups[group_name]['items'][check_index]['end'];
-			}
-			if( !groups[group_name].start || dayjs( program.dataset.start ).unix( ) < groups[group_name].start ) {
-				groups[group_name].start = dayjs( program.dataset.start ).unix( );
-			}
+//			if( groups[group_name]['items'][program_date][check_index]['end'] > groups[group_name].end ) {
+//				groups[group_name].end = groups[group_name][program_date]['items'][check_index]['end'];
+//			}
+			// if( !groups[group_name].start || dayjs( program.dataset.start ).unix( ) < groups[group_name].start ) {
+			//	groups[group_name].start = dayjs( program.dataset.start ).unix( );
+			// }
 			check_index += 1;
 		}
-
-		prev_group = group_name;
 	}
+
+	console.log( groups );
 
 	return groups;
 }

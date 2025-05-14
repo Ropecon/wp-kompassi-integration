@@ -4,7 +4,8 @@ body {
 	--kompassi-schedule-timeline-row-height: calc( var(--kompassi-line-height) + var(--kompassi-schedule-timeline-row-padding) * 3 );
 
 	/*  Timetable  */
-	--kompassi-schedule-timetable-group-width: 100px;
+	--kompassi-schedule-timetable-time-width: 100px;
+	--kompassi-schedule-timetable-group-min-width: 200px;
 	--kompassi-schedule-timetable-program-padding: 0.3em;
 
 	/*  Defaults  */
@@ -559,13 +560,23 @@ summary::marker {
 #kompassi_schedule[data-display="timetable"] .group .table {
 	display: grid;
 	grid-gap: 0 var(--kompassi-padding);
-	grid-template-rows: auto;
+	grid-template-rows: 2em;
 	margin: var(--kompassi-padding) 0;
 	padding: var(--kompassi-padding);
 	padding-top: 0;
 	background-color: var(--kompassi-bg);
 	box-shadow: var(--kompassi-box-shadow);
+	overflow-x: scroll;
+
+	scroll-snap: both mandatory;
 }
+	#kompassi_schedule[data-display="timetable"] .group .table .time {
+		z-index: 1;
+		margin: 0 calc(-1 * var(--kompassi-padding));
+		padding: var(--kompassi-schedule-timetable-program-padding);
+		border-top: 1px solid var(--kompassi-fg-10);
+	}
+
 
 #kompassi_schedule[data-display="timetable"] article {
 	margin-top: 6px;
@@ -576,6 +587,7 @@ summary::marker {
 	color: #fff;
 	box-shadow: var(--kompassi-box-shadow);
 	z-index: 2;
+	scroll-snap-align: start;
 }
 	#kompassi_schedule[data-display="timetable"] article :is(.favorite,.secondary) {
 		display: none;
@@ -583,22 +595,11 @@ summary::marker {
 	#kompassi_schedule[data-display="timetable"] article .title {
 		word-wrap: anywhere;
 	}
-
-#kompassi_schedule[data-display="timetable"] .time {
-	z-index: 1;
-	margin: 0 calc(-1 * var(--kompassi-padding));
-	padding: var(--kompassi-schedule-timetable-program-padding);
-	border-top: 1px solid var(--kompassi-fg-10);
-}
-
-#kompassi_block_schedule:has(#kompassi_schedule[data-display="timetable"]) {
-	max-width: 100%;
-}
-	#kompassi_block_schedule > :not(.kompassi_schedule_wrapper) {
-		max-width: var(--wp--style--global--wide-size);
-		margin-inline: auto;
+	#kompassi_schedule[data-display="timetable"] article:hover {
+		text-shadow: 0.05em 0.05em 0.1em rgba(0,0,0,0.8);
+		filter: brightness(1.25);
+		z-index: 2000;
 	}
-
 
 /*
  *  Modal
