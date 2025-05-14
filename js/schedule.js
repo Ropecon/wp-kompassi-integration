@@ -54,9 +54,8 @@ document.addEventListener( 'DOMContentLoaded', function( event ) {
 			block_opts[option[0]] = option[1];
 		}
 	}
-	kompassi_schedule_update_filters_from_options( block_opts );
-
-//	kompassi_schedule_update_filters_from_options( kompassi_get_url_options( ) );
+	let filters = { ...block_opts, ...kompassi_get_url_options( ) };
+	kompassi_schedule_update_filters_from_options( filters );
 } );
 
 /**
