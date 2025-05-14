@@ -26,7 +26,7 @@ wp.blocks.registerBlockType(
       },
       attributes: {
          showToolbar: { type: 'boolean', default: 'true' },
-         defaultOptions: { type: 'string', default: '' },
+         defaultFilters: { type: 'string', default: '' },
          eventSlug: { type: 'string', default: '' },
 //         availableDisplayTypes: { type: 'array', default: ['list','timeline'] },
          default_display: { type: 'string', default: 'list' },
@@ -72,9 +72,9 @@ wp.blocks.registerBlockType(
                   el( wp.components.PanelRow, null,
                      el( wp.components.TextControl, {
                         label: __( 'Default Options', 'kompassi-integration' ),
-                        value: props.attributes.defaultOptions,
+                        value: props.attributes.defaultFilters,
                         onChange: function( value ) {
-                           props.setAttributes( { defaultOptions: value } )
+                           props.setAttributes( { defaultFilters: value } )
                         }
                      } ),
 						),

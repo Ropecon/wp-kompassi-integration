@@ -44,7 +44,7 @@ document.addEventListener( 'DOMContentLoaded', function( event ) {
 	//  Apply options from block options or URL
 	let block = document.getElementById( 'kompassi_block_schedule' );
 	let block_options = JSON.parse( block.dataset.wpContext );
-	block_options = block_options.defaultOptions.split( '/' );
+	block_options = block_options.defaultFilters.split( '/' );
 	let block_opts = {};
 	for( let option of block_options ) {
 		option = option.split( ':' );
@@ -1286,7 +1286,6 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 			let day_table = document.createElement( 'div' );
 			day_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + groups[group]['days'][day].length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
-			// TODO: 1fr: each element size is relative to length / auto: each element is compact
 			day_table.style.gridTemplateRows = 'repeat( ' + day_length + ', 2em )';
 			day_table.className = 'table';
 
@@ -1597,6 +1596,7 @@ function kompassi_schedule_get_grouped_program( ) {
 	let groups = {};
 	let grouping;
 
+	// TODO: Block options
 	if( kompassi_schedule_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_schedule_options.timeline_grouping ) ) {
 		grouping = kompassi_schedule_options.timeline_grouping;
 	} else {

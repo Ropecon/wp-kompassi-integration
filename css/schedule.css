@@ -557,6 +557,7 @@ summary::marker {
 					margin-right: calc(var(--kompassi-schedule-timeline-row-padding) + (1em + 4px));
 				}
 
+/*  Display Style: Timetable  */
 #kompassi_schedule[data-display="timetable"] .group .table {
 	display: grid;
 	grid-gap: 0 var(--kompassi-padding);

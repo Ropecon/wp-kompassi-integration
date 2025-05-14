@@ -38,7 +38,7 @@ class WP_Plugin_Kompassi_Integration {
 				'render_callback' => array( &$this, 'block_schedule' ),
 				'attributes' => array(
 					'showToolbar' => array( 'type' => 'boolean', 'default' => 'true' ),
-					'defaultOptions' => array( 'type' => 'string', 'default' => '' ),
+					'defaultFilters' => array( 'type' => 'string', 'default' => '' ),
 					'eventSlug' => array( 'type' => 'string', 'default' => '' ),
 //					'availableDisplayTypes' => array( 'type' => 'array', 'default' => array( 'list', 'timeline' ) ),
 					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
