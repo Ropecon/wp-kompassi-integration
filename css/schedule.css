@@ -607,12 +607,27 @@ summary::marker {
 	z-index: 2;
 	scroll-snap-align: start;
 }
-	#kompassi_schedule[data-display="timetable"] article :is(.favorite,.secondary) {
-		display: none;
+	#kompassi_schedule[data-display="timetable"] article details {
+		height: 100%;
 	}
-	#kompassi_schedule[data-display="timetable"] article .title {
-		word-wrap: anywhere;
-	}
+		#kompassi_schedule[data-display="timetable"] article summary {
+			height: 100%;
+			display: grid;
+			grid-template-areas: "title" "favorite";
+		}
+			#kompassi_schedule[data-display="timetable"] article .title {
+				word-wrap: anywhere;
+			}
+			#kompassi_schedule[data-display="timetable"] article .favorite {
+				align-self: end;
+				justify-self: end;
+			}
+				#kompassi_schedule[data-display="timetable"] article .kompassi-icon-favorite::before {
+					margin-right: 0;
+				}
+			#kompassi_schedule[data-display="timetable"] article :is(.secondary) {
+				display: none;
+			}
 	#kompassi_schedule[data-display="timetable"] article:hover {
 		text-shadow: 0.05em 0.05em 0.1em rgba(0,0,0,0.8);
 		filter: brightness(1.25);
