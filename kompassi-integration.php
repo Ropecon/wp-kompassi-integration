@@ -660,7 +660,7 @@ class WP_Plugin_Kompassi_Integration {
 					$value .= date_i18n( get_option( 'time_format' ), $end_timestamp );
 				} else {
 					// If multiday, show both days
-					$value .= date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $end_timestamp );
+					$value .= date_i18n( get_option( 'date_format' ) . '&nbsp;' . get_option( 'time_format' ), $end_timestamp );
 				}
 				$value .= ' <span class="length">';
 				$h = $scheduleItem['lengthMinutes'] / 60;
