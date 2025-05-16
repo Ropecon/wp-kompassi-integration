@@ -112,7 +112,7 @@ function kompassi_schedule_init( ) {
 
 	//  Events (mouseover, mouseout): Popover
 	schedule.addEventListener( 'mouseover', function( event ) {
-		if( schedule.dataset.display != 'timeline' ) {
+		if( schedule.dataset.display != 'timeline' && schedule.dataset.display != 'timetable' ) {
 			return;
 		}
 
