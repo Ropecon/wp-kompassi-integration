@@ -464,8 +464,8 @@ function kompassi_schedule_init_toolbar( ) {
 	let display_styles = {
 		'list': _x( 'List', 'display style', 'kompassi-integration' ),
 		'timeline': _x( 'Timeline', 'display style', 'kompassi-integration' ),
-		'timetable': _x( 'Timetable', 'display style', 'kompassi-integration' ),
 	};
+	wp.hooks.applyFilters( 'kompassi_schedule_display_styles', display_styles );
 	let display = document.createElement( 'section' );
 	display.id = 'kompassi_schedule_display';
 	display.classList.add( 'kompassi-button-group', 'has-icon-and-label' );
@@ -1322,7 +1322,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			let bars = [];
 			while( times < day_end.endOf( 'hour' ) ) {
 				let time = document.createElement( 'span' );
-				time.innerHTML = times.format( 'HH.mm' );
+				time.innerHTML = times.format( 'HH' );
 				time.style.gridColumn = '1 / -1';
 				time.style.gridRow = row + ' / ' + row;
 				time.className = 'time time-hour';
@@ -1332,6 +1332,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 				time_bar.style.gridColumn = '1 / -1';
 				time_bar.style.gridRow = row + ' / ' + ( row + increment );
 				time_bar.className = 'time-bar';
+				if( row == 1 ) {
+					time_bar.classList.add( 'first' );
+				}
 				bars.push( time_bar );
 
 				times = times.add( times_frequency, 'minute' );
@@ -1376,6 +1379,8 @@ function kompassi_schedule_revert_layout( ) {
 
 	// Timetable
 	for( let program of programs ) {
+		program.style.gridRow = '';
+		program.style.gridColumn = '';
 		schedule.append( program );
 	}
 	groups = schedule.querySelectorAll( '.group' );

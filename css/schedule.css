@@ -566,6 +566,7 @@ summary::marker {
 	padding: 0 var(--kompassi-padding);
 	background-color: var(--kompassi-bg);
 	box-shadow: var(--kompassi-box-shadow);
+	border-radius: var(--kompassi-radius);
 	overflow-x: scroll;
 
 	scroll-snap: both mandatory;
@@ -575,9 +576,10 @@ summary::marker {
 		padding: var(--kompassi-schedule-timetable-program-padding);
 	}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-hour {
+			font-weight: 600;
 		}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-minute {
-			border-top: 1px dashed var(--kompassi-fg-75);
+			border-top: 1px solid var(--kompassi-fg-75);
 			opacity: 0.4;
 		}
 			#kompassi_schedule[data-display="timetable"] .group .table .time-minute span {
@@ -587,7 +589,10 @@ summary::marker {
 		border-top: 1px solid var(--kompassi-fg-25);
 		margin: 0 calc(-1 * var(--kompassi-padding));
 	}
-		#kompassi_schedule[data-display="timetable"] .group .table .time-bar:nth-child(odd) {
+		#kompassi_schedule[data-display="timetable"] .group .table .time-bar.first {
+			border-top: none;
+		}
+		#kompassi_schedule[data-display="timetable"] .group .table .time-bar:nth-child(even) {
 			background-color: rgba(0,0,0,0.05);
 		}
 
