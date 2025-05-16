@@ -44,17 +44,7 @@ document.addEventListener( 'DOMContentLoaded', function( event ) {
 	//  Apply options from block options or URL
 	let block = document.getElementById( 'kompassi_block_schedule' );
 	let block_options = JSON.parse( block.dataset.wpContext );
-	block_options = block_options.defaultFilters.split( '/' );
-	let block_opts = {};
-	for( let option of block_options ) {
-		option = option.split( ':' );
-		if( !option[1] ) {
-			block_opts[option[0]] = true;
-		} else {
-			block_opts[option[0]] = option[1];
-		}
-	}
-	let filters = { ...block_opts, ...kompassi_get_url_options( ) };
+	let filters = { ...kompassi_get_options( block_options.defaultFilters ), ...kompassi_get_url_options( ) };
 	kompassi_schedule_update_filters_from_options( filters );
 } );
 

@@ -275,23 +275,33 @@ function kompassi_dropdown( options ) {
 }
 
 /*
+ *  Get options from string
+ *
+ */
+
+function kompassi_get_options( string ) {
+	let options = {};
+	let opts = string.split( '/' );
+	for( let option of opts ) {
+		option = option.split( ':' );
+		if( !option[1] ) {
+			options[option[0]] = true;
+		} else {
+			options[option[0]] = option[1];
+		}
+	}
+
+	return options;
+}
+
+/*
  *  Get URL options
  *
  */
 
 function kompassi_get_url_options( ) {
-	let url_options = {};
-	let hash = new URL( window.location ).hash.substring( 1 ).split( '/' );
-	for( let option of hash ) {
-		option = option.split( ':' );
-		if( !option[1] ) {
-			url_options[option[0]] = true;
-		} else {
-			url_options[option[0]] = option[1];
-		}
-	}
-
-	return url_options;
+	let hash = new URL( window.location ).hash.substring( 1 );
+	return kompassi_get_options( hash );
 }
 
 /*
