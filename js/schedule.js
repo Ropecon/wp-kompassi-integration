@@ -940,21 +940,18 @@ function kompassi_schedule_apply_filters( ) {
 
 function kompassi_schedule_setup_display( display = false ) {
 	let display_type;
-	let previous_display_type;
 	let schedule = document.getElementById( 'kompassi_schedule' );
+	let previous_display_type = schedule.dataset.display;
 
 	if( display ) {
 		display_type = display;
-		previous_display_type = schedule.dataset.display;
 		schedule.dataset.display = display_type;
 	} else {
 		display_type = schedule.dataset.display;
 	}
 
 	//  Refresh display layout
-	if( display ) {
-		wp.hooks.doAction( 'kompassi_schedule_revert_' + previous_display_type + '_layout' );
-	}
+	wp.hooks.doAction( 'kompassi_schedule_revert_' + previous_display_type + '_layout' );
 	wp.hooks.doAction( 'kompassi_schedule_setup_' + display_type + '_layout' );
 
 	//  Hide/show relevant notes
