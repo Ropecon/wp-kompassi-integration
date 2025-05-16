@@ -940,17 +940,21 @@ function kompassi_schedule_apply_filters( ) {
 
 function kompassi_schedule_setup_display( display = false ) {
 	let display_type;
+	let previous_display_type;
 	let schedule = document.getElementById( 'kompassi_schedule' );
 
 	if( display ) {
 		display_type = display;
+		previous_display_type = schedule.dataset.display;
 		schedule.dataset.display = display_type;
 	} else {
 		display_type = schedule.dataset.display;
 	}
 
 	//  Refresh display layout
-	kompassi_schedule_revert_layout( );
+	if( display ) {
+		wp.hooks.doAction( 'kompassi_schedule_revert_' + previous_display_type + '_layout' );
+	}
 	wp.hooks.doAction( 'kompassi_schedule_setup_' + display_type + '_layout' );
 
 	//  Hide/show relevant notes
@@ -989,8 +993,6 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 	let rows = [ 'day hints', 'time hints' ];
 
 	kompassi_schedule_update_date_view_parameters( );
-
-//	let groups = kompassi_schedule_get_grouped_program( );
 
 	let prev_group = undefined;
 	let group_index = 0;
@@ -1250,6 +1252,37 @@ function kompassi_schedule_timeline_reposition_labels( ) {
 }
 
 /**
+ *  Revert timeline display layout
+ *
+ */
+
+wp.hooks.addAction( 'kompassi_schedule_revert_timeline_layout', 'kompassi_scbedule', function( ) {
+	let schedule = document.getElementById( 'kompassi_schedule' );
+	let programs = schedule.querySelectorAll( 'article' );
+
+	// Timeline
+	schedule.style.height = 'auto';
+	for( let program of programs ) {
+		program.style.width = null;
+		program.style.minWidth = null;
+		program.style.left = null;
+		program.style.top = null;
+		let title = program.querySelector( '.title' );
+		title.style.left = null;
+		title.style.position = null;
+		title.style.marginLeft = null;
+	}
+	let elements = schedule.querySelectorAll( '.headers, .ruler, .group-name, .current-time' );
+	for( let element of elements ) {
+		element.remove( );
+	}
+	clearTimeout( kompassi_schedule.timeouts['current_time'] );
+	if( kompassi_schedule.timeline_hammer ) {
+//		kompassi_schedule.timeline_hammer.destroy( );
+	}
+} );
+
+/**
  *  Sets up timetable display layout
  *
  */
@@ -1348,34 +1381,13 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 } );
 
 /**
- *  Revert display layouts
+ *  Revert timetable display layout
  *
  */
 
-function kompassi_schedule_revert_layout( ) {
+wp.hooks.addAction( 'kompassi_schedule_revert_timetable_layout', 'kompassi_scbedule', function( ) {
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let programs = schedule.querySelectorAll( 'article' );
-
-	// Timeline
-	schedule.style.height = 'auto';
-	for( let program of programs ) {
-		program.style.width = null;
-		program.style.minWidth = null;
-		program.style.left = null;
-		program.style.top = null;
-		let title = program.querySelector( '.title' );
-		title.style.left = null;
-		title.style.position = null;
-		title.style.marginLeft = null;
-	}
-	let elements = schedule.querySelectorAll( '.headers, .ruler, .group-name, .current-time' );
-	for( let element of elements ) {
-		element.remove( );
-	}
-	clearTimeout( kompassi_schedule.timeouts['current_time'] );
-	if( kompassi_schedule.timeline_hammer ) {
-		kompassi_schedule.timeline_hammer.destroy( );
-	}
 
 	// Timetable
 	for( let program of programs ) {
@@ -1387,7 +1399,7 @@ function kompassi_schedule_revert_layout( ) {
 	for( let group of groups ) {
 		group.remove( );
 	}
-}
+} );
 
 /**
  *  Opens program modal
