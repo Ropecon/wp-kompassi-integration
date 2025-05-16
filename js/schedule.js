@@ -70,16 +70,17 @@ function kompassi_schedule_init( ) {
 
 	//  MARKUP
 
+	//  Schedule toolbar
+	kompassi_schedule_init_toolbar( block_options.showToolbar );
+
 	//  Container for notes
 	let notes = document.createElement( 'section' );
 	notes.id = 'kompassi_schedule_notes';
 	notes.classList.add( 'kompassi-notes' );
-	block.prepend( notes );
-
-	//  Schedule toolbar
-	if( block_options.showToolbar ) {
-		kompassi_schedule_init_toolbar( );
+	if( !block_options.showToolbar ) {
+		notes.style.display = 'none';
 	}
+	block.prepend( notes );
 
 	//  Add favorite action to each article
 	let programs = schedule.querySelectorAll( 'article' );
@@ -267,9 +268,12 @@ function kompassi_schedule_init( ) {
  *
  */
 
-function kompassi_schedule_init_toolbar( ) {
+function kompassi_schedule_init_toolbar( is_enabled ) {
 	let block = document.getElementById( 'kompassi_block_schedule' );
 	let toolbar = document.createElement( 'section' );
+	if( !is_enabled ) {
+		toolbar.style.display = 'none';
+	}
 	toolbar.id = 'kompassi_schedule_toolbar';
 	block.prepend( toolbar );
 
@@ -374,6 +378,9 @@ function kompassi_schedule_init_toolbar( ) {
 	/*  Filter popup  */
 	let filter_popup = document.createElement( 'section' );
 	filter_popup.id = 'kompassi_schedule_filters';
+	if( !is_enabled ) {
+		filter_popup.style.display = 'none';
+	}
 
 	//  Text filter
 	let text_filter = document.createElement( 'input' );
@@ -485,6 +492,8 @@ function kompassi_schedule_init_toolbar( ) {
 		} );
 	}
 	toolbar.append( display );
+
+	return toolbar;
 }
 
 /**
@@ -843,8 +852,8 @@ function kompassi_schedule_apply_filters( ) {
 		}
 	}
 
-		// Show how many filters from the dropdown area are activated
-		if( block_options.showToolbar ) {
+	// Show how many filters from the dropdown area are activated
+	if( block_options.showToolbar ) {
 		if( filter_count > 0 ) {
 			document.querySelector( '#kompassi_block_schedule .filters-toggle .kompassi-indicator' ).textContent = filter_count;
 		} else {
