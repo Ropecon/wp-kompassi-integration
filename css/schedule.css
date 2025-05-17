@@ -574,6 +574,7 @@ summary::marker {
 	#kompassi_schedule[data-display="timetable"] .group .table .time {
 		z-index: 1;
 		padding: var(--kompassi-schedule-timetable-program-padding);
+		margin-top: 1px;
 	}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-hour {
 			font-weight: 600;
@@ -592,8 +593,12 @@ summary::marker {
 		#kompassi_schedule[data-display="timetable"] .group .table .time-bar.first {
 			border-top: none;
 		}
-		#kompassi_schedule[data-display="timetable"] .group .table .time-bar:nth-child(even) {
-			background-color: rgba(0,0,0,0.05);
+			#kompassi_schedule[data-display="timetable"] .group .table .time-bar:last-child {
+				border-bottom-right-radius: var(--kompassi-radius);
+				border-bottom-left-radius: var(--kompassi-radius);
+			}
+		#kompassi_schedule[data-display="timetable"] .group .table .time-even {
+			background-color: #f2f2f2; /* TODO */
 		}
 
 #kompassi_schedule[data-display="timetable"] article {

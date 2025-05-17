@@ -117,7 +117,7 @@ function kompassi_schedule_init( ) {
 
 		let options = {
 			title: program.querySelector( '.title' ).textContent,
-			content: program.querySelector( '.times' ).innerHTML // TODO: What data to show?
+			content: program.querySelector( '.times' ).innerHTML
 		}
 		kompassi_schedule.timeouts['popover'] = setTimeout( kompassi_popover, 300, options, event, program );
 	} );
@@ -1252,7 +1252,7 @@ function kompassi_schedule_timeline_reposition_labels( ) {
  *
  */
 
-wp.hooks.addAction( 'kompassi_schedule_revert_timeline_layout', 'kompassi_scbedule', function( ) {
+wp.hooks.addAction( 'kompassi_schedule_revert_timeline_layout', 'kompassi_schedule', function( ) {
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let programs = schedule.querySelectorAll( 'article' );
 
@@ -1347,30 +1347,34 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			let times_frequency = 60;
 			let times = day_start.startOf( 'hour' );
 			let row = 1;
+			let is_odd = true;
 			let increment = times_frequency / minutes_in_row;
-			let bars = [];
 			while( times < day_end.endOf( 'hour' ) ) {
+				let evenodd_class;
+				if( is_odd ) {
+					evenodd_class = 'odd';
+				} else {
+					evenodd_class = 'even';
+				}
 				let time = document.createElement( 'span' );
-				time.innerHTML = times.format( 'HH' );
+				time.innerHTML = '<span>' + times.format( 'HH' ) + '</span>';
 				time.style.gridColumn = '1 / -1';
 				time.style.gridRow = row + ' / ' + row;
-				time.className = 'time time-hour';
+				time.className = 'time time-hour time-' + evenodd_class;
 				day_table.append( time );
 
 				let time_bar = document.createElement( 'span' );
 				time_bar.style.gridColumn = '1 / -1';
 				time_bar.style.gridRow = row + ' / ' + ( row + increment );
-				time_bar.className = 'time-bar';
+				time_bar.className = 'time-bar time-' + evenodd_class;
 				if( row == 1 ) {
 					time_bar.classList.add( 'first' );
 				}
-				bars.push( time_bar );
+				day_table.append( time_bar );
 
 				times = times.add( times_frequency, 'minute' );
 				row += increment;
-			}
-			for( let bar of bars ) {
-				day_table.append( bar );
+				is_odd = !is_odd;
 			}
 		}
 	}
@@ -1381,7 +1385,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
  *
  */
 
-wp.hooks.addAction( 'kompassi_schedule_revert_timetable_layout', 'kompassi_scbedule', function( ) {
+wp.hooks.addAction( 'kompassi_schedule_revert_timetable_layout', 'kompassi_schedule', function( ) {
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let programs = schedule.querySelectorAll( 'article' );
 
