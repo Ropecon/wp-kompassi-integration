@@ -70,9 +70,6 @@ function kompassi_schedule_init( ) {
 
 	//  MARKUP
 
-	//  Schedule toolbar
-	kompassi_schedule_init_toolbar( block_options.showToolbar );
-
 	//  Container for notes
 	let notes = document.createElement( 'section' );
 	notes.id = 'kompassi_schedule_notes';
@@ -81,6 +78,9 @@ function kompassi_schedule_init( ) {
 		notes.style.display = 'none';
 	}
 	block.prepend( notes );
+
+	//  Schedule toolbar
+	kompassi_schedule_init_toolbar( block_options.showToolbar );
 
 	//  Add favorite action to each article
 	let programs = schedule.querySelectorAll( 'article' );
