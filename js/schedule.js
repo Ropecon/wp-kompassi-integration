@@ -980,6 +980,33 @@ function kompassi_schedule_setup_display( display = false ) {
 }
 
 /**
+ *  Sets up list display layout
+ *
+ */
+
+wp.hooks.addAction( 'kompassi_schedule_setup_list_layout', 'kompassi_integration_schedule', function( ) {
+	if( kompassi_schedule.init ) {
+		return;
+	}
+
+	return; // TODO
+
+	let grouping = [ 'datetime' ];
+	let last = undefined;
+	let programs = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' );
+	for( let program of programs ) {
+		let program_time = dayjs( program.dataset.start ).format( 'dddd HH:mm' );
+		if( program_time != last ) {
+			let program_heading = document.createElement( 'strong' );
+			program_heading.textContent = program_time;
+			program.before( program_heading );
+			last = program_time;
+		}
+	}
+} );
+
+
+/**
  *  Sets up timeline display layout
  *
  */
@@ -1252,7 +1279,7 @@ function kompassi_schedule_timeline_reposition_labels( ) {
  *
  */
 
-wp.hooks.addAction( 'kompassi_schedule_revert_timeline_layout', 'kompassi_schedule', function( ) {
+wp.hooks.addAction( 'kompassi_schedule_revert_timeline_layout', 'kompassi_integration_schedule', function( ) {
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let programs = schedule.querySelectorAll( 'article' );
 
@@ -1289,7 +1316,8 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	}
 
 	let schedule = document.getElementById( 'kompassi_schedule' );
-	let groups = kompassi_schedule_get_grouped_program( );
+	// TODO: Block options, plugin options
+	let groups = kompassi_schedule_get_grouped_program( { 'slotted': true, 'groupings': [ 'room', 'date' ] } );
 	let minutes_in_row = 5;
 
 	for( let group in groups ) {
@@ -1297,30 +1325,31 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 		group_wrapper.className = 'group';
 		schedule.append( group_wrapper );
 
-		for( let day in groups[group]['days'] ) {
-			let day_length = ( groups[group]['days'][day].end - groups[group]['days'][day].start ) / 60 / 15;
-			let day_start = groups[group]['days'][day].reduce( function( prev, curr ) {
+		for( let day in groups[group] ) {
+			console.log( groups[group][day] );
+			let day_length = ( groups[group][day].end - groups[group][day].start ) / 60 / 15;
+			let day_start = groups[group][day].reduce( function( prev, curr ) {
 				 return prev.start < curr.start ? prev : curr;
 			} );
 			day_start = dayjs.unix( day_start.start );
-			let day_end = groups[group]['days'][day].reduce( function( prev, curr ) {
+			let day_end = groups[group][day].reduce( function( prev, curr ) {
 				 return prev.end > curr.end ? prev : curr;
 			} );
 			day_end = dayjs.unix( day_end.end );
 
 			let table_name = document.createElement( 'p' );
-			table_name.innerHTML = '<strong>' + groups[group]['name'] + '</strong> <em>' + day_start.format( 'dd' ) + '</em>';
+			table_name.innerHTML = '<strong>' + group + '</strong> <em>' + day_start.format( 'dd' ) + '</em>';
 			group_wrapper.append( table_name );
 
 			let day_table = document.createElement( 'div' );
-			day_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + groups[group]['days'][day].length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
+			day_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + groups[group][day].length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
 			day_table.style.gridTemplateRows = 'repeat( ' + day_length + ', 2em )';
 			day_table.className = 'table';
 
 			group_wrapper.append( day_table );
 
-			for( let column in groups[group]['days'][day] ) {
-				for( let program of groups[group]['days'][day][column].programs ) {
+			for( let column in groups[group][day] ) {
+				for( let program of groups[group][day][column].programs ) {
 					let program_start = dayjs( program.dataset.start );
 					let offset_in_rows = ( program_start.diff( day_start, 'minute' ) / minutes_in_row ) + 1;
 					let program_length_in_rows = parseInt( program.dataset.length / minutes_in_row );
@@ -1385,7 +1414,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
  *
  */
 
-wp.hooks.addAction( 'kompassi_schedule_revert_timetable_layout', 'kompassi_schedule', function( ) {
+wp.hooks.addAction( 'kompassi_schedule_revert_timetable_layout', 'kompassi_integration_schedule', function( ) {
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let programs = schedule.querySelectorAll( 'article' );
 
@@ -1599,68 +1628,79 @@ function kompassi_schedule_timeline_sticky_header( ) {
 
 /**
  *  Returns the program grouped
- *  Overlapping programs in same group are split to multiple subarrays
  *
  */
 
-function kompassi_schedule_get_grouped_program( ) {
+function kompassi_schedule_get_grouped_program( options = { } ) {
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
 	programs = [...programs].sort( kompassi_schedule_sort_by_group );
 
-	let group_name = false; // yes
-	let groups = {};
-	let grouping;
-
-	// TODO: Block options
-	if( kompassi_schedule_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_schedule_options.timeline_grouping ) ) {
-		grouping = kompassi_schedule_options.timeline_grouping;
-	} else {
-		grouping = false;
-	}
+	let grouped = { };
 
 	for( let program of programs ) {
-		if( grouping ) {
-			let group = program.querySelector( '.' + grouping );
-			if( group ) {
-				group_name = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
-			}
-		}
+		let level = grouped;
 
-		if( !groups[group_name] ) {
-			groups[group_name] = { 'name': group_name, 'days': [] };
-		}
-
-		let check_index = 0;
-		let found_slot = false;
-		let program_date = dayjs( program.dataset.start ).format( 'YYYY-MM-DD' );
-
-		while( found_slot == false ) {
-			if( !groups[group_name]['days'][program_date] ) {
-				groups[group_name]['days'][program_date] = [];
+		for( let i = 0; i < options.groupings.length; i++ ) {
+			if( program.dataset[options.groupings[i]] ) {
+				key = program.querySelector( '.dimension.' + options.groupings[i] + ' > :first-child' ).textContent;
+			} else {
+				key = wp.hooks.applyFilters( 'kompassi_schedule_grouping_' + options.groupings[i], 'un', program );
 			}
-			if( !groups[group_name]['days'][program_date][check_index] ) {
-				// Row does not exist, create new
-				groups[group_name]['days'][program_date][check_index] = {
-					'start': dayjs( program.dataset.start ).unix( ),
-					'end': dayjs( program.dataset.end ).unix( ),
-					'programs': [
-						program
-					],
-				};
-				found_slot = true;
-			} else if( groups[group_name]['days'][program_date][check_index]['end'] <= dayjs( program.dataset.start ).unix( ) ) {
-				// Groups last event ends before or at the same time as this one starts
-				groups[group_name]['days'][program_date][check_index]['end'] = dayjs( program.dataset.end ).unix( );
-				groups[group_name]['days'][program_date][check_index]['programs'].push( program );
-				found_slot = true;
+
+			if( i === options.groupings.length - 1 ) {
+				if( !level[key] ) {
+					level[key] = [ ];
+				}
+
+				if( options.slotted ) {
+					level[key] = kompassi_schedule_find_timeslot( level[key], program );
+				} else {
+					level[key]['programs'].push( program );
+				}
+			} else {
+				if( !level[key] ) {
+					level[key] = { };
+				}
+
+				level = level[key];
 			}
-			check_index += 1;
 		}
 	}
 
-	return groups;
+	return grouped;
 }
+
+function kompassi_schedule_find_timeslot( table, program ) {
+	let found_slot = false;
+	let check_index = 0;
+
+	while( found_slot == false ) {
+		if( !table[check_index] ) {
+			// Row does not exist, create new
+			table[check_index] = {
+				'start': dayjs( program.dataset.start ).unix( ),
+				'end': dayjs( program.dataset.end ).unix( ),
+				'programs': [
+					program
+				],
+			}
+			found_slot = true;
+		} else if( table[check_index]['end'] <= dayjs( program.dataset.start ).unix( ) ) {
+			// Groups last event ends before or at the same time as this one starts
+			table[check_index]['end'] = dayjs( program.dataset.end ).unix( );
+			table[check_index]['programs'].push( program );
+			found_slot = true;
+		}
+		check_index += 1;
+	}
+	return table;
+}
+
+wp.hooks.addFilter( 'kompassi_schedule_grouping_date', 'kompassi_schedule', function( value, program ) {
+	value = dayjs( program.dataset.start ).format( 'YYYY-MM-DD' );
+	return value;
+} );
 
 /**
  *  Returns the previous or next (filtered) program number
