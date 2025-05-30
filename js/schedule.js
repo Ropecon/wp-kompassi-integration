@@ -1326,7 +1326,6 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 		schedule.append( group_wrapper );
 
 		for( let day in groups[group] ) {
-			console.log( groups[group][day] );
 			let day_length = ( groups[group][day].end - groups[group][day].start ) / 60 / 15;
 			let day_start = groups[group][day].reduce( function( prev, curr ) {
 				 return prev.start < curr.start ? prev : curr;
@@ -1514,6 +1513,8 @@ function kompassi_schedule_help_modal( ) {
 			};
 			if( response.status !== false ) {
 				kompassi_show_modal( options );
+			} else {
+				// TODO: Show modal error
 			}
 		},
 	};
