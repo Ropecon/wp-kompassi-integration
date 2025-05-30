@@ -1485,6 +1485,8 @@ function kompassi_schedule_help_modal( ) {
 			};
 			if( response.status !== false ) {
 				kompassi_show_modal( options );
+			} else {
+				// TODO: Show modal error
 			}
 		},
 	};
