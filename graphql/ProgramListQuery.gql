@@ -29,7 +29,7 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
         color
         cachedDimensions
         cachedHosts
-        cachedAnnotations
+        cachedAnnotations(isShownInDetail: true, publicOnly: true)
         scheduleItems {
           slug
           title
