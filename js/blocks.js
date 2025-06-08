@@ -10,7 +10,7 @@ var icon = el( 'svg', { width: '24', height: '24' },
 );
 
 /**
- *
+ *  Schedule block
  *
  */
 
@@ -78,6 +78,55 @@ wp.blocks.registerBlockType(
                         }
                      } ),
 						),
+                  el( wp.components.PanelRow, null,
+                     el( wp.components.TextControl, {
+                        label: __( 'Event Technical Name', 'kompassi-integration' ),
+                        value: props.attributes.eventSlug,
+                        onChange: function( value ) {
+                           props.setAttributes( { eventSlug: value } )
+                        }
+                     } ),
+                  ),
+					)
+				),
+         ] );
+      },
+      save: function( props ) {
+         return null;
+      },
+   }
+);
+
+/**
+ *  Dimension list block
+ *
+ */
+
+wp.blocks.registerBlockType(
+   'kompassi-integration/dimension-list',
+   {
+      title: __( 'Program Dimension List', 'kompassi-integration' ),
+      category: 'kompassi',
+      icon: icon,
+      supports: {
+         align: true,
+         multiple: false
+      },
+      attributes: {
+         eventSlug: { type: 'string', default: '' },
+      },
+      edit: function( props ) {
+         if( !props ) {
+            return;
+         }
+         return( [
+            el( wp.components.Placeholder, {
+               icon: icon,
+               label: __( 'Program Dimension List', 'kompassi-integration' ),
+            }, ''
+            ),
+            el( wp.blockEditor.InspectorControls, null,
+               el( wp.components.PanelBody, { title: __( 'Options', 'kompassi-integration' ) },
                   el( wp.components.PanelRow, null,
                      el( wp.components.TextControl, {
                         label: __( 'Event Technical Name', 'kompassi-integration' ),

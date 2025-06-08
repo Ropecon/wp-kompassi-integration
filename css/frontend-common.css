@@ -700,3 +700,21 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       z-index: 2000;
       background-color: #eee;
    }
+
+/*
+ *  Tables
+ *  
+ */
+
+.kompassi-table {
+   width: 100%;
+   border-collapse: collapse;
+   box-shadow: var(--kompassi-box-shadow);
+}
+   .kompassi-table th {
+      text-align: left;
+   }
+   .kompassi-table th, td {
+      padding: var(--kompassi-padding);
+      border: 1px solid var(--kompassi-fg-25);
+   }

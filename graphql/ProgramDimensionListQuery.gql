@@ -1,0 +1,19 @@
+query ProgramDimensionListQuery($eventSlug: String!, $locale: String) {
+  event(slug: $eventSlug) {
+    program {
+      dimensions(isListFilter: true) {
+        slug
+        title(lang: $locale)
+        values {
+          slug
+          title(lang: $locale)
+        }
+      }
+      programs {
+        title
+        slug
+        cachedDimensions
+      }
+    }
+  }
+}
