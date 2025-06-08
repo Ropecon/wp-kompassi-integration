@@ -703,7 +703,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 /*
  *  Tables
- *  
+ *
  */
 
 .kompassi-table {
@@ -715,6 +715,6 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       text-align: left;
    }
    .kompassi-table th, td {
-      padding: var(--kompassi-padding);
+      padding: var(--kompassi-padding) !important;
       border: 1px solid var(--kompassi-fg-25);
    }

@@ -761,19 +761,26 @@ class WP_Plugin_Kompassi_Integration {
 			$out .= '<th>' . $dimension['title'] . '</th>';
 		}
 		$out .= '</tr>';
+		$out .= '</thead>';
+		$out .= '<tbody>';
 		foreach( $programs as $program ) {
 			$out .= '<tr>';
 			$out .= '<th>' . $program['title'] . '</th>';
 			foreach( $dimensions as $dimension ) {
+				$out .= '<td>';
 				$program_dimension_values = $program['cachedDimensions'][$dimension['slug']];
-				$program_dimension_labels = array( );
-				foreach( $program_dimension_values as $value ) {
-					$program_dimension_labels[] = $dimension_values[$dimension['slug']]['value_labels'][$value];
+				if( count( $program_dimension_values ) > 0 ) {
+					$program_dimension_labels = array( );
+					foreach( $program_dimension_values as $value ) {
+						$program_dimension_labels[] = $dimension_values[$dimension['slug']]['value_labels'][$value];
+					}
+					$out .= '<span>' . join( '<br />', $program_dimension_labels ) . '</span>';
 				}
-				$out .= '<td>' . join( '<br />', $program_dimension_labels ) . '</td>';
+				$out .= '</td>';
 			}
 			$out .= '</tr>';
 		}
+		$out .= '</tbody>';
 		$out .= '</table>';
 		$out .= '</div>';
 
