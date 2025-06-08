@@ -220,7 +220,40 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/*
+	 *  Fetch data from GraphQL
 	 *
+	 */
+
+	function get_graphql( $type, $event_slug ) {
+		$type = preg_replace( '/[^a-zA-Z]/', '', $type );
+		$file = plugin_dir_path( __FILE__ ) . 'graphql/' . $type . '.gql';
+		if( !is_readable( $file ) ) {
+			return false;
+		}
+		$query = array(
+			'query' => file_get_contents( $file ),
+			'variables' => array(
+				'eventSlug' => $event_slug,
+				'locale' => get_locale( )
+			)
+		);
+		$options = array(
+			'http' => array(
+				'method' => 'POST',
+				'content' => json_encode( $query ),
+				'header' => "Content-Type: application/json\r\n" .
+					"Accept: application/json\r\n"
+			)
+		);
+		$context = stream_context_create( $options );
+		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
+		$response = json_decode( $json, true );
+
+		return $response;
+	}
+
+	/*
+	 *  Docs REST
 	 *
 	 */
 
@@ -312,36 +345,6 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/*
-	 *  Fetch data from GraphQL
-	 *
-	 */
-
-	function get_schedule_data_graphql( $event_slug ) {
-		$query = array(
-			'query' => file_get_contents( plugins_url( 'graphql/ProgramListQuery.gql', __FILE__ ) ),
-			'variables' => array(
-				'eventSlug' => $event_slug,
-				'locale' => get_locale( )
-			)
-		);
-		$options = array(
-			'http' => array(
-				'method' => 'POST',
-				'content' => json_encode( $query ),
-				'header' => "Content-Type: application/json\r\n" .
-					"Accept: application/json\r\n"
-			)
-		);
-		$context = stream_context_create( $options );
-		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
-		$response = json_decode( $json, true );
-
-		$response['data']['event'] = apply_filters( 'kompassi_schedule_data', $response['data']['event'] );
-
-		return $response['data']['event'];
-	}
-
-	/*
 	 *  Show the schedule block
 	 *
 	 */
@@ -368,8 +371,12 @@ class WP_Plugin_Kompassi_Integration {
 		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . ' ' . wp_interactivity_data_wp_context( $attributes ) . '>';
 
 		/*  Schedule  */
-		$data = $this->get_schedule_data_graphql( $event_slug );
-		if( !$data || count( $data ) < 1 ) {
+		$graphql = $this->get_graphql( 'ScheduleQuery', $event_slug );
+		if( !$graphql ) {
+			return;
+		}
+		$data = apply_filters( 'kompassi_schedule_data', $graphql['data']['event'] );
+		if( count( $data ) < 1 ) {
 			return;
 		}
 

@@ -1,4 +1,4 @@
-query ProgramListQuery($eventSlug: String!, $locale: String) {
+query ScheduleQuery($eventSlug: String!, $locale: String) {
   event(slug: $eventSlug) {
     name
     slug
