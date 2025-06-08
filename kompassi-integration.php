@@ -385,19 +385,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		$options = array( );
 		// Map dimension value labels and flags to arrays
-		$options['dimensions'] = array( );
-		foreach( $data['program']['dimensions'] as $dimension ) {
-			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
-			foreach( $dimension['values'] as $value ) {
-				$d['value_labels'][$value['slug']] = $value['title'];
-				foreach( $dimension as $k => $v ) {
-					if( substr( $k, 0, 2 ) == 'is' ) {
-						$d['flags'][$k] = $v;
-					}
-				}
-			}
-			$options['dimensions'][$dimension['slug']] = $d;
-		}
+		$options['dimensions'] = $this->get_dimension_values( $data['program']['dimensions'] );
 		$this->event_dimensions = $options['dimensions'];
 
 		// Map annotation labels and flags to arrays
@@ -699,6 +687,29 @@ class WP_Plugin_Kompassi_Integration {
 				return $value;
 			}
 		}
+	}
+
+	/*
+	 *  Get dimension values in an array
+	 *
+	 */
+
+	function get_dimension_values( $dimensions ) {
+		$dimension_values = array( );
+		foreach( $dimensions as $dimension ) {
+			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
+			foreach( $dimension['values'] as $value ) {
+				$d['value_labels'][$value['slug']] = $value['title'];
+				foreach( $dimension as $k => $v ) {
+					if( substr( $k, 0, 2 ) == 'is' ) {
+						$d['flags'][$k] = $v;
+					}
+				}
+			}
+			$dimension_values[$dimension['slug']] = $d;
+		}
+
+		return $dimension_values;
 	}
 
 	/**
