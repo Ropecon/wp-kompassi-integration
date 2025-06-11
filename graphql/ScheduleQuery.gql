@@ -25,7 +25,6 @@ query ScheduleQuery($eventSlug: String!, $locale: String) {
       programs {
         slug
         description
-        location
         color
         cachedDimensions
         cachedHosts
