@@ -312,6 +312,9 @@ summary::marker {
 		padding: 2px;
 	}
 
+#kompassi_schedule .times span {
+	white-space: nowrap;
+}
 [id^="kompassi"] .times .length {
 	font-size: max(85%, 8pt);
 	text-transform: none;

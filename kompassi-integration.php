@@ -671,13 +671,13 @@ class WP_Plugin_Kompassi_Integration {
 				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
 				$end_timestamp = $end->format( 'U' ) + $timezone->getOffset( $end );
 
-				$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp );
+				$value = '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp ) . '</span>';
 				$value .= ' – ';
 				if( date_i18n( 'Ymd', $start_timestamp ) == date_i18n( 'Ymd', $end_timestamp ) ) {
-					$value .= date_i18n( get_option( 'time_format' ), $end_timestamp );
+					$value .= '<span>' . date_i18n( get_option( 'time_format' ), $end_timestamp ) . '</span>';
 				} else {
 					// If multiday, show both days
-					$value .= date_i18n( get_option( 'date_format' ) . '&nbsp;' . get_option( 'time_format' ), $end_timestamp );
+					$value .= '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $end_timestamp ) . '</span>';
 				}
 				$value .= ' <span class="length">';
 				$h = $scheduleItem['lengthMinutes'] / 60;
