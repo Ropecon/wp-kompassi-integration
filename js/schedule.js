@@ -401,6 +401,9 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 		if( kompassi_schedule_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
 			continue;
 		}
+		if( dimension.values.length == 0 ) {
+			continue;
+		}
 
 		let dropdown_options = {
 			slug: dimension.slug,
