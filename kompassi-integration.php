@@ -3,7 +3,7 @@
  *  Plugin Name: Kompassi Integration
  *  Description: Integrate data from Kompassi to your WordPress site easily
  *  Author: Pasi Lallinaho
- *  Version: 2025-05-30
+ *  Version: 2025-06-15
  *  Text Domain: kompassi-integration
  *
  */
