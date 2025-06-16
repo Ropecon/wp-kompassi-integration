@@ -523,11 +523,15 @@ class WP_Plugin_Kompassi_Integration {
 		//  TODO: Only traverse once (for attrs and data)
 		ob_start( );
 		foreach( $program['cachedDimensions'] as $dimension => $values ) {
-			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+			if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
 				continue;
 			}
 
-			if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
+			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+				if( count( $values ) > 0 ) {
+					$attr = 'data-' . $dimension;
+					$program_attributes[$attr] = implode( ',', $values );
+				}
 				continue;
 			}
 
