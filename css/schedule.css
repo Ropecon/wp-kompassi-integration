@@ -577,6 +577,9 @@ summary::marker {
 		margin-top: 1px;
 	}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-hour {
+			position: sticky;
+			left: 0;
+			z-index: 10;
 			font-weight: 600;
 		}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-minute {
@@ -597,6 +600,9 @@ summary::marker {
 				border-bottom-right-radius: var(--kompassi-radius);
 				border-bottom-left-radius: var(--kompassi-radius);
 			}
+		#kompassi_schedule[data-display="timetable"] .group .table .time-odd {
+			background-color: var(--kompassi-bg); /* TODO */
+		}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-even {
 			background-color: #f2f2f2; /* TODO */
 		}
