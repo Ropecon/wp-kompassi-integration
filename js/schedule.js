@@ -1322,7 +1322,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let minutes_in_row = 5;
-	let primary_grouping = block_options.primaryGrouping;
+	let primary_grouping = block_options.timetablePrimaryGrouping;
 	let secondary_grouping = undefined; // TODO: Block options, plugin options
 	let date_slotted = true;
 
@@ -1724,7 +1724,6 @@ function kompassi_schedule_group_programs( programs, grouping, options = {} ) {
 		}
 	}
 
-	console.log( 'kompassi_schedule_group_programs', grouped );
 	return grouped;
 }
 

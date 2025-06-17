@@ -28,8 +28,8 @@ wp.blocks.registerBlockType(
          showToolbar: { type: 'boolean', default: 'true' },
          defaultFilters: { type: 'string', default: '' },
          eventSlug: { type: 'string', default: '' },
-         primaryGrouping: { type: 'string', default: '' },
-         secondaryGrouping: { type: 'string', default: '' },
+         timetablePrimaryGrouping: { type: 'string', default: '' },
+         timetableSecondaryGrouping: { type: 'string', default: '' },
 //         availableDisplayTypes: { type: 'array', default: ['list','timeline'] },
          default_display: { type: 'string', default: 'list' },
       },
@@ -44,7 +44,7 @@ wp.blocks.registerBlockType(
             }, ''
             ),
             el( wp.blockEditor.InspectorControls, null,
-               el( wp.components.PanelBody, { title: __( 'Options', 'kompassi-integration' ) },
+               el( wp.components.PanelBody, { title: __( 'General', 'kompassi-integration' ) },
 						el( wp.components.PanelRow, null,
 							el( wp.components.ToggleControl, {
                         label: __( 'Show Toolbar', 'kompassi-integration' ),
@@ -54,23 +54,6 @@ wp.blocks.registerBlockType(
 								}
                      } ),
                   ),
-/*
-                     el( wp.components.CheckboxControl, {
-                        label: _x( 'List', 'display type', 'kompassi-integration' ),
-                        checked: list_enabled,
-                     } ),
-                     el( wp.components.CheckboxControl, {
-                        label: _x( 'Timeline', 'display type', 'kompassi-integration' ),
-                        onChange: function( value ) {
-                        }
-                     } ),
-                     el( wp.components.CheckboxControl, {
-                        label: _x( 'Timetable', 'display type', 'kompassi-integration' ),
-                        onChange: function( value ) {
-                        }
-                     } ),
-						),
-*/
                   el( wp.components.PanelRow, null,
                      el( wp.components.TextControl, {
                         label: __( 'Default Options', 'kompassi-integration' ),
@@ -79,7 +62,7 @@ wp.blocks.registerBlockType(
                            props.setAttributes( { defaultFilters: value } )
                         }
                      } ),
-						),
+                  ),
                   el( wp.components.PanelRow, null,
                      el( wp.components.TextControl, {
                         label: __( 'Event Technical Name', 'kompassi-integration' ),
@@ -89,12 +72,14 @@ wp.blocks.registerBlockType(
                         }
                      } ),
                   ),
+               ),
+               el( wp.components.PanelBody, { title: __( 'Timetable', 'kompassi-integration' ) },
                   el( wp.components.PanelRow, null,
                      el( wp.components.TextControl, {
                         label: __( 'Primary Grouping Dimension', 'kompassi-integration' ),
-                        value: props.attributes.primaryGrouping,
+                        value: props.attributes.timetablePrimaryGrouping,
                         onChange: function( value ) {
-                           props.setAttributes( { primaryGrouping: value } )
+                           props.setAttributes( { timetablePrimaryGrouping: value } )
                         }
                      } ),
                   ),
@@ -109,7 +94,7 @@ wp.blocks.registerBlockType(
                      } ),
                   ),
                   */
-					)
+               ),
 				),
          ] );
       },
