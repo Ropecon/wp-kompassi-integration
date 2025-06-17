@@ -1,4 +1,4 @@
-query ProgramListQuery($eventSlug: String!, $locale: String) {
+query ScheduleQuery($eventSlug: String!, $locale: String) {
   event(slug: $eventSlug) {
     name
     slug
@@ -25,11 +25,10 @@ query ProgramListQuery($eventSlug: String!, $locale: String) {
       programs {
         slug
         description
-        location
         color
         cachedDimensions
         cachedHosts
-        cachedAnnotations
+        cachedAnnotations(isShownInDetail: true, publicOnly: true)
         scheduleItems {
           slug
           title

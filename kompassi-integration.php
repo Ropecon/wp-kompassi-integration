@@ -3,7 +3,7 @@
  *  Plugin Name: Kompassi Integration
  *  Description: Integrate data from Kompassi to your WordPress site easily
  *  Author: Pasi Lallinaho
- *  Version: 2025-05-30
+ *  Version: 2025-06-15.2
  *  Text Domain: kompassi-integration
  *
  */
@@ -43,6 +43,18 @@ class WP_Plugin_Kompassi_Integration {
 //					'availableDisplayTypes' => array( 'type' => 'array', 'default' => array( 'list', 'timeline' ) ),
 					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
 				),
+			)
+		);
+
+		register_block_type(
+			'kompassi-integration/dimension-list',
+			array(
+				'editor_script' => 'kompassi-integration-blocks',
+				'is_dynamic' => true,
+				'render_callback' => array( $this, 'block_dimension_list' ),
+				'attributes' => array(
+					'eventSlug' => array( 'type' => 'string', 'default' => '' ),
+				)
 			)
 		);
 	}
@@ -192,7 +204,12 @@ class WP_Plugin_Kompassi_Integration {
 				);
 				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_schedule_options', $js_strings );
 
-				wp_enqueue_style( 'kompassi-integration-frontend', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
+				wp_enqueue_style( 'kompassi-integration-schedule', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
+			}
+
+			// DIMENSION LIST BLOCK
+			if( has_block( 'kompassi-integration/dimension-list' ) ) {
+				wp_enqueue_style( 'kompassi-integration-dimension-list', plugins_url( 'css/dimension-list.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
 			}
 		} else {
 			wp_enqueue_style( 'kompassi-integration-editor', plugins_url( 'css/editor.css', __FILE__ ), array( ), $this->ver );
@@ -220,7 +237,40 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/*
+	 *  Fetch data from GraphQL
 	 *
+	 */
+
+	function get_graphql( $type, $event_slug ) {
+		$type = preg_replace( '/[^a-zA-Z]/', '', $type );
+		$file = plugin_dir_path( __FILE__ ) . 'graphql/' . $type . '.gql';
+		if( !is_readable( $file ) ) {
+			return false;
+		}
+		$query = array(
+			'query' => file_get_contents( $file ),
+			'variables' => array(
+				'eventSlug' => $event_slug,
+				'locale' => get_locale( )
+			)
+		);
+		$options = array(
+			'http' => array(
+				'method' => 'POST',
+				'content' => json_encode( $query ),
+				'header' => "Content-Type: application/json\r\n" .
+					"Accept: application/json\r\n"
+			)
+		);
+		$context = stream_context_create( $options );
+		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
+		$response = json_decode( $json, true );
+
+		return $response;
+	}
+
+	/*
+	 *  Docs REST
 	 *
 	 */
 
@@ -312,36 +362,6 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/*
-	 *  Fetch data from GraphQL
-	 *
-	 */
-
-	function get_schedule_data_graphql( $event_slug ) {
-		$query = array(
-			'query' => file_get_contents( plugins_url( 'graphql/ProgramListQuery.gql', __FILE__ ) ),
-			'variables' => array(
-				'eventSlug' => $event_slug,
-				'locale' => get_locale( )
-			)
-		);
-		$options = array(
-			'http' => array(
-				'method' => 'POST',
-				'content' => json_encode( $query ),
-				'header' => "Content-Type: application/json\r\n" .
-					"Accept: application/json\r\n"
-			)
-		);
-		$context = stream_context_create( $options );
-		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
-		$response = json_decode( $json, true );
-
-		$response['data']['event'] = apply_filters( 'kompassi_schedule_data', $response['data']['event'] );
-
-		return $response['data']['event'];
-	}
-
-	/*
 	 *  Show the schedule block
 	 *
 	 */
@@ -362,14 +382,18 @@ class WP_Plugin_Kompassi_Integration {
 			return $cached_data;
 		}
 
-		$html_attrs = array( 'class' => 'kompassi-integration', );
+		$html_attrs = array( 'class' => 'kompassi-integration' );
 		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
 
 		$out = '<div id="kompassi_block_schedule" ' . get_block_wrapper_attributes( $html_attrs ) . ' ' . wp_interactivity_data_wp_context( $attributes ) . '>';
 
 		/*  Schedule  */
-		$data = $this->get_schedule_data_graphql( $event_slug );
-		if( !$data || count( $data ) < 1 ) {
+		$graphql = $this->get_graphql( 'ScheduleQuery', $event_slug );
+		if( !$graphql ) {
+			return;
+		}
+		$data = apply_filters( 'kompassi_schedule_data', $graphql['data']['event'] );
+		if( count( $data ) < 1 ) {
 			return;
 		}
 
@@ -378,19 +402,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		$options = array( );
 		// Map dimension value labels and flags to arrays
-		$options['dimensions'] = array( );
-		foreach( $data['program']['dimensions'] as $dimension ) {
-			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
-			foreach( $dimension['values'] as $value ) {
-				$d['value_labels'][$value['slug']] = $value['title'];
-				foreach( $dimension as $k => $v ) {
-					if( substr( $k, 0, 2 ) == 'is' ) {
-						$d['flags'][$k] = $v;
-					}
-				}
-			}
-			$options['dimensions'][$dimension['slug']] = $d;
-		}
+		$options['dimensions'] = $this->get_dimension_values( $data['program']['dimensions'] );
 		$this->event_dimensions = $options['dimensions'];
 
 		// Map annotation labels and flags to arrays
@@ -511,11 +523,15 @@ class WP_Plugin_Kompassi_Integration {
 		//  TODO: Only traverse once (for attrs and data)
 		ob_start( );
 		foreach( $program['cachedDimensions'] as $dimension => $values ) {
-			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+			if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
 				continue;
 			}
 
-			if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
+			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+				if( count( $values ) > 0 ) {
+					$attr = 'data-' . $dimension;
+					$program_attributes[$attr] = implode( ',', $values );
+				}
 				continue;
 			}
 
@@ -659,13 +675,13 @@ class WP_Plugin_Kompassi_Integration {
 				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
 				$end_timestamp = $end->format( 'U' ) + $timezone->getOffset( $end );
 
-				$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp );
+				$value = '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp ) . '</span>';
 				$value .= ' – ';
 				if( date_i18n( 'Ymd', $start_timestamp ) == date_i18n( 'Ymd', $end_timestamp ) ) {
-					$value .= date_i18n( get_option( 'time_format' ), $end_timestamp );
+					$value .= '<span>' . date_i18n( get_option( 'time_format' ), $end_timestamp ) . '</span>';
 				} else {
 					// If multiday, show both days
-					$value .= date_i18n( get_option( 'date_format' ) . '&nbsp;' . get_option( 'time_format' ), $end_timestamp );
+					$value .= '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $end_timestamp ) . '</span>';
 				}
 				$value .= ' <span class="length">';
 				$h = $scheduleItem['lengthMinutes'] / 60;
@@ -692,6 +708,91 @@ class WP_Plugin_Kompassi_Integration {
 				return $value;
 			}
 		}
+	}
+
+	/*
+	 *  Get dimension values in an array
+	 *
+	 */
+
+	function get_dimension_values( $dimensions ) {
+		$dimension_values = array( );
+		foreach( $dimensions as $dimension ) {
+			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
+			foreach( $dimension['values'] as $value ) {
+				$d['value_labels'][$value['slug']] = $value['title'];
+				foreach( $dimension as $k => $v ) {
+					if( substr( $k, 0, 2 ) == 'is' ) {
+						$d['flags'][$k] = $v;
+					}
+				}
+			}
+			$dimension_values[$dimension['slug']] = $d;
+		}
+
+		return $dimension_values;
+	}
+
+	/*
+	 *  Show the dimension list block
+	 *
+	 */
+
+	function block_dimension_list( $attributes ) {
+		if( strlen( $attributes['eventSlug'] ) > 0 ) {
+			$event_slug = $attributes['eventSlug'];
+		} else {
+			$event_slug = get_option( 'kompassi_integration_event_slug' );
+		}
+		if( strlen( $event_slug ) < 1 ) {
+			return;
+		}
+
+		$data = $this->get_graphql( 'ProgramDimensionListQuery', $event_slug );
+		$programs = $data['data']['event']['program']['programs'];
+		$dimensions = $data['data']['event']['program']['dimensions'];
+		$dimension_values = $this->get_dimension_values( $dimensions );
+
+		$html_attrs = array( 'class' => 'kompassi-integration' );
+		if( isset( $attributes['align'] ) ) { $html_attrs['class'] .= ' align' . $attributes['align']; }
+
+		$out = '<div id="kompassi_block_dimension_list"' . get_block_wrapper_attributes( $html_attrs ) . ' ' . wp_interactivity_data_wp_context( $attributes ) . '>';
+		$out .= '<table class="kompassi-table">';
+		$out .= '<thead>';
+		$out .= '<tr>';
+		$out .= '<th>' . __( 'Program', 'kompassi-integration' ) . '</th>';
+		foreach( $dimensions as $dimension ) {
+			$out .= '<th class="' . $dimension['slug'] . '">' . $dimension['title'] . '</th>';
+		}
+		$out .= '</tr>';
+		$out .= '</thead>';
+		$out .= '<tbody>';
+		foreach( $programs as $program ) {
+			$out .= '<tr ';
+			foreach( $dimensions as $dimension ) {
+				$out .= ' data-' . $dimension['slug'] . '="' . join( ',', $program['cachedDimensions'][$dimension['slug']] ) . '"';
+			}
+			$out .= '>';
+			$out .= '<th>' . $program['title'] . '</th>';
+			foreach( $dimensions as $dimension ) {
+				$out .= '<td class="' . $dimension['slug'] . '">';
+				$program_dimension_values = $program['cachedDimensions'][$dimension['slug']];
+				if( count( $program_dimension_values ) > 0 ) {
+					$program_dimension_labels = array( );
+					foreach( $program_dimension_values as $value ) {
+						$program_dimension_labels[] = $dimension_values[$dimension['slug']]['value_labels'][$value];
+					}
+					$out .= '<span>' . join( '<br />', $program_dimension_labels ) . '</span>';
+				}
+				$out .= '</td>';
+			}
+			$out .= '</tr>';
+		}
+		$out .= '</tbody>';
+		$out .= '</table>';
+		$out .= '</div>';
+
+		return $out;
 	}
 
 	/**

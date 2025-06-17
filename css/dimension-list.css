@@ -1,0 +1,15 @@
+#kompassi_block_dimension_list .kompassi-table td span {
+   display: block;
+   overflow-x: scroll;
+   white-space: nowrap;
+   font-size: max( 8pt, 80% );
+}
+
+#kompassi_block_dimension_list .kompassi-table td:empty {
+   background-color: var(--kompassi-note-bg);
+   text-align: center;
+}
+   #kompassi_block_dimension_list .kompassi-table td:empty::before {
+      font-size: 160%;
+      content: "!";
+   }
