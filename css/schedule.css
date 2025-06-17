@@ -586,7 +586,7 @@ summary::marker {
 	border-radius: var(--kompassi-radius);
 	overflow-x: scroll;
 
-	scroll-snap: both mandatory;
+	scroll-snap-type: x proximity;
 }
 	#kompassi_schedule[data-display="timetable"] .group .table .time {
 		z-index: 1;
@@ -609,6 +609,7 @@ summary::marker {
 	#kompassi_schedule[data-display="timetable"] .group .table .time-bar {
 		border-top: 1px solid var(--kompassi-fg-25);
 		margin: 0 calc(-1 * var(--kompassi-padding));
+		scroll-snap-align: start;
 	}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-bar.first {
 			border-top: none;
