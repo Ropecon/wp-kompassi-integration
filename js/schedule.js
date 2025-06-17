@@ -1317,10 +1317,12 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	if( kompassi_schedule.init ) {
 		return;
 	}
+	let block = document.getElementById( 'kompassi_block_schedule' );
+	let block_options = JSON.parse( block.dataset.wpContext );
 
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let minutes_in_row = 5;
-	let primary_grouping = 'room'; // TODO: Block options, plugin options
+	let primary_grouping = block_options.primaryGrouping;
 	let secondary_grouping = undefined; // TODO: Block options, plugin options
 	let date_slotted = true;
 
@@ -1687,7 +1689,7 @@ function kompassi_schedule_timeline_sticky_header( ) {
 
 function kompassi_schedule_group_programs( programs, grouping, options = {} ) {
 	if( grouping == false || grouping == undefined ) {
-		return { 'group': programs };
+		return { '': { 'programs': programs } };
 	}
 
 	let grouped = { };

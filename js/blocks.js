@@ -28,6 +28,8 @@ wp.blocks.registerBlockType(
          showToolbar: { type: 'boolean', default: 'true' },
          defaultFilters: { type: 'string', default: '' },
          eventSlug: { type: 'string', default: '' },
+         primaryGrouping: { type: 'string', default: '' },
+         secondaryGrouping: { type: 'string', default: '' },
 //         availableDisplayTypes: { type: 'array', default: ['list','timeline'] },
          default_display: { type: 'string', default: 'list' },
       },
@@ -87,6 +89,26 @@ wp.blocks.registerBlockType(
                         }
                      } ),
                   ),
+                  el( wp.components.PanelRow, null,
+                     el( wp.components.TextControl, {
+                        label: __( 'Primary Grouping Dimension', 'kompassi-integration' ),
+                        value: props.attributes.primaryGrouping,
+                        onChange: function( value ) {
+                           props.setAttributes( { primaryGrouping: value } )
+                        }
+                     } ),
+                  ),
+                  /*
+                  el( wp.components.PanelRow, null,
+                     el( wp.components.TextControl, {
+                        label: __( 'Seconday Grouping Dimension', 'kompassi-integration' ),
+                        value: props.attributes.secondaryGrouping,
+                        onChange: function( value ) {
+                           props.setAttributes( { secondaryGrouping: value } )
+                        }
+                     } ),
+                  ),
+                  */
 					)
 				),
          ] );
