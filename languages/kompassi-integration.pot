@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-17T11:59:44+00:00\n"
+"POT-Creation-Date: 2025-06-17T13:27:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
@@ -218,7 +218,7 @@ msgid "Help"
 msgstr ""
 
 #: js/schedule.js:370
-#: js/schedule.js:1609
+#: js/schedule.js:1656
 msgid "Export Favorites"
 msgstr ""
 
@@ -275,34 +275,34 @@ msgstr ""
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:1563
+#: js/schedule.js:1610
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:1596
+#: js/schedule.js:1643
 msgid "Create an import link to export your favorites to another device."
 msgstr ""
 
-#: js/schedule.js:1597
+#: js/schedule.js:1644
 msgid "Favorites to be exported:"
 msgstr ""
 
-#: js/schedule.js:1604
+#: js/schedule.js:1651
 msgid "Copy import link to clipboard"
 msgstr ""
 
-#: js/schedule.js:1638
+#: js/schedule.js:1685
 msgid "Replace Favorites"
 msgstr ""
 
-#: js/schedule.js:1639
+#: js/schedule.js:1686
 msgid "Append to Favorites"
 msgstr ""
 
-#: js/schedule.js:1644
+#: js/schedule.js:1691
 msgid "Import Favorites"
 msgstr ""
 
-#: js/schedule.js:1703
+#: js/schedule.js:1750
 msgid "No group"
 msgstr ""

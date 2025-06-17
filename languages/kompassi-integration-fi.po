@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2025-06-17T11:59:44+00:00\n"
+"POT-Creation-Date: 2025-06-17T13:27:19+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -223,7 +223,7 @@ msgstr "Suodata"
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:370 js/schedule.js:1609
+#: js/schedule.js:370 js/schedule.js:1656
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
@@ -280,37 +280,37 @@ msgstr "Jatkuvat ohjelmat"
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1563
+#: js/schedule.js:1610
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1596
+#: js/schedule.js:1643
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1597
+#: js/schedule.js:1644
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1604
+#: js/schedule.js:1651
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1638
+#: js/schedule.js:1685
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1639
+#: js/schedule.js:1686
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1644
+#: js/schedule.js:1691
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 
-#: js/schedule.js:1703
+#: js/schedule.js:1750
 msgid "No group"
-msgstr ""
+msgstr "Ei ryhmää"
 
 #~ msgctxt "button label"
 #~ msgid "Close"
