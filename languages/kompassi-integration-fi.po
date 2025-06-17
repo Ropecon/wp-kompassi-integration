@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2025-06-17T13:27:19+00:00\n"
+"POT-Creation-Date: 2025-06-17T14:08:56+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -29,7 +29,7 @@ msgstr "Yhdistä tietoja Kompassista WordPress-sivustollesi helposti"
 msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
-#: kompassi-integration.php:67 js/blocks.js:68 js/blocks.js:139
+#: kompassi-integration.php:67 js/blocks.js:56 js/blocks.js:143
 msgid "Event Technical Name"
 msgstr "Tapahtuman tekninen nimi"
 
@@ -104,7 +104,7 @@ msgid ""
 "that start before this hour will be visible."
 msgstr ""
 "Myöhäisin näytettävä ajankohta, kun ohjelmia suodatetaan päivän mukaan, ts. "
-"vain ennen tätä ajankohtaa alkavat ohjelmat ovat näkyvillä. "
+"vain ennen tätä ajankohtaa alkavat ohjelmat ovat näkyvillä."
 
 #: kompassi-integration.php:102
 msgid "Hidden Dimensions"
@@ -172,27 +172,50 @@ msgstr "Ohjelma-aikataulu"
 msgid "General"
 msgstr "Yleiset"
 
-#: js/blocks.js:50
+#: js/blocks.js:49
 msgid "Show Toolbar"
 msgstr "Näytä työkalupalkki"
 
-#: js/blocks.js:59
-msgid "Default Options"
-msgstr "Oletusasetukset"
+#: js/blocks.js:64
+msgid "Defaults"
+msgstr "Oletukset"
 
-#: js/blocks.js:76
+#: js/blocks.js:66
+msgid "Filters"
+msgstr "Suodattimet"
+
+#: js/blocks.js:71
+msgid ""
+"To change the default values for text search, filters and display type when "
+"loading this page, insert the options here."
+msgstr ""
+"Vaihtaaksesi oletusarvoja tekstihaulle, suodattimille ja näkymälle kun tämä "
+"sivu ladataan, syötä asetukset tähän."
+
+#: js/blocks.js:75
+msgid "For example"
+msgstr "Esimerkiksi"
+
+#: js/blocks.js:80
 msgid "Timetable"
 msgstr "Lukujärjestys"
 
-#: js/blocks.js:79
+#: js/blocks.js:82
 msgid "Primary Grouping Dimension"
 msgstr "Ensisijainen ryhmittelydimensio"
 
-#: js/blocks.js:115 js/blocks.js:132
+#: js/blocks.js:87
+msgid ""
+"Programs will be grouped into tables based on the (first) dimension value in "
+"this dimension."
+msgstr ""
+"Ohjelmat ryhmitellään taulukoihin tämän dimension (ensimmäisen) arvon mukaan."
+
+#: js/blocks.js:119 js/blocks.js:136
 msgid "Program Dimension List"
 msgstr "Ohjelmien dimensiolistaus"
 
-#: js/blocks.js:136
+#: js/blocks.js:140
 msgid "Options"
 msgstr "Asetukset"
 
@@ -223,7 +246,7 @@ msgstr "Suodata"
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:370 js/schedule.js:1656
+#: js/schedule.js:370 js/schedule.js:1657
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
@@ -249,66 +272,71 @@ msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
+#: js/schedule.js:467
+msgctxt "display style"
+msgid "Timetable"
+msgstr "Lukujärjestys"
+
 #. translators: count of programs visible
-#: js/schedule.js:653
+#: js/schedule.js:654
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] "%s ohjelma näkyvissä."
 msgstr[1] "%s ohjelmaa näkyvissä."
 
-#: js/schedule.js:656
+#: js/schedule.js:657
 msgid "Nothing matched your search!"
 msgstr "Mikään ei vastannut hakuasi!"
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:907
+#: js/schedule.js:908
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr "Näytetään ohjelmat, jotka alkavat klo %1$s ja %2$s välillä."
 
 #. translators: amount of repositioned events
-#: js/schedule.js:918
+#: js/schedule.js:919
 msgid "Show %d program that started earlier"
 msgid_plural "Show %d programs that started earlier"
 msgstr[0] "Näytä %d aiemmin alkanut ohjelma"
 msgstr[1] "Näytä %d aiemmin alkanutta ohjelmaa"
 
-#: js/schedule.js:920
+#: js/schedule.js:921
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:1052
+#: js/schedule.js:1053
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1610
+#: js/schedule.js:1611
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1643
+#: js/schedule.js:1644
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1644
+#: js/schedule.js:1645
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1651
+#: js/schedule.js:1652
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1685
+#: js/schedule.js:1686
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1686
+#: js/schedule.js:1687
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1691
+#: js/schedule.js:1692
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 
-#: js/schedule.js:1750
+#: js/schedule.js:1751
 msgid "No group"
 msgstr "Ei ryhmää"
 

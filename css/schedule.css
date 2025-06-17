@@ -600,6 +600,7 @@ summary::marker {
 			font-weight: 600;
 		}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-minute {
+			/* TODO */
 			border-top: 1px solid var(--kompassi-fg-75);
 			opacity: 0.4;
 		}

@@ -45,55 +45,56 @@ wp.blocks.registerBlockType(
             ),
             el( wp.blockEditor.InspectorControls, null,
                el( wp.components.PanelBody, { title: __( 'General', 'kompassi-integration' ) },
-						el( wp.components.PanelRow, null,
-							el( wp.components.ToggleControl, {
-                        label: __( 'Show Toolbar', 'kompassi-integration' ),
-                        checked: props.attributes.showToolbar,
-								onChange: function( value ) {
-                           props.setAttributes( { showToolbar: !props.attributes.showToolbar } );
-								}
-                     } ),
-                  ),
-                  el( wp.components.PanelRow, null,
-                     el( wp.components.TextControl, {
-                        label: __( 'Default Options', 'kompassi-integration' ),
-                        value: props.attributes.defaultFilters,
-                        onChange: function( value ) {
-                           props.setAttributes( { defaultFilters: value } )
-                        }
-                     } ),
-                  ),
-                  el( wp.components.PanelRow, null,
-                     el( wp.components.TextControl, {
-                        label: __( 'Event Technical Name', 'kompassi-integration' ),
-                        value: props.attributes.eventSlug,
-                        onChange: function( value ) {
-                           props.setAttributes( { eventSlug: value } )
-                        }
-                     } ),
+						el( wp.components.ToggleControl, {
+                     label: __( 'Show Toolbar', 'kompassi-integration' ),
+                     checked: props.attributes.showToolbar,
+							onChange: function( value ) {
+                        props.setAttributes( { showToolbar: !props.attributes.showToolbar } );
+                     },
+                  } ),
+                  el( wp.components.TextControl, {
+                     label: __( 'Event Technical Name', 'kompassi-integration' ),
+                     value: props.attributes.eventSlug,
+                     onChange: function( value ) {
+                        props.setAttributes( { eventSlug: value } )
+                     },
+                     __next40pxDefaultSize: true,
+                  } ),
+               ),
+               el( wp.components.PanelBody, { title: __( 'Defaults', 'kompassi-integration' ) },
+                  el( wp.components.TextControl, {
+                     label: __( 'Filters', 'kompassi-integration' ),
+                     value: props.attributes.defaultFilters,
+                     onChange: function( value ) {
+                        props.setAttributes( { defaultFilters: value } )
+                     },
+                     help: __( 'To change the default values for text search, filters and display type when loading this page, insert the options here.', 'kompassi-integration' ),
+                     __next40pxDefaultSize: true,
+                  } ),
+                  el( 'p', { },
+                     el( 'span', { }, __( 'For example', 'kompassi-integration' ) + ': ' ),
+                     el( 'br', { } ),
+                     el( 'code', { }, 'language:fi/display:timeline' )
                   ),
                ),
                el( wp.components.PanelBody, { title: __( 'Timetable', 'kompassi-integration' ) },
-                  el( wp.components.PanelRow, null,
-                     el( wp.components.TextControl, {
-                        label: __( 'Primary Grouping Dimension', 'kompassi-integration' ),
-                        value: props.attributes.timetablePrimaryGrouping,
-                        onChange: function( value ) {
-                           props.setAttributes( { timetablePrimaryGrouping: value } )
-                        }
-                     } ),
-                  ),
-                  /*
-                  el( wp.components.PanelRow, null,
-                     el( wp.components.TextControl, {
-                        label: __( 'Seconday Grouping Dimension', 'kompassi-integration' ),
-                        value: props.attributes.secondaryGrouping,
-                        onChange: function( value ) {
-                           props.setAttributes( { secondaryGrouping: value } )
-                        }
-                     } ),
-                  ),
-                  */
+                  el( wp.components.TextControl, {
+                     label: __( 'Primary Grouping Dimension', 'kompassi-integration' ),
+                     value: props.attributes.timetablePrimaryGrouping,
+                     onChange: function( value ) {
+                        props.setAttributes( { timetablePrimaryGrouping: value } )
+                     },
+                     help: __( 'Programs will be grouped into tables based on the (first) dimension value in this dimension.', 'kompassi-integration' ),
+                     __next40pxDefaultSize: true,
+                  } ),
+                  el( wp.components.TextControl, {
+                     label: __( 'Seconday Grouping Dimension', 'kompassi-integration' ),
+                     value: props.attributes.timetableSecondaryGrouping,
+                     onChange: function( value ) {
+                        props.setAttributes( { timetableSecondaryGrouping: value } )
+                     },
+                     __next40pxDefaultSize: true,
+                  } ),
                ),
 				),
          ] );

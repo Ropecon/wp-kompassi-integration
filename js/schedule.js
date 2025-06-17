@@ -464,8 +464,8 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 	let display_styles = {
 		'list': _x( 'List', 'display style', 'kompassi-integration' ),
 		'timeline': _x( 'Timeline', 'display style', 'kompassi-integration' ),
+		'timetable': _x( 'Timetable', 'display style', 'kompassi-integration' ),
 	};
-	wp.hooks.applyFilters( 'kompassi_schedule_display_styles', display_styles );
 	let display = document.createElement( 'section' );
 	display.id = 'kompassi_schedule_display';
 	display.classList.add( 'kompassi-button-group', 'has-icon-and-label' );
@@ -1323,7 +1323,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let minutes_in_row = 5;
 	let primary_grouping = block_options.timetablePrimaryGrouping;
-	let secondary_grouping = undefined; // TODO: Block options, plugin options
+	let secondary_grouping = block_options.timetableSecondaryGrouping;
 	let date_slotted = true;
 
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
@@ -1340,8 +1340,15 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 		let date_groups = kompassi_schedule_group_programs( primary_groups[group]['programs'], 'date', { 'slotted': date_slotted } );
 		for( let date in date_groups ) {
 			let secondary_headings = [];
-			// Get day information here TODO
-			let day = kompassi_schedule_get_start_and_end( date_groups[date] );
+			let day;
+
+			// Get day information
+			if( secondary_grouping ) {
+				day = kompassi_schedule_get_start_and_end( { 0: date_groups[date] } );
+			} else {
+				day = kompassi_schedule_get_start_and_end( date_groups[date] );
+			}
+			console.log( day );
 
 			// Init table
 			let table_wrapper = document.createElement( 'div' );
@@ -1388,7 +1395,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 					secondary_headings.push( secondary_heading );
 					for( let col in secondary_groups[group] ) {
 						let cc = parseInt( col );
-						sgg[cc] = { 'programs': secondary_groups[group][col].programs }
+						sgg[cc] = { 'programs': secondary_groups[group][col].programs, 'start': secondary_groups[group][col].start, 'end': secondary_groups[group][col].end }
 					}
 					column += Object.keys( secondary_groups[group] ).length;
 				}
@@ -1399,7 +1406,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 			// Day table
 			let day_table = document.createElement( 'div' );
-			let day_columns = Object.keys( date_groups[date] ).length;
+			let day_columns = Object.keys( column_groups ).length;
 			day_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + day_columns + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
 			day_table.className = 'table';
 			if( secondary_grouping ) {
@@ -1413,13 +1420,12 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 			// Position programs
 			for( let column in column_groups ) {
-				if( column_groups[column] == undefined ) {
-					// TODO!!
-					continue;
-				}
 				for( let program of column_groups[column]['programs'] ) {
 					let program_start = dayjs( program.dataset.start );
 					let offset_in_rows = ( program_start.diff( day.start, 'minute' ) / minutes_in_row ) + 1;
+					if( secondary_grouping ) {
+						offset_in_rows += 1;
+					}
 					let program_length_in_rows = parseInt( program.dataset.length / minutes_in_row );
 					let col = parseInt( column ) + 2; // column indexing starts at 0, column 1 reserved for times
 					program.style.gridColumn = col + ' / ' + col;
@@ -1444,6 +1450,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			let times_frequency = 60;
 			let times = day.start.startOf( 'hour' );
 			let row = 1;
+			if( secondary_grouping ) {
+				row += 1;
+			}
 			let is_odd = true;
 			let increment = times_frequency / minutes_in_row;
 			while( times < day.end.endOf( 'hour' ) ) {
@@ -1496,6 +1505,11 @@ function kompassi_schedule_timetable_check_buttons( ) {
 		}
 	}
 }
+
+/**
+ *  Get start and end times for programs in given group
+ *
+ */
 
 function kompassi_schedule_get_start_and_end( group ) {
 	let day_start = Object.values(group).reduce( function( prev, curr ) {
@@ -1763,10 +1777,10 @@ function kompassi_schedule_group_programs( programs, grouping, options = {} ) {
 		} else {
 			grouped[key]['programs'].push( program );
 			if( grouped[key]['start'] == undefined || program.dataset.start < grouped[key]['start'] ) {
-				grouped[key]['start'] = program.dataset.start;
+				grouped[key]['start'] = dayjs( program.dataset.start ).unix( );
 			}
-			if( program.dataset.start > grouped[key]['end'] ) {
-				grouped[key]['end'] = program.dataset.start;
+			if( grouped[key]['end'] == undefined || program.dataset.end > grouped[key]['end'] ) {
+				grouped[key]['end'] = dayjs( program.dataset.end ).unix( );
 			}
 		}
 	}

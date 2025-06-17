@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-17T13:27:19+00:00\n"
+"POT-Creation-Date: 2025-06-17T14:08:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
@@ -29,8 +29,8 @@ msgid "Pasi Lallinaho"
 msgstr ""
 
 #: kompassi-integration.php:67
-#: js/blocks.js:68
-#: js/blocks.js:139
+#: js/blocks.js:56
+#: js/blocks.js:143
 msgid "Event Technical Name"
 msgstr ""
 
@@ -165,28 +165,44 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: js/blocks.js:50
+#: js/blocks.js:49
 msgid "Show Toolbar"
 msgstr ""
 
-#: js/blocks.js:59
-msgid "Default Options"
+#: js/blocks.js:64
+msgid "Defaults"
 msgstr ""
 
-#: js/blocks.js:76
+#: js/blocks.js:66
+msgid "Filters"
+msgstr ""
+
+#: js/blocks.js:71
+msgid "To change the default values for text search, filters and display type when loading this page, insert the options here."
+msgstr ""
+
+#: js/blocks.js:75
+msgid "For example"
+msgstr ""
+
+#: js/blocks.js:80
 msgid "Timetable"
 msgstr ""
 
-#: js/blocks.js:79
+#: js/blocks.js:82
 msgid "Primary Grouping Dimension"
 msgstr ""
 
-#: js/blocks.js:115
-#: js/blocks.js:132
+#: js/blocks.js:87
+msgid "Programs will be grouped into tables based on the (first) dimension value in this dimension."
+msgstr ""
+
+#: js/blocks.js:119
+#: js/blocks.js:136
 msgid "Program Dimension List"
 msgstr ""
 
-#: js/blocks.js:136
+#: js/blocks.js:140
 msgid "Options"
 msgstr ""
 
@@ -218,7 +234,7 @@ msgid "Help"
 msgstr ""
 
 #: js/schedule.js:370
-#: js/schedule.js:1656
+#: js/schedule.js:1657
 msgid "Export Favorites"
 msgstr ""
 
@@ -244,65 +260,70 @@ msgctxt "display style"
 msgid "Timeline"
 msgstr ""
 
+#: js/schedule.js:467
+msgctxt "display style"
+msgid "Timetable"
+msgstr ""
+
 #. translators: count of programs visible
-#: js/schedule.js:653
+#: js/schedule.js:654
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:656
+#: js/schedule.js:657
 msgid "Nothing matched your search!"
 msgstr ""
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:907
+#: js/schedule.js:908
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr ""
 
 #. translators: amount of repositioned events
-#: js/schedule.js:918
+#: js/schedule.js:919
 msgid "Show %d program that started earlier"
 msgid_plural "Show %d programs that started earlier"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:920
+#: js/schedule.js:921
 msgid "Programs continuing"
 msgstr ""
 
-#: js/schedule.js:1052
+#: js/schedule.js:1053
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:1610
+#: js/schedule.js:1611
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:1643
+#: js/schedule.js:1644
 msgid "Create an import link to export your favorites to another device."
 msgstr ""
 
-#: js/schedule.js:1644
+#: js/schedule.js:1645
 msgid "Favorites to be exported:"
 msgstr ""
 
-#: js/schedule.js:1651
+#: js/schedule.js:1652
 msgid "Copy import link to clipboard"
 msgstr ""
 
-#: js/schedule.js:1685
+#: js/schedule.js:1686
 msgid "Replace Favorites"
 msgstr ""
 
-#: js/schedule.js:1686
+#: js/schedule.js:1687
 msgid "Append to Favorites"
 msgstr ""
 
-#: js/schedule.js:1691
+#: js/schedule.js:1692
 msgid "Import Favorites"
 msgstr ""
 
-#: js/schedule.js:1750
+#: js/schedule.js:1751
 msgid "No group"
 msgstr ""
