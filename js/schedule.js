@@ -1344,11 +1344,37 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			let day = kompassi_schedule_get_start_and_end( date_groups[date] );
 
 			// Init table
-			let table_name = document.createElement( 'p' );
-			table_name.innerHTML = '<strong>' + group + '</strong> <em>' + day.start.format( 'dd' ) + '</em>';
-			group_wrapper.append( table_name );
+			let table_wrapper = document.createElement( 'div' );
+			table_wrapper.className = 'table-wrapper';
+			let table_toolbar = document.createElement( 'div' );
+			table_toolbar.className = 'table-toolbar';
+			let table_name = document.createElement( 'div' );
+			table_name.innerHTML = '<div><strong>' + group + '</strong> <em>' + day.start.format( 'dd' ) + '</em></div>';
+			table_toolbar.append( table_name );
+			let table_controls = document.createElement( 'div' );
+			table_controls.className = 'kompassi-button-group has-icon-only table-controls';
+			let table_control_left = document.createElement( 'a' );
+			table_control_left.className = 'kompassi-icon-arrow-left';
+			table_control_left.dataset.action = 'scroll-left';
+			table_controls.append( table_control_left );
+			let table_control_right = document.createElement( 'a' );
+			table_control_right.className = 'kompassi-icon-arrow-right';
+			table_control_right.dataset.action = 'scroll-right';
+			table_controls.append( table_control_right );
+			table_toolbar.append( table_controls );
+			table_wrapper.append( table_toolbar );
+
+			table_control_left.addEventListener( 'click', function( event ) {
+				let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
+				table.scrollBy( -200, 0 );
+			} );
+			table_control_right.addEventListener( 'click', function( ) {
+				let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
+				table.scrollBy( 200, 0 );
+			} );
 
 			// Secondary grouping, add headings
+			// TODO
 			if( secondary_grouping ) {
 				let secondary_groups = kompassi_schedule_group_programs( date_groups[date]['programs'], secondary_grouping, { 'slotted': true } );
 				let column = 2;
@@ -1382,7 +1408,8 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 				}
 			}
 
-			group_wrapper.append( day_table );
+			table_wrapper.append( day_table );
+			group_wrapper.append( table_wrapper );
 
 			// Position programs
 			for( let column in column_groups ) {
@@ -1431,6 +1458,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 				time.style.gridColumn = '1 / 1';
 				time.style.gridRow = row + ' / ' + ( row + increment );
 				time.className = 'time time-hour time-' + evenodd_class;
+				if( row == 1 ) {
+					time.classList.add( 'first' );
+				}
 				day_table.append( time );
 
 				let time_bar = document.createElement( 'span' );
@@ -1448,7 +1478,24 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			}
 		}
 	}
+
+	kompassi_schedule_timetable_check_buttons( );
+	// TODO: When window is resized, check to see if table navigation buttons are required
+	window.addEventListener( 'resize', kompassi_schedule_timetable_check_buttons );
 } );
+
+function kompassi_schedule_timetable_check_buttons( ) {
+	let table_wrappers = document.querySelectorAll( '#kompassi_schedule[data-display="timetable"] .table-wrapper' );
+	for( let wrapper of table_wrappers ) {
+		let table = wrapper.querySelector( '.table' );
+		let controls = wrapper.querySelector( '.table-toolbar .table-controls' );
+		if( table.scrollWidth > table.offsetWidth ) {
+			controls.style.display = 'block';
+		} else {
+			controls.style.display = 'none';
+		}
+	}
+}
 
 function kompassi_schedule_get_start_and_end( group ) {
 	let day_start = Object.values(group).reduce( function( prev, curr ) {

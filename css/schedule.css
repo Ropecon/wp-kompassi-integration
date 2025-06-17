@@ -561,12 +561,26 @@ summary::marker {
 				}
 
 /*  Display Style: Timetable  */
+#kompassi_schedule[data-display="timetable"] .group .table-wrapper {
+	margin-bottom: calc( var(--kompassi-padding) * 2);
+}
+
+#kompassi_schedule[data-display="timetable"] .group .table-toolbar {
+	display: grid;
+	grid-template-columns: auto max-content;
+}
+	#kompassi_schedule[data-display="timetable"] .group .table-controls {
+		text-align: right;
+		--kompassi-padding: 0.2em;
+		--kompassi-icon-size: 16px;
+	}
+
 #kompassi_schedule[data-display="timetable"] .group .table {
 	display: grid;
 	grid-gap: 0 var(--kompassi-padding);
 	grid-template-rows: 2em;
 	margin: var(--kompassi-padding) 0;
-	padding: 0 var(--kompassi-padding);
+	padding: 0 var(--kompassi-padding) 0 0;
 	background-color: var(--kompassi-bg);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-radius);
@@ -604,11 +618,24 @@ summary::marker {
 				border-bottom-left-radius: var(--kompassi-radius);
 			}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-odd {
-			background-color: var(--kompassi-bg); /* TODO */
+			background-color: var(--kompassi-bg);
 		}
 		#kompassi_schedule[data-display="timetable"] .group .table .time-even {
 			background-color: #f2f2f2; /* TODO */
 		}
+			#kompassi_schedule[data-display="timetable"] .group .table .time-hour {
+				margin-top: -1px;
+			}
+				#kompassi_schedule[data-display="timetable"] .group .table .time-hour:not(.first):before {
+					content: '';
+					display: block;
+					position: absolute;
+					top: 1px;
+					left: 0;
+					height: 1px;
+					width: 100%;
+					background-color: var(--kompassi-fg-25);
+				}
 
 #kompassi_schedule[data-display="timetable"] article {
 	margin-top: 6px;
