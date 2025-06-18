@@ -1817,6 +1817,7 @@ function kompassi_schedule_find_timeslots( program_group ) {
 				timeslotted[check_index]['programs'].push( program );
 				found_slot = true;
 			}
+			check_index += 1;
 		}
 	}
 	return timeslotted;
