@@ -366,6 +366,7 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 	/*  Dropdown menu  */
 	let dropdown = kompassi_dropdown_menu(
 		{
+			legend: { label: __( 'Legend', 'kompassi-integration' ), callback: kompassi_schedule_legend_modal },
 			help: { label: __( 'Help', 'kompassi-integration' ), callback: kompassi_schedule_help_modal },
 			export: { label: __( 'Export Favorites', 'kompassi-integration' ), callback: kompassi_schedule_export_modal },
 		},
@@ -1393,9 +1394,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 		kompassi_schedule_timetable_table_times( tables[tbl], table, block_options, minutes_in_row );
 	}
 
-	kompassi_schedule_timetable_check_buttons( );
-	// TODO: When window is resized, check to see if table navigation buttons are required
-	window.addEventListener( 'resize', kompassi_schedule_timetable_check_buttons );
+	kompassi_schedule_timetable_check_scroll( );
+	// TODO: When window is resized, check to see if table navigation buttons are required and if visual aids should be shown
+	window.addEventListener( 'resize', kompassi_schedule_timetable_check_scroll );
 } );
 
 function kompassi_schedule_timetable_table( table ) {
@@ -1473,16 +1474,21 @@ function kompassi_schedule_timetable_table_times( day, table, block_options, min
 	}
 }
 
-function kompassi_schedule_timetable_check_buttons( ) {
+function kompassi_schedule_timetable_check_scroll( ) {
 	let table_wrappers = document.querySelectorAll( '#kompassi_schedule[data-display="timetable"] .table-wrapper' );
 	for( let wrapper of table_wrappers ) {
 		let table = wrapper.querySelector( '.table' );
+		table.classList.remove( 'can-scroll-left can-scroll-right' );
 		let controls = wrapper.querySelector( '.table-toolbar .table-controls' );
 		if( table.scrollWidth > table.offsetWidth ) {
 			controls.style.display = 'block';
 		} else {
 			controls.style.display = 'none';
 		}
+		if( table.scrollLeft > 0 ) {
+			table.classList.add( 'can-scroll-left' );
+		}
+		console.log( table );
 	}
 }
 
@@ -1588,6 +1594,43 @@ function kompassi_schedule_program_modal( program ) {
 	} );
 
 	kompassi_schedule_update_url_hash( );
+}
+
+/**
+ *  Displays schedule legend modal
+ *
+ */
+
+function kompassi_schedule_legend_modal( ) {
+	let content = '';
+	content += '<dl class="dimension-colors">';
+	for( let dimension of kompassi_schedule_dimensions ) {
+		if( dimension.isListFilter == false ) {
+			continue;
+		}
+		if( kompassi_schedule_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
+			continue;
+		}
+		if( dimension.values.length == 0 ) {
+			continue;
+		}
+
+		for( let value of dimension.values ) {
+			if( value.color ) {
+				content += '<dt><span style="background-color: ' + value.color + ';"></span></dt><dd>' + dimension.title + ': ' + value.title + '</dd>';
+			}
+		}
+	}
+	content += '</dl>';
+
+	let options = {
+		title: __( 'Legend', 'kompassi-integration' ),
+		content: content,
+		attrs: {
+			class: 'kompassi-legend'
+		}
+	}
+	kompassi_show_modal( options );
 }
 
 /**

@@ -294,7 +294,6 @@ class WP_Plugin_Kompassi_Integration {
 			return array( 'status' => false );
 		}
 
-
 		if( !is_readable( $filename ) ) {
 			// Specified document is not available in given language, try English
 			$filename_en = plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_en.md';

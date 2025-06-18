@@ -88,7 +88,7 @@ wp.blocks.registerBlockType(
                      __next40pxDefaultSize: true,
                   } ),
                   el( wp.components.TextControl, {
-                     label: __( 'Seconday Grouping Dimension', 'kompassi-integration' ),
+                     label: __( 'Secondary Grouping Dimension', 'kompassi-integration' ),
                      value: props.attributes.timetableSecondaryGrouping,
                      onChange: function( value ) {
                         props.setAttributes( { timetableSecondaryGrouping: value } )

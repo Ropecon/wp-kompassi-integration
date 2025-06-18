@@ -576,6 +576,7 @@ summary::marker {
 	}
 
 #kompassi_schedule[data-display="timetable"] .table {
+	position: relative;
 	display: grid;
 	grid-gap: 0 var(--kompassi-padding);
 	grid-template-rows: 2em;
@@ -588,6 +589,26 @@ summary::marker {
 
 	scroll-snap-type: x proximity;
 }
+
+	#kompassi_schedule[data-display="timetable"] .table::before,
+	#kompassi_schedule[data-display="timetable"] .table::after {
+		position: absolute;
+		display: block;
+		height: 100%;
+		width: 40px;
+		z-index: 4000;
+	}
+		#kompassi_schedule[data-display="timetable"] .table.can-scroll-left::before {
+			content: '';
+			left: var(--kompassi-schedule-timetable-time-width);
+			background-image: radial-gradient(farthest-side at 0% 50%, rgba(0,0,0,.2), rgba(0,0,0,0));
+		}
+		#kompassi_schedule[data-display="timetable"] .table.can-scroll-right::after {
+			content: '';
+			right: 0;
+			background-image: radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0));
+		}
+
 	#kompassi_schedule[data-display="timetable"] .table .heading {
 		padding: var(--kompassi-schedule-timetable-program-padding);
 		font-weight: 600;
@@ -745,6 +766,22 @@ summary::marker {
 	width: 1.25em;
 	content: "–";
 }
+
+#kompassi_modal.kompassi-legend dl.dimension-colors {
+	display: grid;
+	grid-template-columns: 2em auto;
+	grid-gap: 0 1em;
+}
+	#kompassi_modal.kompassi-legend dl.dimension-colors dt span {
+		width: 100%;
+		height: var(--kompassi-line-height);
+		display: inline-block;
+	}
+	#kompassi_modal.kompassi-legend dl.dimension-colors dd {
+		margin-left: 0;
+	}
+
+
 
 /*
  *  Annotations

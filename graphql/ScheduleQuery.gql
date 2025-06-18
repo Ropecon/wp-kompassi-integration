@@ -17,6 +17,7 @@ query ScheduleQuery($eventSlug: String!, $locale: String) {
         values {
           slug
           title(lang: $locale)
+          color
         }
         isListFilter
         isShownInDetail

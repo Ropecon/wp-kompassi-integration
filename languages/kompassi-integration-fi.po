@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2025-06-17T14:08:56+00:00\n"
+"POT-Creation-Date: 2025-06-18T19:33:32+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -29,7 +29,7 @@ msgstr "Yhdistä tietoja Kompassista WordPress-sivustollesi helposti"
 msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
-#: kompassi-integration.php:67 js/blocks.js:56 js/blocks.js:143
+#: kompassi-integration.php:67 js/blocks.js:56 js/blocks.js:140
 msgid "Event Technical Name"
 msgstr "Tapahtuman tekninen nimi"
 
@@ -140,27 +140,27 @@ msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
 #. translators: amount of transients deleted
-#: kompassi-integration.php:358
+#: kompassi-integration.php:357
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] "%s transientti poistettu."
 msgstr[1] "%s transienttia poistettu."
 
-#: kompassi-integration.php:498
+#: kompassi-integration.php:497
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr "Kyllä"
 
-#: kompassi-integration.php:608
+#: kompassi-integration.php:607
 msgid "Related"
 msgstr "Liittyvät"
 
-#: kompassi-integration.php:763
+#: kompassi-integration.php:762
 msgid "Program"
 msgstr "Ohjelma"
 
 #. translators: email link
-#: kompassi-integration.php:823
+#: kompassi-integration.php:822
 msgid "If you find errors in the program data, contact us at %s."
 msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 
@@ -211,11 +211,15 @@ msgid ""
 msgstr ""
 "Ohjelmat ryhmitellään taulukoihin tämän dimension (ensimmäisen) arvon mukaan."
 
-#: js/blocks.js:119 js/blocks.js:136
+#: js/blocks.js:91
+msgid "Secondary Grouping Dimension"
+msgstr "Toissijainen ryhmittelydimensio"
+
+#: js/blocks.js:116 js/blocks.js:133
 msgid "Program Dimension List"
 msgstr "Ohjelmien dimensiolistaus"
 
-#: js/blocks.js:140
+#: js/blocks.js:137
 msgid "Options"
 msgstr "Asetukset"
 
@@ -242,37 +246,41 @@ msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr "Suodata"
 
-#: js/schedule.js:369
+#: js/schedule.js:369 js/schedule.js:1627
+msgid "Legend"
+msgstr "Selite"
+
+#: js/schedule.js:370
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:370 js/schedule.js:1657
+#: js/schedule.js:371 js/schedule.js:1693
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
-#: js/schedule.js:390
+#: js/schedule.js:391
 msgid "Text..."
 msgstr "Teksti..."
 
-#: js/schedule.js:418
+#: js/schedule.js:419
 msgid "Program matching selection will be hidden from results."
 msgstr "Valintaa vastaava ohjelma piilotetaan tuloksista."
 
-#: js/schedule.js:427
+#: js/schedule.js:428
 msgid "Clear filters"
 msgstr "Tyhjennä suodattimet"
 
-#: js/schedule.js:465
+#: js/schedule.js:466
 msgctxt "display style"
 msgid "List"
 msgstr "Lista"
 
-#: js/schedule.js:466
+#: js/schedule.js:467
 msgctxt "display style"
 msgid "Timeline"
 msgstr "Aikajana"
 
-#: js/schedule.js:467
+#: js/schedule.js:468
 msgctxt "display style"
 msgid "Timetable"
 msgstr "Lukujärjestys"
@@ -304,39 +312,39 @@ msgstr[1] "Näytä %d aiemmin alkanutta ohjelmaa"
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:1053
+#: js/schedule.js:1026
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1611
+#: js/schedule.js:1647
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1644
+#: js/schedule.js:1680
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1645
+#: js/schedule.js:1681
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1652
+#: js/schedule.js:1688
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1686
+#: js/schedule.js:1722
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1687
+#: js/schedule.js:1723
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1692
+#: js/schedule.js:1728
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 
-#: js/schedule.js:1751
+#: js/schedule.js:1790
 msgid "No group"
 msgstr "Ei ryhmää"
 
