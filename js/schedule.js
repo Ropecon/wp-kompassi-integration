@@ -983,33 +983,6 @@ function kompassi_schedule_setup_display( display = false ) {
 }
 
 /**
- *  Sets up list display layout
- *
- */
-
-wp.hooks.addAction( 'kompassi_schedule_setup_list_layout', 'kompassi_integration_schedule', function( ) {
-	if( kompassi_schedule.init ) {
-		return;
-	}
-
-	return; // TODO
-
-	let grouping = [ 'datetime' ];
-	let last = undefined;
-	let programs = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' );
-	for( let program of programs ) {
-		let program_time = dayjs( program.dataset.start ).format( 'dddd HH:mm' );
-		if( program_time != last ) {
-			let program_heading = document.createElement( 'strong' );
-			program_heading.textContent = program_time;
-			program.before( program_heading );
-			last = program_time;
-		}
-	}
-} );
-
-
-/**
  *  Sets up timeline display layout
  *
  */
