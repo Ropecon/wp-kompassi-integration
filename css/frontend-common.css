@@ -129,6 +129,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
  *
  */
 
+.kompassi-icon-arrow-left::before { background-image: url(../images/icons/arrow_left.svg); }
+.kompassi-icon-arrow-right::before { background-image: url(../images/icons/arrow_right.svg); }
 .kompassi-icon-clear-filters::before { background-image: url(../images/icons/clear_filters.svg); }
 .kompassi-icon-close::before { background-image: url(../images/icons/close.svg); }
 .kompassi-icon-ellipsis::before { background-image: url(../images/icons/ellipsis.svg); }
@@ -269,8 +271,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 				opacity: 0.5;
 			}
 			.kompassi-button-group.has-icon-only > a {
-				width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
-				height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
+				width: var(--kompassi-icon-size);
+				height: var(--kompassi-icon-size);
             user-select: none;
 			}
 
