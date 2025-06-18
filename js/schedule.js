@@ -1354,6 +1354,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 					for( let section of table_sections ) {
 						table_programs.push( section );
 						table_heading_index += 1;
+
 					}
 					tables[table_key]['programs'] = table_programs;
 				}
@@ -1816,10 +1817,8 @@ function kompassi_schedule_find_timeslots( program_group ) {
 				timeslotted[check_index]['programs'].push( program );
 				found_slot = true;
 			}
-			check_index += 1;
 		}
 	}
-
 	return timeslotted;
 }
 
