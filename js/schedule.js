@@ -1324,174 +1324,181 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	let minutes_in_row = 5;
 	let primary_grouping = block_options.timetablePrimaryGrouping;
 	let secondary_grouping = block_options.timetableSecondaryGrouping;
-	let date_slotted = true;
 
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
 
+	let tables = {};
 	let primary_groups = kompassi_schedule_group_programs( programs, primary_grouping );
 	for( let group in primary_groups ) {
-		let group_wrapper = document.createElement( 'div' );
-		group_wrapper.className = 'group';
-		schedule.append( group_wrapper );
-
-		if( secondary_grouping ) {
-			date_slotted = false;
-		}
-		let date_groups = kompassi_schedule_group_programs( primary_groups[group]['programs'], 'date', { 'slotted': date_slotted } );
+		let date_groups = kompassi_schedule_group_programs( primary_groups[group]['programs'], 'date' );
 		for( let date in date_groups ) {
-			let secondary_headings = [];
-			let day;
-
-			// Get day information
+			let table_key = group + '-' + date;
+			tables[table_key] = {
+				'title': group,
+				'start': date_groups[date]['start'],
+				'end': date_groups[date]['end'],
+				'headings': { }
+			}
 			if( secondary_grouping ) {
-				day = kompassi_schedule_get_start_and_end( { 0: date_groups[date] } );
+				let table_programs = [];
+				let table_heading_index = 2;
+				let last_title;
+				let secondary_groups = kompassi_schedule_group_programs( date_groups[date]['programs'], secondary_grouping );
+				for( let secondary in secondary_groups ) {
+					if( secondary_groups[secondary]['title'] != last_title ) {
+						tables[table_key]['headings'][table_heading_index] = secondary_groups[secondary]['title'];
+						last_title = secondary_groups[secondary]['title'];
+					}
+
+					table_sections = kompassi_schedule_find_timeslots( secondary_groups[secondary] );
+					for( let section of table_sections ) {
+						table_programs.push( section );
+						table_heading_index += 1;
+
+					}
+					tables[table_key]['programs'] = table_programs;
+				}
 			} else {
-				day = kompassi_schedule_get_start_and_end( date_groups[date] );
-			}
-			console.log( day );
-
-			// Init table
-			let table_wrapper = document.createElement( 'div' );
-			table_wrapper.className = 'table-wrapper';
-			let table_toolbar = document.createElement( 'div' );
-			table_toolbar.className = 'table-toolbar';
-			let table_name = document.createElement( 'div' );
-			table_name.innerHTML = '<div><strong>' + group + '</strong> <em>' + day.start.format( 'dd' ) + '</em></div>';
-			table_toolbar.append( table_name );
-			let table_controls = document.createElement( 'div' );
-			table_controls.className = 'kompassi-button-group has-icon-only table-controls';
-			let table_control_left = document.createElement( 'a' );
-			table_control_left.className = 'kompassi-icon-arrow-left';
-			table_control_left.dataset.action = 'scroll-left';
-			table_controls.append( table_control_left );
-			let table_control_right = document.createElement( 'a' );
-			table_control_right.className = 'kompassi-icon-arrow-right';
-			table_control_right.dataset.action = 'scroll-right';
-			table_controls.append( table_control_right );
-			table_toolbar.append( table_controls );
-			table_wrapper.append( table_toolbar );
-
-			table_control_left.addEventListener( 'click', function( event ) {
-				let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
-				table.scrollBy( -200, 0 );
-			} );
-			table_control_right.addEventListener( 'click', function( ) {
-				let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
-				table.scrollBy( 200, 0 );
-			} );
-
-			// Secondary grouping, add headings
-			// TODO
-			if( secondary_grouping ) {
-				let secondary_groups = kompassi_schedule_group_programs( date_groups[date]['programs'], secondary_grouping, { 'slotted': true } );
-				let column = 2;
-				let sgg = {};
-				for( let group in secondary_groups ) {
-					let secondary_heading = document.createElement( 'div' );
-					secondary_heading.innerHTML = group;
-					secondary_heading.style.gridColumn = column + '/' + ( column + Object.keys( secondary_groups[group] ).length );
-					secondary_heading.style.gridRow = 1;
-					secondary_heading.className = 'secondary-group';
-					secondary_headings.push( secondary_heading );
-					for( let col in secondary_groups[group] ) {
-						let cc = parseInt( col );
-						sgg[cc] = { 'programs': secondary_groups[group][col].programs, 'start': secondary_groups[group][col].start, 'end': secondary_groups[group][col].end }
-					}
-					column += Object.keys( secondary_groups[group] ).length;
-				}
-				column_groups = sgg;
-			} else {
-				column_groups = date_groups[date];
-			}
-
-			// Day table
-			let day_table = document.createElement( 'div' );
-			let day_columns = Object.keys( column_groups ).length;
-			day_table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + day_columns + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
-			day_table.className = 'table';
-			if( secondary_grouping ) {
-				for( let heading of secondary_headings ) {
-					day_table.append( heading );
-				}
-			}
-
-			table_wrapper.append( day_table );
-			group_wrapper.append( table_wrapper );
-
-			// Position programs
-			for( let column in column_groups ) {
-				for( let program of column_groups[column]['programs'] ) {
-					let program_start = dayjs( program.dataset.start );
-					let offset_in_rows = ( program_start.diff( day.start, 'minute' ) / minutes_in_row ) + 1;
-					if( secondary_grouping ) {
-						offset_in_rows += 1;
-					}
-					let program_length_in_rows = parseInt( program.dataset.length / minutes_in_row );
-					let col = parseInt( column ) + 2; // column indexing starts at 0, column 1 reserved for times
-					program.style.gridColumn = col + ' / ' + col;
-					program.style.gridRow = offset_in_rows + ' / ' + ( offset_in_rows + program_length_in_rows );
-
-					day_table.append( program );
-
-					// TODO: Check if the program starts at minute 0
-					if( program_start.format( 'm' ) != 0 ) {
-						let time = document.createElement( 'span' );
-						time.innerHTML = '<span>' + program_start.format( 'HH.' ) + '</span>' + program_start.format( 'mm' );
-						time.style.gridColumn = '1 / -1';
-						time.style.gridRow = offset_in_rows + ' / ' + offset_in_rows;
-						time.className = 'time time-minute';
-
-						day_table.append( time );
-					}
-				}
-			}
-
-			/* Print times */
-			let times_frequency = 60;
-			let times = day.start.startOf( 'hour' );
-			let row = 1;
-			if( secondary_grouping ) {
-				row += 1;
-			}
-			let is_odd = true;
-			let increment = times_frequency / minutes_in_row;
-			while( times < day.end.endOf( 'hour' ) ) {
-				let evenodd_class;
-				if( is_odd ) {
-					evenodd_class = 'odd';
-				} else {
-					evenodd_class = 'even';
-				}
-				let time = document.createElement( 'span' );
-				time.innerHTML = '<span>' + times.format( 'HH' ) + '</span>';
-				time.style.gridColumn = '1 / 1';
-				time.style.gridRow = row + ' / ' + ( row + increment );
-				time.className = 'time time-hour time-' + evenodd_class;
-				if( row == 1 ) {
-					time.classList.add( 'first' );
-				}
-				day_table.append( time );
-
-				let time_bar = document.createElement( 'span' );
-				time_bar.style.gridColumn = '1 / -1';
-				time_bar.style.gridRow = row + ' / ' + ( row + increment );
-				time_bar.className = 'time-bar time-' + evenodd_class;
-				if( row == 1 ) {
-					time_bar.classList.add( 'first' );
-				}
-				day_table.append( time_bar );
-
-				times = times.add( times_frequency, 'minute' );
-				row += increment;
-				is_odd = !is_odd;
+				tables[table_key]['programs'] = kompassi_schedule_find_timeslots( date_groups[date] );
 			}
 		}
+	}
+
+	for( let tbl in tables ) {
+		let table = document.createElement( 'div' );
+		let columns = tables[tbl]['programs'];
+		table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + columns.length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
+		table.className = 'table';
+
+		// Initialize table wrapper and toolbar
+		let table_wrapper = kompassi_schedule_timetable_table( tables[tbl] );
+		table_wrapper.append( table );
+		schedule.append( table_wrapper );
+
+		// Position programs
+		for( let column in columns ) {
+			for( let program of columns[column]['programs'] ) {
+				let program_start = dayjs( program.dataset.start );
+				let table_start = dayjs.unix( tables[tbl].start );
+				let offset_in_rows = ( program_start.diff( table_start, 'minute' ) / minutes_in_row ) + 1;
+				if( secondary_grouping ) {
+					offset_in_rows += 1;
+				}
+				let program_length_in_rows = parseInt( program.dataset.length / minutes_in_row );
+				let col = parseInt( column ) + 2; // column indexing starts at 0, column 1 reserved for times
+				program.style.gridColumn = col + ' / ' + col;
+				program.style.gridRow = offset_in_rows + ' / ' + ( offset_in_rows + program_length_in_rows );
+
+				table.append( program );
+
+				// If the program doesn't start at top of the hour, print an extra time
+				if( program_start.format( 'm' ) != 0 ) {
+					let time = document.createElement( 'span' );
+					time.innerHTML = '<span>' + program_start.format( 'HH.' ) + '</span>' + program_start.format( 'mm' );
+					time.style.gridColumn = '1 / 1';
+					time.style.gridRow = offset_in_rows + ' / ' + offset_in_rows;
+					time.className = 'time time-minute';
+
+					table.append( time );
+				}
+			}
+		}
+
+		/* Print headings */
+		if( secondary_grouping ) {
+			for( let group_heading in tables[tbl]['headings'] ) {
+				let heading = document.createElement( 'span' );
+				heading.style.gridColumn = group_heading + ' / ' + group_heading;
+				heading.style.gridRow = '1 / 1';
+				heading.className = 'heading';
+				heading.textContent = tables[tbl]['headings'][group_heading];
+
+				table.append( heading );
+			}
+		}
+		/* Print times */
+		kompassi_schedule_timetable_table_times( tables[tbl], table, block_options, minutes_in_row );
 	}
 
 	kompassi_schedule_timetable_check_buttons( );
 	// TODO: When window is resized, check to see if table navigation buttons are required
 	window.addEventListener( 'resize', kompassi_schedule_timetable_check_buttons );
 } );
+
+function kompassi_schedule_timetable_table( table ) {
+	let table_wrapper = document.createElement( 'div' );
+	table_wrapper.className = 'table-wrapper';
+	let table_toolbar = document.createElement( 'div' );
+	table_toolbar.className = 'table-toolbar';
+	let table_name = document.createElement( 'div' );
+	table_name.innerHTML = '<div><strong>' + table.title + '</strong> <em>' + dayjs.unix( table.start ).format( 'dd' ) + '</em></div>';
+	table_toolbar.append( table_name );
+	let table_controls = document.createElement( 'div' );
+	table_controls.className = 'kompassi-button-group has-icon-only table-controls';
+	let table_control_left = document.createElement( 'a' );
+	table_control_left.className = 'kompassi-icon-arrow-left';
+	table_control_left.dataset.action = 'scroll-left';
+	table_controls.append( table_control_left );
+	let table_control_right = document.createElement( 'a' );
+	table_control_right.className = 'kompassi-icon-arrow-right';
+	table_control_right.dataset.action = 'scroll-right';
+	table_controls.append( table_control_right );
+	table_toolbar.append( table_controls );
+	table_wrapper.append( table_toolbar );
+
+	table_control_left.addEventListener( 'click', function( event ) {
+		let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
+		table.scrollBy( -200, 0 );
+	} );
+	table_control_right.addEventListener( 'click', function( ) {
+		let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
+		table.scrollBy( 200, 0 );
+	} );
+	return table_wrapper;
+}
+
+function kompassi_schedule_timetable_table_times( day, table, block_options, minutes_in_row ) {
+	day.start = dayjs.unix( day.start ); // TODO dayjs
+	day.end = dayjs.unix( day.end ); // TODO dayjs
+
+	let times = day.start.startOf( 'hour' );
+	let row = 1;
+	if( block_options.timetableSecondaryGrouping ) {
+		row += 1;
+	}
+	let is_odd = true;
+	let increment = 60 / minutes_in_row;
+	while( times < day.end.endOf( 'hour' ) ) {
+		let evenodd_class;
+		if( is_odd ) {
+			evenodd_class = 'odd';
+		} else {
+			evenodd_class = 'even';
+		}
+		let time = document.createElement( 'span' );
+		time.innerHTML = '<span>' + times.format( 'HH' ) + '</span>';
+		time.style.gridColumn = '1 / 1';
+		time.style.gridRow = row + ' / ' + ( row + increment );
+		time.className = 'time time-hour time-' + evenodd_class;
+		if( row == 1 ) {
+			time.classList.add( 'first' );
+		}
+		table.append( time );
+
+		let time_bar = document.createElement( 'span' );
+		time_bar.style.gridColumn = '1 / -1';
+		time_bar.style.gridRow = row + ' / ' + ( row + increment );
+		time_bar.className = 'time-bar time-' + evenodd_class;
+		if( row == 1 ) {
+			time_bar.classList.add( 'first' );
+		}
+		table.append( time_bar );
+
+		times = times.add( 1, 'hour' );
+		row += increment;
+		is_odd = !is_odd;
+	}
+}
 
 function kompassi_schedule_timetable_check_buttons( ) {
 	let table_wrappers = document.querySelectorAll( '#kompassi_schedule[data-display="timetable"] .table-wrapper' );
@@ -1539,7 +1546,7 @@ wp.hooks.addAction( 'kompassi_schedule_revert_timetable_layout', 'kompassi_integ
 		program.style.gridColumn = '';
 		schedule.append( program );
 	}
-	groups = schedule.querySelectorAll( '.group' );
+	groups = schedule.querySelectorAll( '.table-wrapper' );
 	for( let group of groups ) {
 		group.remove( );
 	}
@@ -1748,7 +1755,7 @@ function kompassi_schedule_timeline_sticky_header( ) {
  *
  */
 
-function kompassi_schedule_group_programs( programs, grouping, options = {} ) {
+function kompassi_schedule_group_programs( programs, grouping ) {
 	if( grouping == false || grouping == undefined ) {
 		return { '': { 'programs': programs } };
 	}
@@ -1758,30 +1765,26 @@ function kompassi_schedule_group_programs( programs, grouping, options = {} ) {
 	programs = Array.from( programs );
 	for( let program of programs ) {
 		if( program.dataset[grouping] ) {
-			// TODO GROUPING
+			// Use dataset value for grouping
 			key = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
 		} else {
+			// Allow custom grouping, eg. date
 			key = wp.hooks.applyFilters( 'kompassi_schedule_grouping_' + grouping, __( 'No group', 'kompassi-integration' ), program );
 		}
 
 		if( !grouped[key] ) {
-			if( options.slotted ) {
-				grouped[key] = { };
-			} else {
-				grouped[key] = { 'programs': [], 'start': undefined, 'end': undefined };
-			}
+			grouped[key] = { 'programs': [], 'start': undefined, 'end': undefined };
 		}
 
-		if( options.slotted ) {
-			grouped[key] = kompassi_schedule_find_timeslot( grouped[key], program );
-		} else {
-			grouped[key]['programs'].push( program );
-			if( grouped[key]['start'] == undefined || program.dataset.start < grouped[key]['start'] ) {
-				grouped[key]['start'] = dayjs( program.dataset.start ).unix( );
-			}
-			if( grouped[key]['end'] == undefined || program.dataset.end > grouped[key]['end'] ) {
-				grouped[key]['end'] = dayjs( program.dataset.end ).unix( );
-			}
+		grouped[key]['programs'].push( program );
+		if( grouped[key]['start'] == undefined || dayjs( program.dataset.start ).unix( ) < grouped[key]['start'] ) {
+			grouped[key]['start'] = dayjs( program.dataset.start ).unix( ); // TODO dayjs
+		}
+		if( grouped[key]['end'] == undefined || dayjs( program.dataset.end ).unix( ) > grouped[key]['end'] ) {
+			grouped[key]['end'] = dayjs( program.dataset.end ).unix( ); // TODO dayjs
+		}
+		if( grouped[key]['title'] == undefined ) {
+			grouped[key]['title'] = key;
 		}
 	}
 
@@ -1789,32 +1792,34 @@ function kompassi_schedule_group_programs( programs, grouping, options = {} ) {
 }
 
 /**
- *  Find a timeslot for a program
+ *  Find a timeslots for a program
  *
  */
 
-function kompassi_schedule_find_timeslot( group, program ) {
-	let found_slot = false;
-	let check_index = 0;
+function kompassi_schedule_find_timeslots( program_group ) {
+	let timeslotted = [];
 
-	while( found_slot == false ) {
-		if( !group[check_index] ) {
-			// Row does not exist, create new
-			group[check_index] = {
-				'start': dayjs( program.dataset.start ).unix( ),
-				'end': dayjs( program.dataset.end ).unix( ),
-				'programs': [ program ]
-			};
-			found_slot = true;
-		} else if( group[check_index]['end'] <= dayjs( program.dataset.start ).unix( ) ) {
-			// Groups last event ends before or at the same time as this one starts
-			group[check_index]['end'] = dayjs( program.dataset.end ).unix( );
-			group[check_index]['programs'].push( program );
-			found_slot = true;
+	for( let program of program_group['programs'] ) {
+		let found_slot = false;
+		let check_index = 0;
+		while( found_slot == false ) {
+			if( timeslotted[check_index] == undefined ) {
+				// Row does not exist, create new
+				timeslotted[check_index] = {
+					'programs': [ program ],
+					'end': dayjs( program.dataset.end ).unix( ), // TODO dayjs
+					'title': program_group.title
+				};
+				found_slot = true;
+			} else if( timeslotted[check_index]['end'] <= dayjs( program.dataset.start ).unix( ) ) { // TODO dayjs
+				// Groups last event ends before or at the same time as this one starts
+				timeslotted[check_index]['end'] = dayjs( program.dataset.end ).unix( ); // TODO dayjs
+				timeslotted[check_index]['programs'].push( program );
+				found_slot = true;
+			}
 		}
-		check_index += 1;
 	}
-	return group;
+	return timeslotted;
 }
 
 /**
