@@ -1737,12 +1737,14 @@ function kompassi_schedule_group_programs( programs, grouping ) {
 
 	programs = Array.from( programs );
 	for( let program of programs ) {
+		let key;
 		if( program.dataset[grouping] ) {
 			// Use dataset value for grouping
-			key = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
+			key = program.dataset[grouping];
+			title = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
 		} else {
 			// Allow custom grouping, eg. date
-			key = wp.hooks.applyFilters( 'kompassi_schedule_grouping_' + grouping, __( 'No group', 'kompassi-integration' ), program );
+			( { key, title } = wp.hooks.applyFilters( 'kompassi_schedule_grouping_' + grouping, { 'key': 'no-group', 'title': __( 'No group', 'kompassi-integration' ) }, program ) );
 		}
 
 		if( !grouped[key] ) {
@@ -1757,12 +1759,23 @@ function kompassi_schedule_group_programs( programs, grouping ) {
 			grouped[key]['end'] = dayjs( program.dataset.end ).unix( ); // TODO dayjs
 		}
 		if( grouped[key]['title'] == undefined ) {
-			grouped[key]['title'] = key;
+			grouped[key]['title'] = title;
 		}
 	}
 
+	// Sort by key
+	grouped = Object.values( grouped );
+	let sort_function = wp.hooks.applyFilters( 'kompassi_schedule_grouping_sort_function_' + grouping, kompassi_schedule_grouping_sort_title );
+	console.log( sort_function );
+	grouped = [...grouped].sort( sort_function );
+
 	return grouped;
 }
+
+function kompassi_schedule_grouping_sort_title( a, b ) {
+	return a.title.localeCompare( b.title );
+}
+
 
 /**
  *  Find a timeslots for a program
@@ -1801,9 +1814,10 @@ function kompassi_schedule_find_timeslots( program_group ) {
  *
  */
 
-wp.hooks.addFilter( 'kompassi_schedule_grouping_date', 'kompassi_schedule', function( value, program ) {
-	value = dayjs( program.dataset.start ).format( 'YYYY-MM-DD' );
-	return value;
+wp.hooks.addFilter( 'kompassi_schedule_grouping_date', 'kompassi_schedule', function( values, program ) {
+	values.key = dayjs( program.dataset.start ).format( 'YYYY-MM-DD' );
+	values.title = values.key;
+	return values;
 } );
 
 /**
