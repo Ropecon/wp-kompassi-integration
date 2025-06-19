@@ -127,6 +127,7 @@ function kompassi_show_modal( options ) {
 	header.append( title );
 
 	let header_actions = document.createElement( 'div' );
+	header_actions.classList.add( 'actions' );
 	header.append( header_actions );
 	// TODO: header_actions from options ?
 	let close = document.createElement( 'a' );

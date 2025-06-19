@@ -419,6 +419,18 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          line-height: var(--kompassi-line-height);
 			align-self: center;
 		}
+      #kompassi_modal .header .actions {
+         --kompassi-icon-size: var(--kompassi-line-height);
+      }
+         #kompassi_modal .header .actions [class*="kompassi-icon"]::before {
+            margin: 0 0 0 0.5em;
+            height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) );
+            width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) );
+            background-position: 50% 50%;
+            background-size: contain;
+            background-repeat: no-repeat;
+         }
+      /*
 		#kompassi_modal .header .close {
 			position: absolute;
 			top: 0;
@@ -439,6 +451,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 				background-size: contain;
 				background-repeat: no-repeat;
 			}
+         */
 
 		#kompassi_modal .content .actions {
          background-color: var(--kompassi-palette-3);
