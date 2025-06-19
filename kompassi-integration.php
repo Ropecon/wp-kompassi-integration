@@ -290,14 +290,16 @@ class WP_Plugin_Kompassi_Integration {
 		$parameters = $request->get_params( );
 
 		$filename = realpath( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md' );
-		if( substr( $filename, 0, strlen( plugin_dir_path( __FILE__ ) ) ) != plugin_dir_path( __FILE__ ) ) {
-			return array( 'status' => false );
+		if( $filename != false ) {
+			if( substr( $filename, 0, strlen( plugin_dir_path( __FILE__ ) ) ) != plugin_dir_path( __FILE__ ) ) {
+				return array( 'status' => false, 'fn' => $fn );
+			}
 		}
 
-		if( !is_readable( $filename ) ) {
+		if( $filename == false || !is_readable( $filename ) ) {
 			// Specified document is not available in given language, try English
-			$filename_en = plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_en.md';
-			if( !is_readable( $filename_en ) ) {
+			$filename_en = realpath( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_en.md' );
+			if( $filename_en == false || !is_readable( $filename_en ) ) {
 				// Specified document is not available in English, return false
 				return array( 'status' => false );
 			} else {
