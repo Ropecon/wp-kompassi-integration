@@ -1618,6 +1618,7 @@ function kompassi_schedule_program_modal( program ) {
 	let actions = program.querySelector( '.actions' ).cloneNode( true );
 	let favorite = program.querySelector( '.favorite' ).cloneNode( true );
 	actions.prepend( favorite );
+	wp.hooks.applyFilters( 'kompassi_schedule_program_modal_actions', actions, program );
 
 	let options = {
 		attrs: {
