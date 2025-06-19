@@ -241,12 +241,12 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 .kompassi-button-group {
 	display: block;
 }
-	.kompassi-button-group > a {
+   .kompassi-button-group > a {
 		cursor: pointer;
 		position: relative;
 		display: inline-block;
 		padding: var(--kompassi-padding);
-      color: var(--kompassi-fg); /* !important; */
+      color: var(--kompassi-fg);
 		background: var(--kompassi-bg);
 		border-radius: var(--kompassi-radius);
 		margin-right: var(--kompassi-padding);
@@ -254,6 +254,12 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 		box-shadow: var(--kompassi-box-shadow);
       text-decoration: none;
    }
+      .kompassi-button-group > a:visited {
+         color: var(--kompassi-fg);
+      }
+      .kompassi-button-group > a:is(:hover,:active,:focus) {
+         color: var(--kompassi-palette-2);
+      }
 		.kompassi-button-group.has-icon-and-label > a:is([class*="kompassi-icon"]) {
 			padding-left: calc( ( var(--kompassi-padding) * 2 ) + var(--kompassi-icon-size) );
 		}
@@ -429,29 +435,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
             background-position: 50% 50%;
             background-size: contain;
             background-repeat: no-repeat;
+            cursor: pointer;
          }
-      /*
-		#kompassi_modal .header .close {
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			cursor: pointer;
-			display: block;
-			width: var(--kompassi-icon-size);
-			padding: 0 var(--kompassi-padding-large);
-		}
-			#kompassi_modal .header .close::before {
-				display: inline-block;
-				content: '';
-				width: 100%;
-				height: 100%;
-
-				background-position: 50% 50%;
-				background-size: contain;
-				background-repeat: no-repeat;
-			}
-         */
 
 		#kompassi_modal .content .actions {
          background-color: var(--kompassi-palette-3);
