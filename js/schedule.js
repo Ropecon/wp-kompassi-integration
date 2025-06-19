@@ -1379,9 +1379,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	for( let group in primary_groups ) {
 		let date_groups = kompassi_schedule_group_programs( primary_groups[group]['programs'], 'date' );
 		for( let date in date_groups ) {
-			let table_key = group + '-' + date;
+			let table_key = primary_groups[group].title + '-' + date;
 			tables[table_key] = {
-				'title': group,
+				'title': primary_groups[group].title,
 				'start': dayjs.tz( date_groups[date]['start'] ),
 				'end': dayjs.tz( date_groups[date]['end'] ),
 				'headings': { }
@@ -1478,13 +1478,14 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 } );
 
 function kompassi_schedule_timetable_table( table, block_options ) {
-	let primary_grouping = false;
 	let table_wrapper = document.createElement( 'div' );
 	table_wrapper.className = 'table-wrapper';
 	let table_toolbar = document.createElement( 'div' );
 	table_toolbar.className = 'table-toolbar';
 	let table_name = document.createElement( 'div' );
-	if( block_options.primaryGrouping ) {
+	table_name.className = 'kompassi-subheading';
+	if( block_options.timetablePrimaryGrouping ) {
+		console.log( table );
 		table_name.innerHTML = '<div><strong>' + table.title + '</strong> <em>' + dayjs( table.start ).format( 'LL' ) + '</em></div>';
 	} else {
 		table_name.innerHTML = '<div><strong>' + dayjs( table.start ).format( 'LL' ) + '</strong></div>';
