@@ -172,7 +172,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		if( !is_admin( ) ) {
 			// Scripts: Libraries
-			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.bundle.min.js', __FILE__ ), array( ), '1.11.10' );
+			wp_register_script( 'dayjs', plugins_url( 'lib/dayjs.bundle.min.js', __FILE__ ), array( ), '1.11.13' );
 			wp_register_script( 'hammer', plugins_url( 'lib/hammer.min.js', __FILE__ ), array( ), '2.0.8' );
 			wp_register_script( 'showdown', plugins_url( 'lib/showdown.min.js', __FILE__ ), array( ), '2.1.0' );
 
@@ -397,7 +397,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		$out .= '<section class="kompassi_schedule_wrapper">';
-		$out .= '<section id="kompassi_schedule" data-display="' . $attributes['default_display'] . '" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '">';
+		$out .= '<section id="kompassi_schedule" data-display="' . $attributes['default_display'] . '" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '" data-timezone="' . $data['timezone'] . '">';
 
 		$options = array( );
 		// Map dimension value labels and flags to arrays

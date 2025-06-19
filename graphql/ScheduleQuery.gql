@@ -4,6 +4,7 @@ query ScheduleQuery($eventSlug: String!, $locale: String) {
     slug
     startTime
     endTime
+    timezone
     program {
       annotations(lang: $locale) {
          slug

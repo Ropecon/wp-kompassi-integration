@@ -497,7 +497,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          }
 
 }
-		#kompassi_modal .content {
+      #kompassi_modal .content:not(.dimension) {
 			display: flex;
 			flex-direction: column;
 			flex: auto;
