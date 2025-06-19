@@ -700,7 +700,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       display: block;
       position: absolute;
       left: 0;
-      z-index: 2000;
+      z-index: 4000;
       background-color: #eee;
    }
 
