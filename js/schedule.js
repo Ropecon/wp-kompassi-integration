@@ -972,6 +972,19 @@ function kompassi_schedule_setup_display( display = false ) {
 	wp.hooks.doAction( 'kompassi_schedule_revert_' + previous_display_type + '_layout' );
 	wp.hooks.doAction( 'kompassi_schedule_setup_' + display_type + '_layout' );
 
+	//  Hide/show relevant notes
+	let notes = document.getElementById( 'kompassi_schedule_notes' );
+	let hide = notes.querySelectorAll( '.display-not-' + display_type );
+	let show = notes.querySelectorAll( '[class*="display-only"]' );
+	for( let note of hide ) {
+		note.style.display = 'none';
+	}
+	for( let note of show ) {
+		if( !note.classList.contains( 'display-only-' + display_type ) ) {
+			note.style.display = 'none';
+		}
+	}
+
 	//  Make selected display type toggle active
 	let toggles = document.querySelectorAll( '#kompassi_schedule_display a' );
 	for( let toggle of toggles ) {
@@ -1485,7 +1498,6 @@ function kompassi_schedule_timetable_table( table, block_options ) {
 	let table_name = document.createElement( 'div' );
 	table_name.className = 'kompassi-subheading';
 	if( block_options.timetablePrimaryGrouping ) {
-		console.log( table );
 		table_name.innerHTML = '<div><strong>' + table.title + '</strong> <em>' + dayjs( table.start ).format( 'LL' ) + '</em></div>';
 	} else {
 		table_name.innerHTML = '<div><strong>' + dayjs( table.start ).format( 'LL' ) + '</strong></div>';
