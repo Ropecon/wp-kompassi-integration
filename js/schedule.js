@@ -1448,7 +1448,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 					table.append( time );
 				}
-				table.addEventListener( 'scrollend', kompassi_schedule_timetable_check_scroll );
+				table.addEventListener( 'scrollend', function( event ) {
+					kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50, table );
+				} );
 			}
 		}
 
@@ -1470,7 +1472,9 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 	kompassi_schedule_timetable_check_scroll( );
 	// TODO: When window is resized, check to see if table navigation buttons are required and if visual aids should be shown
-	window.addEventListener( 'resize', kompassi_schedule_timetable_check_scroll );
+	window.addEventListener( 'resize', function( event ) {
+		kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50, table );
+	} );
 } );
 
 function kompassi_schedule_timetable_table( table, block_options ) {
