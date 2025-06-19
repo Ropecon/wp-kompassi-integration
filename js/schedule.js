@@ -1123,7 +1123,6 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 	let offset = 100 / Math.ceil( kompassi_schedule.filters.date.length_hours );
 	for( let hours = 0; hours < Math.ceil( kompassi_schedule.filters.date.length_hours ); hours++ ) {
 		let time_label = kompassi_schedule.filters.date.start.add( hours, 'hour' ).tz( schedule.dataset.timezone ).format( 'H' );
-		// let time_label = kompassi_schedule.filters.date.start.endOf( 'hour' ).add( hours, 'hour' ).tz( schedule.dataset.timezone ).format( 'H' );
 		schedule.insertAdjacentHTML( 'beforeend', '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + hours + '% ); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );"></div>' );
 		let hint = document.createElement( 'div' );
 		hint.classList.add( 'hint', 'time_hint' );
@@ -1419,7 +1418,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 		table.className = 'table';
 
 		// Initialize table wrapper and toolbar
-		let table_wrapper = kompassi_schedule_timetable_table( tables[tbl] );
+		let table_wrapper = kompassi_schedule_timetable_table( tables[tbl], block_options );
 		table_wrapper.append( table );
 		schedule.append( table_wrapper );
 
@@ -1473,13 +1472,18 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	window.addEventListener( 'resize', kompassi_schedule_timetable_check_scroll );
 } );
 
-function kompassi_schedule_timetable_table( table ) {
+function kompassi_schedule_timetable_table( table, block_options ) {
+	let primary_grouping = false;
 	let table_wrapper = document.createElement( 'div' );
 	table_wrapper.className = 'table-wrapper';
 	let table_toolbar = document.createElement( 'div' );
 	table_toolbar.className = 'table-toolbar';
 	let table_name = document.createElement( 'div' );
-	table_name.innerHTML = '<div><strong>' + table.title + '</strong> <em>' + dayjs( table.start ).format( 'dd' ) + '</em></div>';
+	if( block_options.primaryGrouping ) {
+		table_name.innerHTML = '<div><strong>' + table.title + '</strong> <em>' + dayjs( table.start ).format( 'LL' ) + '</em></div>';
+	} else {
+		table_name.innerHTML = '<div><strong>' + dayjs( table.start ).format( 'LL' ) + '</strong></div>';
+	}
 	table_toolbar.append( table_name );
 	let table_controls = document.createElement( 'div' );
 	table_controls.className = 'kompassi-button-group has-icon-only table-controls';
