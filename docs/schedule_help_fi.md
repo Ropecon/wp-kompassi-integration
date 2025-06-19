@@ -6,18 +6,21 @@ Valitsemalla negatiivisen valinnan suodattimen arvoja valittuja arvoja sisältä
 
 **Listanäkymä**
 
-* Kun käytät tekstihakua, tulokset järjestetään relevanssin perusteella, ei kronologisesti.
-* Kun hakutuloksia rajoitetaan päivämäärän perusteella, edelleen käynnissä olevat ohjelmat, jotka ovat alkaneet edellisenä päivänä näytetään hakutuloksien lopussa.
+* Kun käytät tekstihakua, tulokset järjestetään relevanssin perusteella, ei kronologisesti
+* Kun hakutuloksia rajoitetaan päivämäärän perusteella, edelleen käynnissä olevat ohjelmat, jotka ovat alkaneet edellisenä päivänä näytetään hakutuloksien lopussa
 
 **Aikajananäkymä**
 
 Voit suurentaa ja liikuttaa aikajananäkymää:
 
-* Työpöydällä, käytä _Shift + hiiren rulla_ suurentaaksesi aikajanaa.
-* Kosketusnäytöllä nipistä suurentaaksesi.
-* Vedä liikuttaaksesi kaikilla laitteilla.
+* Työpöydällä, käytä _Shift + hiiren rulla_ suurentaaksesi aikajanaa
+* Kosketusnäytöllä nipistä suurentaaksesi
+* Vedä liikuttaaksesi kaikilla laitteilla
+
+**Lukujärjestysnäkymä**
+
+Käytä taulukoiden oikealla yläpuolella olevia nuolipainikkeita nähdäksesi lisää sarakkeita.
 
 **Muita vinkkejä**
 
-* Ohjelmenumeroiden ponnahdusikkunoista löytyy linkit ilmoittautumiseen ja kalenteriin lisäämiseen.
-* Kun sinulla on ohjelmanumeron ponnahdusikkuna auki, _pyyhkäise vasemmalle_ siirtyäksesi nopeasti seuraavaan (näkyvissä olevaan) ohjelmanumeroon. Työpöytälaitteella voit käyttää _nuolinäppäimiä_.
+Ohjelmenumeroiden ponnahdusikkunoista löytyy linkit ilmoittautumiseen ja kalenteriin lisäämiseen. Kun sinulla on ohjelmanumeron ponnahdusikkuna auki, _pyyhkäise vasemmalle_ siirtyäksesi nopeasti seuraavaan (näkyvissä olevaan) ohjelmanumeroon. Työpöytälaitteella voit käyttää _nuolinäppäimiä_.

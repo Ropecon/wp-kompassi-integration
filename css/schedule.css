@@ -574,6 +574,9 @@ summary::marker {
 		--kompassi-padding: 0.2em;
 		--kompassi-icon-size: 16px;
 	}
+		#kompassi_schedule[data-display="timetable"] .table-controls a:not(.active) {
+			cursor: not-allowed;
+		}
 
 #kompassi_schedule[data-display="timetable"] .table {
 	position: relative;

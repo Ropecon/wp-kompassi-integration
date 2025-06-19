@@ -6,18 +6,21 @@ By choosing values from a negative filter, all program numbers with the selected
 
 **List View**
 
-* When using text search, results are sorted by relevance rather than chronologically.
-* When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results.
+* When using text search, results are sorted by relevance rather than chronologically
+* When limiting search results by date, programs which have started in previous days that are still continuing are listed at the end of the search results
 
 **Timeline View**
 
 You can zoom and pan the timeline view:
 
-* On desktop, use _Shift + mouse wheel_ to zoom.
-* On a touch screen, pinch to zoom.
-* Drag to pan on all devices.
+* On desktop, use _Shift + mouse wheel_ to zoom
+* On a touch screen, pinch to zoom
+* Drag to pan on all devices
+
+**Timetable View**
+
+Use the arrow buttons above thet tables on the right hand side to see more columns.
 
 **Other Tips**
 
-* When you have a program popup open, _swip left_ to move quickly to the next (visible) program number. On a desktop, you can use _the arrow keys_.
-* You can find links to enroll and add to calendar from the program popups.
+When you have a program popup open, _swip left_ to move quickly to the next (visible) program number. On a desktop, you can use _the arrow keys_. You can find links to enroll and add to calendar from the program popups.

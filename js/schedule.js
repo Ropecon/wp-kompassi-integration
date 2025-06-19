@@ -1448,6 +1448,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 
 					table.append( time );
 				}
+				table.addEventListener( 'scrollend', kompassi_schedule_timetable_check_scroll );
 			}
 		}
 
@@ -1560,11 +1561,22 @@ function kompassi_schedule_timetable_check_scroll( ) {
 		let controls = wrapper.querySelector( '.table-toolbar .table-controls' );
 		if( table.scrollWidth > table.offsetWidth ) {
 			controls.style.display = 'block';
+
+			var left_scroll = wrapper.querySelectorAll( '[data-action="scroll-left"]' )[0];
+			var right_scroll = wrapper.querySelectorAll( '[data-action="scroll-right"]' )[0];
+			if( table.scrollLeft > 0 ) {
+				left_scroll.classList.add( 'active' );
+				table.classList.add( 'can-scroll-left' );
+			} else {
+				left_scroll.classList.remove( 'active' );
+			}
+			if( table.scrollLeft == table.scrollLeftMax ) {
+				right_scroll.classList.remove( 'active' );
+			} else {
+				right_scroll.classList.add( 'active' );
+			}
 		} else {
 			controls.style.display = 'none';
-		}
-		if( table.scrollLeft > 0 ) {
-			table.classList.add( 'can-scroll-left' );
 		}
 	}
 }
