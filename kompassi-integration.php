@@ -23,6 +23,10 @@ class WP_Plugin_Kompassi_Integration {
 		add_filter( 'block_categories_all', array( $this, 'block_categories_all' ), 10, 2 );
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 
+		add_filter( 'kompassi_program_value_times', array( $this, 'kompassi_program_value_times' ), 10, 2 );
+		add_filter( 'kompassi_program_value_time_start', array( $this, 'kompassi_program_value_time_start' ), 10, 2 );
+		add_filter( 'kompassi_program_value_location_if_not_room', array( $this, 'kompassi_program_value_location_if_not_room' ), 10, 2 );
+
 		$this->ver = time( );
 		$this->icon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcyIgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICB3aWR0aD0iMTE2LjUzOTMzIgogICBoZWlnaHQ9IjExNi41MzkzMyIKICAgdmlld0JveD0iMCAwIDExNi41MzkzMyAxMTYuNTM5MzMiCiAgIHNvZGlwb2RpOmRvY25hbWU9Ik1PRC1mYXZpY29uLXdoaXRlLnBuZy5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMS4yICgwYTAwY2Y1MzM5LCAyMDIyLTAyLTA0KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcwogICAgIGlkPSJkZWZzNiI+PGNsaXBQYXRoCiAgICAgICBjbGlwUGF0aFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIKICAgICAgIGlkPSJjbGlwUGF0aDE2Ij48cGF0aAogICAgICAgICBkPSJNIDAsODcuNDA0IEggODcuNDA0IFYgMCBIIDAgWiIKICAgICAgICAgaWQ9InBhdGgxNCIgLz48L2NsaXBQYXRoPjwvZGVmcz48c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzQiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaW5rc2NhcGU6em9vbT0iNS4wOTY5OTE3IgogICAgIGlua3NjYXBlOmN4PSI0NC42MzQxNzEiCiAgICAgaW5rc2NhcGU6Y3k9IjU4LjM2Nzc2MiIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJnOCIgLz48ZwogICAgIGlkPSJnOCIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlua3NjYXBlOmxhYmVsPSJmYXZpY29uLWRhcmsiCiAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMS4zMzMzMzMzLDAsMCwtMS4zMzMzMzMzLDAsMTE2LjUzOTMzKSI+PGcKICAgICAgIGlkPSJnMTIiCiAgICAgICBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgxNikiCiAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmIj48ZwogICAgICAgICBpZD0iZzE4IgogICAgICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1Ni4xMjQzLDQ1LjgzMzMpIgogICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmIj48cGF0aAogICAgICAgICAgIGQ9Im0gMCwwIGMgLTEuMTI4LC0yLjA4NSAtMi4xODMsLTQuMDQ3IC0zLjA3NCwtNS43MiAtMi4xMDgsLTMuOTU3IC01LjkzMiwtNy4wMjQgLTEwLjgyMSwtNi4zMjcgLTAuOTE0LDAuMTMgLTEuNzg3LDAuMzk1IC0yLjYwNywwLjc2MiBsIC0xLjMzNywwLjcyNCBjIC0xLjIwOCwwLjc3OSAtMi4yMzgsMS44MTEgLTMuMDE3LDMuMDE4IGwgLTAuNzE3LDEuMzI1IGMgLTAuMzcxLDAuODI4IC0wLjYzOCwxLjcxIC0wLjc2OCwyLjYzNCAtMC41OTEsNC4xOTggMS42MzEsNy41MzMgNC43NSw5Ljc4MSBMIDkuMjU4LDE5LjYwMiBaIE0gMzEuMDI2LC0xLjc1MyA2LjcxLDguMTYgMTIuNTExLDIwLjQ0MiBjIDAuMzM5LDAuNjczIDAuMTg5LDEuNDk4IC0wLjM4MiwyLjA2OCAtMC41NzUsMC41NzUgLTEuNDA4LDAuNzIyIC0yLjA4NCwwLjM3MyBsIC0xMi4xMDksLTYuMDQ2IC05Ljk4LDI0LjQ4IGMgLTAuMTM4LDAuMzM5IC0wLjYxOCwwLjMzOSAtMC43NTYsMCBsIC0xMC42NDYsLTI2LjExNSAtMTIuMTg3LDYuNTk5IGMgLTAuMzg2LDAuMjA5IC0wLjkzLC0wLjMzNSAtMC43MjEsLTAuNzIxIEwgLTI5Ljc1NSw4Ljg5MyAtNTUuODcsLTEuNzUzIGMgLTAuMzM5LC0wLjEzOCAtMC4zMzksLTAuNjE4IDAsLTAuNzU2IGwgMjYuMTE1LC0xMC42NDYgLTYuNTk5LC0xMi4xODcgYyAtMC4yMDksLTAuMzg2IDAuMzM1LC0wLjkzIDAuNzIxLC0wLjcyMSBsIDEyLjE4Nyw2LjU5OSAxMC42NDYsLTI2LjExNSBjIDAuMTM4LC0wLjMzOSAwLjYxOCwtMC4zMzkgMC43NTYsMCBsIDEwLjY0NiwyNi4xMTUgMTIuMTg3LC02LjU5OSBjIDAuMzg2LC0wLjIwOSAwLjkzLDAuMzM1IDAuNzIxLDAuNzIxIGwgLTYuNTk5LDEyLjE4NyAyNi4xMTUsMTAuNjQ2IGMgMC4zMzksMC4xMzggMC4zMzksMC42MTggMCwwLjc1NiIKICAgICAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lIgogICAgICAgICAgIGlkPSJwYXRoMjAiIC8+PC9nPjxnCiAgICAgICAgIGlkPSJnMjIiCiAgICAgICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQzLjc0Myw0OC4yMjg3KSIKICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZiI+PHBhdGgKICAgICAgICAgICBkPSJtIDAsMCBjIC0yLjQ5NiwwIC00LjUyNiwtMi4wMyAtNC41MjYsLTQuNTI2IDAsLTIuNDk2IDIuMDMsLTQuNTI3IDQuNTI2LC00LjUyNyAyLjQ5NiwwIDQuNTI2LDIuMDMxIDQuNTI2LDQuNTI3IEMgNC41MjYsLTIuMDMgMi40OTYsMCAwLDAiCiAgICAgICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6bm9uemVybztzdHJva2U6bm9uZSIKICAgICAgICAgICBpZD0icGF0aDI0IiAvPjwvZz48L2c+PC9nPjwvc3ZnPgo=';
 	}
@@ -615,7 +619,7 @@ class WP_Plugin_Kompassi_Integration {
 							<div class="meta" style="grid-area: meta;">
 								<?php
 									//  Get meta; this needs to be done here, as fields can be dependent of scheduleItem data
-									$show_meta_fields = array( 'times', 'cachedHosts' );
+									$show_meta_fields = apply_filters( 'kompassi_schedule_fields_in_meta', array( 'times', 'cachedHosts', 'location_if_not_room' ) );
 									foreach( $show_meta_fields as $key ) {
 										echo $this->get_program_value( $program, $key, $scheduleItem_index );
 									}
@@ -691,49 +695,62 @@ class WP_Plugin_Kompassi_Integration {
 			$value = implode( ', ', $values );
 		} elseif( isset( $program['cachedAnnotations'][$key] ) ) {
 			$value = $program['cachedAnnotations'][$key];
-		} else {
-			//  Special cases
-			if( isset( $scheduleItem ) && 'times' == $key ) {
-				$timezone = wp_timezone( );
-				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
-				$end = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['endTime'], $timezone );
-
-				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
-				$end_timestamp = $end->format( 'U' ) + $timezone->getOffset( $end );
-
-				$value = '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp ) . '</span>';
-				$value .= ' – ';
-				if( date_i18n( 'Ymd', $start_timestamp ) == date_i18n( 'Ymd', $end_timestamp ) ) {
-					$value .= '<span>' . date_i18n( get_option( 'time_format' ), $end_timestamp ) . '</span>';
-				} else {
-					// If multiday, show both days
-					$value .= '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $end_timestamp ) . '</span>';
-				}
-				$value .= ' <span class="length">';
-				$h = $scheduleItem['lengthMinutes'] / 60;
-				$min = $scheduleItem['lengthMinutes'] % 60;
-				if( $h < 1 ) {
-					$value .= $min . 'min';
-				} elseif( $min == 0 ) {
-					$value .= floor( $h ) . 'h';
-				} else {
-					$value .= floor( $h ) . 'h ' . $min . 'min';
-				}
-				$value .= '</span>';
-			} elseif( isset( $scheduleItem ) && 'time_start' == $key ) {
-				$timezone = wp_timezone( );
-				$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
-				$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
-				$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp );
-			}
+		} elseif( isset( $scheduleItem ) ) {
+			$value = apply_filters( 'kompassi_program_value_' . $key, '', $scheduleItem );
 		}
-		if( isset( $value ) ) {
+		if( isset( $value ) && strlen( $value ) > 0 ) {
 			if( $wrap ) {
 				return '<div class="' . $key . '">' . $value . '</div>';
 			} else {
 				return $value;
 			}
 		}
+	}
+
+	function kompassi_program_value_times( $value, $scheduleItem ) {
+		$timezone = wp_timezone( );
+		$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
+		$end = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['endTime'], $timezone );
+
+		$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
+		$end_timestamp = $end->format( 'U' ) + $timezone->getOffset( $end );
+
+		$value = '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp ) . '</span>';
+		$value .= ' – ';
+		if( date_i18n( 'Ymd', $start_timestamp ) == date_i18n( 'Ymd', $end_timestamp ) ) {
+			$value .= '<span>' . date_i18n( get_option( 'time_format' ), $end_timestamp ) . '</span>';
+		} else {
+			// If multiday, show both days
+			$value .= '<span>' . date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $end_timestamp ) . '</span>';
+		}
+		$value .= ' <span class="length">';
+		$h = $scheduleItem['lengthMinutes'] / 60;
+		$min = $scheduleItem['lengthMinutes'] % 60;
+		if( $h < 1 ) {
+			$value .= $min . 'min';
+		} elseif( $min == 0 ) {
+			$value .= floor( $h ) . 'h';
+		} else {
+			$value .= floor( $h ) . 'h ' . $min . 'min';
+		}
+		$value .= '</span>';
+		return $value;
+	}
+
+	function kompassi_program_value_time_start( $value, $scheduleItem ) {
+		$timezone = wp_timezone( );
+		$start = DateTimeImmutable::createFromFormat( DateTimeInterface::ISO8601, $scheduleItem['startTime'], $timezone );
+		$start_timestamp = $start->format( 'U' ) + $timezone->getOffset( $start );
+		$value = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $start_timestamp );
+		return $value;
+	}
+
+	function kompassi_program_value_location_if_not_room( $value, $scheduleItem ) {
+		$scheduleItem_room = $scheduleItem['cachedDimensions']['room'][0];
+		if( $scheduleItem['location'] !== $this->event_dimensions['room']['value_labels'][$scheduleItem_room] ) {
+			$value = $scheduleItem['location'];
+		}
+		return $value;
 	}
 
 	/*
