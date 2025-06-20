@@ -562,7 +562,7 @@ class WP_Plugin_Kompassi_Integration {
 			$program_attributes['data-id'] = $scheduleItem['slug'];
 			$program_attributes['data-start'] = $scheduleItem['startTime'];
 			$program_attributes['data-end'] = $scheduleItem['endTime'];
-			$program_attributes['data-length'] = $program_data['lengthMinutes'];
+			$program_attributes['data-length'] = $scheduleItem['lengthMinutes'];
 
 			// Get dimension attributes from scheduleItem
 			foreach( $scheduleItem['cachedDimensions'] as $dimension => $values ) {
