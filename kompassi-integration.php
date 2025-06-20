@@ -429,9 +429,15 @@ class WP_Plugin_Kompassi_Integration {
 			}
 		}
 
-		foreach( $data['program']['programs'] as $p ) {
-			$out .= $this->markup_single_program( $p, $options );
+		$scheduleitems = array( );
+		foreach( $data['program']['programs'] as $program ) {
+			$scheduleitems = $this->markup_scheduleitems_for_program( $scheduleitems, $program, $options );
 		}
+		ksort( $scheduleitems );
+		foreach( $scheduleitems as $item ) {
+			$out .= $item;
+		}
+
 		$out .= '</section>';
 		$out .= '</section>';
 
@@ -450,14 +456,14 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	/*
-	 *  Return markup for a single program event
+	 *  Return markup for all schedule items for single program event
 	 *
 	 */
 
-	function markup_single_program( $program, $options ) {
+	function markup_scheduleitems_for_program( $scheduleitems, $program, $options ) {
 		// There are no scheduleItems for the program, return
 		if( !is_array( $program['scheduleItems'] ) || count( $program['scheduleItems'] ) < 1 ) {
-			return;
+			return $scheduleitems;
 		}
 
 		//  Gather common program data
@@ -550,19 +556,13 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		// Output
-		ob_start( );
 		foreach( $program['scheduleItems'] as $scheduleItem_index => $scheduleItem ) {
+			ob_start( );
 			// Gather scheduleItem specific data
-			$program_data['start'] = $scheduleItem['startTime'];
-			$program_data['end'] = $scheduleItem['endTime'];
-			$program_data['length'] = $scheduleItem['lengthMinutes'];
-			$program_data['title'] = $scheduleItem['title'];
-			$program_data['slug'] = $scheduleItem['slug'];
-
 			$program_attributes['data-id'] = $scheduleItem['slug'];
-			$program_attributes['data-start'] = $program_data['start'];
-			$program_attributes['data-end'] = $program_data['end'];
-			$program_attributes['data-length'] = $program_data['length'];
+			$program_attributes['data-start'] = $scheduleItem['startTime'];
+			$program_attributes['data-end'] = $scheduleItem['endTime'];
+			$program_attributes['data-length'] = $program_data['lengthMinutes'];
 
 			// Get dimension attributes from scheduleItem
 			foreach( $scheduleItem['cachedDimensions'] as $dimension => $values ) {
@@ -576,10 +576,10 @@ class WP_Plugin_Kompassi_Integration {
 				$html_attrs .= ' ' . $attr . '="' . $value . '"';
 			}
 			?>
-				<article id="<?php echo $program_data['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
+				<article id="<?php echo $scheduleItem['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 					<details>
 						<summary>
-							<div class="title" style="grid-area: title;"><?php echo $program_data['title']; ?></div>
+							<div class="title" style="grid-area: title;"><?php echo $scheduleItem['title']; ?></div>
 							<div class="secondary" style="grid-area: secondary;">
 								<?php
 									//  Get summary fields; this needs to be done here, as fields can be dependent of scheduleItem data
@@ -639,8 +639,10 @@ class WP_Plugin_Kompassi_Integration {
 					</details>
 				</article>
 			<?php
+			$key = $scheduleItem['startTime'] . '-' . $scheduleItem['title'];
+			$scheduleitems[$key] = ob_get_clean();
 		}
-		return ob_get_clean( );
+		return $scheduleitems;
 	}
 
 	/**
