@@ -39,6 +39,7 @@ query ScheduleQuery($eventSlug: String!, $locale: String) {
           startTime
           endTime
           lengthMinutes
+          cachedDimensions
         }
         links(lang: $locale) {
           title

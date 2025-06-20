@@ -521,18 +521,9 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		//  Dimensions
-		//  TODO: Only traverse once (for attrs and data)
-		ob_start( );
+		$program_data['dimensions'] = array( );
 		foreach( $program['cachedDimensions'] as $dimension => $values ) {
 			if( in_array( $dimension, $options['hidden_dimensions'] ) ) {
-				continue;
-			}
-
-			if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
-				if( count( $values ) > 0 ) {
-					$attr = 'data-' . $dimension;
-					$program_attributes[$attr] = implode( ',', $values );
-				}
 				continue;
 			}
 
@@ -540,18 +531,13 @@ class WP_Plugin_Kompassi_Integration {
 				$attr = 'data-' . $dimension;
 				$program_attributes[$attr] = implode( ',', $values );
 
-				echo '<div class="dimension ' . $dimension . '">';
-				foreach( $values as $slug ) {
-					if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
-						echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
-					} else {
-						echo '<span class="value">' . $slug . '</span> ';
-					}
+				if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+					continue;
 				}
-				echo '</div>';
+
+				$program_data['dimensions'][$dimension] = $this->get_dimension_output( $dimension, $values, $options );
 			}
 		}
-		$program_data['dimensions'] = ob_get_clean( );
 
 		//  Actions
 		$program_data['actions'] = '';
@@ -577,6 +563,12 @@ class WP_Plugin_Kompassi_Integration {
 			$program_attributes['data-start'] = $program_data['start'];
 			$program_attributes['data-end'] = $program_data['end'];
 			$program_attributes['data-length'] = $program_data['length'];
+
+			// Get dimension attributes from scheduleItem
+			foreach( $scheduleItem['cachedDimensions'] as $dimension => $values ) {
+				$attr = 'data-' . $dimension;
+				$program_attributes[$attr] = implode( ',', $values );
+			}
 
 			// Convert attrs to HTML attrs
 			$html_attrs = '';
@@ -628,7 +620,19 @@ class WP_Plugin_Kompassi_Integration {
 										echo $this->get_program_value( $program, $key, $scheduleItem_index );
 									}
  								?>
-								<div class="kompassi-dimensions"><?php echo $program_data['dimensions']; ?></div>
+								<div class="kompassi-dimensions">
+									<?php
+										$dimensions = array_merge( array_keys( $program_data['dimensions'] ), array_keys( $scheduleItem['cachedDimensions'] ) );
+										foreach( $dimensions as $dimension ) {
+											if( isset( $scheduleItem['cachedDimensions'][$dimension] ) ) {
+												echo $this->get_dimension_output( $dimension, $scheduleItem['cachedDimensions'][$dimension], $options );
+											} else {
+												echo $program_data['dimensions'][$dimension];
+											}
+										}
+
+									?>
+								</div>
 							</div>
 							<div class="actions" style="grid-area: actions;"><?php echo $program_data['actions']; ?></div>
 						</section>
@@ -636,6 +640,25 @@ class WP_Plugin_Kompassi_Integration {
 				</article>
 			<?php
 		}
+		return ob_get_clean( );
+	}
+
+	/**
+	 *  Returns dimension output
+	 *
+	 */
+
+	function get_dimension_output( $dimension, $values, $options ) {
+		ob_start( );
+		echo '<div class="dimension ' . $dimension . '">';
+		foreach( $values as $slug ) {
+			if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
+				echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
+			} else {
+				echo '<span class="value">' . $slug . '</span> ';
+			}
+		}
+		echo '</div>';
 		return ob_get_clean( );
 	}
 
