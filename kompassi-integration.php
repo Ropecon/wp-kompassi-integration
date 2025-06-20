@@ -539,7 +539,7 @@ class WP_Plugin_Kompassi_Integration {
 
 			if( count( $values ) > 0 ) {
 				if( !isset( $options['dimensions'][$dimension] ) ) {
-					return;
+					continue;
 				}
 
 				$attr = 'data-' . $dimension;
@@ -750,8 +750,11 @@ class WP_Plugin_Kompassi_Integration {
 	}
 
 	function kompassi_program_value_location_if_not_room( $value, $scheduleItem ) {
+		if( !isset( $scheduleItem['cachedDimensions']['room'][0] ) ) {
+			return;
+		}
 		$scheduleItem_room = $scheduleItem['cachedDimensions']['room'][0];
-		if( $scheduleItem['location'] !== $this->event_dimensions['room']['value_labels'][$scheduleItem_room] ) {
+		if( $scheduleItem['location'] != $this->event_dimensions['room']['value_labels'][$scheduleItem_room] ) {
 			$value = $scheduleItem['location'];
 		}
 		return $value;
