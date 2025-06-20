@@ -843,7 +843,7 @@ function kompassi_schedule_apply_filters( ) {
 							for( let word of words ) {
 								if( text.includes( word ) ) {
 									program_relevance += kompassi_schedule_options.search_targets[target];
-									word_matches[this] = true;
+									word_matches[word] = true;
 								}
 							}
 						}
