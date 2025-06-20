@@ -577,6 +577,7 @@ summary::marker {
 	}
 		#kompassi_schedule[data-display="timetable"] .table-controls a:not(.active) {
 			cursor: not-allowed;
+			box-sizing: content-box;
 		}
 
 #kompassi_schedule[data-display="timetable"] .table {
