@@ -538,6 +538,12 @@ class WP_Plugin_Kompassi_Integration {
 			}
 
 			if( count( $values ) > 0 ) {
+				if( $dimension == 'state' ) {
+					if( $values[0] == 'canceled' ) {
+						$program_attributes['data-state'] == 'canceled';
+					}
+					continue;
+				}
 				if( !isset( $options['dimensions'][$dimension] ) ) {
 					continue;
 				}
