@@ -820,25 +820,32 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</thead>';
 		$out .= '<tbody>';
 		foreach( $programs as $program ) {
-			$out .= '<tr ';
-			foreach( $dimensions as $dimension ) {
-				$out .= ' data-' . $dimension['slug'] . '="' . join( ',', $program['cachedDimensions'][$dimension['slug']] ) . '"';
-			}
-			$out .= '>';
-			$out .= '<th>' . $program['title'] . '</th>';
-			foreach( $dimensions as $dimension ) {
-				$out .= '<td class="' . $dimension['slug'] . '">';
-				$program_dimension_values = $program['cachedDimensions'][$dimension['slug']];
-				if( count( $program_dimension_values ) > 0 ) {
-					$program_dimension_labels = array( );
-					foreach( $program_dimension_values as $value ) {
-						$program_dimension_labels[] = $dimension_values[$dimension['slug']]['value_labels'][$value];
+			foreach( $program['scheduleItems'] as $scheduleItem ) {
+				$combined_dimensions = array_merge( $program['cachedDimensions'], $scheduleItem['cachedDimensions'] );
+				$out .= '<tr ';
+				foreach( $dimensions as $dimension ) {
+					if( isset( $combined_dimensions[$dimension['slug']] )  ) {
+						$out .= ' data-' . $dimension['slug'] . '="' . join( ',', $combined_dimensions[$dimension['slug']] ) . '"';
 					}
-					$out .= '<span>' . join( '<br />', $program_dimension_labels ) . '</span>';
 				}
-				$out .= '</td>';
+				$out .= '>';
+				$out .= '<th>' . $program['title'] . '</th>';
+				foreach( $dimensions as $dimension ) {
+					$out .= '<td class="' . $dimension['slug'] . '">';
+					if( isset( $combined_dimensions[$dimension['slug']] )  ) {
+						$program_dimension_values = $combined_dimensions[$dimension['slug']];
+						if( count( $program_dimension_values ) > 0 ) {
+							$program_dimension_labels = array( );
+							foreach( $program_dimension_values as $value ) {
+								$program_dimension_labels[] = $dimension_values[$dimension['slug']]['value_labels'][$value];
+							}
+							$out .= '<span>' . join( '<br />', $program_dimension_labels ) . '</span>';
+						}
+					}
+					$out .= '</td>';
+				}
+				$out .= '</tr>';
 			}
-			$out .= '</tr>';
 		}
 		$out .= '</tbody>';
 		$out .= '</table>';
