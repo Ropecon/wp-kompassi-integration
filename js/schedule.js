@@ -496,10 +496,9 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 				} else {
 					toggle.classList.add( 'active' );
 				}
-
-				kompassi_schedule_setup_display( event.target.dataset.display );
-				kompassi_schedule_update_url_hash( );
 			}
+			kompassi_schedule_setup_display( event.target.dataset.display );
+			kompassi_schedule_update_url_hash( );
 		} );
 	}
 	toolbar.append( display );
