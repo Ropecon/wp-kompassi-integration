@@ -809,6 +809,7 @@ summary::marker {
 }
 	.kompassi-dimensions .dimension {
 		display: inline;
+		cursor: help;
 	}
 		.kompassi-dimensions .dimension:empty {
 			display: none;

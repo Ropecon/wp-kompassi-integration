@@ -661,7 +661,7 @@ class WP_Plugin_Kompassi_Integration {
 
 	function get_dimension_output( $dimension, $values ) {
 		ob_start( );
-		echo '<div class="dimension ' . $dimension . '">';
+		echo '<div class="dimension ' . $dimension . '" title="' . $this->event_dimensions[$dimension]['title'] . '">';
 		foreach( $values as $slug ) {
 			if( isset( $this->event_dimensions[$dimension]['value_labels'][$slug] ) ) {
 				echo '<span class="value">' . $this->event_dimensions[$dimension]['value_labels'][$slug] . '</span> ';
@@ -770,6 +770,7 @@ class WP_Plugin_Kompassi_Integration {
 		$dimension_values = array( );
 		foreach( $dimensions as $dimension ) {
 			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
+			$d['title'] = $dimension['title'];
 			foreach( $dimension['values'] as $value ) {
 				$d['value_labels'][$value['slug']] = $value['title'];
 				foreach( $dimension as $k => $v ) {
