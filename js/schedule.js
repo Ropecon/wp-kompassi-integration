@@ -1443,7 +1443,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 			for( let program of columns[column]['programs'] ) {
 				let program_start = dayjs( program.dataset.start );
 				let table_start = tables[tbl].start;
-				let offset_in_rows = ( program_start.diff( table_start, 'minute' ) / minutes_in_row ) + 1;
+				let offset_in_rows = Math.round( ( program_start.diff( table_start, 'minute' ) / minutes_in_row ) + 1 );
 				if( secondary_grouping ) {
 					offset_in_rows += 1;
 				}
