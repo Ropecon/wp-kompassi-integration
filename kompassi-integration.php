@@ -42,10 +42,10 @@ class WP_Plugin_Kompassi_Integration {
 				'render_callback' => array( &$this, 'block_schedule' ),
 				'attributes' => array(
 					'showToolbar' => array( 'type' => 'boolean', 'default' => 'true' ),
-					'defaultFilters' => array( 'type' => 'string', 'default' => '' ),
 					'eventSlug' => array( 'type' => 'string', 'default' => '' ),
-//					'availableDisplayTypes' => array( 'type' => 'array', 'default' => array( 'list', 'timeline' ) ),
-					'default_display' => array( 'type' => 'string', 'default' => 'list' ),
+					'defaultFilters' => array( 'type' => 'string', 'default' => '' ),
+					'timetablePrimaryGrouping' => array( 'type' => 'string', 'default' => '' ),
+					'timetableSecondaryGrouping' => array( 'type' => 'string', 'default' => '' ),
 				),
 			)
 		);
@@ -405,23 +405,21 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '<section class="kompassi_schedule_wrapper">';
 		$out .= '<section id="kompassi_schedule" data-display="' . $attributes['default_display'] . '" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '" data-timezone="' . $data['timezone'] . '">';
 
-		$options = array( );
 		// Map dimension value labels and flags to arrays
-		$options['dimensions'] = $this->get_dimension_values( $data['program']['dimensions'] );
-		$this->event_dimensions = $options['dimensions'];
+		$this->event_dimensions = $this->get_dimension_values( $data['program']['dimensions'] );
 
 		// Map annotation labels and flags to arrays
-		$options['annotations'] = array( );
+		$this->event_annotations = array( );
 		foreach( $data['program']['annotations'] as $annotation ) {
-			$options['annotations'][$annotation['slug']] = $annotation;
+			$this->event_annotations[$annotation['slug']] = $annotation;
 		}
-		$this->event_annotations = $options['annotations'];
 
-		// Get a list of hidden dimensions
+		// Get a list of hidden dimensions and annotations
+		$options = array( );
 		$options['hidden_dimensions'] = explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) );
 		$options['hidden_annotations'] = explode( ',', get_option( 'kompassi_integration_hidden_annotations', '' ) );
 
-		// Check which icons are avalable
+		// Check which icons are available
 		$icons_path = plugin_dir_path( __FILE__ ) . 'images/icons';
 		if( is_readable( $icons_path ) ) {
 			foreach( scandir( $icons_path ) as $icon ) {
@@ -504,12 +502,12 @@ class WP_Plugin_Kompassi_Integration {
 		//  Annotations
 		$annotations = array( );
 		foreach( $program['cachedAnnotations'] as $field => $value ) {
-			if( !in_array( $field, $options['hidden_annotations'] ) && $options['annotations'][$field]['isShownInDetail'] !== false && $value !== false ) {
+			if( !in_array( $field, $options['hidden_annotations'] ) && $this->event_annotations[$field]['isShownInDetail'] !== false && $value !== false ) {
 				if( $value === true ) {
 					$value = _x( 'Yes', 'boolean field: true', 'kompassi-integration' );
 				}
 				$annotations[] = array(
-					'title' => $options['annotations'][$field]['title'],
+					'title' => $this->event_annotations[$field]['title'],
 					'description' => $value,
 					'class' => 'annotation-' . str_replace( ':', '-', $field )
 				);
@@ -544,18 +542,18 @@ class WP_Plugin_Kompassi_Integration {
 					}
 					continue;
 				}
-				if( !isset( $options['dimensions'][$dimension] ) ) {
+				if( !isset( $this->event_dimensions[$dimension] ) ) {
 					continue;
 				}
 
 				$attr = 'data-' . $dimension;
 				$program_attributes[$attr] = implode( ',', $values );
 
-				if( !$options['dimensions'][$dimension]['flags']['isShownInDetail'] ) {
+				if( !$this->event_dimensions[$dimension]['flags']['isShownInDetail'] ) {
 					continue;
 				}
 
-				$program_data['dimensions'][$dimension] = $this->get_dimension_output( $dimension, $values, $options );
+				$program_data['dimensions'][$dimension] = $this->get_dimension_output( $dimension, $values );
 			}
 		}
 
@@ -639,7 +637,7 @@ class WP_Plugin_Kompassi_Integration {
 										$dimensions = array_merge( array_keys( $program_data['dimensions'] ), array_keys( $scheduleItem['cachedDimensions'] ) );
 										foreach( $dimensions as $dimension ) {
 											if( isset( $scheduleItem['cachedDimensions'][$dimension] ) ) {
-												echo $this->get_dimension_output( $dimension, $scheduleItem['cachedDimensions'][$dimension], $options );
+												echo $this->get_dimension_output( $dimension, $scheduleItem['cachedDimensions'][$dimension] );
 											} else {
 												echo $program_data['dimensions'][$dimension];
 											}
@@ -664,12 +662,12 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function get_dimension_output( $dimension, $values, $options ) {
+	function get_dimension_output( $dimension, $values ) {
 		ob_start( );
 		echo '<div class="dimension ' . $dimension . '">';
 		foreach( $values as $slug ) {
-			if( isset( $options['dimensions'][$dimension]['value_labels'][$slug] ) ) {
-				echo '<span class="value">' . $options['dimensions'][$dimension]['value_labels'][$slug] . '</span> ';
+			if( isset( $this->event_dimensions[$dimension]['value_labels'][$slug] ) ) {
+				echo '<span class="value">' . $this->event_dimensions[$dimension]['value_labels'][$slug] . '</span> ';
 			} else {
 				echo '<span class="value">' . $slug . '</span> ';
 			}
@@ -849,21 +847,6 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</div>';
 
 		return $out;
-	}
-
-	/**
-	 *  Sorts program by event starting time
-	 *  Callable function for usort()
-	 */
-
-	function sort_by_starting_time( $a, $b ) {
-		if( $a['start'] > $b['start'] ) {
-			return 1;
-		} elseif( $b['start'] > $a['start'] ) {
-			return -1;
-		} else {
-			return 0;
-		}
 	}
 
 	/**

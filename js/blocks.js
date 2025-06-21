@@ -26,12 +26,10 @@ wp.blocks.registerBlockType(
       },
       attributes: {
          showToolbar: { type: 'boolean', default: 'true' },
-         defaultFilters: { type: 'string', default: '' },
          eventSlug: { type: 'string', default: '' },
+         defaultFilters: { type: 'string', default: '' },
          timetablePrimaryGrouping: { type: 'string', default: '' },
          timetableSecondaryGrouping: { type: 'string', default: '' },
-//         availableDisplayTypes: { type: 'array', default: ['list','timeline'] },
-         default_display: { type: 'string', default: 'list' },
       },
       edit: function( props ) {
          if( !props ) {
