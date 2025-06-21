@@ -91,6 +91,7 @@ wp.blocks.registerBlockType(
                      onChange: function( value ) {
                         props.setAttributes( { timetableSecondaryGrouping: value } )
                      },
+                     help: __( 'Programs will be grouped into table columns based on the (first) dimension vlaue in this dimension.', 'kompassi-integration' ),
                      __next40pxDefaultSize: true,
                   } ),
                ),
