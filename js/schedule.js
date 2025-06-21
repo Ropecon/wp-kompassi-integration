@@ -691,8 +691,8 @@ function kompassi_schedule_update_date_view_parameters( ) {
 		} else {
 			let date = dayjs( dayjs( date_filter.dataset.date ).tz( schedule.dataset.timezone, true ).toISOString( ) );
 
-			let start_of_day = parseInt( kompassi_schedule_options.schedule_start_of_day );
-			let end_of_day = parseInt( kompassi_schedule_options.schedule_end_of_day );
+			let start_of_day = parseInt( kompassi_schedule_options.start_of_day );
+			let end_of_day = parseInt( kompassi_schedule_options.end_of_day );
 			if( isNaN( start_of_day ) ) { start_of_day = 0; }
 			if( isNaN( end_of_day ) ) { end_of_day = 0; }
 
@@ -907,14 +907,14 @@ function kompassi_schedule_apply_filters( ) {
 	// TODO: Timetable?
 	let date_filter = document.querySelector( '#kompassi_block_schedule .date-toggle.active' );
 	if( date_filter ) {
-		if( kompassi_schedule_options.schedule_start_of_day != 0 || kompassi_schedule_options.schedule_end_of_day != 0 ) {
+		if( kompassi_schedule_options.start_of_day != 0 || kompassi_schedule_options.end_of_day != 0 ) {
 			// Do not show message on "Now" view
 			if( date_filter.dataset.date != 'now' ) {
 				let program_count = document.querySelectorAll( '#kompassi_schedule article:not(.filtered)' ).length;
 				if( program_count > 0 ) {
 					let notes = document.getElementById( 'kompassi_schedule_notes' );
 					// translators: start of day hour, end of day hour
-					notes.insertAdjacentHTML( 'beforeend', '<span class="filter programs-between display-only-list">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), kompassi_schedule_options.schedule_start_of_day, kompassi_schedule_options.schedule_end_of_day ) + '</span>' );
+					notes.insertAdjacentHTML( 'beforeend', '<span class="filter programs-between display-only-list">' + sprintf( __( 'Showing programs starting between %1$s and %2$s.', 'kompassi-integration' ), kompassi_schedule_options.start_of_day, kompassi_schedule_options.end_of_day ) + '</span>' );
 				}
 			}
 		}
@@ -1393,7 +1393,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	let tables = {};
 	let primary_groups = kompassi_schedule_group_programs( programs, primary_grouping );
 	for( let group in primary_groups ) {
-		let date_groups = kompassi_schedule_group_programs( primary_groups[group]['programs'], 'date' );
+		let date_groups = kompassi_schedule_group_programs( primary_groups[group]['programs'], 'date_user_start_end' );
 		for( let date in date_groups ) {
 			let table_key = primary_groups[group].title + '-' + date;
 			tables[table_key] = {
@@ -1918,12 +1918,15 @@ function kompassi_schedule_find_timeslots( program_group ) {
 }
 
 /**
- *  Add "date" grouping
+ *  Add "date_user_start_end" grouping
  *  Filter: kompassi_schedule_grouping_sort_function_{grouping}
  *
  */
 
-wp.hooks.addFilter( 'kompassi_schedule_grouping_date', 'kompassi_schedule', function( values, program ) {
+wp.hooks.addFilter( 'kompassi_schedule_grouping_date_user_start_end', 'kompassi_schedule', function( values, program ) {
+	// TODO: Use the user-defined start/end of day times here
+	// kompassi_schedule_options.start_of_day
+	// kompassi_schedule_options.end_of_day
 	values.key = dayjs( program.dataset.start ).format( 'YYYY-MM-DD' );
 	values.title = values.key;
 	return values;
@@ -2058,15 +2061,15 @@ function kompassi_schedule_create_sort_function_to_sort_by_dimension( dimension 
 			} else if( a_group && !b_group ) {
 				return 1;
 			}
-		}
 
-		let a_text = a_group.textContent;
-		let b_text = b_group.textContent;
+			let a_text = a_group.textContent;
+			let b_text = b_group.textContent;
 
-		if( a_text > b_text ) {
-			return 1;
-		} else if( a_text < b_text ) {
-			return -1;
+			if( a_text > b_text ) {
+				return 1;
+			} else if( a_text < b_text ) {
+				return -1;
+			}
 		}
 
 		if( a.dataset.start > b.dataset.start ) {
