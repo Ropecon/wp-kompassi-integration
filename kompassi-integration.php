@@ -44,6 +44,7 @@ class WP_Plugin_Kompassi_Integration {
 					'showToolbar' => array( 'type' => 'boolean', 'default' => 'true' ),
 					'eventSlug' => array( 'type' => 'string', 'default' => '' ),
 					'defaultFilters' => array( 'type' => 'string', 'default' => '' ),
+					'timelineGrouping' => array( 'type' => 'string', 'default' => '' ),
 					'timetablePrimaryGrouping' => array( 'type' => 'string', 'default' => '' ),
 					'timetableSecondaryGrouping' => array( 'type' => 'string', 'default' => '' ),
 				),
@@ -110,10 +111,6 @@ class WP_Plugin_Kompassi_Integration {
 				'label' => __( 'Hidden Annotations', 'kompassi-integration' ),
 				'description' => __( 'Comma-separated list of annotation fields that should be hidden.', 'kompassi-integration' )
 			),
-			'timeline_grouping' => array(
-				'label' => __( 'Timeline Grouping', 'kompassi-integration' ),
-				'description' => __( 'Dimension slug for the dimension that should be used to group program with subheadings in timeline.', 'kompassi-integration' )
-			)
 		);
 
 		foreach( $fields as $key => $data ) {

@@ -804,25 +804,27 @@ summary::marker {
  *
  */
 
-.kompassi-dimensions .dimension {
-	display: inline-block;
-	margin-top: 0.3em;
+.kompassi-dimensions {
+	margin-top: var(--kompassi-padding);
 }
-	.kompassi-dimensions .dimension:empty {
-		display: none;
+	.kompassi-dimensions .dimension {
+		display: inline;
 	}
-	.kompassi-dimensions .dimension .value {
-		display: inline-block;
-		max-width: 100%;
-		padding: 0.2em 0.6em;
-		margin-right: 0.5em;
-		margin-bottom: 0.3em;
-		background-color: var(--kompassi-dimension-color,var(--kompassi-dimension-color-default));
-		color: #fff;
-		border-radius: 9999px;
-		overflow-wrap: break-word;
-		line-height: 1.2em;
-	}
+		.kompassi-dimensions .dimension:empty {
+			display: none;
+		}
+		.kompassi-dimensions .dimension .value {
+			display: inline-block;
+			max-width: 100%;
+			padding: 0.2em 0.6em;
+			margin-right: 0.5em;
+			margin-bottom: 0.5em;
+			background-color: var(--kompassi-dimension-color,var(--kompassi-dimension-color-default));
+			color: #fff;
+			border-radius: 9999px;
+			overflow-wrap: break-word;
+			line-height: 1.2em;
+		}
 
 /*
  *  Current time indicator

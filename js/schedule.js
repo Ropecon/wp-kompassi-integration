@@ -1039,6 +1039,9 @@ wp.hooks.addAction( 'kompassi_schedule_revert_list_layout', 'kompassi_integratio
  */
 
 wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integration_schedule', function( ) {
+	let block = document.getElementById( 'kompassi_block_schedule' );
+	let block_options = JSON.parse( block.dataset.wpContext );
+
 	let schedule = document.getElementById( 'kompassi_schedule' );
 	let rows = [ 'day hints', 'time hints' ];
 
@@ -1053,7 +1056,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 	let length = kompassi_schedule.filters.date.length_hours * 60;
 
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
-	programs = [...programs].sort( kompassi_schedule_sort_by_group );
+	programs = [...programs].sort( kompassi_schedule_create_sort_function_to_sort_by_dimension( block_options.timelineGrouping ) );
 
 	for( let program of programs ) {
 		// Count the width % and offset % for program
@@ -1066,8 +1069,8 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 		let program_row;
 
 		// See if we need to add a group heading
-		if( kompassi_schedule_options.timeline_grouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == kompassi_schedule_options.timeline_grouping ) ) {
-			grouping = kompassi_schedule_options.timeline_grouping;
+		if( block_options.timelineGrouping.length > 0 && kompassi_schedule_dimensions.some( e => e.slug == block_options.timelineGrouping ) ) {
+			grouping = block_options.timelineGrouping;
 		}
 
 		if( grouping ) {
@@ -2044,15 +2047,17 @@ function kompassi_schedule_update_url_hash( ) {
  *
  */
 
-function kompassi_schedule_sort_by_group( a, b ) {
-	if( kompassi_schedule_options.timeline_grouping.length > 0 ) {
-		let a_group = a.querySelector( '.' + kompassi_schedule_options.timeline_grouping );
-		let b_group = b.querySelector( '.' + kompassi_schedule_options.timeline_grouping );
+function kompassi_schedule_create_sort_function_to_sort_by_dimension( dimension ) {
+	return function( a, b ) {
+		if( dimension.length > 0 ) {
+			let a_group = a.querySelector( '.' + dimension );
+			let b_group = b.querySelector( '.' + dimension );
 
-		if( ( !a_group && !b_group ) || ( !a_group && b_group ) ) {
-			return -1;
-		} else if( a_group && !b_group ) {
-			return 1;
+			if( ( !a_group && !b_group ) || ( !a_group && b_group ) ) {
+				return -1;
+			} else if( a_group && !b_group ) {
+				return 1;
+			}
 		}
 
 		let a_text = a_group.textContent;
@@ -2063,11 +2068,11 @@ function kompassi_schedule_sort_by_group( a, b ) {
 		} else if( a_text < b_text ) {
 			return -1;
 		}
-	}
 
-	if( a.dataset.start > b.dataset.start ) {
-		return 1;
-	}
+		if( a.dataset.start > b.dataset.start ) {
+			return 1;
+		}
 
-	return -1;
+		return -1;
+	}
 }

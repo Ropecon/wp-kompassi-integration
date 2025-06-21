@@ -28,6 +28,7 @@ wp.blocks.registerBlockType(
          showToolbar: { type: 'boolean', default: 'true' },
          eventSlug: { type: 'string', default: '' },
          defaultFilters: { type: 'string', default: '' },
+         timelineGrouping: { type: 'string', default: '' },
          timetablePrimaryGrouping: { type: 'string', default: '' },
          timetableSecondaryGrouping: { type: 'string', default: '' },
       },
@@ -74,6 +75,17 @@ wp.blocks.registerBlockType(
                      el( 'br', { } ),
                      el( 'code', { }, 'language:fi/display:timeline' )
                   ),
+               ),
+               el( wp.components.PanelBody, { title: __( 'Timeline', 'kompassi-integration' ) },
+                  el( wp.components.TextControl, {
+                     label: __( 'Grouping Dimension', 'kompassi-integration' ),
+                     value: props.attributes.timelineGrouping,
+                     onChange: function( value ) {
+                        props.setAttributes( { timelineGrouping: value } )
+                     },
+                     help: __( 'Programs will be grouped with subheadings based on the (first) dimension value in this dimension.', 'kompassi-integration' ),
+                     __next40pxDefaultSize: true,
+                  } ),
                ),
                el( wp.components.PanelBody, { title: __( 'Timetable', 'kompassi-integration' ) },
                   el( wp.components.TextControl, {
