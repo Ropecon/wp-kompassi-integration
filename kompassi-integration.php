@@ -400,7 +400,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		$out .= '<section class="kompassi_schedule_wrapper">';
-		$out .= '<section id="kompassi_schedule" data-display="' . $attributes['default_display'] . '" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '" data-timezone="' . $data['timezone'] . '">';
+		$out .= '<section id="kompassi_schedule" data-display="list" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '" data-timezone="' . $data['timezone'] . '">';
 
 		// Map dimension value labels and flags to arrays
 		$this->event_dimensions = $this->get_dimension_values( $data['program']['dimensions'] );
