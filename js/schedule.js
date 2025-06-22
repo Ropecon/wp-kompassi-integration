@@ -423,7 +423,7 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 
 	//  Dimension filters
 	for( let dimension of kompassi_schedule_dimensions ) {
-		if( dimension.isListFilter == false ) {
+		if( dimension.isListFilter == false || dimension.slug == 'state' ) {
 			continue;
 		}
 		if( kompassi_schedule_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
