@@ -1024,6 +1024,7 @@ wp.hooks.addAction( 'kompassi_schedule_revert_list_layout', 'kompassi_integratio
 	let programs = document.querySelectorAll( '#kompassi_schedule article' );
 	for( let program of programs ) {
 		program.style.order = '1';
+		program.querySelector( 'details' ).removeAttribute( 'open' );
 	}
 } );
 
