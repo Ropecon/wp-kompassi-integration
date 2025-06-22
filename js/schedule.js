@@ -371,16 +371,36 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 	} );
 
 	/*  Dropdown menu  */
-	let dropdown = kompassi_dropdown_menu(
-		{
-			legend: { label: __( 'Legend', 'kompassi-integration' ), callback: kompassi_schedule_legend_modal },
-			help: { label: __( 'Help', 'kompassi-integration' ), callback: kompassi_schedule_help_modal },
-			export: { label: __( 'Export Favorites', 'kompassi-integration' ), callback: kompassi_schedule_export_modal },
-		},
-		{
-			id: 'kompassi_schedule_menu'
+	let dropdown_items = { };
+	// Legend modal
+	let legend_modal_data = kompassi_schedule_get_legend_modal_data( );
+	if( legend_modal_data.length > 0 ) {
+		dropdown_items['legend'] = {
+			label: __( 'Legend', 'kompassi-integration' ),
+			callback: function( ) {
+				let content = '<dl class="dimension-colors">';
+				for( let row of kompassi_schedule_get_legend_modal_data( ) ) {
+					content += row;
+				}
+				content += '</dl>';
+
+				let options = {
+					title: __( 'Legend', 'kompassi-integration' ),
+					content: content,
+					attrs: {
+						class: 'kompassi-legend'
+					}
+				}
+				kompassi_show_modal( options );
+			}
 		}
-	);
+	}
+	// Help modal
+	dropdown_items['help'] = { label: __( 'Help', 'kompassi-integration' ), callback: kompassi_schedule_help_modal };
+	// Export modal
+	dropdown_items['export'] = { label: __( 'Export Favorites', 'kompassi-integration' ), callback: kompassi_schedule_export_modal };
+	wp.hooks.applyFilters( 'kompassi_schedule_dropdown_menu_items', dropdown_items );
+	let dropdown = kompassi_dropdown_menu( dropdown_items, { id: 'kompassi_schedule_menu' } );
 	toolbar.append( dropdown );
 
 	/*  Filter popup  */
@@ -1693,15 +1713,14 @@ function kompassi_schedule_program_modal( program ) {
 }
 
 /**
- *  Displays schedule legend modal
+ *  Returns schedule legend modal data
  *
  */
 
-function kompassi_schedule_legend_modal( ) {
-	let content = '';
-	content += '<dl class="dimension-colors">';
+function kompassi_schedule_get_legend_modal_data( ) {
+	let legend = [];
 	for( let dimension of kompassi_schedule_dimensions ) {
-		if( dimension.isListFilter == false ) {
+		if( dimension.isListFilter == false || dimension.slug == 'state' ) {
 			continue;
 		}
 		if( kompassi_schedule_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
@@ -1713,20 +1732,12 @@ function kompassi_schedule_legend_modal( ) {
 
 		for( let value of dimension.values ) {
 			if( value.color ) {
-				content += '<dt><span style="background-color: ' + value.color + ';"></span></dt><dd>' + dimension.title + ': ' + value.title + '</dd>';
+				legend.push( '<dt><span style="background-color: ' + value.color + ';"></span></dt><dd>' + dimension.title + ': ' + value.title + '</dd>' );
 			}
 		}
 	}
-	content += '</dl>';
 
-	let options = {
-		title: __( 'Legend', 'kompassi-integration' ),
-		content: content,
-		attrs: {
-			class: 'kompassi-legend'
-		}
-	}
-	kompassi_show_modal( options );
+	return legend;
 }
 
 /**
