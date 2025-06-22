@@ -223,7 +223,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 @container kompassi-integration (min-width: 700px) {
 	#kompassi_schedule_filters.visible {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(var(--kompassi-schedule-filters-columns, 4), minmax(0, 1fr));
 		grid-gap: var(--kompassi-padding);
 	}
 		#kompassi_schedule_filters.visible > *,

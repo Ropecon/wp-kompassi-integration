@@ -448,6 +448,11 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 
 		filter_popup.append( kompassi_dropdown( dropdown_options ) );
 	}
+	// Divide into an ideal columns amount
+	let ideal_columns_amount = kompassi_schedule_get_ideal_filter_columns_amount( filter_popup.children.length );
+	if( ideal_columns_amount != 4 ) {
+		filter_popup.style.setProperty( '--kompassi-schedule-filters-columns', ideal_columns_amount );
+	}
 
 	// Clear filters
 	let clear_toggle = document.createElement( 'a' );
@@ -2089,4 +2094,22 @@ function kompassi_schedule_create_sort_function_to_sort_by_dimension( dimension 
 
 		return -1;
 	}
+}
+
+/*
+ *  Get the ideal amount of columns for filters
+ *
+ */
+
+function kompassi_schedule_get_ideal_filter_columns_amount( items ) {
+  if( items % 4 === 0 ) {
+	  return 4;
+  }
+  for( let fours = Math.floor( items / 4 ); fours >= 0; fours-- ) {
+	 if( ( items - fours * 4 ) % 3 === 0 ) {
+		const threes = ( items - fours * 4 ) / 3;
+      return fours >= threes ? 4 : 3;
+    }
+  }
+  return 3;
 }
