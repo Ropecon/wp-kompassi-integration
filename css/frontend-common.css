@@ -673,6 +673,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       margin-top: 0;
       padding-left: 0;
       border: 1px solid var(--kompassi-fg-50);
+      max-height: 400px;
+      overflow-y: scroll;
    }
       .kompassi-dropdown li {
          color: var(--kompassi-fg);
