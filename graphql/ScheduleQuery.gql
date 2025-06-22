@@ -35,7 +35,7 @@ query ScheduleQuery($eventSlug: String!, $locale: String) {
           slug
           title
           subtitle
-          location
+          location(lang: $locale)
           startTime
           endTime
           lengthMinutes
