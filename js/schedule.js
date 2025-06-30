@@ -1413,6 +1413,11 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	let primary_grouping = block_options.timetablePrimaryGrouping;
 	let secondary_grouping = block_options.timetableSecondaryGrouping;
 
+	if( block.querySelector( '.favorites-toggle' ).classList.contains( 'active' ) ) {
+		// Favorites enabled, primary grouping is favorites
+		primary_grouping = 'favorites';
+	}
+
 	let programs = schedule.querySelectorAll( 'article:not(.filtered)' );
 
 	let tables = {};
@@ -1856,6 +1861,9 @@ function kompassi_schedule_import_modal( programs ) {
 function kompassi_schedule_group_programs( programs, grouping ) {
 	if( grouping == false || grouping == undefined ) {
 		return { '': { 'programs': programs } };
+	}
+	if( grouping == 'favorites' ) {
+		return { '': { 'programs': programs, 'title': __( 'Favorites', 'kompassi-integration' ) } };
 	}
 
 	let grouped = { };
