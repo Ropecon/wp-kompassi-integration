@@ -70,9 +70,10 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 #kompassi_schedule_toolbar {
 	display: grid;
+	width: 100%;
 	margin-bottom: var(--kompassi-padding);
 	grid-gap: var(--kompassi-padding);
-	grid-template-areas: "dates dates" "filtering filtering" "menu display";
+	grid-template-areas: "dates dates" "menu filtering" "display display";
 	grid-template-columns: min-content auto;
 }
 	#kompassi_schedule_toolbar section { align-content: center; }
@@ -83,7 +84,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
 @container kompassi-integration (min-width:450px) {
 	#kompassi_schedule_toolbar {
-		grid-template-areas: "dates display" "filtering menu";
+		grid-template-areas: "dates display display" "filtering filtering menu";
 		grid-template-columns: auto auto;
 	}
 		#kompassi_schedule_toolbar #kompassi_schedule_menu { justify-self: end; }
@@ -97,7 +98,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 		#kompassi_schedule_toolbar #kompassi_schedule_display { text-align: right; }
 }
 
-@container kompassi-integration (min-width:700px) {
+@container kompassi-integration (min-width:800px) {
 	#kompassi_schedule_toolbar {
 		grid-template-areas: "dates filtering menu display";
 		grid-template-columns: max-content max-content auto max-content;
@@ -162,6 +163,9 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	#kompassi_schedule_filters.visible {
 		display: block;
 	}
+		#kompassi_schedule_filters > *:not(:last-child) {
+			margin-bottom: var(--kompassi-padding);
+		}
 		#kompassi_schedule_filters > [class*="kompassi-icon"]::before {
 			filter: invert();
 		}
