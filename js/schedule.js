@@ -1666,8 +1666,10 @@ wp.hooks.addAction( 'kompassi_schedule_revert_timetable_layout', 'kompassi_integ
 function kompassi_schedule_program_modal( program ) {
 	kompassi_close_modal( );
 
-	let program_color = program.style.getPropertyValue( '--kompassi-program-color' );
-	let program_icon = program.style.getPropertyValue( '--kompassi-program-icon' );
+	let program_styles = window.getComputedStyle( program );
+
+	let program_color = program_styles.getPropertyValue( '--kompassi-program-color' );
+	let program_icon = program_styles.getPropertyValue( '--kompassi-program-icon' );
 
 	let styles = '';
 	if( program_color ) {
