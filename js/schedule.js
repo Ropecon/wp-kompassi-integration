@@ -1495,7 +1495,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 					table.append( time );
 				}
 				table.addEventListener( 'scrollend', function( event ) {
-					kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50, table );
+					kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50 );
 				} );
 			}
 		}
