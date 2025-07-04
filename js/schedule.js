@@ -1086,7 +1086,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 	for( let program of programs ) {
 		// Count the width % and offset % for program
 		let width = program.dataset.length / length * 100;
-		let start = dayjs( program.dataset.start ).tz( schedule.dataset.timezone ).startOf( 'hour' );
+		let start = dayjs( program.dataset.start ).tz( schedule.dataset.timezone );
 		let offset_min = start.diff( kompassi_schedule.filters.date.start, 'minute' );
 		let offset = offset_min / length * 100;
 		let grouping = false;
@@ -1140,8 +1140,8 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 			check_index += 1;
 		}
 
-		program.style.width = 'calc( ' + width + '% - 9px )';
-		program.style.minWidth = 'calc( ' + width + '% - 9px )';
+		program.style.width = 'calc( ' + width + '% - 6px )';
+		program.style.minWidth = 'calc( ' + width + '% - 6px )';
 		program.style.left = 'calc( ' + offset + '% + 3px )';
 		program.style.top = 'calc( ' + program_row + ' * var(--kompassi-schedule-timeline-row-height) )'; // Grouping
 		if( offset < 0 ) {
