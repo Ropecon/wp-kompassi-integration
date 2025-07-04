@@ -299,6 +299,10 @@ summary::marker {
 	letter-spacing: 0.04em;
 }
 
+#kompassi_schedule article .actions > a {
+	margin-right: var(--kompassi-padding);
+}
+
 #kompassi_schedule article .actions > ::before {
 	content: '';
 	display: inline-block;
