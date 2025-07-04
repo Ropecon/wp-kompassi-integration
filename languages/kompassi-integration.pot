@@ -3,20 +3,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kompassi Integration 2025-06-15.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-integration\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-integration\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-21T07:12:46+00:00\n"
+"POT-Creation-Date: 2025-07-04T08:33:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:131
-#: kompassi-integration.php:145
+#: kompassi-integration.php:129
+#: kompassi-integration.php:143
 msgid "Kompassi Integration"
 msgstr ""
 
@@ -28,123 +28,115 @@ msgstr ""
 msgid "Pasi Lallinaho"
 msgstr ""
 
-#: kompassi-integration.php:71
-#: js/blocks.js:54
-#: js/blocks.js:139
+#: kompassi-integration.php:73
+#: js/blocks.js:55
+#: js/blocks.js:151
 msgid "Event Technical Name"
 msgstr ""
 
-#: kompassi-integration.php:72
+#: kompassi-integration.php:74
 msgid "Technical name for the event in Kompassi (eg. tracon2024)."
 msgstr ""
 
-#: kompassi-integration.php:75
+#: kompassi-integration.php:77
 msgid "Contact"
 msgstr ""
 
-#: kompassi-integration.php:76
+#: kompassi-integration.php:78
 msgid "Email address for contacts (eg. errors in the program data)."
 msgstr ""
 
-#: kompassi-integration.php:79
+#: kompassi-integration.php:81
 msgid "Cache"
 msgstr ""
 
-#: kompassi-integration.php:82
+#: kompassi-integration.php:84
 msgctxt "caching: none"
 msgid "None"
 msgstr ""
 
-#: kompassi-integration.php:83
+#: kompassi-integration.php:85
 msgctxt "caching: transient"
 msgid "Transient"
 msgstr ""
 
-#: kompassi-integration.php:85
+#: kompassi-integration.php:87
 msgid "Method used for caching."
 msgstr ""
 
-#: kompassi-integration.php:86
+#: kompassi-integration.php:88
 msgid "Clear cache now"
 msgstr ""
 
-#: kompassi-integration.php:89
+#: kompassi-integration.php:91
 msgid "Color Scheme"
 msgstr ""
 
-#: kompassi-integration.php:92
+#: kompassi-integration.php:94
 msgctxt "color scheme: follow user browser preference"
 msgid "Automatic (user preference)"
 msgstr ""
 
-#: kompassi-integration.php:93
+#: kompassi-integration.php:95
 msgctxt "color scheme: light"
 msgid "Light"
 msgstr ""
 
-#: kompassi-integration.php:94
+#: kompassi-integration.php:96
 msgctxt "color scheme: dark"
 msgid "Dark"
 msgstr ""
 
-#: kompassi-integration.php:98
+#: kompassi-integration.php:100
 msgid "Start of Day"
 msgstr ""
 
-#: kompassi-integration.php:99
+#: kompassi-integration.php:101
 msgid "The earliest time shown when filtering programs by date."
 msgstr ""
 
-#: kompassi-integration.php:102
+#: kompassi-integration.php:104
 msgid "End of Day"
 msgstr ""
 
-#: kompassi-integration.php:103
+#: kompassi-integration.php:105
 msgid "The latest time shown when filtering programs by date, eg. only programs that start before this hour will be visible."
 msgstr ""
 
-#: kompassi-integration.php:106
+#: kompassi-integration.php:108
 msgid "Hidden Dimensions"
 msgstr ""
 
-#: kompassi-integration.php:107
+#: kompassi-integration.php:109
 msgid "Comma-separated list of dimension slugs that should be hidden from filters."
 msgstr ""
 
-#: kompassi-integration.php:110
+#: kompassi-integration.php:112
 msgid "Hidden Annotations"
 msgstr ""
 
-#: kompassi-integration.php:111
+#: kompassi-integration.php:113
 msgid "Comma-separated list of annotation fields that should be hidden."
 msgstr ""
 
-#: kompassi-integration.php:114
-msgid "Timeline Grouping"
-msgstr ""
-
-#: kompassi-integration.php:115
-msgid "Dimension slug for the dimension that should be used to group program with subheadings in timeline."
-msgstr ""
-
-#: kompassi-integration.php:148
+#: kompassi-integration.php:146
 msgid "Save Changes"
 msgstr ""
 
 #. translators: amount of transients deleted
-#: kompassi-integration.php:363
+#: kompassi-integration.php:361
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kompassi-integration.php:507
+#: kompassi-integration.php:506
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr ""
 
-#: kompassi-integration.php:613
-msgid "Related"
+#: kompassi-integration.php:612
+msgid "Other schedule times"
 msgstr ""
 
 #: kompassi-integration.php:817
@@ -152,65 +144,77 @@ msgid "Program"
 msgstr ""
 
 #. translators: email link
-#: kompassi-integration.php:862
+#: kompassi-integration.php:869
 msgid "If you find errors in the program data, contact us at %s."
 msgstr ""
 
 #: js/blocks.js:20
-#: js/blocks.js:41
+#: js/blocks.js:42
 msgid "Program Schedule"
 msgstr ""
 
-#: js/blocks.js:45
+#: js/blocks.js:46
 msgid "General"
 msgstr ""
 
-#: js/blocks.js:47
+#: js/blocks.js:48
 msgid "Show Toolbar"
 msgstr ""
 
-#: js/blocks.js:62
+#: js/blocks.js:63
 msgid "Defaults"
 msgstr ""
 
-#: js/blocks.js:64
+#: js/blocks.js:65
 msgid "Filters"
 msgstr ""
 
-#: js/blocks.js:69
+#: js/blocks.js:70
 msgid "To change the default values for text search, filters and display type when loading this page, insert the options here."
 msgstr ""
 
-#: js/blocks.js:73
+#: js/blocks.js:74
 msgid "For example"
 msgstr ""
 
-#: js/blocks.js:78
+#: js/blocks.js:79
+msgid "Timeline"
+msgstr ""
+
+#: js/blocks.js:81
+msgid "Grouping Dimension"
+msgstr ""
+
+#: js/blocks.js:86
+msgid "Programs will be grouped with subheadings based on the (first) dimension value in this dimension."
+msgstr ""
+
+#: js/blocks.js:90
 msgid "Timetable"
 msgstr ""
 
-#: js/blocks.js:80
+#: js/blocks.js:92
 msgid "Primary Grouping Dimension"
 msgstr ""
 
-#: js/blocks.js:85
+#: js/blocks.js:97
 msgid "Programs will be grouped into tables based on the (first) dimension value in this dimension."
 msgstr ""
 
-#: js/blocks.js:89
+#: js/blocks.js:101
 msgid "Secondary Grouping Dimension"
 msgstr ""
 
-#: js/blocks.js:94
+#: js/blocks.js:106
 msgid "Programs will be grouped into table columns based on the (first) dimension vlaue in this dimension."
 msgstr ""
 
-#: js/blocks.js:115
-#: js/blocks.js:132
+#: js/blocks.js:127
+#: js/blocks.js:144
 msgid "Program Dimension List"
 msgstr ""
 
-#: js/blocks.js:136
+#: js/blocks.js:148
 msgid "Options"
 msgstr ""
 
@@ -229,6 +233,7 @@ msgid "Now"
 msgstr ""
 
 #: js/schedule.js:351
+#: js/schedule.js:1868
 msgid "Favorites"
 msgstr ""
 
@@ -237,106 +242,106 @@ msgctxt "verb (shown before filters)"
 msgid "Filter"
 msgstr ""
 
-#: js/schedule.js:376
-#: js/schedule.js:1720
+#: js/schedule.js:379
+#: js/schedule.js:388
 msgid "Legend"
 msgstr ""
 
-#: js/schedule.js:377
+#: js/schedule.js:399
 msgid "Help"
 msgstr ""
 
-#: js/schedule.js:378
-#: js/schedule.js:1786
+#: js/schedule.js:401
+#: js/schedule.js:1812
 msgid "Export Favorites"
 msgstr ""
 
-#: js/schedule.js:398
+#: js/schedule.js:418
 msgid "Text..."
 msgstr ""
 
-#: js/schedule.js:426
+#: js/schedule.js:446
 msgid "Program matching selection will be hidden from results."
 msgstr ""
 
-#: js/schedule.js:435
+#: js/schedule.js:460
 msgid "Clear filters"
 msgstr ""
 
-#: js/schedule.js:473
+#: js/schedule.js:498
 msgctxt "display style"
 msgid "List"
 msgstr ""
 
-#: js/schedule.js:474
+#: js/schedule.js:499
 msgctxt "display style"
 msgid "Timeline"
 msgstr ""
 
-#: js/schedule.js:475
+#: js/schedule.js:500
 msgctxt "display style"
 msgid "Timetable"
 msgstr ""
 
 #. translators: count of programs visible
-#: js/schedule.js:661
+#: js/schedule.js:685
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:664
+#: js/schedule.js:688
 msgid "Nothing matched your search!"
 msgstr ""
 
 #. translators: start of day hour, end of day hour
-#: js/schedule.js:917
+#: js/schedule.js:941
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr ""
 
 #. translators: amount of repositioned events
-#: js/schedule.js:929
+#: js/schedule.js:953
 msgid "Show %d program that started earlier"
 msgid_plural "Show %d programs that started earlier"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/schedule.js:931
+#: js/schedule.js:955
 msgid "Programs continuing"
 msgstr ""
 
-#: js/schedule.js:1076
+#: js/schedule.js:1104
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:1740
+#: js/schedule.js:1766
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:1773
+#: js/schedule.js:1799
 msgid "Create an import link to export your favorites to another device."
 msgstr ""
 
-#: js/schedule.js:1774
+#: js/schedule.js:1800
 msgid "Favorites to be exported:"
 msgstr ""
 
-#: js/schedule.js:1781
+#: js/schedule.js:1807
 msgid "Copy import link to clipboard"
 msgstr ""
 
-#: js/schedule.js:1815
+#: js/schedule.js:1841
 msgid "Replace Favorites"
 msgstr ""
 
-#: js/schedule.js:1816
+#: js/schedule.js:1842
 msgid "Append to Favorites"
 msgstr ""
 
-#: js/schedule.js:1821
+#: js/schedule.js:1847
 msgid "Import Favorites"
 msgstr ""
 
-#: js/schedule.js:1853
+#: js/schedule.js:1882
 msgid "No group"
 msgstr ""
