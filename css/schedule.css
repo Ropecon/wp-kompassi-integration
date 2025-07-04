@@ -514,6 +514,9 @@ summary::marker {
 			white-space: nowrap;
 			overflow: hidden;
 		}
+			#kompassi_schedule[data-display="timeline"] article section {
+				display: none;
+			}
 			#kompassi_schedule[data-display="timeline"] article summary :is(.favorite, .secondary) {
 				display: none;
 			}
@@ -683,6 +686,9 @@ summary::marker {
 	z-index: 2;
 	scroll-snap-align: start;
 }
+	#kompassi_schedule[data-display="timetable"] article section {
+		display: none;
+	}
 	#kompassi_schedule[data-display="timetable"] article details {
 		height: 100%;
 	}
@@ -709,6 +715,7 @@ summary::marker {
 		filter: brightness(1.25);
 		z-index: 2000;
 	}
+
 
 /*
  *  Modal
