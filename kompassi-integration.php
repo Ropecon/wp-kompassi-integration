@@ -404,6 +404,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '<section id="kompassi_schedule" data-display="list" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '" data-timezone="' . $data['timezone'] . '">';
 
 		// Map dimension value labels and flags to arrays
+		$this->event = new stdClass( );
 		$this->event->dimensions = $this->get_dimension_values( $data['program']['dimensions'] );
 
 		// Map annotation labels and flags to arrays
