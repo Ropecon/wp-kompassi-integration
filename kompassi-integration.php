@@ -13,6 +13,7 @@ class WP_Plugin_Kompassi_Integration {
 	private string $ver;
 	private string $icon;
 	private array $icons;
+	private object $event;
 
 	function __construct( ) {
 		add_action( 'init', array( $this, 'init' ) );
@@ -403,12 +404,12 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '<section id="kompassi_schedule" data-display="list" data-start="' . $data['startTime'] . '" data-end="' . $data['endTime'] . '" data-timezone="' . $data['timezone'] . '">';
 
 		// Map dimension value labels and flags to arrays
-		$this->event_dimensions = $this->get_dimension_values( $data['program']['dimensions'] );
+		$this->event->dimensions = $this->get_dimension_values( $data['program']['dimensions'] );
 
 		// Map annotation labels and flags to arrays
-		$this->event_annotations = array( );
+		$this->event->annotations = array( );
 		foreach( $data['program']['annotations'] as $annotation ) {
-			$this->event_annotations[$annotation['slug']] = $annotation;
+			$this->event->annotations[$annotation['slug']] = $annotation;
 		}
 
 		// Get a list of hidden dimensions and annotations
@@ -499,12 +500,12 @@ class WP_Plugin_Kompassi_Integration {
 		//  Annotations
 		$annotations = array( );
 		foreach( $program['cachedAnnotations'] as $field => $value ) {
-			if( !in_array( $field, $options['hidden_annotations'] ) && $this->event_annotations[$field]['isShownInDetail'] !== false && $value !== false ) {
+			if( !in_array( $field, $options['hidden_annotations'] ) && $this->event->annotations[$field]['isShownInDetail'] !== false && $value !== false ) {
 				if( $value === true ) {
 					$value = _x( 'Yes', 'boolean field: true', 'kompassi-integration' );
 				}
 				$annotations[] = array(
-					'title' => $this->event_annotations[$field]['title'],
+					'title' => $this->event->annotations[$field]['title'],
 					'description' => $value,
 					'class' => 'annotation-' . str_replace( ':', '-', $field )
 				);
@@ -539,14 +540,14 @@ class WP_Plugin_Kompassi_Integration {
 					}
 					continue;
 				}
-				if( !isset( $this->event_dimensions[$dimension] ) ) {
+				if( !isset( $this->event->dimensions[$dimension] ) ) {
 					continue;
 				}
 
 				$attr = 'data-' . $dimension;
 				$program_attributes[$attr] = implode( ',', $values );
 
-				if( !$this->event_dimensions[$dimension]['flags']['isShownInDetail'] ) {
+				if( !$this->event->dimensions[$dimension]['flags']['isShownInDetail'] ) {
 					continue;
 				}
 
@@ -661,10 +662,10 @@ class WP_Plugin_Kompassi_Integration {
 
 	function get_dimension_output( $dimension, $values ) {
 		ob_start( );
-		echo '<div class="dimension ' . $dimension . '" title="' . $this->event_dimensions[$dimension]['title'] . '">';
+		echo '<div class="dimension ' . $dimension . '" title="' . $this->event->dimensions[$dimension]['title'] . '">';
 		foreach( $values as $slug ) {
-			if( isset( $this->event_dimensions[$dimension]['value_labels'][$slug] ) ) {
-				echo '<span class="value">' . $this->event_dimensions[$dimension]['value_labels'][$slug] . '</span> ';
+			if( isset( $this->event->dimensions[$dimension]['value_labels'][$slug] ) ) {
+				echo '<span class="value">' . $this->event->dimensions[$dimension]['value_labels'][$slug] . '</span> ';
 			} else {
 				echo '<span class="value">' . $slug . '</span> ';
 			}
@@ -695,7 +696,7 @@ class WP_Plugin_Kompassi_Integration {
 		} elseif( isset( $program['cachedDimensions'][$key] ) ) {
 			$values = array( );
 			foreach( $program['cachedDimensions'][$key] as $dimension_value_slug ) {
-				$values[] = $this->event_dimensions[$key]['value_labels'][$dimension_value_slug];
+				$values[] = $this->event->dimensions[$key]['value_labels'][$dimension_value_slug];
 			}
 			$value = implode( ', ', $values );
 		} elseif( isset( $program['cachedAnnotations'][$key] ) ) {
@@ -755,7 +756,7 @@ class WP_Plugin_Kompassi_Integration {
 			return;
 		}
 		$scheduleItem_room = $scheduleItem['cachedDimensions']['room'][0];
-		if( $scheduleItem['location'] != $this->event_dimensions['room']['value_labels'][$scheduleItem_room] ) {
+		if( $scheduleItem['location'] != $this->event->dimensions['room']['value_labels'][$scheduleItem_room] ) {
 			$value = $scheduleItem['location'];
 		}
 		return $value;
