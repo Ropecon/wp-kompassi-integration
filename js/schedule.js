@@ -1145,8 +1145,11 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 		program.style.left = 'calc( ' + offset + '% + 3px )';
 		program.style.top = 'calc( ' + program_row + ' * var(--kompassi-schedule-timeline-row-height) )'; // Grouping
 		if( offset < 0 ) {
-			// TODO:
-			program.querySelector( '.title' ).style.left = ( ( -1 * program.left ) + 6 ) + 'px';
+			// TODO
+			let program_styles = window.getComputedStyle( program );
+			let title = program.querySelector( '.title' );
+			title.style.left = ( -1 * parseFloat( program_styles.left ) ) + 'px';
+			title.style.position = 'relative';
 		}
 
 		if( grouping ) {
