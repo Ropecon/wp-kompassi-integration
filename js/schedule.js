@@ -1140,8 +1140,8 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 			check_index += 1;
 		}
 
-		program.style.width = 'calc( ' + width + '% - 6px )';
-		program.style.minWidth = 'calc( ' + width + '% - 6px )';
+		program.style.width = 'calc( ' + width + '% - 9px )';
+		program.style.minWidth = 'calc( ' + width + '% - 9px )';
 		program.style.left = 'calc( ' + offset + '% + 3px )';
 		program.style.top = 'calc( ' + program_row + ' * var(--kompassi-schedule-timeline-row-height) )'; // Grouping
 		if( offset < 0 ) {
@@ -1257,7 +1257,7 @@ function kompassi_schedule_timeline_update_time_indicator( ) { /* TODO: Not work
 
 function kompassi_schedule_timeline_zoom( direction ) {
 	let schedule = document.getElementById( 'kompassi_schedule' );
-	let scale = schedule.dataset.scale;
+	let scale = parseFloat( schedule.dataset.scale );
 
    if( direction < 0 ) {
 		scale += 0.5;
@@ -1290,7 +1290,7 @@ function kompassi_schedule_timeline_pan( direction_x, direction_y, ev ) {
 	let pan_speed_y = 10;
 
 	if( direction_x !== 0 ) {
-		let wrapper = document.getElementById( 'kompassi_schedule' ).querySelector( '.kompassi_schedule_wrapper' );
+		let wrapper = document.getElementById( 'kompassi_block_schedule' ).querySelector( '.kompassi_schedule_wrapper' );
 		wrapper.scrollLeft = wrapper.scrollLeft + ( direction_x * pan_speed_x );
 		kompassi_schedule_timeline_reposition_labels( );
 	}
