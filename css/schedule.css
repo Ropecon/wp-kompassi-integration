@@ -360,9 +360,9 @@ summary::marker {
 	--kompassi-program-list-padding: 0.3em;
 	--kompassi-program-list-visual-width: 12px;
 
-	display: grid;
+	/* display: grid; */
 	grid-template-columns: repeat(1,1fr);
-	grid-gap: 0.5em;
+	grid-gap: var(--kompassi-padding);
 }
 	#kompassi_schedule[data-display="list"] article {
 		position: relative;
@@ -371,6 +371,7 @@ summary::marker {
 		background-color: var(--kompassi-bg);
 		box-shadow: var(--kompassi-box-shadow);
 		border-radius: var(--kompassi-radius);
+		margin-bottom: var(--kompassi-padding);
 	}
 		#kompassi_schedule[data-display="list"] article::before {
 			content: '';
@@ -396,12 +397,7 @@ summary::marker {
 				margin-right: 0;
 			}
 			#kompassi_schedule[data-display="list"] article summary .secondary {
-				display: flex;
-				justify-content: space-between;
 			}
-				#kompassi_schedule[data-display="list"] article summary .secondary > :last-child {
-					text-align: right;
-				}
 		#kompassi_schedule[data-display="list"] article section {
 			border-top: 1px solid var(--kompassi-fg-10);
 		}
@@ -429,16 +425,29 @@ summary::marker {
 /*  TODO: Prefer container query  */
 @media screen and (min-width:600px) {
 	#kompassi_schedule[data-display="list"] {
+		display: grid;
 		--kompassi-program-list-padding: 0.6em;
 		--kompassi-program-list-visual-width: 5.5em;
 	}
 	#kompassi_schedule[data-display="list"] article {
 		padding-left: var(--kompassi-program-list-visual-width);
+		margin-bottom: 0;
 		grid-template-columns: 50% auto auto;
 		grid-template-areas:
 			"title title actions"
 			"meta meta meta";
 	}
+}
+
+/*  TODO: Prefer container query  */
+@media screen and (min-width:640px) {
+	#kompassi_schedule[data-display="list"] article summary .secondary {
+		display: flex;
+		justify-content: space-between;
+	}
+		#kompassi_schedule[data-display="list"] article summary .secondary > :last-child {
+			text-align: right;
+		}	
 }
 
 /*  Display Style: Timeline  */
