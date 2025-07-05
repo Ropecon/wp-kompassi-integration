@@ -1519,7 +1519,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	kompassi_schedule_timetable_check_scroll( );
 	// TODO: When window is resized, check to see if table navigation buttons are required and if visual aids should be shown
 	window.addEventListener( 'resize', function( event ) {
-		kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50, table );
+		kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50 );
 	} );
 } );
 
