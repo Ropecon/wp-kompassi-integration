@@ -432,7 +432,10 @@ class WP_Plugin_Kompassi_Integration {
 
 		$scheduleitems = array( );
 		foreach( $data['program']['programs'] as $program ) {
-			$scheduleitems = $this->markup_scheduleitems_for_program( $scheduleitems, $program, $options );
+			$program = apply_filters( 'kompassi_schedule_data_program', $program );
+			if( $program ) {
+				$scheduleitems = $this->markup_scheduleitems_for_program( $scheduleitems, $program, $options );
+			}
 		}
 		ksort( $scheduleitems );
 		foreach( $scheduleitems as $item ) {
