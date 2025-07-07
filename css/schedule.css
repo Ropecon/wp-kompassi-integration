@@ -339,6 +339,22 @@ summary::marker {
 	background-color: var(--kompassi-palette-5);
 }
 
+/*  Canceled programs  */
+#kompassi_schedule article[data-state="canceled"] {
+  color: #777 !important;
+}
+	#kompassi_schedule article[data-state="canceled"]::before {
+	  --kompassi-program-color: #ddd;
+	}
+	#kompassi_schedule article[data-state="canceled"] .title::before {
+	  display: inline-block;
+	  margin-right: 0.5em;
+	  content: var(--kompassi-string-canceled-program, "Canceled" );
+	  color: red;
+	  font-style: oblique;
+	  text-transform: uppercase;
+	}
+
 /*  Programs continuing  */
 #kompassi_schedule:not([data-display="timeline"]) article.continues {
 	order: 3;
@@ -447,7 +463,7 @@ summary::marker {
 	}
 		#kompassi_schedule[data-display="list"] article summary .secondary > :last-child {
 			text-align: right;
-		}	
+		}
 }
 
 /*  Display Style: Timeline  */

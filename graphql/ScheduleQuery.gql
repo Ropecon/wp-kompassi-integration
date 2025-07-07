@@ -40,7 +40,9 @@ query ScheduleQuery($eventSlug: String!, $locale: String) {
           endTime
           lengthMinutes
           cachedDimensions
+          isCancelled
         }
+        isCancelled
         links(lang: $locale) {
           title
           href

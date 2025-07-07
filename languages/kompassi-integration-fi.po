@@ -3,9 +3,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-"
 "integration\n"
-"POT-Creation-Date: 2025-07-04T08:33:19+00:00\n"
+"POT-Creation-Date: 2025-07-07T16:34:04+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -127,28 +127,32 @@ msgstr "Pilkuilla erotettu lista annotaatiokentistä, jotka tulisi piilottaa."
 msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
+#: kompassi-integration.php:211
+msgid "Canceled"
+msgstr "Peruttu"
+
 #. translators: amount of transients deleted
-#: kompassi-integration.php:361
+#: kompassi-integration.php:365
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] "%s transientti poistettu."
 msgstr[1] "%s transienttia poistettu."
 
-#: kompassi-integration.php:506
+#: kompassi-integration.php:513
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr "Kyllä"
 
-#: kompassi-integration.php:612
+#: kompassi-integration.php:626
 msgid "Other schedule times"
 msgstr "Muut aikataulutukset"
 
-#: kompassi-integration.php:817
+#: kompassi-integration.php:831
 msgid "Program"
 msgstr "Ohjelma"
 
 #. translators: email link
-#: kompassi-integration.php:869
+#: kompassi-integration.php:883
 msgid "If you find errors in the program data, contact us at %s."
 msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 
@@ -185,28 +189,19 @@ msgid "For example"
 msgstr "Esimerkiksi"
 
 #: js/blocks.js:79
-#, fuzzy
-#| msgctxt "display style"
-#| msgid "Timeline"
 msgid "Timeline"
 msgstr "Aikajana"
 
 #: js/blocks.js:81
-#, fuzzy
-#| msgid "Primary Grouping Dimension"
 msgid "Grouping Dimension"
-msgstr "Ensisijainen ryhmittelydimensio"
+msgstr "Ryhmittelydimensio"
 
 #: js/blocks.js:86
-#, fuzzy
-#| msgid ""
-#| "Programs will be grouped into tables based on the (first) dimension value "
-#| "in this dimension."
 msgid ""
 "Programs will be grouped with subheadings based on the (first) dimension "
 "value in this dimension."
 msgstr ""
-"Ohjelmat ryhmitellään taulukoihin tämän dimension (ensimmäisen) arvon mukaan."
+"Ohjelmat ryhmitellään aliotsikoin tämän dimension (ensimmäisen) arvon mukaan."
 
 #: js/blocks.js:90
 msgid "Timetable"
@@ -257,7 +252,7 @@ msgctxt "date filter"
 msgid "Now"
 msgstr "Nyt"
 
-#: js/schedule.js:351 js/schedule.js:1868
+#: js/schedule.js:351 js/schedule.js:1871
 msgid "Favorites"
 msgstr "Suosikit"
 
@@ -274,7 +269,7 @@ msgstr "Selite"
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:401 js/schedule.js:1812
+#: js/schedule.js:401 js/schedule.js:1815
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
@@ -336,35 +331,35 @@ msgstr "Jatkuvat ohjelmat"
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1766
+#: js/schedule.js:1769
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1799
+#: js/schedule.js:1802
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1800
+#: js/schedule.js:1803
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1807
+#: js/schedule.js:1810
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1841
+#: js/schedule.js:1844
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1842
+#: js/schedule.js:1845
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1847
+#: js/schedule.js:1850
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 
-#: js/schedule.js:1882
+#: js/schedule.js:1885
 msgid "No group"
 msgstr "Ei ryhmää"
 

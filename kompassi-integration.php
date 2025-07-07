@@ -207,6 +207,10 @@ class WP_Plugin_Kompassi_Integration {
 				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_schedule_options', $js_strings );
 
 				wp_enqueue_style( 'kompassi-integration-schedule', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
+				$css_strings = ":root {
+					--kompassi-string-canceled-program: " . __( 'Canceled', 'kompassi-integration' ) . "; " .
+				" } ";
+				wp_add_inline_style( 'kompassi-integration-schedule-strings', $css_strings );
 			}
 
 			// DIMENSION LIST BLOCK
@@ -539,9 +543,6 @@ class WP_Plugin_Kompassi_Integration {
 
 			if( count( $values ) > 0 ) {
 				if( $dimension == 'state' ) {
-					if( $values[0] == 'canceled' ) {
-						$program_attributes['data-state'] == 'canceled';
-					}
 					continue;
 				}
 				if( !isset( $this->event->dimensions[$dimension] ) ) {
@@ -557,6 +558,11 @@ class WP_Plugin_Kompassi_Integration {
 
 				$program_data['dimensions'][$dimension] = $this->get_dimension_output( $dimension, $values );
 			}
+		}
+
+		//  See if program is completely cancelled
+		if( $program['isCancelled'] ) {
+			$program_attributes['data-state'] = 'canceled';
 		}
 
 		//  Actions
@@ -588,6 +594,11 @@ class WP_Plugin_Kompassi_Integration {
 			$html_attrs = '';
 			foreach( $program_attributes as $attr => $value ) {
 				$html_attrs .= ' ' . $attr . '="' . $value . '"';
+			}
+
+			// If the whole program isn't cancelled, check if the schedule item is
+			if( isset( $program_attributes['data-state'] ) && $program_attributes['data-state'] != 'cancelled' && $scheduleItem['isCancelled'] ) {
+				$html_attrs .= ' data-state="canceled"';
 			}
 			?>
 				<article id="<?php echo $scheduleItem['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
