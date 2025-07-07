@@ -207,10 +207,12 @@ class WP_Plugin_Kompassi_Integration {
 				wp_localize_script( 'kompassi-integration-schedule', 'kompassi_schedule_options', $js_strings );
 
 				wp_enqueue_style( 'kompassi-integration-schedule', plugins_url( 'css/schedule.css', __FILE__ ), array( 'kompassi-integration-frontend-common' ), $this->ver );
-				$css_strings = ":root {
-					--kompassi-string-canceled-program: " . __( 'Canceled', 'kompassi-integration' ) . "; " .
-				" } ";
-				wp_add_inline_style( 'kompassi-integration-schedule-strings', $css_strings );
+				add_action( 'wp_head', function( ) {
+					$css_strings = ':root {
+						--kompassi-string-canceled-program: "' . __( 'Canceled', 'kompassi-integration' ) . '"; ' .
+					'}';
+					echo '<style id="kompassi-integration-schedule-strings">' . $css_strings . '</style>';
+				} );
 			}
 
 			// DIMENSION LIST BLOCK

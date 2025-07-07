@@ -342,10 +342,9 @@ summary::marker {
 /*  Canceled programs  */
 #kompassi_schedule article[data-state="canceled"] {
   color: #777 !important;
+  --kompassi-program-color: #ddd !important;
 }
-	#kompassi_schedule article[data-state="canceled"]::before {
-	  --kompassi-program-color: #ddd;
-	}
+	#kompassi_modal[data-state="canceled"] .title::before,
 	#kompassi_schedule article[data-state="canceled"] .title::before {
 	  display: inline-block;
 	  margin-right: 0.5em;

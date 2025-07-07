@@ -1698,6 +1698,9 @@ function kompassi_schedule_program_modal( program ) {
 		content: program.querySelector( '.main' ).innerHTML,
 		footer: program.querySelector( '.meta' ).innerHTML,
 	}
+	if( program.dataset.state ) {
+		options.attrs['data-state'] = program.dataset.state;
+	}
 	modal = kompassi_show_modal( options );
 
 	favorite = modal.querySelector( '.actions .favorite' );
