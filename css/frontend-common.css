@@ -215,13 +215,13 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       font-weight: 600;
       color: var(--kompassi-fg-75);
    }
-   .kompassi-provided {
+   .kompassi-footer .logo {
    	text-align: right;
    }
-   	.kompassi-provided a {
+      .kompassi-footer .logo a {
    		text-decoration: none;
    	}
-   	.kompassi-provided img {
+      .kompassi-footer .logo img {
    		height: 50px;
    		weidth: auto;
    	}
@@ -230,6 +230,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
    .kompassi-footer {
       display: grid;
       grid-template-columns: auto max-content;
+      grid-gap: 1em;
    }
 }
 

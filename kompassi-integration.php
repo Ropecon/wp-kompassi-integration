@@ -455,6 +455,9 @@ class WP_Plugin_Kompassi_Integration {
 
 		$out .= '<div class="kompassi-footer">';
 		$out .= $this->contact( );
+		if( $attributes['showKonsti'] ) {
+			$out .= $this->signup_app_image( );
+		}
 		$out .= $this->data_provided_image( );
 		$out .= '</div>';
 		$out .= '</div>';
@@ -897,8 +900,17 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function data_provided_image( ) {
-		return '<div class="kompassi-provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
+		return '<div class="logo kompassi-provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
 	}
+
+	/**
+	 *  Returns a "Sign-up app Konsti" image
+	 *
+	 */
+
+	 function signup_app_image( ) {
+		 return '<div class="logo konsti-sign-up-app"><a href="https://ropekonsti.fi/"><img src="' . plugins_url( '/images/konsti_sign-up_app.svg', __FILE__ ) . '" alt="Sign-up app Konsti" /></a></div>';
+	 }
 }
 
 new WP_Plugin_Kompassi_Integration( );

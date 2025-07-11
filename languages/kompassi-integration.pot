@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kompassi Integration 2025-07-05\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-kompassi-integration\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-integration\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-07T16:34:04+00:00\n"
+"POT-Creation-Date: 2025-07-11T18:58:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: kompassi-integration\n"
@@ -29,8 +29,8 @@ msgid "Pasi Lallinaho"
 msgstr ""
 
 #: kompassi-integration.php:73
-#: js/blocks.js:55
-#: js/blocks.js:151
+#: js/blocks.js:64
+#: js/blocks.js:160
 msgid "Event Technical Name"
 msgstr ""
 
@@ -123,102 +123,110 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: kompassi-integration.php:211
+#: kompassi-integration.php:212
 msgid "Canceled"
 msgstr ""
 
 #. translators: amount of transients deleted
-#: kompassi-integration.php:365
+#: kompassi-integration.php:367
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kompassi-integration.php:513
+#: kompassi-integration.php:518
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr ""
 
-#: kompassi-integration.php:626
+#: kompassi-integration.php:634
 msgid "Other schedule times"
 msgstr ""
 
-#: kompassi-integration.php:831
+#: kompassi-integration.php:839
 msgid "Program"
 msgstr ""
 
 #. translators: email link
-#: kompassi-integration.php:883
+#: kompassi-integration.php:891
 msgid "If you find errors in the program data, contact us at %s."
 msgstr ""
 
 #: js/blocks.js:20
-#: js/blocks.js:42
+#: js/blocks.js:43
 msgid "Program Schedule"
 msgstr ""
 
-#: js/blocks.js:46
+#: js/blocks.js:47
 msgid "General"
 msgstr ""
 
-#: js/blocks.js:48
+#: js/blocks.js:49
 msgid "Show Toolbar"
 msgstr ""
 
-#: js/blocks.js:63
+#: js/blocks.js:56
+msgid "Show Konsti logo in footer"
+msgstr ""
+
+#: js/blocks.js:61
+msgid "If your event uses Konsti for electronic sign-ups, it is highly recommended to show the Konsti logo in the footer."
+msgstr ""
+
+#: js/blocks.js:72
 msgid "Defaults"
 msgstr ""
 
-#: js/blocks.js:65
+#: js/blocks.js:74
 msgid "Filters"
 msgstr ""
 
-#: js/blocks.js:70
+#: js/blocks.js:79
 msgid "To change the default values for text search, filters and display type when loading this page, insert the options here."
 msgstr ""
 
-#: js/blocks.js:74
+#: js/blocks.js:83
 msgid "For example"
 msgstr ""
 
-#: js/blocks.js:79
+#: js/blocks.js:88
 msgid "Timeline"
 msgstr ""
 
-#: js/blocks.js:81
+#: js/blocks.js:90
 msgid "Grouping Dimension"
 msgstr ""
 
-#: js/blocks.js:86
+#: js/blocks.js:95
 msgid "Programs will be grouped with subheadings based on the (first) dimension value in this dimension."
 msgstr ""
 
-#: js/blocks.js:90
+#: js/blocks.js:99
 msgid "Timetable"
 msgstr ""
 
-#: js/blocks.js:92
+#: js/blocks.js:101
 msgid "Primary Grouping Dimension"
 msgstr ""
 
-#: js/blocks.js:97
+#: js/blocks.js:106
 msgid "Programs will be grouped into tables based on the (first) dimension value in this dimension."
 msgstr ""
 
-#: js/blocks.js:101
+#: js/blocks.js:110
 msgid "Secondary Grouping Dimension"
 msgstr ""
 
-#: js/blocks.js:106
+#: js/blocks.js:115
 msgid "Programs will be grouped into table columns based on the (first) dimension vlaue in this dimension."
 msgstr ""
 
-#: js/blocks.js:127
-#: js/blocks.js:144
+#: js/blocks.js:136
+#: js/blocks.js:153
 msgid "Program Dimension List"
 msgstr ""
 
-#: js/blocks.js:148
+#: js/blocks.js:157
 msgid "Options"
 msgstr ""
 
@@ -237,7 +245,7 @@ msgid "Now"
 msgstr ""
 
 #: js/schedule.js:351
-#: js/schedule.js:1871
+#: js/schedule.js:1874
 msgid "Favorites"
 msgstr ""
 
@@ -256,7 +264,7 @@ msgid "Help"
 msgstr ""
 
 #: js/schedule.js:401
-#: js/schedule.js:1815
+#: js/schedule.js:1818
 msgid "Export Favorites"
 msgstr ""
 
@@ -318,34 +326,34 @@ msgstr ""
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:1769
+#: js/schedule.js:1772
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:1802
+#: js/schedule.js:1805
 msgid "Create an import link to export your favorites to another device."
 msgstr ""
 
-#: js/schedule.js:1803
+#: js/schedule.js:1806
 msgid "Favorites to be exported:"
 msgstr ""
 
-#: js/schedule.js:1810
+#: js/schedule.js:1813
 msgid "Copy import link to clipboard"
 msgstr ""
 
-#: js/schedule.js:1844
+#: js/schedule.js:1847
 msgid "Replace Favorites"
 msgstr ""
 
-#: js/schedule.js:1845
+#: js/schedule.js:1848
 msgid "Append to Favorites"
 msgstr ""
 
-#: js/schedule.js:1850
+#: js/schedule.js:1853
 msgid "Import Favorites"
 msgstr ""
 
-#: js/schedule.js:1885
+#: js/schedule.js:1888
 msgid "No group"
 msgstr ""

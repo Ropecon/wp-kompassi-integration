@@ -26,6 +26,7 @@ wp.blocks.registerBlockType(
       },
       attributes: {
          showToolbar: { type: 'boolean', default: 'true' },
+         showKonsti: { type: 'boolean', default: 'false' },
          eventSlug: { type: 'string', default: '' },
          defaultFilters: { type: 'string', default: '' },
          timelineGrouping: { type: 'string', default: '' },
@@ -50,6 +51,14 @@ wp.blocks.registerBlockType(
 							onChange: function( value ) {
                         props.setAttributes( { showToolbar: !props.attributes.showToolbar } );
                      },
+                  } ),
+                  el( wp.components.ToggleControl, {
+                     label: __( 'Show Konsti logo in footer', 'kompassi-integration' ),
+                     checked: props.attributes.showKonsti,
+                     onChange: function( value ) {
+                        props.setAttributes( { showKonsti: !props.attributes.showKonsti } );
+                     },
+                     help: __( 'If your event uses Konsti for electronic sign-ups, it is highly recommended to show the Konsti logo in the footer.', 'kompassi-integration' ),
                   } ),
                   el( wp.components.TextControl, {
                      label: __( 'Event Technical Name', 'kompassi-integration' ),
