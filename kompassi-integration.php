@@ -570,6 +570,9 @@ class WP_Plugin_Kompassi_Integration {
 		//  Actions
 		$program_data['actions'] = '';
 		foreach( $program['links'] as $link ) {
+			if( $link['type'] == 'GUIDE_V2_EMBEDDED' ) {
+				continue;
+			}
 			$class = strtolower( $link['type'] );
 			if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
 				$class .= ' kompassi-icon-' . strtolower( $link['type'] );
