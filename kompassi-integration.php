@@ -454,11 +454,15 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['program']['dimensions'] ) . '</script>';
 
 		$out .= '<div class="kompassi-footer">';
+		$out .= '<div class="kompassi-contact">';
 		$out .= $this->contact( );
+		$out .= '</div>';
+		$out .= '<div class="kompassi-logos">';
 		if( $attributes['showKonsti'] ) {
 			$out .= $this->signup_app_image( );
 		}
 		$out .= $this->data_provided_image( );
+		$out .= '</div>';
 		$out .= '</div>';
 		$out .= '</div>';
 
@@ -885,11 +889,9 @@ class WP_Plugin_Kompassi_Integration {
 
 	function contact( ) {
 		if( get_option( 'kompassi_integration_contact' ) ) {
-			$out = '<div class="kompassi-contact">';
 			$contact_link = '<a href="mailto:' . get_option( 'kompassi_integration_contact' ) . '">' . get_option( 'kompassi_integration_contact' ) . '</a>';
 			# translators: email link
-			$out .= '<p>' . sprintf( __( 'If you find errors in the program data, contact us at %s.', 'kompassi-integration' ), $contact_link ) . '</p>';
-			$out .= '</div>';
+			$out = '<p>' . sprintf( __( 'If you find errors in the program data, contact us at %s.', 'kompassi-integration' ), $contact_link ) . '</p>';
 			return $out;
 		}
 	}
@@ -900,7 +902,7 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	function data_provided_image( ) {
-		return '<div class="logo kompassi-provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
+		return '<div class="kompassi-provided"><a href="https://kompassi.eu/"><img src="' . plugins_url( '/images/kompassi_provided.svg', __FILE__ ) . '" alt="Data provided by Kompassi" /></a></div>';
 	}
 
 	/**
@@ -909,7 +911,7 @@ class WP_Plugin_Kompassi_Integration {
 	 */
 
 	 function signup_app_image( ) {
-		 return '<div class="logo konsti-sign-up-app"><a href="https://ropekonsti.fi/"><img src="' . plugins_url( '/images/konsti_sign-up_app.svg', __FILE__ ) . '" alt="Sign-up app Konsti" /></a></div>';
+		 return '<div class="konsti-sign-up-app"><a href="https://ropekonsti.fi/"><img src="' . plugins_url( '/images/konsti_sign-up_app.svg', __FILE__ ) . '" alt="Sign-up app Konsti" /></a></div>';
 	 }
 }
 
