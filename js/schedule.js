@@ -873,7 +873,7 @@ function kompassi_schedule_apply_filters( ) {
 						}
 					}
 					if( program_relevance > 0 && Object.keys(word_matches).length == words.length ) {
-						program.style.order = '-' + program_relevance;
+						program.style.order = ( -1 * program_relevance );
 					} else {
 						program.classList.add( 'filtered' );
 					}
@@ -882,7 +882,7 @@ function kompassi_schedule_apply_filters( ) {
 			} else {
 				let programs = document.getElementById( 'kompassi_schedule' ).querySelectorAll( 'article' );
 				for( let program of programs ) {
-					program.style.order = null;
+					program.style.order = program.dataset.order;
 				}
 			}
 		}
@@ -1022,36 +1022,6 @@ function kompassi_schedule_setup_display( display = false ) {
 	//  Update visible program count
 	kompassi_schedule_update_program_count( );
 }
-
-/**
- *  LIST
- *
- */
-
-/**
- *  Sets up list display layout
- *
- */
-
-wp.hooks.addAction( 'kompassi_schedule_setup_list_layout', 'kompassi_integration_schedule', function( ) {
-	let programs = document.querySelectorAll( '#kompassi_schedule article' );
-	for( let program of programs ) {
-		program.style.order = parseInt( program.dataset.order );
-	}
-} );
-
-/**
- *  Reverts list display layout
- *
- */
-
-wp.hooks.addAction( 'kompassi_schedule_revert_list_layout', 'kompassi_integration_schedule', function( ) {
-	let programs = document.querySelectorAll( '#kompassi_schedule article' );
-	for( let program of programs ) {
-		program.style.order = '1';
-		program.querySelector( 'details' ).removeAttribute( 'open' );
-	}
-} );
 
 /**
  *  TIMELINE
