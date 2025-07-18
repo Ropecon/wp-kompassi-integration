@@ -6,11 +6,11 @@ query ScheduleQuery($eventSlug: String!, $locale: String) {
     endTime
     timezone
     program {
-      annotations(lang: $locale) {
+      annotations {
          slug
          title(lang: $locale)
          isShownInDetail
-         description
+         description(lang: $locale)
       }
       dimensions {
         slug
