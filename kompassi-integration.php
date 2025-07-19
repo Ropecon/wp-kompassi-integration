@@ -635,7 +635,7 @@ class WP_Plugin_Kompassi_Integration {
 									if( isset( $program_data['related'] ) ) {
 										echo '<div class="related">';
 										echo '<dl>';
-										echo '<dt>' . __( 'Other schedule times', 'kompassi-integration' ) . '</dt>';
+										echo '<dt>' . __( 'Other schedule items', 'kompassi-integration' ) . '</dt>';
 										echo '<dd>';
 											$show = $program_data['related'];
 											unset( $show[$scheduleItem_index] );

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Kompassi Integration\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-"
 "integration\n"
-"POT-Creation-Date: 2025-07-11T18:58:28+00:00\n"
+"POT-Creation-Date: 2025-07-19T19:53:40+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,15 +17,18 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 #. Plugin Name of the plugin
-#: kompassi-integration.php:129 kompassi-integration.php:143
+#: kompassi-integration.php kompassi-integration.php:129
+#: kompassi-integration.php:143
 msgid "Kompassi Integration"
 msgstr "Kompassi-integraatio"
 
 #. Description of the plugin
+#: kompassi-integration.php
 msgid "Integrate data from Kompassi to your WordPress site easily"
 msgstr "Yhdistä tietoja Kompassista WordPress-sivustollesi helposti"
 
 #. Author of the plugin
+#: kompassi-integration.php
 msgid "Pasi Lallinaho"
 msgstr "Pasi Lallinaho"
 
@@ -133,26 +136,28 @@ msgstr "Peruttu"
 
 #. translators: amount of transients deleted
 #: kompassi-integration.php:367
+#, php-format
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] "%s transientti poistettu."
 msgstr[1] "%s transienttia poistettu."
 
-#: kompassi-integration.php:518
+#: kompassi-integration.php:522
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr "Kyllä"
 
-#: kompassi-integration.php:634
-msgid "Other schedule times"
-msgstr "Muut aikataulutukset"
+#: kompassi-integration.php:638
+msgid "Other schedule items"
+msgstr "Muut aikataulumerkinnät"
 
-#: kompassi-integration.php:839
+#: kompassi-integration.php:843
 msgid "Program"
 msgstr "Ohjelma"
 
 #. translators: email link
-#: kompassi-integration.php:891
+#: kompassi-integration.php:894
+#, php-format
 msgid "If you find errors in the program data, contact us at %s."
 msgstr "Jos löydät virheitä ohjelmatiedoista, ota meihin yhteyttä %s."
 
@@ -264,7 +269,7 @@ msgctxt "date filter"
 msgid "Now"
 msgstr "Nyt"
 
-#: js/schedule.js:351 js/schedule.js:1874
+#: js/schedule.js:351 js/schedule.js:1845
 msgid "Favorites"
 msgstr "Suosikit"
 
@@ -281,7 +286,7 @@ msgstr "Selite"
 msgid "Help"
 msgstr "Apua"
 
-#: js/schedule.js:401 js/schedule.js:1818
+#: js/schedule.js:401 js/schedule.js:1788
 msgid "Export Favorites"
 msgstr "Vie suosikit"
 
@@ -339,39 +344,46 @@ msgstr[1] "Näytä %d aiemmin alkanutta ohjelmaa"
 msgid "Programs continuing"
 msgstr "Jatkuvat ohjelmat"
 
-#: js/schedule.js:1104
+#: js/schedule.js:1074
 msgid "Ungrouped"
 msgstr "Ryhmittelemätön"
 
-#: js/schedule.js:1772
+#: js/schedule.js:1742
 msgid "Help!"
 msgstr "Apua!"
 
-#: js/schedule.js:1805
+#: js/schedule.js:1775
 msgid "Create an import link to export your favorites to another device."
 msgstr "Luo tuontilinkki viedäksesi suosikkisi toiselle laitteelle."
 
-#: js/schedule.js:1806
+#: js/schedule.js:1776
 msgid "Favorites to be exported:"
 msgstr "Vietävät suosikit:"
 
-#: js/schedule.js:1813
+#: js/schedule.js:1783
 msgid "Copy import link to clipboard"
 msgstr "Kopioi tuontilinkki leikepöydälle"
 
-#: js/schedule.js:1847
+#. translators: amount of programs to be imported
+#: js/schedule.js:1811
+msgid "You are about to import %s program as favorite:"
+msgid_plural "You are about to import %s programs as favorites:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/schedule.js:1818
 msgid "Replace Favorites"
 msgstr "Korvaa suosikit"
 
-#: js/schedule.js:1848
+#: js/schedule.js:1819
 msgid "Append to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/schedule.js:1853
+#: js/schedule.js:1824
 msgid "Import Favorites"
 msgstr "Tuo suosikit"
 
-#: js/schedule.js:1888
+#: js/schedule.js:1859
 msgid "No group"
 msgstr "Ei ryhmää"
 

@@ -2,29 +2,32 @@
 # This file is distributed under the same license as the Kompassi Integration plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Kompassi Integration 2025-07-05\n"
+"Project-Id-Version: Kompassi Integration 2025-07-11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kompassi-integration\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-11T18:58:28+00:00\n"
+"POT-Creation-Date: 2025-07-19T19:53:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: kompassi-integration\n"
 
 #. Plugin Name of the plugin
+#: kompassi-integration.php
 #: kompassi-integration.php:129
 #: kompassi-integration.php:143
 msgid "Kompassi Integration"
 msgstr ""
 
 #. Description of the plugin
+#: kompassi-integration.php
 msgid "Integrate data from Kompassi to your WordPress site easily"
 msgstr ""
 
 #. Author of the plugin
+#: kompassi-integration.php
 msgid "Pasi Lallinaho"
 msgstr ""
 
@@ -129,26 +132,28 @@ msgstr ""
 
 #. translators: amount of transients deleted
 #: kompassi-integration.php:367
+#, php-format
 msgid "%s transient deleted."
 msgid_plural "%s transients deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kompassi-integration.php:518
+#: kompassi-integration.php:522
 msgctxt "boolean field: true"
 msgid "Yes"
 msgstr ""
 
-#: kompassi-integration.php:634
-msgid "Other schedule times"
+#: kompassi-integration.php:638
+msgid "Other schedule items"
 msgstr ""
 
-#: kompassi-integration.php:839
+#: kompassi-integration.php:843
 msgid "Program"
 msgstr ""
 
 #. translators: email link
-#: kompassi-integration.php:891
+#: kompassi-integration.php:894
+#, php-format
 msgid "If you find errors in the program data, contact us at %s."
 msgstr ""
 
@@ -245,7 +250,7 @@ msgid "Now"
 msgstr ""
 
 #: js/schedule.js:351
-#: js/schedule.js:1874
+#: js/schedule.js:1845
 msgid "Favorites"
 msgstr ""
 
@@ -264,7 +269,7 @@ msgid "Help"
 msgstr ""
 
 #: js/schedule.js:401
-#: js/schedule.js:1818
+#: js/schedule.js:1788
 msgid "Export Favorites"
 msgstr ""
 
@@ -297,6 +302,7 @@ msgstr ""
 
 #. translators: count of programs visible
 #: js/schedule.js:685
+#, js-format
 msgid "%s program visible."
 msgid_plural "%s programs visible."
 msgstr[0] ""
@@ -308,11 +314,13 @@ msgstr ""
 
 #. translators: start of day hour, end of day hour
 #: js/schedule.js:941
+#, js-format
 msgid "Showing programs starting between %1$s and %2$s."
 msgstr ""
 
 #. translators: amount of repositioned events
 #: js/schedule.js:953
+#, js-format
 msgid "Show %d program that started earlier"
 msgid_plural "Show %d programs that started earlier"
 msgstr[0] ""
@@ -322,38 +330,46 @@ msgstr[1] ""
 msgid "Programs continuing"
 msgstr ""
 
-#: js/schedule.js:1104
+#: js/schedule.js:1074
 msgid "Ungrouped"
 msgstr ""
 
-#: js/schedule.js:1772
+#: js/schedule.js:1742
 msgid "Help!"
 msgstr ""
 
-#: js/schedule.js:1805
+#: js/schedule.js:1775
 msgid "Create an import link to export your favorites to another device."
 msgstr ""
 
-#: js/schedule.js:1806
+#: js/schedule.js:1776
 msgid "Favorites to be exported:"
 msgstr ""
 
-#: js/schedule.js:1813
+#: js/schedule.js:1783
 msgid "Copy import link to clipboard"
 msgstr ""
 
-#: js/schedule.js:1847
+#. translators: amount of programs to be imported
+#: js/schedule.js:1811
+#, js-format
+msgid "You are about to import %s program as favorite:"
+msgid_plural "You are about to import %s programs as favorites:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/schedule.js:1818
 msgid "Replace Favorites"
 msgstr ""
 
-#: js/schedule.js:1848
+#: js/schedule.js:1819
 msgid "Append to Favorites"
 msgstr ""
 
-#: js/schedule.js:1853
+#: js/schedule.js:1824
 msgid "Import Favorites"
 msgstr ""
 
-#: js/schedule.js:1888
+#: js/schedule.js:1859
 msgid "No group"
 msgstr ""

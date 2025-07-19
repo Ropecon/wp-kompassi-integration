@@ -1807,6 +1807,7 @@ function kompassi_schedule_import_modal( programs ) {
 		}
 	}
 
+	// translators: amount of programs to be imported
 	let markup = '<p>' + sprintf( _n( 'You are about to import %s program as favorite:', 'You are about to import %s programs as favorites:', valid_programs.length, 'kompassi-integration' ), valid_programs.length ) + '</p>';
 	markup += '<ul class="program-title-list">';
 	for( let program of valid_programs ) {
