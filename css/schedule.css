@@ -340,12 +340,12 @@ summary::marker {
 }
 
 /*  Canceled programs  */
-#kompassi_schedule article[data-state="canceled"] {
+#kompassi_schedule article[data-iscanceled="true"] {
   color: #777 !important;
   --kompassi-program-color: #ddd !important;
 }
-	#kompassi_modal[data-state="canceled"] .title::before,
-	#kompassi_schedule article[data-state="canceled"] .title::before {
+	#kompassi_modal[data-iscanceled="true"] .title::before,
+	#kompassi_schedule article[data-iscanceled="true"] .title::before {
 	  display: inline-block;
 	  margin-right: 0.5em;
 	  content: var(--kompassi-string-canceled-program, "Canceled" );

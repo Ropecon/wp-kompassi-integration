@@ -571,7 +571,7 @@ class WP_Plugin_Kompassi_Integration {
 
 		//  See if program is completely cancelled
 		if( $program['isCancelled'] ) {
-			$program_attributes['data-state'] = 'canceled';
+			$program_attributes['data-iscanceled'] = 'true';
 		}
 
 		//  Actions
@@ -609,8 +609,8 @@ class WP_Plugin_Kompassi_Integration {
 			}
 
 			// If the whole program isn't cancelled, check if the schedule item is
-			if( isset( $program_attributes['data-state'] ) && $program_attributes['data-state'] != 'cancelled' && $scheduleItem['isCancelled'] ) {
-				$html_attrs .= ' data-state="canceled"';
+			if( !isset( $program_attributes['data-iscanceled'] ) && $scheduleItem['isCancelled'] ) {
+				$html_attrs .= ' data-iscanceled="true"';
 			}
 			?>
 				<article id="<?php echo $scheduleItem['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
