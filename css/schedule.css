@@ -381,6 +381,7 @@ summary::marker {
 }
 	#kompassi_schedule[data-display="list"] article {
 		position: relative;
+		min-width: 240px;
 		padding-left: calc( var(--kompassi-program-list-visual-width) );
 		color: var(--kompassi-fg);
 		background-color: var(--kompassi-bg);
