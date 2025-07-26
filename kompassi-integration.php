@@ -661,6 +661,9 @@ class WP_Plugin_Kompassi_Integration {
 									<?php
 										$dimensions = array_merge( array_keys( $program_data['dimensions'] ), array_keys( $scheduleItem['cachedDimensions'] ) );
 										foreach( $dimensions as $dimension ) {
+											if( !isset( $this->event->dimensions[$dimension] ) ) {
+												continue;
+											}
 											if( isset( $scheduleItem['cachedDimensions'][$dimension] ) ) {
 												echo $this->get_dimension_output( $dimension, $scheduleItem['cachedDimensions'][$dimension] );
 											} else {
