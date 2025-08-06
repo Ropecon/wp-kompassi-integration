@@ -271,7 +271,12 @@ class WP_Plugin_Kompassi_Integration {
 			)
 		);
 		$context = stream_context_create( $options );
-		$json = file_get_contents( 'https://kompassi.eu/graphql', false, $context );
+		if( apply_filters( 'kompassi_integration_use_development_server', false ) ) {
+			$graphql_url = 'https://dev.kompassi.eu/graphql';
+		} else {
+			$graphql_url = 'https://kompassi.eu/graphql';
+		}
+		$json = file_get_contents( $graphql_url, false, $context );
 		$response = json_decode( $json, true );
 
 		return $response;
