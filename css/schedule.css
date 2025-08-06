@@ -55,6 +55,12 @@ body.kompassi-color-scheme-dark #kompassi_schedule_dates a.date-toggle.current::
 /* Icon opacities */
 article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 
+
+#kompassi_block_schedule,
+#kompassi_block_schedule * {
+	line-height: var(--kompassi-line-height);
+}
+
 /*
  *  Toolbar
  *
