@@ -569,8 +569,6 @@ class WP_Plugin_Kompassi_Integration {
 				if( !$this->event->dimensions[$dimension]['flags']['isShownInDetail'] ) {
 					continue;
 				}
-
-				$program_data['dimensions'][$dimension] = $this->get_dimension_output( $dimension, $values );
 			}
 		}
 
@@ -664,16 +662,13 @@ class WP_Plugin_Kompassi_Integration {
  								?>
 								<div class="kompassi-dimensions">
 									<?php
-										$dimensions = array_merge( array_keys( $program_data['dimensions'] ), array_keys( $scheduleItem['cachedDimensions'] ) );
-										foreach( $dimensions as $dimension ) {
+										$dimensions = array_merge( $program_data['dimensions'], $scheduleItem['cachedDimensions'] );
+
+										foreach( $dimensions as $dimension => $values ) {
 											if( !isset( $this->event->dimensions[$dimension] ) ) {
 												continue;
 											}
-											if( isset( $scheduleItem['cachedDimensions'][$dimension] ) ) {
-												echo $this->get_dimension_output( $dimension, $scheduleItem['cachedDimensions'][$dimension] );
-											} else {
-												echo $program_data['dimensions'][$dimension];
-											}
+											echo $this->get_dimension_output( $dimension, $dimensions[$dimension] );
 										}
 
 									?>
