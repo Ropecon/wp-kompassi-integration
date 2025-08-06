@@ -501,7 +501,7 @@ class WP_Plugin_Kompassi_Integration {
 			$program_data['related'] = array( );
 
 			foreach( $program['scheduleItems'] as $index => $item ) {
-				$related = $this->get_program_value( $program, 'time_start', $index, false );
+				$related = '<span class="times">' . $this->get_program_value( $program, 'times', $index, false ) . '</span>';
 				if( $item['subtitle'] ) {
 					$related = $item['subtitle'] . ' (' . $related . ')';
 				}
