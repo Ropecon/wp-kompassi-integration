@@ -463,7 +463,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= $this->contact( );
 		$out .= '</div>';
 		$out .= '<div class="kompassi-logos">';
-		if( $attributes['showKonsti'] ) {
+		if( isset( $attributes['showKonsti'] ) && $attributes['showKonsti'] ) {
 			$out .= $this->signup_app_image( );
 		}
 		$out .= $this->data_provided_image( );
@@ -508,7 +508,7 @@ class WP_Plugin_Kompassi_Integration {
 			foreach( $program['scheduleItems'] as $index => $item ) {
 				$related = '<span class="times">' . $this->get_program_value( $program, 'times', $index, false ) . '</span>';
 				if( $item['subtitle'] ) {
-					$related = htmlentities( $item['subtitle'] ) . ' (' . $related . ')';
+					$related = htmlspecialchars( $item['subtitle'] ) . ' (' . $related . ')';
 				}
 				$related = '<a class="related-link" href="#' . $item['slug'] . '">' . $related . '</a>';
 
@@ -516,8 +516,9 @@ class WP_Plugin_Kompassi_Integration {
 			}
 		}
 
-		//  Title and description
-		$program_data['description'] = make_clickable( nl2br( $program['description'] ) );
+		//  Description
+		$program_data['description'] = htmlspecialchars( $program['description'] );
+		$program_data['description'] = make_clickable( nl2br( $program_data['description'] ) );
 
 		//  Annotations
 		$annotations = array( );
@@ -541,7 +542,7 @@ class WP_Plugin_Kompassi_Integration {
 			foreach( $annotations as $annotation ) {
 				echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
 				foreach( (array) $annotation['description'] as $desc ) {
-					echo '<dd class="' . $annotation['class'] . '">' . htmlentities( $desc ) . '</dd>';
+					echo '<dd class="' . $annotation['class'] . '">' . htmlspecialchars( $desc ) . '</dd>';
 				}
 			}
 			echo '</dl>';
@@ -619,7 +620,7 @@ class WP_Plugin_Kompassi_Integration {
 				<article id="<?php echo $scheduleItem['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 					<details>
 						<summary>
-							<div class="title" style="grid-area: title;"><?php echo htmlentities( $scheduleItem['title'] ); ?></div>
+							<div class="title" style="grid-area: title;"><?php echo htmlspecialchars( $scheduleItem['title'] ); ?></div>
 							<div class="secondary" style="grid-area: secondary;">
 								<?php
 									//  Get summary fields; this needs to be done here, as fields can be dependent of scheduleItem data
@@ -633,7 +634,7 @@ class WP_Plugin_Kompassi_Integration {
 						</summary>
 						<section>
 							<div class="main" style="grid-area: main;">
-								<div class="description"><?php echo htmlentities( $program_data['description'] ); ?></div>
+								<div class="description"><?php echo $program_data['description']; ?></div>
 								<?php
 									if( isset( $program_data['related'] ) ) {
 										echo '<div class="related">';
@@ -697,7 +698,7 @@ class WP_Plugin_Kompassi_Integration {
 			if( isset( $this->event->dimensions[$dimension]['value_labels'][$slug] ) ) {
 				echo '<span class="value">' . $this->event->dimensions[$dimension]['value_labels'][$slug] . '</span> ';
 			} else {
-				echo '<span class="value">' . htmlentities( $slug ) . '</span> ';
+				echo '<span class="value">' . htmlspecialchars( $slug ) . '</span> ';
 			}
 		}
 		echo '</div>';
@@ -737,7 +738,7 @@ class WP_Plugin_Kompassi_Integration {
 			$sanitate = false;
 		}
 		if( $sanitate ) {
-			$value = htmlentities( $value );
+			$value = htmlspecialchars( $value );
 		}
 		if( isset( $value ) && strlen( $value ) > 0 ) {
 			if( $wrap ) {
@@ -794,7 +795,7 @@ class WP_Plugin_Kompassi_Integration {
 		if( $scheduleItem['location'] != $this->event->dimensions['room']['value_labels'][$scheduleItem_room] ) {
 			$value = $scheduleItem['location'];
 		}
-		return htmlentities( $value );
+		return htmlspecialchars( $value );
 	}
 
 	/*
@@ -808,7 +809,7 @@ class WP_Plugin_Kompassi_Integration {
 			$d = array( 'value_labels' => array( ), 'flags' => array( ) );
 			$d['title'] = $dimension['title'];
 			foreach( $dimension['values'] as $value ) {
-				$d['value_labels'][$value['slug']] = htmlentities( $value['title'] );
+				$d['value_labels'][$value['slug']] = htmlspecialchars( $value['title'] );
 				foreach( $dimension as $k => $v ) {
 					if( substr( $k, 0, 2 ) == 'is' ) {
 						$d['flags'][$k] = $v;
