@@ -1497,6 +1497,7 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 } );
 
 function kompassi_schedule_timetable_table( table, block_options ) {
+	// TODO: Replace with HTML <template> #timetable_table
 	let table_wrapper = document.createElement( 'div' );
 	table_wrapper.className = 'table-wrapper';
 	let table_toolbar = document.createElement( 'div' );

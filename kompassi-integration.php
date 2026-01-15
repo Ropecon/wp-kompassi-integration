@@ -471,6 +471,18 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</div>';
 		$out .= '</div>';
 
+		// Output templates
+		$out .= '<template id="timetable_table">';
+		$out .= '<div class="table-wrapper"></div>';
+		$out .= '<div class="table-toolbar">';
+		$out .= '<div class="table-name kompassi-subheading"><strong></strong> <em></em></div>';
+		$out .= '<div class="table-controls kompassi-button-group has-icon-only">';
+		$out .= '<a class="kompassi-icon-arrow-left" data-action="scroll-left"></a>';
+		$out .= '<a class="kompassi-icon-arrow-right" data-action="scroll-right"></a>';
+		$out .= '</div>';
+		$out .= '</div>';
+		$out .= '</template>';
+
 		// Save cache
 		$this->save_schedule_cache( $out, $event_slug );
 
