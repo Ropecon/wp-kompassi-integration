@@ -473,13 +473,16 @@ class WP_Plugin_Kompassi_Integration {
 
 		// Output templates
 		$out .= '<template id="timetable_table">';
-		$out .= '<div class="table-wrapper"></div>';
-		$out .= '<div class="table-toolbar">';
-		$out .= '<div class="table-name kompassi-subheading"><strong></strong> <em></em></div>';
-		$out .= '<div class="table-controls kompassi-button-group has-icon-only">';
-		$out .= '<a class="kompassi-icon-arrow-left" data-action="scroll-left"></a>';
-		$out .= '<a class="kompassi-icon-arrow-right" data-action="scroll-right"></a>';
-		$out .= '</div>';
+		$out .= '<div class="table-wrapper">';
+			$out .= '<div class="table-toolbar">';
+				$out .= '<div class="table-name kompassi-subheading"><strong class="table-title"></strong> <em class="table-subtitle"></em></div>';
+				$out .= '<div class="table-controls kompassi-button-group has-icon-only">';
+					$out .= '<a class="kompassi-icon-arrow-left" data-action="scroll-left"></a>';
+					$out .= '<a class="kompassi-icon-arrow-right" data-action="scroll-right"></a>';
+				$out .= '</div>';
+			$out .= '</div>';
+			$out .= '<table class="table">';
+			$out .= '</table>';
 		$out .= '</div>';
 		$out .= '</template>';
 
