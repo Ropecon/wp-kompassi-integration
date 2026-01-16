@@ -1856,7 +1856,11 @@ function kompassi_schedule_group_programs( programs, grouping ) {
 		if( program.dataset[grouping] ) {
 			// Use dataset value for grouping
 			key = program.dataset[grouping];
-			title = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
+			if( program.querySelector( '.dimension.' + grouping + ' > :first-child' ) ) {
+				title = program.querySelector( '.dimension.' + grouping + ' > :first-child' ).textContent;
+			} else {
+				title = '';
+			}
 		} else {
 			// Allow custom grouping, eg. date
 			( { key, title } = wp.hooks.applyFilters( 'kompassi_schedule_grouping_' + grouping, { 'key': 'no-group', 'title': __( 'No group', 'kompassi-integration' ) }, program ) );
