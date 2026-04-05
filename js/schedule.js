@@ -1139,14 +1139,14 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timeline_layout', 'kompassi_integra
 		let time_label = kompassi_schedule.filters.date.start.add( hours, 'hour' ).tz( schedule.dataset.timezone ).format( 'H' );
 		schedule.insertAdjacentHTML( 'beforeend', '<div class="ruler" style="top: var(--kompassi-schedule-timeline-row-height); left: calc( ' + offset + ' * ' + hours + '% ); width: calc( ' + offset + '% - var(--kompassi-schedule-timeline-row-padding) * 2 );"></div>' );
 		let hint = document.createElement( 'div' );
-		hint.classList.add( 'hint', 'time_hint' );
+		hint.classList.add( 'hint', 'time-hint' );
 		hint.style.left = 'calc( ' + offset + ' * ' + hours + '%)';
 		hint.textContent = time_label;
 		headers.appendChild( hint );
 		if( time_label == '0' || hours == 0 ) {
 			let day_label = kompassi_schedule.filters.date.start.add( days, 'day' ).tz( schedule.dataset.timezone ).format( 'LL' );
 			let hint = document.createElement( 'strong' );
-			hint.classList.add( 'hint', 'day_hint' );
+			hint.classList.add( 'hint', 'day-hint' );
 			hint.style.top = 0;
 			hint.style.left = 'calc( ' + offset + ' * ' + hours + '% )';
 			hint.style.zIndex = days;
@@ -1263,7 +1263,7 @@ function kompassi_schedule_timeline_pan( direction_x, direction_y, ev ) {
 	let pan_speed_y = 10;
 
 	if( direction_x !== 0 ) {
-		let wrapper = document.getElementById( 'kompassi_block_schedule' ).querySelector( '.kompassi_schedule_wrapper' );
+		let wrapper = document.getElementById( 'kompassi_block_schedule' ).querySelector( '.kompassi-schedule-wrapper' );
 		wrapper.scrollLeft = wrapper.scrollLeft + ( direction_x * pan_speed_x );
 		kompassi_schedule_timeline_reposition_labels( );
 	}
@@ -1275,9 +1275,9 @@ function kompassi_schedule_timeline_pan( direction_x, direction_y, ev ) {
 
 function kompassi_schedule_timeline_reposition_labels( ) {
 	// Reposition headers
-	let day_hints = document.querySelectorAll( '#kompassi_schedule .day_hint' );
+	let day_hints = document.querySelectorAll( '#kompassi_schedule .day-hint' );
 	for( let hint of day_hints ) {
-		let scroll = hint.closest( '.kompassi_schedule_wrapper' ).scrollLeft;
+		let scroll = hint.closest( '.kompassi-schedule-wrapper' ).scrollLeft;
 		let offset = hint.offsetLeft;
 
 		if( scroll > offset ) {
@@ -1347,7 +1347,7 @@ function kompassi_schedule_timeline_sticky_header( ) {
 	}
 
 	let block = schedule.closest( '#kompassi_block_schedule')
-	let wrapper = schedule.closest( '.kompassi_schedule_wrapper' );
+	let wrapper = schedule.closest( '.kompassi-schedule-wrapper' );
 	let headers = schedule.querySelector( '.headers' );
 
 	let schedule_top = block.offsetTop + wrapper.offsetTop + schedule.offsetTop;

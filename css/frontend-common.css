@@ -1,34 +1,32 @@
 :root body {
    /*  Typography  */
-   --kompassi-font: 'Lato', Helvetica, Arial, sans-serif;
+   --kompassi-font: 'Lato', 'Helvetica', 'Arial', sans-serif;
    --kompassi-font-size: 16px;
    --kompassi-line-height: 1.3em;
 
    /*  Colors  */
-   --kompassi-hue: 205;
-
+   --kompassi-hue: 205deg;
    --kompassi-fg-lightness: 13%;
-   --kompassi-fg: hsla(0,0%,var(--kompassi-fg-lightness),1);
-   --kompassi-fg-10: hsla(0,0%,var(--kompassi-fg-lightness),0.1);
-   --kompassi-fg-25: hsla(0,0%,var(--kompassi-fg-lightness),0.2);
-   --kompassi-fg-50: hsla(0,0%,var(--kompassi-fg-lightness),0.5);
-   --kompassi-fg-75: hsla(0,0%,var(--kompassi-fg-lightness),0.75);
-   --kompassi-fg-invert: hsla(0,0%,100%,1);
-
-   --kompassi-bg: rgb(255, 255, 255); /* Need to use rgb() value! */
-   --kompassi-bg-alt: hsl(var(--kompassi-hue),30%,97%);
+   --kompassi-fg: hsla(0deg 0% var(--kompassi-fg-lightness) 100%);
+   --kompassi-fg-10: hsla(0deg 0% var(--kompassi-fg-lightness) 10%);
+   --kompassi-fg-25: hsla(0deg 0% var(--kompassi-fg-lightness) 20%);
+   --kompassi-fg-50: hsla(0deg 0% var(--kompassi-fg-lightness) 50%);
+   --kompassi-fg-75: hsla(0deg 0% var(--kompassi-fg-lightness) 75%);
+   --kompassi-fg-invert: hsla(0deg 0% 100% 100%);
+   --kompassi-bg: rgb(255 255 255); /* Need to use rgb() value! */
+   --kompassi-bg-alt: hsl(var(--kompassi-hue) 30% 97%);
 
    /*  Palette  */
-   --kompassi-palette-0: hsl(var(--kompassi-hue),20%,10%);
-   --kompassi-palette-1: hsl(var(--kompassi-hue),60%,20%);
-   --kompassi-palette-2: hsl(var(--kompassi-hue),60%,35%);
-   --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
-   --kompassi-palette-4: hsl(var(--kompassi-hue),50%,90%);
-   --kompassi-palette-5: hsl(var(--kompassi-hue),10%,95%);
+   --kompassi-palette-0: hsl(var(--kompassi-hue) 20% 10%);
+   --kompassi-palette-1: hsl(var(--kompassi-hue) 60% 20%);
+   --kompassi-palette-2: hsl(var(--kompassi-hue) 60% 35%);
+   --kompassi-palette-3: hsl(var(--kompassi-hue) 40% 60%);
+   --kompassi-palette-4: hsl(var(--kompassi-hue) 50% 90%);
+   --kompassi-palette-5: hsl(var(--kompassi-hue) 10% 95%);
 
    /*  Non-main palette colors  */
-   --kompassi-indicator-bg: hsl(0,100%,40%);
-   --kompassi-note-bg: hsl(60,100%,90%);
+   --kompassi-indicator-bg: hsl(0deg 100% 40%);
+   --kompassi-note-bg: hsl(60deg 100% 90%);
 
    /*  Common definitions  */
    --kompassi-box-shadow: 0 0 3px var(--kompassi-fg-10);
@@ -39,7 +37,7 @@
    --kompassi-modal-max-width: 1000px;
 }
 
-@media screen and (max-width:599px) {
+@media screen and (width < 600px) {
    :root body {
       --kompassi-padding-large: 1em;
    }
@@ -52,18 +50,21 @@
 
 @media (prefers-color-scheme: dark) {
    :root body:not(.kompassi-color-scheme-light) {
+      /* Colors */
       --kompassi-fg-lightness: 87%;
       --kompassi-fg-invert: #222;
-      --kompassi-bg: hsl(var(--kompassi-hue),5%,10%);
+      --kompassi-bg: hsl(var(--kompassi-hue) 5% 10%);
 
-      --kompassi-palette-0: hsl(var(--kompassi-hue),20%,15%);
-      --kompassi-palette-1: hsl(var(--kompassi-hue),70%,40%);
-      --kompassi-palette-2: hsl(var(--kompassi-hue),70%,25%);
-      --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
-      --kompassi-palette-4: hsl(var(--kompassi-hue),50%,15%);
-      --kompassi-palette-5: hsl(var(--kompassi-hue),10%,17%);
+      /* Palette */
+      --kompassi-palette-0: hsl(var(--kompassi-hue) 20% 15%);
+      --kompassi-palette-1: hsl(var(--kompassi-hue) 70% 40%);
+      --kompassi-palette-2: hsl(var(--kompassi-hue) 70% 25%);
+      --kompassi-palette-3: hsl(var(--kompassi-hue) 40% 60%);
+      --kompassi-palette-4: hsl(var(--kompassi-hue) 50% 15%);
+      --kompassi-palette-5: hsl(var(--kompassi-hue) 10% 17%);
 
-      --kompassi-note-bg: hsl(50,100%,20%);
+      /*  Non-main palette colors  */
+      --kompassi-note-bg: hsl(50deg 100% 20%);
    }
    body:not(.kompassi-color-scheme-light) [class*="kompassi-icon"]::before {
       filter: invert() !important;
@@ -81,16 +82,18 @@
 :root body.kompassi-color-scheme-dark {
    --kompassi-fg-lightness: 87%;
    --kompassi-fg-invert: #222;
-   --kompassi-bg: hsl(var(--kompassi-hue),5%,10%);
+   --kompassi-bg: hsl(var(--kompassi-hue) 5% 10%);
 
-   --kompassi-palette-0: hsl(var(--kompassi-hue),20%,15%);
-   --kompassi-palette-1: hsl(var(--kompassi-hue),70%,40%);
-   --kompassi-palette-2: hsl(var(--kompassi-hue),70%,25%);
-   --kompassi-palette-3: hsl(var(--kompassi-hue),40%,60%);
-   --kompassi-palette-4: hsl(var(--kompassi-hue),50%,15%);
-   --kompassi-palette-5: hsl(var(--kompassi-hue),10%,17%);
+   /*  Palette  */
+   --kompassi-palette-0: hsl(var(--kompassi-hue) 20% 15%);
+   --kompassi-palette-1: hsl(var(--kompassi-hue) 70% 40%);
+   --kompassi-palette-2: hsl(var(--kompassi-hue) 70% 25%);
+   --kompassi-palette-3: hsl(var(--kompassi-hue) 40% 60%);
+   --kompassi-palette-4: hsl(var(--kompassi-hue) 50% 15%);
+   --kompassi-palette-5: hsl(var(--kompassi-hue) 10% 17%);
 
-   --kompassi-note-bg: hsl(50,100%,20%);
+   /*  Non-main palette colors  */
+   --kompassi-note-bg: hsl(50deg 100% 20%);
 }
 body.kompassi-color-scheme-dark [class*="kompassi-icon"]::before {
    filter: invert() !important;
@@ -129,21 +132,21 @@ body.kompassi-color-scheme-dark .kompassi-provided {
  *
  */
 
-.kompassi-icon-arrow-left::before { background-image: url(../images/icons/arrow_left.svg); }
-.kompassi-icon-arrow-right::before { background-image: url(../images/icons/arrow_right.svg); }
-.kompassi-icon-clear-filters::before { background-image: url(../images/icons/clear_filters.svg); }
-.kompassi-icon-close::before { background-image: url(../images/icons/close.svg); }
-.kompassi-icon-ellipsis::before { background-image: url(../images/icons/ellipsis.svg); }
-.kompassi-icon-favorite::before { background-image: url(../images/icons/favorite.svg); }
-.kompassi-icon-filter::before { background-image: url(../images/icons/filter.svg); }
-.kompassi-icon-list::before { background-image: url(../images/icons/list.svg); }
-.kompassi-icon-signup::before { background-image: url(../images/icons/signup.svg); }
-.kompassi-icon-timeline::before { background-image: url(../images/icons/timeline.svg); }
-.kompassi-icon-timetable::before { background-image: url(../images/icons/timetable.svg); }
+.kompassi-icon-arrow-left::before { background-image: url("../images/icons/arrow_left.svg"); }
+.kompassi-icon-arrow-right::before { background-image: url("../images/icons/arrow_right.svg"); }
+.kompassi-icon-clear-filters::before { background-image: url("../images/icons/clear_filters.svg"); }
+.kompassi-icon-close::before { background-image: url("../images/icons/close.svg"); }
+.kompassi-icon-ellipsis::before { background-image: url("../images/icons/ellipsis.svg"); }
+.kompassi-icon-favorite::before { background-image: url("../images/icons/favorite.svg"); }
+.kompassi-icon-filter::before { background-image: url("../images/icons/filter.svg"); }
+.kompassi-icon-list::before { background-image: url("../images/icons/list.svg"); }
+.kompassi-icon-signup::before { background-image: url("../images/icons/signup.svg"); }
+.kompassi-icon-timeline::before { background-image: url("../images/icons/timeline.svg"); }
+.kompassi-icon-timetable::before { background-image: url("../images/icons/timetable.svg"); }
 
 .kompassi-icon-favorite.active::before,
 .is-favorite .kompassi-icon-favorite::before,
-#kompassi_schedule[data-display="timeline"] .is-favorite .title::after { background-image: url(../images/icons/is_favorite.svg); }
+#kompassi_schedule[data-display="timeline"] .is-favorite .title::after { background-image: url("../images/icons/is_favorite.svg"); }
 
 /*  Active button style is dark by default, make sure the icons are visible  */
 [class*="kompassi-icon"].active:not(.kompassi-icon-favorite)::before { filter: invert(); }
@@ -225,10 +228,10 @@ body.kompassi-color-scheme-dark .kompassi-provided {
    	}
       .kompassi-footer .kompassi-logos img {
    		height: 50px;
-   		weidth: auto;
+   		width: auto;
    	}
 
-@media screen and (min-width:800px) {
+@media screen and (width >= 800px) {
    .kompassi-footer {
       display: grid;
       grid-template-columns: auto max-content;
@@ -290,7 +293,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          background: var(--kompassi-palette-2) !important;
 		}
 
-@container kompassi-integration (min-width: 0px) {
+@container kompassi-integration (width > 1px) {
 	.kompassi-button-group {
 		margin-right: var(--kompassi-padding);
 		margin-bottom: var(--kompassi-padding);
@@ -467,7 +470,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       }
 
 /* TODO: Prefer container query */
-@media screen and (max-width:599px) {
+@media screen and (width < 600px) {
 	#kompassi_modal .actions a {
 		display: block;
       width: calc(100% - var(--kompassi-padding) * 2);
@@ -477,6 +480,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       }
       #kompassi_modal .content .actions a {
          border-radius: 0;
+         border-right: none;
+         box-shadow: none;
       }
          #kompassi_modal .content .actions a:first-child {
             border-top-right-radius: var(--kompassi-radius);
@@ -488,10 +493,6 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          }
       #kompassi_modal .content .actions .favorite {
          margin-right: 0;
-      }
-      #kompassi_modal .content .actions a {
-         border-right: none;
-         box-shadow: none;
       }
          #kompassi_modal > .content > .actions a:not(:last-child) {
             border-bottom: 1px solid var(--kompassi-fg-10);
@@ -505,12 +506,12 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 			overflow-y: auto;
 			background:
 				/* Shadow covers */
-            linear-gradient(hsl(0,0%,0%,0.05) 30%, rgba(255,255,255,0)),
-            linear-gradient(rgba(255,255,255,0), hsl(0,0%,0%,0.05) 70%) 0 100%,
+            linear-gradient(hsl(0deg 0% 0% 5%) 30%, rgba(255 255 255 0%)),
+            linear-gradient(rgba(255 255 255 0%), hsl(0deg 0% 0% 5%) 70%) 0 100%,
 
 				/* Shadows */
-				radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
-				radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+            radial-gradient(farthest-side at 50% 0, rgba(0 0 0 20%), rgba(0 0 0 0%)),
+            radial-gradient(farthest-side at 50% 100%, rgba(0 0 0 20%), rgba(0 0 0 0%)) 0 100%;
 
 			background-repeat: no-repeat;
          background-color: var(--kompassi-palette-5);
@@ -540,7 +541,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
                background-color: var(--kompassi-bg);
 				}
 
-@media screen and (min-width:900px) and (min-height: 800px) {
+@media screen and (width >= 900px) and (height >= 800px) {
 	#kompassi_modal {
 		width: auto;
 		height: calc( 100vh - 7em );
@@ -562,7 +563,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          font-size: 150%;
       }
 }
-@media screen and (min-width:1100px) and (min-height: 1000px) {
+
+@media screen and (width >= 1100px) and (height >= 1000px) {
    #kompassi_modal.small-modal {
       right: max( 4em, 25vw );
       left: max( 4em, 25vw );
@@ -579,7 +581,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
    }
 
 /* TODO: Prefer container query */
-@media screen and (min-width: 800px) {
+@media screen and (width >= 800px) {
    #kompassi_modal dl {
 		display: grid;
 		grid-template-columns: max-content auto;
@@ -645,7 +647,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
       padding: var(--kompassi-padding);
       color: #fff;
-      background-color: hsl(0,0%,0%,0.2);
+      background-color: hsl(0deg 0% 0% 20%);
       border: none;
       border-radius: var(--kompassi-radius);
       font-family: var(--kompassi-font);
@@ -664,7 +666,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          margin: 0 auto;
 
          border: none;
-         background-image: url(../images/icons/dropdown.svg);
+         background-image: url("../images/icons/dropdown.svg");
          background-size: contain;
          background-repeat: no-repeat;
          background-position: 50% 50%;

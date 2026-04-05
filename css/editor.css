@@ -13,7 +13,7 @@
    right: 0;
    width: 3.5em;
    height: 100%;
-   background-image: url(images/kompassi.svg);
+   background-image: url("images/kompassi.svg");
    background-position: 0.5em 0.5em;
    background-size: 2.5em auto;
    background-repeat: no-repeat;
