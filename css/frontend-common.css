@@ -326,6 +326,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
    list-style-type: none;
    padding-left: 0;
    margin: 0;
+   border-top-left-radius: 0;
+   min-width: max-content;
 }
    .kompassi-dropdown-menu.open .kompassi-dropdown-menu-items {
       position: absolute;
@@ -363,10 +365,6 @@ body.kompassi-color-scheme-dark .kompassi-provided {
             opacity: 0.5;
          }
 
-      .kompassi-dropdown-menu-items {
-         border-top-left-radius: 0;
-         min-width: max-content;
-      }
          .kompassi-dropdown-menu-items li {
             border-bottom: 1px solid var(--kompassi-fg-10);
          }
@@ -392,6 +390,8 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 #kompassi_modal {
 	position: fixed;
+   display: flex;
+	flex-direction: column;
 	width: 100vw;
 	height: 100vh;
 	left: 0;
@@ -413,10 +413,6 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 	}
 }
 
-#kompassi_modal {
-	display: flex;
-	flex-direction: column;
-}
 	#kompassi_modal .header {
 		position: relative;
 		display: grid;
