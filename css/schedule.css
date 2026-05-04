@@ -188,7 +188,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			#kompassi_schedule_filters :is(input, button) {
 				padding: var(--kompassi-padding);
 				color: #fff;
-				background-color: hsl(0deg 0% 0% 20%);
+				background-color: hsla(0deg, 0%, 0%, 20%);
 				border: none;
 				border-radius: var(--kompassi-radius);
 				font-family: var(--kompassi-font);
@@ -208,7 +208,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 				#kompassi_schedule_filters input:not(:placeholder-shown),
 				#kompassi_schedule_filters .kompassi-dropdown button.active {
 					color: #222;
-					background-color: hsl(0deg 0% 100% 80%);
+					background-color: hsl(0deg, 0%, 100%, 80%);
 				}
 					#kompassi_schedule_filters .kompassi-dropdown button.active::after {
 						filter: none;

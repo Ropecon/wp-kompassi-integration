@@ -7,22 +7,22 @@
    /*  Colors  */
    --kompassi-hue: 205deg;
    --kompassi-fg-lightness: 13%;
-   --kompassi-fg: hsla(0deg 0% var(--kompassi-fg-lightness) 100%);
-   --kompassi-fg-10: hsla(0deg 0% var(--kompassi-fg-lightness) 10%);
-   --kompassi-fg-25: hsla(0deg 0% var(--kompassi-fg-lightness) 20%);
-   --kompassi-fg-50: hsla(0deg 0% var(--kompassi-fg-lightness) 50%);
-   --kompassi-fg-75: hsla(0deg 0% var(--kompassi-fg-lightness) 75%);
-   --kompassi-fg-invert: hsla(0deg 0% 100% 100%);
-   --kompassi-bg: rgb(255 255 255); /* Need to use rgb() value! */
-   --kompassi-bg-alt: hsl(var(--kompassi-hue) 30% 97%);
+   --kompassi-fg: hsla(0deg, 0%, var(--kompassi-fg-lightness), 100%);
+   --kompassi-fg-10: hsla(0deg, 0%, var(--kompassi-fg-lightness), 10%);
+   --kompassi-fg-25: hsla(0deg, 0%, var(--kompassi-fg-lightness), 20%);
+   --kompassi-fg-50: hsla(0deg, 0%, var(--kompassi-fg-lightness) 50%);
+   --kompassi-fg-75: hsla(0deg, 0%, var(--kompassi-fg-lightness), 75%);
+   --kompassi-fg-invert: hsla(0deg, 0%, 100%, 100%);
+   --kompassi-bg: rgb(255, 255, 255); /* Need to use rgb() value! */
+   --kompassi-bg-alt: hsl(var(--kompassi-hue), 30%, 97%);
 
    /*  Palette  */
-   --kompassi-palette-0: hsl(var(--kompassi-hue) 20% 10%);
-   --kompassi-palette-1: hsl(var(--kompassi-hue) 60% 20%);
-   --kompassi-palette-2: hsl(var(--kompassi-hue) 60% 35%);
-   --kompassi-palette-3: hsl(var(--kompassi-hue) 40% 60%);
-   --kompassi-palette-4: hsl(var(--kompassi-hue) 50% 90%);
-   --kompassi-palette-5: hsl(var(--kompassi-hue) 10% 95%);
+   --kompassi-palette-0: hsl(var(--kompassi-hue), 20%, 10%);
+   --kompassi-palette-1: hsl(var(--kompassi-hue), 60%, 20%);
+   --kompassi-palette-2: hsl(var(--kompassi-hue), 60%, 35%);
+   --kompassi-palette-3: hsl(var(--kompassi-hue), 40%, 60%);
+   --kompassi-palette-4: hsl(var(--kompassi-hue), 50%, 90%);
+   --kompassi-palette-5: hsl(var(--kompassi-hue), 10%, 95%);
 
    /*  Non-main palette colors  */
    --kompassi-indicator-bg: hsl(0deg 100% 40%);
