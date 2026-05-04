@@ -417,6 +417,7 @@ class WP_Plugin_Kompassi_Integration {
 		// Map dimension value labels and flags to arrays
 		$this->event = new stdClass( );
 		$this->event->dimensions = $this->get_dimension_values( $data['program']['dimensions'] );
+		$this->event->active_dimension_values = array( );
 
 		// Map annotation labels and flags to arrays
 		$this->event->annotations = array( );
@@ -455,6 +456,20 @@ class WP_Plugin_Kompassi_Integration {
 
 		$out .= '</section>';
 		$out .= '</section>';
+
+		foreach( $data['program']['dimensions'] as $dimension_index => $dimension ) {
+			if( !isset( $this->event->active_dimension_values[$dimension['slug']] ) ) {
+				continue;
+			}
+			if( $dimension['slug'] == 'date' ) {
+				continue;
+			}
+			foreach( $dimension['values'] as $value_index => $value ) {
+				if( !in_array( $value['slug'], $this->event->active_dimension_values[$dimension['slug']] ) ) {
+					unset( $data['program']['dimensions'][$dimension_index]['values'][$value_index] );
+				}
+			}
+		}
 
 		$out .= '<script>kompassi_schedule_dimensions = ' . json_encode( $data['program']['dimensions'] ) . '</script>';
 
@@ -604,6 +619,13 @@ class WP_Plugin_Kompassi_Integration {
 			foreach( $scheduleItem['cachedDimensions'] as $dimension => $values ) {
 				$attr = 'data-' . $dimension;
 				$program_attributes[$attr] = implode( ',', $values );
+
+				// Gather a list of active dimension values
+				if( !isset( $this->event->active_dimension_values[$dimension] ) ) {
+					$this->event->active_dimension_values[$dimension] = $values;
+				} else {
+					$this->event->active_dimension_values[$dimension] = array_merge( $this->event->active_dimension_values[$dimension], $values );
+				}
 			}
 
 			// Convert attrs to HTML attrs
