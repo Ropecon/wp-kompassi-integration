@@ -407,7 +407,7 @@ class WP_Plugin_Kompassi_Integration {
 		if( !$graphql ) {
 			return;
 		}
-		$data = apply_filters( 'kompassi_schedule_data', $graphql['data']['event'] );
+		$data = apply_filters( 'kompassi_schedule_data', $graphql['data']['event'], $attributes );
 
 		// Filter out values that do not match forced filters
 		if( strlen( $attributes['forcedFilters'] ) > 0 ) { // TODO
