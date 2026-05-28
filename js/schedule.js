@@ -1431,15 +1431,25 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	}
 
 	for( let tbl in tables ) {
-		let table = document.createElement( 'div' );
+		let table;
 		let columns = tables[tbl]['programs'];
-		table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + columns.length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
-		table.className = 'table';
 
 		// Initialize table wrapper and toolbar
-		let table_wrapper = kompassi_schedule_timetable_table( tables[tbl], block_options );
-		table_wrapper.append( table );
-		schedule.append( table_wrapper );
+		if( typeof kompassi_debug_template !== 'undefined' && kompassi_debug_template ) {
+			// HTML <template>
+			let table_wrapper = kompassi_schedule_timetable_table_template( tables[tbl], block_options );
+			table = table_wrapper.querySelector( '.table' );
+			table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + columns.length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
+			schedule.appendChild( table_wrapper );
+		} else {
+			// Old way
+			table = document.createElement( 'div' );
+			table.style.gridTemplateColumns = 'var(--kompassi-schedule-timetable-time-width) repeat( ' + columns.length + ', minmax(var(--kompassi-schedule-timetable-group-min-width), 1fr ) )';
+			table.className = 'table';
+			let table_wrapper = kompassi_schedule_timetable_table( tables[tbl], block_options );
+			table_wrapper.append( table );
+			schedule.append( table_wrapper );
+		}
 
 		// Position programs
 		for( let column in columns ) {
@@ -1498,8 +1508,33 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 	} );
 } );
 
+function kompassi_schedule_timetable_table_template( table, block_options ) {
+	let table_wrapper = document.getElementById( 'timetable_table' ).content.cloneNode( true );
+	let table_title;
+	let table_subtitle;
+	if( block_options.timetablePrimaryGrouping ) {
+		table_title = table.title;
+		table_subtitle = dayjs( table.start ).format( 'LL' );
+	} else {
+		table_title = dayjs( table.start ).format( 'LL' );
+	}
+
+	table_wrapper.querySelector( '.table-title' ).textContent = table_title;
+	table_wrapper.querySelector( '.table-subtitle' ).textContent = table_subtitle;
+
+	table_wrapper.querySelector( '[data-action="scroll-left"]' ).addEventListener( 'click', function( event ) {
+		let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
+		table.scrollBy( -200, 0 );
+	} );
+	table_wrapper.querySelector( '[data-action="scroll-right"]' ).addEventListener( 'click', function( ) {
+		let table = event.target.closest( '.table-wrapper' ).querySelector( '.table' );
+		table.scrollBy( 200, 0 );
+	} );
+
+	return table_wrapper;
+}
+
 function kompassi_schedule_timetable_table( table, block_options ) {
-	// TODO: Replace with HTML <template> #timetable_table
 	let table_wrapper = document.createElement( 'div' );
 	table_wrapper.className = 'table-wrapper';
 	let table_toolbar = document.createElement( 'div' );
