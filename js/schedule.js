@@ -84,7 +84,7 @@ function kompassi_schedule_init( ) {
 	block.prepend( notes );
 
 	//  Schedule toolbar
-	kompassi_schedule_init_toolbar( block_options.showToolbar );
+	kompassi_schedule_init_toolbar( block_options.showToolbar, block_options.forcedFilters );
 
 	//  Add favorite action and order to each article
 	let programs = schedule.querySelectorAll( 'article' );
@@ -275,7 +275,7 @@ function kompassi_schedule_init( ) {
  *
  */
 
-function kompassi_schedule_init_toolbar( is_enabled ) {
+function kompassi_schedule_init_toolbar( is_enabled, forced_filters = false ) {
 	let block = document.getElementById( 'kompassi_block_schedule' );
 	let toolbar = document.createElement( 'section' );
 	if( !is_enabled ) {
@@ -422,11 +422,19 @@ function kompassi_schedule_init_toolbar( is_enabled ) {
 	filter_popup.append( text_filter_wrapper );
 
 	//  Dimension filters
+	let forced_dimensions = [];
+	if( forced_filters ) {
+		forced_filters.split( ',' ).forEach( (f) => { forced_dimensions.push( f.split( ':' )[0] ) } );
+	}
+
 	for( let dimension of kompassi_schedule_dimensions ) {
 		if( dimension.isListFilter == false || dimension.slug == 'state' ) {
 			continue;
 		}
 		if( kompassi_schedule_options.hidden_dimensions.indexOf( dimension.slug ) > -1 ) {
+			continue;
+		}
+		if( forced_dimensions.indexOf( dimension.slug ) > -1 ) {
 			continue;
 		}
 		if( dimension.values.length == 0 ) {
@@ -1720,7 +1728,7 @@ function kompassi_schedule_get_legend_modal_data( ) {
 			continue;
 		}
 
-		for( let value of dimension.values ) {
+		for( let value of Object.values(dimension.values) ) {
 			if( value.color ) {
 				legend.push( '<dt><span style="background-color: ' + value.color + ';"></span></dt><dd>' + dimension.title + ': ' + value.title + '</dd>' );
 			}

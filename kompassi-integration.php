@@ -45,6 +45,7 @@ class WP_Plugin_Kompassi_Integration {
 					'showToolbar' => array( 'type' => 'boolean', 'default' => 'true' ),
 					'eventSlug' => array( 'type' => 'string', 'default' => '' ),
 					'defaultFilters' => array( 'type' => 'string', 'default' => '' ),
+					'forcedFilters' => array( 'type' => 'string', 'default' => '' ),
 					'timelineGrouping' => array( 'type' => 'string', 'default' => '' ),
 					'timetablePrimaryGrouping' => array( 'type' => 'string', 'default' => '' ),
 					'timetableSecondaryGrouping' => array( 'type' => 'string', 'default' => '' ),
@@ -407,6 +408,12 @@ class WP_Plugin_Kompassi_Integration {
 			return;
 		}
 		$data = apply_filters( 'kompassi_schedule_data', $graphql['data']['event'] );
+
+		// Filter out values that do not match forced filters
+		if( strlen( $attributes['forcedFilters'] ) > 0 ) { // TODO
+			$data = $this->pre_filter_dimensions( $data, $attributes['forcedFilters'] );
+		}
+
 		if( count( $data ) < 1 ) {
 			return;
 		}
@@ -490,6 +497,33 @@ class WP_Plugin_Kompassi_Integration {
 		$this->save_schedule_cache( $out, $event_slug );
 
 		return $out;
+	}
+
+	/*
+	 *  Filter dimensions
+	 *
+	 */
+
+	function pre_filter_dimensions( $data, $dimensions ) {
+		$filters = array();
+		foreach( explode( ',', $dimensions ) as $filter ) {
+			list( $dimension, $value ) = explode( ':', $filter );
+			$filters[$dimension] = $value;
+		}
+
+		foreach( $data['program']['programs'] as $index => $program ) {
+			foreach( $filters as $filter => $value ) {
+				if(
+					!array_key_exists( $filter, $program['cachedDimensions'] ) ||
+					!in_array( $value, $program['cachedDimensions'][$filter] )
+				) {
+					unset( $data['program']['programs'][$index] );
+					continue 2;
+				}
+			}
+		}
+
+		return $data;
 	}
 
 	/*

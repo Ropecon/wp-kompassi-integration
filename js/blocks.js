@@ -29,6 +29,7 @@ wp.blocks.registerBlockType(
          showKonsti: { type: 'boolean', default: 'false' },
          eventSlug: { type: 'string', default: '' },
          defaultFilters: { type: 'string', default: '' },
+         forcedFilters: { type: 'string', default: '' },
          timelineGrouping: { type: 'string', default: '' },
          timetablePrimaryGrouping: { type: 'string', default: '' },
          timetableSecondaryGrouping: { type: 'string', default: '' },
@@ -69,9 +70,9 @@ wp.blocks.registerBlockType(
                      __next40pxDefaultSize: true,
                   } ),
                ),
-               el( wp.components.PanelBody, { title: __( 'Defaults', 'kompassi-integration' ) },
+               el( wp.components.PanelBody, { title: __( 'Filters', 'kompassi-integration' ) },
                   el( wp.components.TextControl, {
-                     label: __( 'Filters', 'kompassi-integration' ),
+                     label: __( 'Defaults', 'kompassi-integration' ),
                      value: props.attributes.defaultFilters,
                      onChange: function( value ) {
                         props.setAttributes( { defaultFilters: value } )
@@ -84,6 +85,15 @@ wp.blocks.registerBlockType(
                      el( 'br', { } ),
                      el( 'code', { }, 'language:fi/display:timeline' )
                   ),
+                  el( wp.components.TextControl, {
+                     label: __( 'Forced filters', 'kompassi-integration' ),
+                     value: props.attributes.forcedFilters,
+                     onChange: function( value ) {
+                        props.setAttributes( { forcedFilters: value } )
+                     },
+                     help: __( 'To force certain filters to be applied on this block, insert the options here.', 'kompassi-integration' ),
+                     __next40pxDefaultSize: true,
+                  } ),
                ),
                el( wp.components.PanelBody, { title: __( 'Timeline', 'kompassi-integration' ) },
                   el( wp.components.TextControl, {
