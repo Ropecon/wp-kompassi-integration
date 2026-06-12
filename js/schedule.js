@@ -277,10 +277,14 @@ function kompassi_schedule_init( ) {
 
 function kompassi_schedule_init_toolbar( is_enabled, forced_filters = false ) {
 	let block = document.getElementById( 'kompassi_block_schedule' );
+	let block_options = JSON.parse( block.dataset.wpContext );
 	let toolbar = document.createElement( 'section' );
 	if( !is_enabled ) {
 		toolbar.style.display = 'none';
 	}
+
+	wp.hooks.applyFilters( 'kompassi_schedule_options', kompassi_schedule_options, block_options );
+
 	toolbar.id = 'kompassi_schedule_toolbar';
 	block.prepend( toolbar );
 

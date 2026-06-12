@@ -436,6 +436,7 @@ class WP_Plugin_Kompassi_Integration {
 		$options = array( );
 		$options['hidden_dimensions'] = explode( ',', get_option( 'kompassi_integration_hidden_dimensions', '' ) );
 		$options['hidden_annotations'] = explode( ',', get_option( 'kompassi_integration_hidden_annotations', '' ) );
+		$options = apply_filters( 'kompassi_integration_schedule_block_options', $options, $attributes );
 
 		// Check which icons are available
 		$icons_path = plugin_dir_path( __FILE__ ) . 'images/icons';
