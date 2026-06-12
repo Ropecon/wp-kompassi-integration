@@ -331,10 +331,12 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function get_schedule_cache( $event_slug ) {
+	function get_schedule_cache( $event_slug, $attributes ) {
+		ksort( $attributes );
+		$attribute_hash = md5( serialize( $attributes ) );
 		switch( get_option( 'kompassi_integration_caching' ) ) {
 			case 'transient':
-				$transient = get_site_transient( 'kompassi_integration_schedule_' . $event_slug . '_' . get_locale( ) );
+				$transient = get_site_transient( 'kompassi_integration_schedule_' . $event_slug . '_' . $attribute_hash . '_' . get_locale( ) );
 				if( $transient ) {
 					return $transient;
 				}
@@ -348,11 +350,13 @@ class WP_Plugin_Kompassi_Integration {
 	 *
 	 */
 
-	function save_schedule_cache( $data, $event_slug ) {
+	function save_schedule_cache( $data, $event_slug, $attributes ) {
+		ksort( $attributes );
+		$attribute_hash = md5( serialize( $attributes ) );
 		$cache_time_in_min = 5;
 		switch( get_option( 'kompassi_integration_caching' ) ) {
 			case 'transient':
-				set_site_transient( 'kompassi_integration_schedule_' . $event_slug . '_' . get_locale( ), $data, $cache_time_in_min * 60 );
+				set_site_transient( 'kompassi_integration_schedule_' . $event_slug . '_' . $attribute_hash . '_' . get_locale( ), $data, $cache_time_in_min * 60 );
 				break;
 		}
 	}
@@ -392,7 +396,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		// Get cache
-		$cached_data = $this->get_schedule_cache( $event_slug );
+		$cached_data = $this->get_schedule_cache( $event_slug, $attributes );
 		if( $cached_data ) {
 			return $cached_data;
 		}
@@ -495,7 +499,7 @@ class WP_Plugin_Kompassi_Integration {
 		$out .= '</div>';
 
 		// Save cache
-		$this->save_schedule_cache( $out, $event_slug );
+		$this->save_schedule_cache( $out, $event_slug, $attributes );
 
 		return $out;
 	}
