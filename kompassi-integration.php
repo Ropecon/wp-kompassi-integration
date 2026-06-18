@@ -927,7 +927,8 @@ class WP_Plugin_Kompassi_Integration {
 					}
 				}
 				$out .= '>';
-				$out .= '<th>' . $program['title'] . '</th>';
+				$edit_url = 'https://v2.kompassi.eu/' . get_option( 'kompassi_integration_event_slug' ) . '/program-admin/' . $program['slug'] . '/dimensions';
+				$out .= '<th><a href="' . $edit_url . '" target="_blank" rel="nofollow">' . $program['title'] . '</a></th>';
 				foreach( $dimensions as $dimension ) {
 					$out .= '<td class="' . $dimension['slug'] . '">';
 					if( isset( $combined_dimensions[$dimension['slug']] )  ) {
