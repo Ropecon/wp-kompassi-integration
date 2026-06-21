@@ -221,7 +221,11 @@ function kompassi_dropdown( options ) {
 	}
 
 	let button = document.createElement( 'button' );
-	button.textContent = options.label;
+	let title = document.createElement( 'span' );
+	title.textContent = options.label;
+	title.classList.add( 'title' );
+	button.append( title );
+	button.setAttribute( 'title', options.label );
 	button.addEventListener( 'click', function( event ) {
 		wrapper.classList.toggle( 'open' );
 	} );
@@ -254,18 +258,21 @@ function kompassi_dropdown( options ) {
 
 		input.addEventListener( 'change', function( event ) {
 			let options = list.querySelectorAll( 'input' );
-			let selected = 0;
+			let selected = [];
 			for( let option of options ) {
 				if( option.checked ) {
-					selected += 1;
+					let label = option.closest( 'label' ).textContent
+					selected.push(label);
 				}
 			}
-			if( selected > 0 ) {
+			if( selected.length > 0 ) {
 				button.classList.add( 'active' );
-				indicator.textContent = selected;
+				indicator.textContent = selected.length;
+				button.setAttribute( 'title', title.textContent + ' (' + selected.join( ', ' ) + ')' );
 			} else {
 				button.classList.remove( 'active' );
 				indicator.textContent = null;
+				button.setAttribute( 'title', title.textContent );
 			}
 		} );
 	}

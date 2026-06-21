@@ -668,6 +668,19 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          background-position: 50% 50%;
          filter: invert();
       }
+      .kompassi-dropdown button .title {
+         display: block;
+         width: calc(100% - var(--kompassi-padding));
+         text-wrap: nowrap;
+         text-overflow: ellipsis;
+         overflow: hidden;
+      }
+      .kompassi-dropdown .kompassi-indicator {
+         position: absolute;
+         right: var(--kompassi-padding);
+         top: var(--kompassi-padding);
+         z-index: 2;
+      }
    .kompassi-dropdown ul {
       display: none;
       list-style-type: none;
