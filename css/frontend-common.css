@@ -528,6 +528,9 @@ body.kompassi-color-scheme-dark .kompassi-provided {
                   margin-left: 0;
                   padding-left: 0;
                }
+                  #kompassi_modal .content .main .description {
+                     flex-grow: 1;
+                  }
 
                #kompassi_modal .content .main > :last-child {
                   margin-bottom: 0;
