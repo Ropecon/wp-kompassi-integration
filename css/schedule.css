@@ -364,7 +364,7 @@ summary::marker {
 
 /*  Programs continuing  */
 #kompassi_schedule:not([data-display="timeline"]) article.continues {
-	order: 3;
+	order: 100001 !important;
 }
 #kompassi_schedule[data-display="timeline"].now article.continues {
 /*	opacity: 0.5; */
@@ -372,7 +372,7 @@ summary::marker {
 }
 
 #kompassi_schedule:not([data-display="timeline"]) #kompassi_programs_continuing {
-	order: 2;
+	order: 10000;
 }
 	#kompassi_schedule[data-display="timeline"] #kompassi_programs_continuing {
 		display: none;
