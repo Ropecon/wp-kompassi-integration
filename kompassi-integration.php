@@ -302,11 +302,13 @@ class WP_Plugin_Kompassi_Integration {
 
 	function rest_callback_docs( WP_REST_Request $request ) {
 		$parameters = $request->get_params( );
+		$document_missing = false;
 
 		$filename = realpath( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md' );
 		if( $filename != false ) {
 			if( substr( $filename, 0, strlen( plugin_dir_path( __FILE__ ) ) ) != plugin_dir_path( __FILE__ ) ) {
-				return array( 'status' => false, 'fn' => $fn );
+				// Trying to read something else than supposed to!
+				return array( 'status' => false, 'fn' => $filename );
 			}
 		}
 
@@ -315,16 +317,26 @@ class WP_Plugin_Kompassi_Integration {
 			$filename_en = realpath( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_en.md' );
 			if( $filename_en == false || !is_readable( $filename_en ) ) {
 				// Specified document is not available in English, return false
-				return array( 'status' => false );
+				$document_missing = true;
 			} else {
 				$filename = $filename_en;
 			}
 		}
-		$doc = file_get_contents( $filename );
-		$doc = apply_filters( 'kompassi_document_' . $parameters['document'], $doc, $parameters );
 
-		return array( 'status' => true, 'content' => $doc );
+		if( $document_missing ) {
+			$content = false;
+		} else {
+			$content = file_get_contents( $filename );
+		}
+		$content = apply_filters( 'kompassi_document_' . $parameters['document'], $content, $parameters );
+
+		if( $content ) {
+			return array( 'status' => true, 'content' => $content );
+		}
+
+		return array( 'status' => false );
 	}
+
 
 	/*
 	 *  Fetch processed schedule cache
