@@ -446,7 +446,7 @@ summary::marker {
  *  TODO: Prefer container query
  */
 
-@media screen and (width => 600px) {
+@media screen and (width >= 600px) {
 	#kompassi_schedule[data-display="list"] {
 		--kompassi-program-list-padding: 0.6em;
 		--kompassi-program-list-visual-width: 5.5em;
