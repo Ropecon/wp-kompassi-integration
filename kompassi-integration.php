@@ -291,7 +291,7 @@ class WP_Plugin_Kompassi_Integration {
 	function rest_api_init( ) {
 		register_rest_route(
 			'kompassi-integration/v1',
-			'/docs/(?P<document>\S+)/(?P<locale>\S+)',
+			'/docs/(?P<document>[A-Za-z0-9_\-\.]+)/(?P<locale>[a-zA-Z\-]+)(?:/(?P<plugin>[a-z0-9\-_]+))?',
 			array(
 				'methods' => 'GET',
 				'callback' => array( &$this, 'rest_callback_docs' ),
@@ -303,18 +303,30 @@ class WP_Plugin_Kompassi_Integration {
 	function rest_callback_docs( WP_REST_Request $request ) {
 		$parameters = $request->get_params( );
 		$document_missing = false;
+		$registered_plugins = apply_filters( 'kompassi_rest_docs_plugins', array( ) );
 
-		$filename = realpath( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md' );
+		if( $request['plugin'] ) {
+			if( in_array( $parameters['plugin'], $registered_plugins ) ) {
+				$plugin_path = trailingslashit( WP_PLUGIN_DIR . '/' . $request['plugin'] );
+			} else {
+				return array( 'status' => false, 'reason' => 'Unknown plugin ' . $parameters['plugin'] );
+			}
+		} else {
+			$plugin_path = plugin_dir_path( __FILE__ );
+		}
+
+		$fnraw = $plugin_path . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md';
+		$filename = realpath( $plugin_path . 'docs/' . $parameters['document'] . '_' . $parameters['locale'] . '.md' );
 		if( $filename != false ) {
-			if( substr( $filename, 0, strlen( plugin_dir_path( __FILE__ ) ) ) != plugin_dir_path( __FILE__ ) ) {
+			if( substr( $filename, 0, strlen( $plugin_path ) ) != $plugin_path ) {
 				// Trying to read something else than supposed to!
-				return array( 'status' => false, 'fn' => $filename );
+				return array( 'status' => false, 'reason' => 'Not allowed to read ' . $filename );
 			}
 		}
 
 		if( $filename == false || !is_readable( $filename ) ) {
 			// Specified document is not available in given language, try English
-			$filename_en = realpath( plugin_dir_path( __FILE__ ) . 'docs/' . $parameters['document'] . '_en.md' );
+			$filename_en = realpath( $plugin_path . 'docs/' . $parameters['document'] . '_en.md' );
 			if( $filename_en == false || !is_readable( $filename_en ) ) {
 				// Specified document is not available in English, return false
 				$document_missing = true;
@@ -324,17 +336,15 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		if( $document_missing ) {
-			$content = false;
+			return array( 'status' => false, 'reason' => 'Cannot find ' . $filename . ' (' . $fnraw . ')' );
 		} else {
 			$content = file_get_contents( $filename );
 		}
-		$content = apply_filters( 'kompassi_document_' . $parameters['document'], $content, $parameters );
 
 		if( $content ) {
 			return array( 'status' => true, 'content' => $content );
 		}
 
-		return array( 'status' => false );
 	}
 
 

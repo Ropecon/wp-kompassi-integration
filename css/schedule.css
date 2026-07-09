@@ -73,43 +73,56 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	width: 100%;
 	margin-bottom: var(--kompassi-padding);
 	grid-gap: var(--kompassi-padding);
-	grid-template-areas: "dates dates" "menu filtering" "display display";
-	grid-template-columns: min-content auto;
-}
+	grid-template-areas: "dates filtering" "display display" "more more";
+	grid-template-columns: max-content max-content;
+	justify-content: space-between;
 
-#kompassi_schedule_toolbar .kompassi-button-group {
-	margin: 0;
-}
-
-	#kompassi_schedule_toolbar section { align-content: center; }
-	#kompassi_schedule_toolbar #kompassi_schedule_dates { grid-area: dates; }
-	#kompassi_schedule_toolbar #kompassi_schedule_filtering { grid-area: filtering; }
-	#kompassi_schedule_toolbar #kompassi_schedule_menu {
-		grid-area: menu;
-		position: relative;
+	.kompassi-button-group {
+		margin: 0;
 	}
-	#kompassi_schedule_toolbar #kompassi_schedule_display { grid-area: display; }
 
-@container kompassi-integration (min-width:450px) {
-	#kompassi_schedule_toolbar {
-		grid-template-areas: "dates display display" "filtering filtering menu";
+	> section {
+		align-content: center;
+
+		&#kompassi_schedule_dates { grid-area: dates; }
+		&#kompassi_schedule_filtering { grid-area: filtering; }
+		&#kompassi_schedule_display { grid-area: display; }
+		&#kompassi_schedule_more { grid-area: more; }
+	}
+
+	@container kompassi-integration (width < 475px) {
+		#kompassi_schedule_display {
+			display: flex;
+
+			> a {
+				flex-grow: 1;
+			}
+		}
+	}
+
+	@container kompassi-integration (width >= 475px) {
+		grid-template-areas: "dates display display" "filtering filtering more";
 		grid-template-columns: auto auto;
-	}
-		#kompassi_schedule_toolbar #kompassi_schedule_menu { justify-self: end; }
-			#kompassi_schedule_toolbar #kompassi_schedule_menu.open .kompassi-dropdown-menu-items {
-				border-top-left-radius: var(--kompassi-radius);
-				border-top-right-radius: 0;
-			}
-			#kompassi_schedule_toolbar #kompassi_schedule_menu ul {
-				right: 0;
-			}
-		#kompassi_schedule_toolbar #kompassi_schedule_display { text-align: right; }
-}
 
-@container kompassi-integration (min-width:800px) {
-	#kompassi_schedule_toolbar {
-		grid-template-areas: "dates filtering menu display";
+		#kompassi_schedule_display { text-align: right; }
+
+		#kompassi_schedule_more {
+			#kompassi_schedule_more_actions {
+				align-self: end;
+				ul { right: 0; }
+
+				&.open .kompassi-dropdown-menu-items {
+					border-top-left-radius: var(--kompassi-radius);
+					border-top-right-radius: 0;
+				}
+			}
+		}
+	}
+
+	@container kompassi-integration (width >= 800px) {
+		grid-template-areas: "dates filtering display more";
 		grid-template-columns: max-content max-content auto max-content;
+		justify-content: unset;
 	}
 }
 

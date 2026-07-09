@@ -246,6 +246,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 .kompassi-button-group {
 	display: block;
+   height: calc(var(--kompassi-line-height) + var(--kompassi-padding) *  2);
 }
    .kompassi-button-group > a {
 		cursor: pointer;
@@ -298,19 +299,23 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 		margin-right: var(--kompassi-padding);
 		margin-bottom: var(--kompassi-padding);
 	}
-		.kompassi-button-group > a {
+      .kompassi-button-group > a,
+      .kompassi-button-group > .kompassi-dropdown-menu > a {
 			border-radius: 0;
 			margin-right: 0;
 			margin-bottom: 0;
 		}
-			.kompassi-button-group > a:not(:last-of-type) {
+         .kompassi-button-group > a:not(:last-child),
+         .kompassi-button-group > .kompassi-dropdown-menu:not(:last-child) > a {
             border-right: 1px solid var(--kompassi-fg-10);
 			}
-			.kompassi-button-group > a:first-child {
+         .kompassi-button-group > a:first-child,
+         .kompassi-button-group > .kompassi-dropdown-menu:first-child > a {
 				border-bottom-left-radius: var(--kompassi-radius);
 				border-top-left-radius: var(--kompassi-radius);
 			}
-			.kompassi-button-group > a:last-of-type {
+         .kompassi-button-group > a:last-child,
+         .kompassi-button-group > .kompassi-dropdown-menu:last-child > a {
 				border-top-right-radius: var(--kompassi-radius);
 				border-bottom-right-radius: var(--kompassi-radius);
 			}
@@ -320,6 +325,14 @@ body.kompassi-color-scheme-dark .kompassi-provided {
  *  Dropdown menu
  *
  */
+
+.kompassi-dropdown-menu {
+   display: inline-block;
+
+   &.open {
+      position: relative;
+   }
+}
 
 .kompassi-dropdown-menu-items {
    display: none;
@@ -350,11 +363,12 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
          width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
          height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
+         top: -0.4em; /* TODO */
       }
          .kompassi-dropdown-menu > a::before {
             content: '';
             display: inline-block;
-            position: absolute;
+            position: relative;
             top: var(--kompassi-padding);
             left: var(--kompassi-padding);
             width: var(--kompassi-icon-size);
