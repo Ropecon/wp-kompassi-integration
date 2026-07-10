@@ -422,6 +422,10 @@ summary::marker {
 			background-position: 50% 50%;
 			border-top-left-radius: var(--kompassi-radius);
 			border-bottom-left-radius: var(--kompassi-radius);
+
+			@media screen and (width < 600px) {
+				--kompassi-program-icon: none;
+			}
 		}
 		#kompassi_schedule[data-display="list"] article summary {
 			display: grid;
