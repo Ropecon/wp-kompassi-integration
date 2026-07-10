@@ -1770,11 +1770,9 @@ function kompassi_schedule_get_legend_modal_data( ) {
  */
 
 function kompassi_schedule_document_modal( doc, title, plugin = '' ) {
-	console.log( 'kompassi-integration/v1/docs/' + doc + '/' + kompassi_schedule_options.locale + '/' + plugin );
 	let opts = {
 		rest_route: 'kompassi-integration/v1/docs/' + doc + '/' + kompassi_schedule_options.locale + '/' + plugin,
 		success: function( response ) {
-			console.log( 'rest success' , response );
 			var sdc = new showdown.Converter( );
 			let options = {
 				title: title,
