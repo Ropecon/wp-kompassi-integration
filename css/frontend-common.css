@@ -458,6 +458,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          padding: var(--kompassi-padding) var(--kompassi-padding-large);
 			margin-right: 0;
          margin-bottom: 0;
+         height: calc(var(--kompassi-line-height) + var(--kompassi-padding) *  4);
 		}
          #kompassi_modal.actions-bottom-right .content .actions {
             text-align: right;
