@@ -498,9 +498,6 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          }
       }
 
-      #kompassi_modal .content .actions a[class*="kompassi-icon"] {
-         width: calc(100% - var(--kompassi-padding) * 3 - var(--kompassi-icon-size));
-      }
       .main, .footer {
          padding: var(--kompassi-padding-large);
       }
