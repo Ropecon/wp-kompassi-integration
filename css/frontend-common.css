@@ -120,11 +120,11 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 	font-family: var(--kompassi-font);
    font-size: var(--kompassi-font-size);
    line-height: var(--kompassi-line-height);
-}
 
-.kompassi-integration.fix-bg-contrast {
-   --kompassi-bg: var(--kompassi-bg-alt);
-   --kompassi-box-shadow: 0 0 3px var(--kompassi-fg-25);
+   &.fix-bg-contrast {
+      --kompassi-bg: var(--kompassi-bg-alt);
+      --kompassi-box-shadow: 0 0 3px var(--kompassi-fg-25);
+   }
 }
 
 /*
@@ -187,21 +187,25 @@ body.kompassi-color-scheme-dark .kompassi-provided {
  *
  */
 
-.kompassi-notes:not(:empty) {
-	padding: 0.5em;
-	border-radius: var(--kompassi-radius);
-	box-shadow: var(--kompassi-box-shadow);
-	background-color: var(--kompassi-note-bg);
-	color: var(--kompassi-fg);
-	margin-bottom: 0.5em;
-}
-   .kompassi-notes span {
-		display: inline-block;
+.kompassi-notes {
+   &:not(:empty) {
+      padding: 0.5em;
+   	border-radius: var(--kompassi-radius);
+   	box-shadow: var(--kompassi-box-shadow);
+   	background-color: var(--kompassi-note-bg);
+   	color: var(--kompassi-fg);
+   	margin-bottom: 0.5em;
+   }
+   span {
+      display: inline-block;
 		margin-right: 1em;
-	}
-      .kompassi-notes .program-count {
-			font-weight: 600;
-		}
+   }
+
+   /* TODO: Move to schedule.css? */
+   .program-count {
+      font-weight: 600;
+   }
+}
 
 
 /*
@@ -211,28 +215,28 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 .kompassi-footer {
    margin: 1em 0;
-}
-   .kompassi-footer .kompassi-contact {
+
+   .kompassi-contact {
       font-size: 85%;
       letter-spacing: 0.02em;
       font-weight: 600;
       color: var(--kompassi-fg-75);
    }
-   .kompassi-footer .kompassi-logos {
+   .kompassi-logos {
       text-align: right;
       display: flex;
       grid-gap: var(--kompassi-padding-large);
-   }
-      .kompassi-footer .kompassi-logos a {
-   		text-decoration: none;
-   	}
-      .kompassi-footer .kompassi-logos img {
-   		height: 50px;
-   		width: auto;
-   	}
 
-@media screen and (width >= 800px) {
-   .kompassi-footer {
+      a {
+         text-decoration: none;
+      }
+      img {
+         height: 50px;
+         width: auto;
+      }
+   }
+
+   @media screen and (width >= 800px) {
       display: grid;
       grid-template-columns: auto max-content;
       grid-gap: var(--kompassi-padding-large);
@@ -247,78 +251,91 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 .kompassi-button-group {
 	display: block;
    height: calc(var(--kompassi-line-height) + var(--kompassi-padding) *  2);
-}
-   .kompassi-button-group > a {
-		cursor: pointer;
-		position: relative;
-		display: inline-block;
-		padding: var(--kompassi-padding);
+
+   > :is(a) {
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      padding: var(--kompassi-padding);
       color: var(--kompassi-fg);
-		background: var(--kompassi-bg);
-		border-radius: var(--kompassi-radius);
-		margin-right: var(--kompassi-padding);
-		margin-bottom: var(--kompassi-padding);
-		box-shadow: var(--kompassi-box-shadow);
+      background: var(--kompassi-bg);
+      border-radius: var(--kompassi-radius);
+      margin-right: var(--kompassi-padding);
+      margin-bottom: var(--kompassi-padding);
+      box-shadow: var(--kompassi-box-shadow);
       text-decoration: none;
-   }
-      .kompassi-button-group > a:visited {
+
+      &:visited {
          color: var(--kompassi-fg);
       }
-      .kompassi-button-group > a:is(:hover,:active,:focus) {
+
+      &:is(:hover, :active, :focus) {
          color: var(--kompassi-palette-2);
       }
-		.kompassi-button-group.has-icon-and-label > a:is([class*="kompassi-icon"]) {
-			padding-left: calc( ( var(--kompassi-padding) * 2 ) + var(--kompassi-icon-size) );
-		}
-			.kompassi-button-group:is(.has-icon-and-label, .has-icon-only) > a::before {
-				content: '';
-				display: inline-block;
-				position: absolute;
-				top: var(--kompassi-padding);
-				left: var(--kompassi-padding);
-				width: var(--kompassi-icon-size);
-				height: var(--kompassi-icon-size);
-				background-repeat: no-repeat;
-				background-position: 50% 50%;
-				background-size: contain;
-				opacity: 0.5;
-			}
-			.kompassi-button-group.has-icon-only > a {
-				width: var(--kompassi-icon-size);
-				height: var(--kompassi-icon-size);
-            user-select: none;
-			}
 
-		.kompassi-button-group > a.active {
+      .active {
          color: #fff !important;
          background: var(--kompassi-palette-2) !important;
 		}
+   }
 
-@container kompassi-integration (width > 1px) {
-	.kompassi-button-group {
-		margin-right: var(--kompassi-padding);
-		margin-bottom: var(--kompassi-padding);
-	}
-      .kompassi-button-group > a,
-      .kompassi-button-group > .kompassi-dropdown-menu > a {
-			border-radius: 0;
+   &:is(.has-icon-and-label, .has-icon-only) {
+      > a::before {
+         content: '';
+         display: inline-block;
+         position: absolute;
+         top: var(--kompassi-padding);
+         left: var(--kompassi-padding);
+         width: var(--kompassi-icon-size);
+         height: var(--kompassi-icon-size);
+         background-repeat: no-repeat;
+         background-position: 50% 50%;
+         background-size: contain;
+         opacity: 0.5;
+      }
+   }
+
+   &:is(.has-icon-and-label) {
+      > a:is([class*="kompassi-icon"]) {
+         padding-left: calc((var(--kompassi-padding) * 2) + var(--kompassi-icon-size));
+      }
+   }
+
+   &:is(.has-icon-only) {
+      > :is(a) {
+         width: var(--kompassi-icon-size);
+         height: var(--kompassi-icon-size);
+         user-select: none;
+      }
+   }
+
+   /* TODO? */
+   @container kompassi-integration (width > 1px) {
+      margin-right: var(--kompassi-padding);
+      margin-bottom: var(--kompassi-padding);
+
+      > :is(a),
+      > .kompassi-dropdown-menu > a {
+         border-radius: 0;
 			margin-right: 0;
 			margin-bottom: 0;
-		}
-         .kompassi-button-group > a:not(:last-child),
-         .kompassi-button-group > .kompassi-dropdown-menu:not(:last-child) > a {
-            border-right: 1px solid var(--kompassi-fg-10);
-			}
-         .kompassi-button-group > a:first-child,
-         .kompassi-button-group > .kompassi-dropdown-menu:first-child > a {
-				border-bottom-left-radius: var(--kompassi-radius);
-				border-top-left-radius: var(--kompassi-radius);
-			}
-         .kompassi-button-group > a:last-child,
-         .kompassi-button-group > .kompassi-dropdown-menu:last-child > a {
-				border-top-right-radius: var(--kompassi-radius);
-				border-bottom-right-radius: var(--kompassi-radius);
-			}
+      }
+
+      > a:not(:last-child),
+      > .kompassi-dropdown-menu:not(:last-child) > a {
+         border-right: 1px solid var(--kompassi-fg-10);
+      }
+      > a:first-child,
+      > .kompassi-dropdown-menu:first-child > a {
+         border-bottom-left-radius: var(--kompassi-radius);
+         border-top-left-radius: var(--kompassi-radius);
+      }
+      > a:last-child,
+      > .kompassi-dropdown-menu:last-child > a {
+         border-top-right-radius: var(--kompassi-radius);
+         border-bottom-right-radius: var(--kompassi-radius);
+      }
+   }
 }
 
 /*
@@ -329,72 +346,76 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 .kompassi-dropdown-menu {
    display: inline-block;
 
-   &.open {
-      position: relative;
-   }
-}
-
-.kompassi-dropdown-menu-items {
-   display: none;
-   list-style-type: none;
-   padding-left: 0;
-   margin: 0;
-   border-top-left-radius: 0;
-   min-width: max-content;
-}
-   .kompassi-dropdown-menu.open .kompassi-dropdown-menu-items {
-      position: absolute;
-      display: block;
-      z-index: 3000;
-   }
-
-   .kompassi-dropdown-menu > a,
+   > :is(a),
    .kompassi-dropdown-menu-items {
-		cursor: pointer;
+      cursor: pointer;
 		background: var(--kompassi-bg);
 		border-radius: var(--kompassi-radius);
 		box-shadow: var(--kompassi-box-shadow);
       text-decoration: none;
-	}
-      .kompassi-dropdown-menu > a {
-         display: block;
-         position: relative;
-         user-select: none;
+   }
 
-         width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
-         height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
+   .kompassi-dropdown-menu-items {
+      display: none;
+      list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+      border-top-left-radius: 0;
+      min-width: max-content;
+
+      li {
+         border-bottom: 1px solid var(--kompassi-fg-10);
       }
-         .kompassi-dropdown-menu > a::before {
-            content: '';
-            display: inline-block;
-            position: relative;
-            top: var(--kompassi-padding);
-            left: var(--kompassi-padding);
-            width: var(--kompassi-icon-size);
-            height: var(--kompassi-icon-size);
-            background-repeat: no-repeat;
-            background-position: 50% 50%;
-            background-size: contain;
-            opacity: 0.5;
-         }
 
-         .kompassi-dropdown-menu-items li {
-            border-bottom: 1px solid var(--kompassi-fg-10);
-         }
-         .kompassi-dropdown-menu-items a {
-            display: block;
-            padding: var(--kompassi-padding);
-            color: var(--kompassi-fg);
-            text-decoration: none;
-         }
-.kompassi-dropdown-menu.open > a {
-   border-bottom-left-radius: 0;
-   border-bottom-right-radius: 0;
+      :is(a) {
+         display: block;
+         padding: var(--kompassi-padding);
+         color: var(--kompassi-fg);
+         text-decoration: none;
+      }
+   }
 
-   color: #fff;
-   background-color: var(--kompassi-palette-2);
+   > :is(a) {
+      display: block;
+      position: relative;
+      user-select: none;
+
+      width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
+      height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) * 2 );
+
+      &::before {
+         content: '';
+         display: inline-block;
+         position: relative;
+         top: var(--kompassi-padding);
+         left: var(--kompassi-padding);
+         width: var(--kompassi-icon-size);
+         height: var(--kompassi-icon-size);
+         background-repeat: no-repeat;
+         background-position: 50% 50%;
+         background-size: contain;
+         opacity: 0.5;
+      }
+   }
+
+   &.open {
+      position: relative;
+
+      .kompassi-dropdown-menu-items {
+         position: absolute;
+         display: block;
+         z-index: 3000;
+      }
+
+      > :is(a) {
+         border-bottom-left-radius: 0;
+         border-bottom-right-radius: 0;
+
+         color: #fff;
+         background-color: var(--kompassi-palette-2);
+      }
+   }
 }
-
 
 /*
  *  Modal
@@ -418,197 +439,225 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 	overflow: hidden;
    user-select: text !important;
-}
 
-@supports (height:100dvh) {
-	#kompassi_modal {
-		height: 100dvh;
-	}
-}
+   @supports (height:100dvh) {
+      height: 100dvh;
+   }
 
-	#kompassi_modal .header {
-		position: relative;
-		display: grid;
-		grid-template-columns: auto max-content;
-		grid-template-areas: 'title actions';
-		grid-gap: var(--kompassi-padding-large);
-		padding: var(--kompassi-padding-large);
+   .header {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto max-content;
+      grid-template-areas: 'title actions';
+      grid-gap: var(--kompassi-padding-large);
+      padding: var(--kompassi-padding-large);
       background-color: var(--kompassi-bg);
-	}
-		#kompassi_modal .header .title {
-			font-size: 120%;
+
+      .title {
+         font-size: 120%;
          line-height: var(--kompassi-line-height);
-			align-self: center;
-		}
-      #kompassi_modal .header .actions {
+         align-self: center;
+      }
+      .actions {
          --kompassi-icon-size: var(--kompassi-line-height);
       }
-         #kompassi_modal .header .actions [class*="kompassi-icon"]::before {
-            margin: 0 0 0 0.5em;
-            height: calc( var(--kompassi-icon-size) + var(--kompassi-padding) );
-            width: calc( var(--kompassi-icon-size) + var(--kompassi-padding) );
-            background-position: 50% 50%;
-            background-size: contain;
-            background-repeat: no-repeat;
-            cursor: pointer;
-         }
 
-		#kompassi_modal .content .actions {
-         background-color: var(--kompassi-palette-3);
-         padding: var(--kompassi-padding) var(--kompassi-padding-large);
-			margin-right: 0;
-         margin-bottom: 0;
-         height: calc(var(--kompassi-line-height) + var(--kompassi-padding) *  4);
-		}
-         #kompassi_modal.actions-bottom-right .content .actions {
-            text-align: right;
-            order: 2;
-         }
-			#kompassi_modal .content .actions a::before {
-				opacity: 1;
-         }
-         #kompassi_modal .content .actions:is(.has-icon-and-label) a::after {
-            content: attr(title);
-         }
-				#kompassi_modal.is-favorite .content .actions .favorite {
-               color: #fff;
-               background-color: var(--kompassi-palette-2);
-				}
-      #kompassi_modal .content .main,
-      #kompassi_modal .content .footer {
-         padding: var(--kompassi-padding-large);
+      [class*="kompassi-icon"]::before {
+         margin: 0 0 0 0.5em;
+         height: calc(var(--kompassi-icon-size) + var(--kompassi-padding));
+         width: calc(var(--kompassi-icon-size) + var(--kompassi-padding));
+         background-position: 50% 50%;
+         background-size: contain;
+         background-repeat: no-repeat;
+         cursor: pointer;
       }
 
-/* TODO: Prefer container query */
-@media screen and (width < 600px) {
-	#kompassi_modal .actions a {
-		display: block;
-      width: calc(100% - var(--kompassi-padding) * 2);
-	}
+   }
+
+   .content {
+      .actions {
+         background-color: var(--kompassi-palette-3);
+         padding: var(--kompassi-padding) var(--kompassi-padding-large);
+         margin-right: 0;
+         margin-bottom: 0;
+         height: auto; /*calc(var(--kompassi-line-height) + var(--kompassi-padding) *  4); */
+
+         a::before {
+            opacity: 1;
+         }
+
+         &:is(.has-icon-and-label) {
+            a::after {
+               content: attr(title);
+            }
+         }
+
+         .favorite {
+            color: #fff;
+            background-color: var(--kompassi-palette-2);
+         }
+      }
+
       #kompassi_modal .content .actions a[class*="kompassi-icon"] {
          width: calc(100% - var(--kompassi-padding) * 3 - var(--kompassi-icon-size));
       }
-      #kompassi_modal .content .actions a {
-         border-radius: 0;
-         border-right: none;
-         box-shadow: none;
+      .main, .footer {
+         padding: var(--kompassi-padding-large);
       }
-         #kompassi_modal .content .actions a:first-child {
-            border-top-right-radius: var(--kompassi-radius);
-            border-top-left-radius: var(--kompassi-radius);
-         }
-         #kompassi_modal .content .actions a:last-child {
-            border-bottom-right-radius: var(--kompassi-radius);
-            border-bottom-left-radius: var(--kompassi-radius);
-         }
-      #kompassi_modal .content .actions .favorite {
-         margin-right: 0;
-      }
-         #kompassi_modal > .content > .actions a:not(:last-child) {
-            border-bottom: 1px solid var(--kompassi-fg-10);
+
+      .main {
+         flex: auto;
+         display: flex;
+         flex-direction: column;
+
+         font-size: 107%;
+         line-height: 1.7em;
+
+         > * {
+            margin-left: 0;
+            padding-left: 0;
          }
 
-}
-      #kompassi_modal .content:not(.dimension) {
-			display: flex;
-			flex-direction: column;
-			flex: auto;
-			overflow-y: auto;
-			background:
-				/* Shadow covers */
+         > :last-child {
+            margin-bottom: 0;
+         }
+
+         .description {
+            flex-grow: 1;
+         }
+
+         :is(dt, dd) {
+            font-size: 90&;
+         }
+
+         dt {
+            font-weight: bold;
+         }
+      }
+
+      .footer {
+         flex: 0 0 min-content;
+         background-color: var(--kompassi-bg);
+      }
+
+      &:not(.dimension) {
+         display: flex;
+         flex-direction: column;
+         flex: auto;
+         overflow-y: auto;
+         background:
+            /* Shadow covers */
             linear-gradient(hsl(0deg 0% 0% 5%) 30%, rgba(255 255 255 0%)),
             linear-gradient(rgba(255 255 255 0%), hsl(0deg 0% 0% 5%) 70%) 0 100%,
 
-				/* Shadows */
+            /* Shadows */
             radial-gradient(farthest-side at 50% 0, rgba(0 0 0 20%), rgba(0 0 0 0%)),
             radial-gradient(farthest-side at 50% 100%, rgba(0 0 0 20%), rgba(0 0 0 0%)) 0 100%;
 
-			background-repeat: no-repeat;
+         background-repeat: no-repeat;
          background-color: var(--kompassi-palette-5);
-			background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+         background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
-			/* Opera doesn't support this in the shorthand */
-			background-attachment: local, local, scroll, scroll;
-		}
-				#kompassi_modal .content .main {
-					flex: auto;
-					display: flex;
-					flex-direction: column;
+         /* Opera doesn't support this in the shorthand */
+         background-attachment: local, local, scroll, scroll;
+      }
+   }
 
-               font-size: 107%;
-               line-height: 1.7em;
-				}
-               #kompassi_modal .content .main > * {
-                  margin-left: 0;
-                  padding-left: 0;
+   &.actions-bottom-right {
+      .content .actions {
+         text-align: right;
+         order: 2;
+      }
+   }
+
+   &.kompassi-document {
+      ul {
+         list-style-position: inside;
+
+         li::marker {
+            content: "– ";
+         }
+      }
+   }
+
+   /* TODO: Prefer container queries */
+   @media screen and (width < 600px) {
+      .actions {
+         a {
+            display: block;
+            width: calc(100% - var(--kompassi-padding) * 2);
+         }
+      }
+
+      .content {
+         .actions {
+            a {
+               border-radius: 0;
+               border-right: none;
+               box-shadow: none;
+
+               &:first-child {
+                  border-top-right-radius: var(--kompassi-radius);
+                  border-top-left-radius: var(--kompassi-radius);
                }
-                  #kompassi_modal .content .main .description {
-                     flex-grow: 1;
-                  }
 
-               #kompassi_modal .content .main > :last-child {
-                  margin-bottom: 0;
+               &:last-child {
+                  border-bottom-right-radius: var(--kompassi-radius);
+                  border-bottom-left-radius: var(--kompassi-radius);
                }
-            #kompassi_modal .content .footer {
-					flex: 0 0 min-content;
-               background-color: var(--kompassi-bg);
-				}
 
-@media screen and (width >= 900px) and (height >= 800px) {
-	#kompassi_modal {
-		width: auto;
-		height: calc( 100vh - 7em );
-		max-width: var(--kompassi-modal-max-width);
-		right: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
-		left: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
-		top: 3.5em;
-		bottom: 3.5em;
+               &:not(:last-child) {
+                  border-bottom: 1px solid var(--kompassi-fg-10);
+               }
+            }
+
+            .favorite {
+               /* TODO? */
+               margin-right: 0;
+            }
+         }
+      }
+   }
+
+   @media screen and (width >= 800px) {
+      .main dl {
+   		display: grid;
+   		grid-template-columns: max-content auto;
+   		grid-gap: 0 2em;
+   	}
+   }
+
+   @media screen and (width >= 900px) and (height >= 800px) {
+      width: auto;
+      height: calc( 100vh - 7em );
+      max-width: var(--kompassi-modal-max-width);
+      right: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
+      left: max( 4em, calc( ( 100vw - var(--kompassi-modal-max-width) ) / 2 ) );
+      top: 3.5em;
+      bottom: 3.5em;
       border-radius: var(--kompassi-radius);
-	}
-      #kompassi_modal.small-modal {
+
+      &.small-modal {
          right: max( 4em, 15vw );
          left: max( 4em, 15vw );
          top: max( 4em, 15vh );
          bottom: max( 4em, 15vh );
          height: auto;
       }
-      #kompassi_modal .header .title {
+      .header .title {
          font-size: 150%;
       }
-}
-
-@media screen and (width >= 1100px) and (height >= 1000px) {
-   #kompassi_modal.small-modal {
-      right: max( 4em, 25vw );
-      left: max( 4em, 25vw );
-      top: max( 4em, 25vh );
-      bottom: max( 4em, 25vh );
-   }
-}
-
-#kompassi_modal :is(dt,dd) {
-   font-size: 90%;
-}
-   #kompassi_modal dt {
-      font-weight: bold;
    }
 
-/* TODO: Prefer container query */
-@media screen and (width >= 800px) {
-   #kompassi_modal dl {
-		display: grid;
-		grid-template-columns: max-content auto;
-		grid-gap: 0 2em;
-	}
-}
-
-/*  Document modal  */
-#kompassi_modal.kompassi-document ul {
-   list-style-position: inside;
-}
-   #kompassi_modal.kompassi-document ul li::marker {
-      content: "– ";
+   @media screen and (width >= 1100px) and (height >= 1000px) {
+      &.small-modal {
+         right: max( 4em, 25vw );
+         left: max( 4em, 25vw );
+         top: max( 4em, 25vh );
+         bottom: max( 4em, 25vh );
+      }
    }
+}
 
 #kompassi_modal_underlay {
 	position: fixed;
@@ -637,10 +686,11 @@ body.kompassi-color-scheme-dark .kompassi-provided {
    background-color: var(--kompassi-palette-1);
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-radius);
-}
-   #kompassi_popover p {
+
+   p {
       margin: 0;
    }
+}
 
 /*
  *  Dropdown lists
@@ -649,11 +699,12 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 .kompassi-dropdown {
    position: relative;
-}
-   .kompassi-dropdown > * {
+
+   > :is(*) {
       width: 100%;
    }
-   .kompassi-dropdown button {
+
+   button {
       position: relative;
       appearance: none;
       cursor: pointer;
@@ -666,8 +717,16 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       font-family: var(--kompassi-font);
       font-size: 100%;
       text-align: left;
-   }
-      .kompassi-dropdown button::after {
+
+      .title {
+         display: block;
+         width: calc(100% - var(--kompassi-padding));
+         text-wrap: nowrap;
+         text-overflow: ellipsis;
+         overflow: hidden;
+      }
+
+      &::after {
          content: '';
          display: block;
          position: absolute;
@@ -685,20 +744,16 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          background-position: 50% 50%;
          filter: invert();
       }
-      .kompassi-dropdown button .title {
-         display: block;
-         width: calc(100% - var(--kompassi-padding));
-         text-wrap: nowrap;
-         text-overflow: ellipsis;
-         overflow: hidden;
-      }
-      .kompassi-dropdown .kompassi-indicator {
-         position: absolute;
-         right: var(--kompassi-padding);
-         top: var(--kompassi-padding);
-         z-index: 2;
-      }
-   .kompassi-dropdown ul {
+   }
+
+   .kompassi-indicator {
+      position: absolute;
+      right: var(--kompassi-padding);
+      top: var(--kompassi-padding);
+      z-index: 2;
+   }
+
+   ul {
       display: none;
       list-style-type: none;
       margin-top: 0;
@@ -706,34 +761,40 @@ body.kompassi-color-scheme-dark .kompassi-provided {
       border: 1px solid var(--kompassi-fg-50);
       max-height: 400px;
       overflow-y: scroll;
-   }
-      .kompassi-dropdown li {
+
+      li {
          color: var(--kompassi-fg);
          background-color: var(--kompassi-bg);
          border-top: 1px solid var(--kompassi-fg-10);
-      }
-         .kompassi-dropdown li.description,
-         .kompassi-dropdown li label {
+
+         &.description, label {
             padding: calc(var(--kompassi-padding) / 2);
          }
-         .kompassi-dropdown li label {
+
+         label {
             cursor: pointer;
             display: grid;
             grid-template-columns: 2em auto;
-         }
-            .kompassi-dropdown li label input {
+
+            input {
                vertical-align: top;
                height: 1em;
                outline: none;
             }
-
-   .kompassi-dropdown.open ul {
-      display: block;
-      position: absolute;
-      left: 0;
-      z-index: 4000;
-      background-color: #eee;
+         }
+      }
    }
+
+   &.open {
+      ul {
+         display: block;
+         position: absolute;
+         left: 0;
+         z-index: 4000;
+         background-color: #eee;
+      }
+   }
+}
 
 /*
  *  Tables
@@ -744,11 +805,12 @@ body.kompassi-color-scheme-dark .kompassi-provided {
    width: 100%;
    border-collapse: collapse;
    box-shadow: var(--kompassi-box-shadow);
-}
-   .kompassi-table th {
-      text-align: left;
-   }
-   .kompassi-table th, td {
+
+   th, td {
       padding: var(--kompassi-padding) !important;
       border: 1px solid var(--kompassi-fg-25);
    }
+   th {
+      text-align: left;
+   }
+}
