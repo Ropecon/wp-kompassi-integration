@@ -416,6 +416,11 @@ summary::marker {
 			grid-template-areas: "title actions" "secondary secondary";
 			padding: var(--kompassi-padding);
 		}
+			#kompassi_schedule[data-display="list"] article .title {
+				text-wrap: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
 			#kompassi_schedule[data-display="list"] article summary .favorite::before {
 				margin-right: 0;
 			}
