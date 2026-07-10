@@ -131,17 +131,19 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  *
  */
 
-#kompassi_schedule_dates .date-toggle.current {
-	position: relative;
-	z-index: 3;
-}
-	#kompassi_schedule_dates .date-toggle.current::before,
-	#kompassi_schedule_dates .date-toggle.current::after {
-		content: '';
-		display: block;
-		position: absolute;
-	}
-		#kompassi_schedule_dates .date-toggle.current::before {
+#kompassi_schedule_dates {
+	.date-toggle.current {
+		position: relative;
+		z-index: 3;
+
+		&::before,
+		&::after {
+			content: '';
+			display: block;
+			position: absolute;
+		}
+
+		&::before {
 			height: 0.75em;
 			width: 0.75em;
 			top: 0;
@@ -150,10 +152,8 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			z-index: -2;
 			filter: opacity(0.8);
 		}
-			#kompassi_schedule_dates .date-toggle.current.active::before {
-				background-color: var(--kompassi-bg);
-			}
-		#kompassi_schedule_dates .date-toggle.current::after {
+
+		&::after {
 			transform: rotate(45deg);
 			height: 1.25em;
 			width: 1.25em;
@@ -162,9 +162,17 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			z-index: -1;
 			background-color: var(--kompassi-bg);
 		}
-			#kompassi_schedule_dates .date-toggle.current.active::after {
+
+		&.active {
+			&::before {
+				background-color: var(--kompassi-bg);
+			}
+			&::after {
 				background-color: var(--kompassi-palette-2);
 			}
+		}
+	}
+}
 
 /*
  *  Filters
@@ -180,103 +188,124 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 	padding: var(--kompassi-padding);
 	border-radius: var(--kompassi-radius);
 	box-shadow: var(--kompassi-box-shadow);
-}
-	#kompassi_schedule_filters.visible {
-		display: block;
-	}
-		#kompassi_schedule_filters > *:not(:last-child) {
-			margin-bottom: var(--kompassi-padding);
-		}
-		#kompassi_schedule_filters > [class*="kompassi-icon"]::before {
-			filter: invert();
-		}
-		#kompassi_schedule_filters > .input > input {
-			width: calc(100% - var(--kompassi-padding) * 2);
-			box-sizing: content-box;
-		}
-		#kompassi_schedule_filters > .select > * {
-			display: inline-block;
-			width: 100%;
-		}
-			#kompassi_schedule_filters :is(input, button) {
-				padding: var(--kompassi-padding);
-				color: #fff;
-				background-color: hsla(0deg, 0%, 0%, 20%);
-				border: none;
-				border-radius: var(--kompassi-radius);
-				font-family: var(--kompassi-font);
-				font-size: 100%;
-			}
-				#kompassi_schedule_filters input::placeholder {
-					color: #fff;
-				}
-				#kompassi_schedule_filters button {
-					padding: var(--kompassi-padding) calc(var(--kompassi-padding) + var(--kompassi-icon-size)) var(--kompassi-padding) var(--kompassi-padding);
-					outline-color: #fff;
-				}
-					#kompassi_schedule_filters option {
-						color: var(--kompassi-fg);
-						background-color: var(--kompassi-bg);
-					}
-				#kompassi_schedule_filters input:not(:placeholder-shown),
-				#kompassi_schedule_filters .kompassi-dropdown button.active {
-					color: #222;
-					background-color: hsl(0deg, 0%, 100%, 80%);
-				}
-					#kompassi_schedule_filters .kompassi-dropdown button.active::after {
-						filter: none;
-					}
 
-	#kompassi_schedule_filters.visible.has-filters-enabled {
-		padding-bottom: calc( 1.5em + var(--kompassi-padding) * 2 );
+	> *:not(:last-child) {
+		margin-bottom: var(--kompassi-padding);
 	}
-			#kompassi_schedule_filters .clear-filters {
-				display: none;
-				position: absolute;
-				bottom: var(--kompassi-padding);
-				left: var(--kompassi-padding);
-				height: 1.5em;
-				width: 100%;
-			}
-				#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters {
-					display: block;
-				}
-				#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters::before {
+
+	> [class*="kompassi-icon"]::before {
+		filter: invert();
+	}
+
+	> .input > input {
+		width: calc(100% - var(--kompassi-padding) * 2);
+		box-sizing: content-box;
+	}
+
+	> .select > * {
+		display: inline-block;
+		width: 100%;
+	}
+
+	:is(input, button) {
+		padding: var(--kompassi-padding);
+		color: #fff;
+		background-color: hsla(0deg, 0%, 0%, 20%);
+		border: none;
+		border-radius: var(--kompassi-radius);
+		font-family: var(--kompassi-font);
+		font-size: 100%;
+	}
+
+	input {
+		&::placeholder {
+			color: #fff;
+		}
+	}
+
+	button {
+		padding: var(--kompassi-padding) calc(var(--kompassi-padding) + var(--kompassi-icon-size)) var(--kompassi-padding) var(--kompassi-padding);
+		outline-color: #fff;
+	}
+
+	option {
+		color: var(--kompassi-fg);
+		background-color: var(--kompassi-bg);
+	}
+
+	input:not(:placeholder-shown),
+	.kompassi-dropdown button.active {
+		color: #222;
+		background-color: hsl(0deg, 0%, 100%, 80%);
+	}
+
+	.kompassi-dropdown button.active::after {
+		filter: none;
+	}
+
+	.clear-filters {
+		display: none;
+		position: absolute;
+		bottom: var(--kompassi-padding);
+		left: var(--kompassi-padding);
+		height: 1.5em;
+		width: 100%;
+	}
+
+	&.visible {
+		display: block;
+
+		&.has-filters-enabled {
+			padding-bottom: calc(1.5em + var(--kompassi-padding) * 2);
+
+			.clear-filters {
+				display: block;
+
+				&::before {
 					height: 100%;
 				}
-
-@container kompassi-integration (min-width: 700px) {
-	#kompassi_schedule_filters.visible {
-		display: grid;
-		grid-template-columns: repeat(var(--kompassi-schedule-filters-columns, 4), minmax(0, 1fr));
-		grid-gap: var(--kompassi-padding);
-	}
-		#kompassi_schedule_filters.visible > *,
-		#kompassi_schedule_filters.visible > .select > * {
-			margin-right: 0;
-			margin-bottom: 0;
-			width: 100%;
-			max-width: 100%;
+			}
 		}
-	#kompassi_schedule_filters.visible.has-filters-enabled {
-		padding-right: calc( 1.5em + var(--kompassi-padding) * 2 );
-		padding-bottom: var(--kompassi-padding);
 	}
-		#kompassi_schedule_filters .clear-filters {
+
+	@container kompassi-integration (width >= 700px) {
+		.clear-filters {
 			left: unset;
 			bottom: unset;
 			top: var(--kompassi-padding);
 			right: var(--kompassi-padding);
 			width: 1.5em;
 			height: calc( 100% - var(--kompassi-padding) * 2 );
+
+			&::before {
+				width: 100%;
+				margin-right: 0;
+			}
 		}
-		#kompassi_schedule_filters .clear-filters::before {
-			width: 100%;
-			margin-right: 0;
+
+		&.visible {
+			display: grid;
+			grid-template-columns: repeat(var(--kompassi-schedule-filters-columns, 4), minmax(0, 1fr));
+			grid-gap: var(--kompassi-padding);
+
+			> *,
+			> .select > * {
+				margin-right: 0;
+				margin-bottom: 0;
+				width: 100%;
+				max-width: 100%;
+			}
+
+			&.has-filters-enabled {
+				padding-right: calc( 1.5em + var(--kompassi-padding) * 2 );
+				padding-bottom: var(--kompassi-padding);
+
+				.clear-filters::after {
+					display: none;
+				}
+			}
 		}
-		#kompassi_schedule_filters.visible.has-filters-enabled .clear-filters::after {
-			display: none;
-		}
+	}
 }
 
 /*
@@ -284,11 +313,13 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
  *
  */
 
+/* TODO */
 summary {
 	list-style: none;
-}
-summary::marker {
-	display: none;
+
+	&::marker {
+		display: none;
+	}
 }
 
 .kompassi-schedule-wrapper {
@@ -299,52 +330,71 @@ summary::marker {
 	position: relative;
 }
 
-#kompassi_schedule article.filtered {
-	display: none !important;
-}
+#kompassi_schedule {
+	article {
+		&:hover {
+			cursor: pointer;
+		}
+		&.filtered {
+			display: none !important;
+		}
+		&::before {
+			background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
+			background-size: auto calc( 100% - 3em );
+			background-position: 1.5em 50%;
+			background-repeat: no-repeat;
+		}
 
-#kompassi_schedule article:hover {
-	cursor: pointer;
-}
+		.title {
+			font-weight: bold;
+			letter-spacing: 0.04em;
+		}
 
-/*  Default/common styles  */
-#kompassi_schedule article::before {
-	background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
-	background-size: auto calc( 100% - 3em );
-	background-position: 1.5em 50%;
-	background-repeat: no-repeat;
-}
+		.actions {
+			> a {
+				margin-right: var(--kompassi-padding);
+			}
 
-#kompassi_schedule article .title {
-	font-weight: bold;
-	letter-spacing: 0.04em;
-}
+			> ::before {
+				content: '';
+				display: inline-block;
+				width: var(--kompassi-icon-size);
+				height: var(--kompassi-icon-size);
+				background-position: 50% 50%;
+				background-repeat: no-repeat;
+				background-size: contain;
 
-#kompassi_schedule article .actions > a {
-	margin-right: var(--kompassi-padding);
-}
+				padding: 0;
+				margin: 0;
+				transition: 100ms all;
+			}
 
-#kompassi_schedule article .actions > ::before {
-	content: '';
-	display: inline-block;
-	width: var(--kompassi-icon-size);
-	height: var(--kompassi-icon-size);
-	background-position: 50% 50%;
-	background-repeat: no-repeat;
-	background-size: contain;
+			> .favorite:hover::before {
+				margin: -2px;
+				padding: 2px;
+			}
+		}
 
-	padding: 0;
-	margin: 0;
-	transition: 100ms all;
-}
-	#kompassi_schedule article .actions > .favorite:hover::before {
-		margin: -2px;
-		padding: 2px;
+		.times {
+			span {
+				white-space: nowrap;
+			}
+		}
+
+		summary {
+			outline: none;
+		}
+
+		.main {
+			background-color: var(--kompassi-palette-5);
+		}
+
+		/*  Canceled programs  */
+		&
 	}
-
-#kompassi_schedule .times span {
-	white-space: nowrap;
 }
+
+/* TODO */
 [id^="kompassi"] .times .length {
 	font-size: max(85%, 8pt);
 	text-transform: none;
@@ -352,15 +402,7 @@ summary::marker {
 	margin-left: 0.4em;
 }
 
-#kompassi_schedule article summary {
-	outline: none;
-}
-
-#kompassi_schedule article .main {
-	background-color: var(--kompassi-palette-5);
-}
-
-/*  Canceled programs  */
+/*  TODO: Canceled programs  */
 #kompassi_schedule article[data-iscanceled="true"] {
 	--kompassi-program-color: #ddd !important;
 	color: #777 !important;
@@ -375,7 +417,7 @@ summary::marker {
 		text-transform: uppercase;
 	}
 
-/*  Programs continuing  */
+/*  TODO: Programs continuing  */
 #kompassi_schedule:not([data-display="timeline"]) article.continues {
 	order: 100001 !important;
 }
@@ -399,8 +441,8 @@ summary::marker {
 	display: grid;
 	grid-template-columns: repeat(1,1fr);
 	grid-gap: var(--kompassi-padding);
-}
-	#kompassi_schedule[data-display="list"] article {
+
+	article {
 		position: relative;
 		min-width: 240px;
 		padding-left: calc( var(--kompassi-program-list-visual-width) );
@@ -408,8 +450,8 @@ summary::marker {
 		background-color: var(--kompassi-bg);
 		box-shadow: var(--kompassi-box-shadow);
 		border-radius: var(--kompassi-radius);
-	}
-		#kompassi_schedule[data-display="list"] article::before {
+
+		&::before {
 			content: '';
 			position: absolute;
 			display: block;
@@ -427,73 +469,85 @@ summary::marker {
 				--kompassi-program-icon: none;
 			}
 		}
-		#kompassi_schedule[data-display="list"] article summary {
+
+		summary {
 			display: grid;
 			grid-template-columns: 1fr min-content;
 			grid-template-areas: "title actions" "secondary secondary";
 			padding: var(--kompassi-padding);
-		}
-			#kompassi_schedule[data-display="list"] article .title {
-				text-wrap: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
-			}
-			#kompassi_schedule[data-display="list"] article summary .favorite::before {
+
+			.favorite::before {
 				margin-right: 0;
 			}
-		#kompassi_schedule[data-display="list"] article section {
-			border-top: 1px solid var(--kompassi-fg-10);
 		}
-			#kompassi_schedule[data-display="list"] article section > * {
+
+		.title {
+			text-wrap: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		section {
+			border-top: 1px solid var(--kompassi-fg-10);
+
+			> * {
 				padding: 0 var(--kompassi-padding);
 				margin-bottom: var(--kompassi-padding);
 			}
-				#kompassi_schedule[data-display="list"] article section .main {
-					padding: var(--kompassi-padding);
+
+			.main {
+				padding: var(--kompassi-padding);
+			}
+
+			.meta {
+				&:has(+ .actions) {
+					margin-bottom: 0;
 				}
-		#kompassi_schedule[data-display="list"] article section .meta:has(+ .actions) {
-			margin-bottom: 0;
-		}
-		#kompassi_schedule[data-display="list"] article section .actions > a::before {
-			content: unset;
-		}
-		#kompassi_schedule[data-display="list"] article section .actions > a::after {
-			content: attr(title);
-		}
-		#kompassi_schedule[data-display="list"] article section .meta .in-summary {
-			display: none;
-		}
 
-/*  Show icon
- *  TODO: Prefer container query
- */
+				.in-summary {
+					display: none;
+				}
+			}
 
-@media screen and (width >= 600px) {
-	#kompassi_schedule[data-display="list"] {
+			.actions {
+				> a::before {
+					content: unset;
+				}
+				> a::after {
+					content: attr(title);
+				}
+			}
+		}
+	}
+
+	/*  TODO: Prefer container queries  */
+	@media screen and (width >= 600px) {
 		--kompassi-program-list-padding: 0.6em;
 		--kompassi-program-list-visual-width: 5.5em;
 		display: grid;
-	}
-	#kompassi_schedule[data-display="list"] article {
-		padding-left: var(--kompassi-program-list-visual-width);
-		margin-bottom: 0;
-		grid-template-columns: 50% auto auto;
-		grid-template-areas:
+
+		article {
+			padding-left: var(--kompassi-program-list-visual-width);
+			margin-bottom: 0;
+			grid-template-columns: 50% auto auto;
+			grid-template-areas:
 			"title title actions"
 			"meta meta meta";
+		}
+	}
+
+	@media screen and (width >= 640px) {
+		article summary .secondary {
+			display: flex;
+			justify-content: space-between;
+
+			> :last-child {
+				text-align: right;
+			}
+		}
 	}
 }
 
-/*  TODO: Prefer container query  */
-@media screen and (width >= 640px) {
-	#kompassi_schedule[data-display="list"] article summary .secondary {
-		display: flex;
-		justify-content: space-between;
-	}
-		#kompassi_schedule[data-display="list"] article summary .secondary > :last-child {
-			text-align: right;
-		}
-}
 
 /*  Display Style: Timeline  */
 #kompassi_schedule[data-display="timeline"] {
@@ -503,35 +557,39 @@ summary::marker {
 	overflow: hidden;
 	box-shadow: var(--kompassi-box-shadow);
 	border-radius: var(--kompassi-radius);
-}
-	#kompassi_schedule[data-display="timeline"] .headers {
+
+	.headers {
 		position: absolute;
 		top: 0;
 		width: 100%;
 		height: calc(var(--kompassi-schedule-timeline-row-height) * 2);
 		background-color: var(--kompassi-bg);
 	}
-		#kompassi_schedule[data-display="timeline"] .headers .hint {
-			position: absolute;
-			padding: var(--kompassi-schedule-timeline-row-padding);
-			background-color: var(--kompassi-bg);
-			overflow: hidden;
+	.hint {
+		position: absolute;
+		padding: var(--kompassi-schedule-timeline-row-padding);
+		background-color: var(--kompassi-bg);
+		overflow: hidden;
+
+		&.day-hint {
+			width: 100%;
 		}
-			#kompassi_schedule[data-display="timeline"] .headers .day-hint {
-				width: 100%;
-			}
-			#kompassi_schedule[data-display="timeline"] .headers .time-hint {
-				top: var(--kompassi-schedule-timeline-row-height);
-			}
-				#kompassi_schedule[data-display="timeline"] .headers.sticky .time-hint {
-					border-left: 1px solid var(--kompassi-fg-10);
-					border-top: 1px solid var(--kompassi-fg-10);
-				}
-		#kompassi_schedule[data-display="timeline"] .headers.sticky {
-			z-index: 10;
-			box-shadow: var(--kompassi-box-shadow);
+		&.time-hint {
+			top: var(--kompassi-schedule-timeline-row-height);
 		}
-	#kompassi_schedule[data-display="timeline"] .ruler {
+	}
+
+	&.sticky {
+		z-index: 10;
+		box-shadow: var(--kompassi-box-shadow);
+
+		&.hint.time-hint {
+			border-left: 1px solid var(--kompassi-fg-10);
+			border-top: 1px solid var(--kompassi-fg-10);
+		}
+	}
+
+	.ruler {
 		width: auto;
 		height: 100%;
 		border-top: 1px solid var(--kompassi-fg-10);
@@ -541,48 +599,55 @@ summary::marker {
 		position: absolute;
 		top: 0;
 		bottom: 0;
-	}
-		#kompassi_schedule[data-display="timeline"] .ruler:first-of-type {
+
+		&:first-of-type {
 			border-left-color: transparent;
 		}
-	#kompassi_schedule[data-display="timeline"] :is(.group-name,article) {
+	}
+
+	:is(.group-name, article) {
 		padding: var(--kompassi-schedule-timeline-row-padding);
 		position: absolute;
 	}
-		#kompassi_schedule[data-display="timeline"] .group-name {
-			display: block;
-			color: var(--kompassi-fg);
-			background-color: var(--kompassi-palette-4);
-			border-radius: var(--kompassi-radius);
-			position: absolute;
-			left: 3px;
-			right: 3px;
-			z-index: 3;
-			margin: 0;
-		}
-		#kompassi_schedule[data-display="timeline"] article {
-			position: relative;
-			order: 1 !important;
-			display: inline-block;
-			background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
-			background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
-			color: #fff;
 
-			z-index: 5;
-			white-space: nowrap;
-			overflow: hidden;
+	.group-name {
+		display: block;
+		color: var(--kompassi-fg);
+		background-color: var(--kompassi-palette-4);
+		border-radius: var(--kompassi-radius);
+		position: absolute;
+		left: 3px;
+		right: 3px;
+		z-index: 3;
+		margin: 0;
+	}
+
+	article {
+		position: relative;
+		order: 1 !important;
+		display: inline-block;
+		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
+		background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
+		color: #fff;
+
+		z-index: 5;
+		white-space: nowrap;
+		overflow: hidden;
+
+		section {
+			display: none;
 		}
-			#kompassi_schedule[data-display="timeline"] article section {
-				display: none;
-			}
-			#kompassi_schedule[data-display="timeline"] article summary :is(.favorite, .secondary) {
-				display: none;
-			}
-			#kompassi_schedule[data-display="timeline"] article.is-favorite .title {
+
+		summary :is(.favorite, .secondary) {
+			display: none;
+		}
+
+		&.is-favorite {
+			.title {
 				position: relative;
 				padding-left: calc( 1em + 8px );
-			}
-				#kompassi_schedule[data-display="timeline"] article.is-favorite .title::after {
+
+				&::after {
 					position: absolute;
 					display: inline-block;
 					content: '';
@@ -594,21 +659,24 @@ summary::marker {
 					background-position: 50% 50%;
 					background-repeat: no-repeat;
 				}
-					#kompassi_schedule[data-display="timeline"] article.is-favorite.continues .title::after {
-						left: calc(4px + 1em);
-					}
-			#kompassi_schedule[data-display="timeline"] article:hover {
-				margin-top: -2px;
-				box-shadow: 0 0 1em rgba(0 0 0 20%);
-				text-shadow: 0.05em 0.05em 0.1em rgba(0 0 0 80%);
-				filter: brightness(1.25);
-				min-width: min-content !important;
-				z-index: 2000;
 			}
-			#kompassi_schedule[data-display="timeline"] article :is(.title) {
-				display: block;
-			}
-			#kompassi_schedule[data-display="timeline"] article.continues :is(.title)::before {
+		}
+
+		&:hover {
+			margin-top: -2px;
+			box-shadow: 0 0 1em rgba(0 0 0 20%);
+			text-shadow: 0.05em 0.05em 0.1em rgba(0 0 0 80%);
+			filter: brightness(1.25);
+			min-width: min-content !important;
+			z-index: 2000;
+		}
+
+		.title {
+			display: block;
+		}
+
+		&.continues {
+			.title::before {
 				content: '';
 				display: block;
 				float: left;
@@ -621,119 +689,151 @@ summary::marker {
 				background-repeat: no-repeat;
 				filter: invert();
 			}
-				#kompassi_schedule[data-display="timeline"] article.continues.is-favorite :is(.title)::before {
+
+			&.is-favorite {
+				.title::before {
 					margin-left: calc(-1 * ( var(--kompassi-schedule-timeline-row-padding) * 2 ) - (1em + 4px));
 					margin-right: calc(var(--kompassi-schedule-timeline-row-padding) + (1em + 4px));
 				}
 
-/*  Display Style: Timetable  */
-#kompassi_schedule[data-display="timetable"] .table-wrapper {
-	margin-bottom: calc( var(--kompassi-padding) * 2);
+				.title::after {
+					left: calc(4px + 1em);
+				}
+			}
+		}
+	}
 }
 
-#kompassi_schedule[data-display="timetable"] .table-toolbar {
-	display: grid;
-	grid-template-columns: auto max-content;
-}
-	#kompassi_schedule[data-display="timetable"] .table-controls {
+/*  Display Style: Timetable  */
+#kompassi_schedule[data-display="timetable"] {
+	.table-wrapper {
+		margin-bottom: calc( var(--kompassi-padding) * 2);
+	}
+
+	.table-toolbar {
+		display: grid;
+		grid-template-columns: auto max-content;
+	}
+
+	.table-controls {
 		--kompassi-padding: 0.2em;
 		--kompassi-icon-size: 16px;
 		text-align: right;
-	}
-		#kompassi_schedule[data-display="timetable"] .table-controls a {
+
+		a {
 			box-sizing: content-box;
-		}
-			#kompassi_schedule[data-display="timetable"] .table-controls a:not(.active) {
+
+			&:not(.active) {
 				cursor: not-allowed;
 			}
-
-#kompassi_schedule[data-display="timetable"] .table {
-	position: relative;
-	display: grid;
-	grid-gap: 0 var(--kompassi-padding);
-	grid-template-rows: 2em;
-	margin: var(--kompassi-padding) 0;
-	padding: 0 var(--kompassi-padding) 0 0;
-	background-color: var(--kompassi-bg);
-	box-shadow: var(--kompassi-box-shadow);
-	border-radius: var(--kompassi-radius);
-	overflow-x: scroll;
-
-	scroll-snap-type: x proximity;
-}
-
-	#kompassi_schedule[data-display="timetable"] .table::before,
-	#kompassi_schedule[data-display="timetable"] .table::after {
-		position: absolute;
-		display: block;
-		height: 100%;
-		width: 40px;
-		z-index: 4000;
-	}
-		#kompassi_schedule[data-display="timetable"] .table.can-scroll-left::before {
-			content: '';
-			left: var(--kompassi-schedule-timetable-time-width);
-			background-image: radial-gradient(farthest-side at 0% 50%, rgba(0 0 0 20%), rgba(0 0 0 0%));
 		}
-		#kompassi_schedule[data-display="timetable"] .table.can-scroll-right::after {
-			content: '';
-			right: 0;
-			background-image: radial-gradient(farthest-side at 100% 50%, rgba(0 0 0 20%), rgba(0 0 0 0%));
+	}
+
+	.table {
+		position: relative;
+		display: grid;
+		grid-gap: 0 var(--kompassi-padding);
+		grid-template-rows: 2em;
+		margin: var(--kompassi-padding) 0;
+		padding: 0 var(--kompassi-padding) 0 0;
+		background-color: var(--kompassi-bg);
+		box-shadow: var(--kompassi-box-shadow);
+		border-radius: var(--kompassi-radius);
+		overflow-x: scroll;
+
+		scroll-snap-type: x proximity;
+
+		&::before,
+		&::after {
+			position: absolute;
+			display: block;
+			height: 100%;
+			width: 40px;
+			z-index: 4000;
 		}
 
-	#kompassi_schedule[data-display="timetable"] .table .heading {
-		padding: var(--kompassi-schedule-timetable-program-padding);
-		font-weight: 600;
-	}
+		&.can-scroll-left {
+			&::before {
+				content: '';
+				left: var(--kompassi-schedule-timetable-time-width);
+				background-image: radial-gradient(farthest-side at 0% 50%, rgba(0 0 0 20%), rgba(0 0 0 0%));
+			}
+		}
 
-	#kompassi_schedule[data-display="timetable"] .table .time {
-		position: sticky;
-		left: 0;
-		z-index: 10;
-		padding: var(--kompassi-schedule-timetable-program-padding);
-	}
-		#kompassi_schedule[data-display="timetable"] .table .time-hour {
+		&.can-scroll-right {
+			&::after {
+				content: '';
+				right: 0;
+				background-image: radial-gradient(farthest-side at 100% 50%, rgba(0 0 0 20%), rgba(0 0 0 0%));
+			}
+		}
+
+		.heading {
+			padding: var(--kompassi-schedule-timetable-program-padding);
 			font-weight: 600;
 		}
-		#kompassi_schedule[data-display="timetable"] .table .time-minute {
-			/* TODO */
-			z-index: 11;
-			border-top: 1px solid var(--kompassi-fg-75);
-			opacity: 0.4;
-		}
-			#kompassi_schedule[data-display="timetable"] .table .time-minute span {
-				opacity: 0;
+
+		.time {
+			position: sticky;
+			left: 0;
+			z-index: 10;
+			padding: var(--kompassi-schedule-timetable-program-padding);
+
+			&.time-hour {
+				font-weight: 600;
+
+				&:not(.first)::before {
+					content: '';
+					display: block;
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 1px;
+					width: 100%;
+					background-color: var(--kompassi-fg-25);
+				}
 			}
-	#kompassi_schedule[data-display="timetable"] .table .time-bar {
-		border-top: 1px solid var(--kompassi-fg-25);
-		margin: 0 calc(-1 * var(--kompassi-padding));
-		scroll-snap-align: start;
-	}
-		#kompassi_schedule[data-display="timetable"] .table .time-bar.first {
-			border-top: none;
+			&.time-minute {
+				/* TODO */
+				z-index: 11;
+				border-top: 1px solid var(--kompassi-fg-75);
+				opacity: 0.4;
+
+				span {
+					opacity: 0;
+				}
+			}
 		}
-			#kompassi_schedule[data-display="timetable"] .table .time-bar:last-child {
+
+		.time-bar {
+			border-top: 1px solid var(--kompassi-fg-25);
+			margin: 0 calc(-1 * var(--kompassi-padding));
+			scroll-snap-align: start;
+
+			&.first {
+				border-top: none;
+			}
+
+			&:last-child {
 				border-bottom-right-radius: var(--kompassi-radius);
 				border-bottom-left-radius: var(--kompassi-radius);
 			}
-		#kompassi_schedule[data-display="timetable"] .table .time-odd {
+		}
+
+		.time-odd {
 			background-color: var(--kompassi-bg);
 		}
-		#kompassi_schedule[data-display="timetable"] .table .time-even {
+		.time-even {
 			background-color: #f2f2f2; /* TODO */
 		}
-			#kompassi_schedule[data-display="timetable"] .table .time-hour:not(.first)::before {
-				content: '';
-				display: block;
-				position: absolute;
-				top: 0;
-				left: 0;
-				height: 1px;
-				width: 100%;
-				background-color: var(--kompassi-fg-25);
-			}
+	}
 
-#kompassi_schedule[data-display="timetable"] article {
+	article {
+
+	}
+}
+
+article {
 	margin-top: 6px;
 	margin-bottom: 6px;
 	padding: var(--kompassi-schedule-timetable-program-padding);
@@ -743,120 +843,141 @@ summary::marker {
 	box-shadow: var(--kompassi-box-shadow);
 	z-index: 2;
 	scroll-snap-align: start;
-}
-	#kompassi_schedule[data-display="timetable"] article section {
+
+	section {
 		display: none;
 	}
-	#kompassi_schedule[data-display="timetable"] article details {
+
+	details {
 		height: 100%;
 	}
-		#kompassi_schedule[data-display="timetable"] article summary {
-			height: 100%;
-			display: grid;
-			grid-template-areas: "title" "favorite";
-		}
-			#kompassi_schedule[data-display="timetable"] article .title {
-				word-wrap: anywhere;
-			}
-			#kompassi_schedule[data-display="timetable"] article .favorite {
-				align-self: end;
-				justify-self: end;
-			}
-				#kompassi_schedule[data-display="timetable"] article .kompassi-icon-favorite::before {
-					margin-right: 0;
-				}
-			#kompassi_schedule[data-display="timetable"] article :is(.secondary) {
-				display: none;
-			}
-	#kompassi_schedule[data-display="timetable"] article:hover {
+
+	summary {
+		height: 100%;
+		display: grid;
+		grid-template-areas: "title" "favorite";
+	}
+
+	.title {
+		word-wrap: anywhere;
+	}
+
+	.favorite {
+		align-self: end;
+		justify-self: end;
+	}
+
+	.kompassi-icon-favorite::before {
+		margin-right: 0;
+	}
+
+	.secondary {
+		display: none;
+	}
+
+	&:hover {
 		text-shadow: 0.05em 0.05em 0.1em rgba(0 0 0 80%);
 		filter: brightness(1.25);
 		z-index: 2000;
 	}
-
+}
 
 /*
- *  Modal
+ *  Modals
  *
  */
 
-#kompassi_modal.kompassi-program .content .actions {
-	position: relative;
-}
-	#kompassi_modal.kompassi-program .content .actions > *,
-	#kompassi_modal.kompassi-program .content .actions::before {
-		position: relative;
-		z-index: 2;
+/*  Program  */
+
+#kompassi_modal.kompassi-program {
+	.content {
+		.actions {
+			position: relative;
+
+			> *,
+			&::before {
+				position: relative;
+				z-index: 2;
+			}
+
+			&::before {
+				content: ' ';
+				display: block;
+				position: absolute;
+				top: 0;
+				right: var(--kompassi-padding-large);
+
+				height: calc(100% + var(--kompassi-padding) * 2);
+				width: calc(var(--kompassi-icon-size) + var(--kompassi-padding-large) * 2);
+
+				margin-top: calc(-1 * var(--kompassi-padding));
+				margin-right: calc(-1 * var(--kompassi-padding-large));
+				margin-left: var(--kompassi-padding);
+
+				background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
+				background-size: calc(var(--kompassi-icon-size) * 1.5);
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+			}
+
+			&::after {
+				content: '';
+				position: absolute;
+				z-index: 1;
+
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
+				filter: brightness(90%);
+			}
+		}
+
+		.main {
+			justify-content: space-between;
+		}
 	}
-	#kompassi_modal.kompassi-program .content .actions::before {
-		content: ' ';
-		display: block;
-		position: absolute;
-		top: 0;
-		right: var(--kompassi-padding-large);
 
-		height: calc(100% + var(--kompassi-padding) * 2);
-		width: calc(var(--kompassi-icon-size) + var(--kompassi-padding-large) * 2);
-
-		margin-top: calc(-1 * var(--kompassi-padding));
-		margin-right: calc(-1 * var(--kompassi-padding-large));
-		margin-left: var(--kompassi-padding);
-
-		background-image: var(--kompassi-program-icon, var(--kompassi-program-icon-default));
-		background-size: calc(var(--kompassi-icon-size) * 1.5);
-		background-repeat: no-repeat;
-		background-position: 50% 50%;
-	}
-	#kompassi_modal.kompassi-program .content .actions::after {
-		content: '';
-		position: absolute;
-		z-index: 1;
-
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
-		filter: brightness(90%);
+	.footer {
+		> :not(.dimension) {
+			display: block;
+			margin-bottom: 0.3em;
+		}
 	}
 
-#kompassi_modal.kompassi-program .content .main {
-	justify-content: space-between;
-}
-
-
-/* TODO: Prefer container query */
-@media screen and (width < 600px) {
-	#kompassi_modal.kompassi-program > .content > .actions {
-		padding-right: calc(var(--kompassi-icon-size) + var(--kompassi-padding-large) * 2);
+	/* TODO: Prefer container query */
+	@media screen and (width < 600px) {
+		> .content > .actions {
+			padding-right: calc(var(--kompassi-icon-size) + var(--kompassi-padding-large) * 2);
+		}
 	}
 }
 
-#kompassi_modal .footer > :not(.dimension) {
-	display: block;
-	margin-bottom: 0.3em;
+#kompassi_modal.kompassi-legend {
+	dl.dimension-colors {
+		display: grid;
+		grid-template-columns: 2em auto;
+		grid-gap: 0 1em;
+
+		dt span {
+			width: 100%;
+			height: var(--kompassi-line-height);
+			display: inline-block;
+		}
+
+		dd {
+			margin-left: 0;
+		}
+	}
 }
 
+/* TODO */
 #kompassi_modal .program-title-list li::before {
 	display: inline-block;
 	width: 1.25em;
 	content: "–";
 }
-
-#kompassi_modal.kompassi-legend dl.dimension-colors {
-	display: grid;
-	grid-template-columns: 2em auto;
-	grid-gap: 0 1em;
-}
-	#kompassi_modal.kompassi-legend dl.dimension-colors dt span {
-		width: 100%;
-		height: var(--kompassi-line-height);
-		display: inline-block;
-	}
-	#kompassi_modal.kompassi-legend dl.dimension-colors dd {
-		margin-left: 0;
-	}
-
 
 
 /*
@@ -877,15 +998,16 @@ summary::marker {
 
 .kompassi-dimensions {
 	margin-top: var(--kompassi-padding);
-}
-	.kompassi-dimensions .dimension {
+
+	.dimension {
 		display: inline;
 		cursor: help;
-	}
-		.kompassi-dimensions .dimension:empty {
+
+		&:empty {
 			display: none;
 		}
-		.kompassi-dimensions .dimension .value {
+
+		.value {
 			display: inline-block;
 			max-width: 100%;
 			padding: 0.2em 0.6em;
@@ -897,6 +1019,8 @@ summary::marker {
 			overflow-wrap: break-word;
 			line-height: 1.2em;
 		}
+	}
+}
 
 /*
  *  Current time indicator
