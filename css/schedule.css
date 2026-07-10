@@ -405,8 +405,8 @@ summary::marker {
 			bottom: 0;
 			left: 0;
 			background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
-			background-size: calc( 100% - 2.5em ) auto;
-			background-position: 50% 0.5em; /* TODO: Why is this the correct value? */
+			background-size: auto calc( 100% - var(--kompassi-padding) * 2 );
+			background-position: 50% 50%;
 			border-top-left-radius: var(--kompassi-radius);
 			border-bottom-left-radius: var(--kompassi-radius);
 		}
