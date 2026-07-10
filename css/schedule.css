@@ -829,58 +829,55 @@ summary {
 	}
 
 	article {
+		margin-top: 6px;
+		margin-bottom: 6px;
+		padding: var(--kompassi-schedule-timetable-program-padding);
+		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
+		background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
+		color: #fff;
+		box-shadow: var(--kompassi-box-shadow);
+		z-index: 2;
+		scroll-snap-align: start;
 
+		section {
+			display: none;
+		}
+
+		details {
+			height: 100%;
+		}
+
+		summary {
+			height: 100%;
+			display: grid;
+			grid-template-areas: "title" "favorite";
+		}
+
+		.title {
+			word-wrap: anywhere;
+		}
+
+		.favorite {
+			align-self: end;
+			justify-self: end;
+		}
+
+		.kompassi-icon-favorite::before {
+			margin-right: 0;
+		}
+
+		.secondary {
+			display: none;
+		}
+
+		&:hover {
+			text-shadow: 0.05em 0.05em 0.1em rgba(0 0 0 80%);
+			filter: brightness(1.25);
+			z-index: 2000;
+		}
 	}
 }
 
-article {
-	margin-top: 6px;
-	margin-bottom: 6px;
-	padding: var(--kompassi-schedule-timetable-program-padding);
-	background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
-	background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
-	color: #fff;
-	box-shadow: var(--kompassi-box-shadow);
-	z-index: 2;
-	scroll-snap-align: start;
-
-	section {
-		display: none;
-	}
-
-	details {
-		height: 100%;
-	}
-
-	summary {
-		height: 100%;
-		display: grid;
-		grid-template-areas: "title" "favorite";
-	}
-
-	.title {
-		word-wrap: anywhere;
-	}
-
-	.favorite {
-		align-self: end;
-		justify-self: end;
-	}
-
-	.kompassi-icon-favorite::before {
-		margin-right: 0;
-	}
-
-	.secondary {
-		display: none;
-	}
-
-	&:hover {
-		text-shadow: 0.05em 0.05em 0.1em rgba(0 0 0 80%);
-		filter: brightness(1.25);
-		z-index: 2000;
-	}
-}
 
 /*
  *  Modals
