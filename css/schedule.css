@@ -288,7 +288,7 @@ article:not(.is-favorite) .kompassi-icon-favorite::before { opacity: 0.5; }
 			grid-template-columns: repeat(var(--kompassi-schedule-filters-columns, 4), minmax(0, 1fr));
 			grid-gap: var(--kompassi-padding);
 
-			> *,
+			> *:not(.clear-filters),
 			> .select > * {
 				margin-right: 0;
 				margin-bottom: 0;
