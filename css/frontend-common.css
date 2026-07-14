@@ -273,7 +273,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          color: var(--kompassi-palette-2);
       }
 
-      .active {
+      &.active {
          color: #fff !important;
          background: var(--kompassi-palette-2) !important;
 		}
@@ -431,7 +431,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 	left: 0;
 	top: 0;
 	bottom: 0;
-	z-index: 5000;
+   z-index: 15000;
 
    color: var(--kompassi-fg);
 	background-color: var(--kompassi-bg);
@@ -664,7 +664,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 	left: 0;
    background-color: var(--kompassi-palette-0);
    opacity: 0.85;
-	z-index: 4999;
+   z-index: 14999;
 }
 
 /*
@@ -675,7 +675,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 #kompassi_popover {
    container-type: normal;
    position: absolute;
-	z-index: 4998;
+   z-index: 14998;
 
 	padding: 0.5em;
 
