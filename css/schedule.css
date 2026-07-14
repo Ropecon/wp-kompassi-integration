@@ -729,6 +729,10 @@ summary {
 		}
 	}
 
+	.kompassi-integration.has-dark-background & .kompassi-subheading {
+		color: var(--kompassi-fg-invert);
+	}
+
 	.table {
 		position: relative;
 		display: grid;
@@ -778,6 +782,7 @@ summary {
 			left: 0;
 			z-index: 10;
 			padding: var(--kompassi-schedule-timetable-program-padding);
+			white-space: nowrap;
 
 			&.time-hour {
 				font-weight: 600;

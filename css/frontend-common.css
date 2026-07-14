@@ -25,6 +25,10 @@
    --kompassi-palette-5: hsl(var(--kompassi-hue), 10%, 95%);
 
    /*  Non-main palette colors  */
+   --kompassi-link: hsl(var(--kompassi-hue), 80%, 40%);
+   --kompassi-link-hover: hsl(var(--kompassi-hue), 90%, 20%);
+   --kompassi-link-invert: hsl(var(--kompassi-hue), 80%, 60%);
+   --kompassi-link-hover-invert: hsl(var(--kompassi-hue), 90%, 80%);
    --kompassi-indicator-bg: hsl(0deg 100% 40%);
    --kompassi-note-bg: hsl(60deg 100% 90%);
 
@@ -117,13 +121,25 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 	container-type: inline-size;
    position: relative;
 
-	font-family: var(--kompassi-font);
+   font-family: var(--kompassi-font);
    font-size: var(--kompassi-font-size);
    line-height: var(--kompassi-line-height);
+
+   color: var(--kompassi-fg);
 
    &.fix-bg-contrast {
       --kompassi-bg: var(--kompassi-bg-alt);
       --kompassi-box-shadow: 0 0 3px var(--kompassi-fg-25);
+   }
+
+   a {
+      &:is(:link, :visited) {
+         color: var(--kompassi-link);
+      }
+   }
+
+   * {
+      font-family: var(--kompassi-font);
    }
 }
 
@@ -215,24 +231,50 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
 .kompassi-footer {
    margin: 1em 0;
+   color: var(--kompassi-fg-75);
+
+   :is(a) {
+      text-decoration: none;
+
+      &:is(:link, :visited) {
+         color: var(--kompassi-link);
+      }
+      &:is(:hover, :active, :focus) {
+         color: var(--kompassi-link-hover);
+      }
+   }
+
+   .kompassi-integration.has-dark-background & {
+      a {
+         &:is(:link, :visited) {
+            color: var(--kompassi-link-invert);
+         }
+         &:is(:hover, :active, :focus) {
+            color: var(--kompassi-link-hover-invert);
+         }
+      }
+      color: var(--kompassi-fg-invert);
+   }
 
    .kompassi-contact {
-      font-size: 85%;
-      letter-spacing: 0.02em;
-      font-weight: 600;
-      color: var(--kompassi-fg-75);
+      p {
+         font-size: max(85%, 10pt);
+         letter-spacing: 0.02em;
+         font-weight: 600;
+      }
    }
    .kompassi-logos {
       text-align: right;
       display: flex;
       grid-gap: var(--kompassi-padding-large);
 
-      a {
-         text-decoration: none;
-      }
       img {
          height: 50px;
          width: auto;
+
+         .kompassi-integration.has-dark-background & {
+            filter: invert(1) saturate(0);
+         }
       }
    }
 
@@ -442,6 +484,15 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
    @supports (height:100dvh) {
       height: 100dvh;
+   }
+
+   a {
+      &:is(:link, :visited, :hover, :active) {
+         color: var(--kompassi-fg);
+      }
+      &:is(:focus) {
+         color: var(--kompassi-link);
+      }
    }
 
    .header {

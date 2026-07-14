@@ -97,7 +97,9 @@ function kompassi_schedule_init( ) {
 	}
 
 	//  When background matches the underlying 1:1, switch the --kompassi-bg color to an alternative
+	//  When the background is dark, use light text for elements that have no background color set
 	kompassi_check_bg_contrast( block );
+	kompassi_element_background_color_is_dark( block );
 
 	//  EVENTS
 
