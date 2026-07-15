@@ -628,7 +628,7 @@ summary {
 		display: inline-block;
 		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
 		background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
-		color: #fff;
+		color: oklch(from var(--kompassi-program-color,var(--kompassi-program-color-default)) calc((var(--kompassi-lightness-threshold) - l) * 1000) 0 0);
 
 		z-index: 5;
 		white-space: nowrap;
@@ -839,7 +839,7 @@ summary {
 		padding: var(--kompassi-schedule-timetable-program-padding);
 		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
 		background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
-		color: #fff;
+		color: oklch(from var(--kompassi-program-color,var(--kompassi-program-color-default)) calc((var(--kompassi-lightness-threshold) - l) * 1000) 0 0);
 		box-shadow: var(--kompassi-box-shadow);
 		z-index: 2;
 		scroll-snap-align: start;
