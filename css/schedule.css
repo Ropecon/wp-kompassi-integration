@@ -803,9 +803,10 @@ summary {
 				z-index: 11;
 				border-top: 1px solid var(--kompassi-fg-75);
 				opacity: 0.4;
+				text-align: right;
 
-				span {
-					opacity: 0;
+				em {
+					font-size: max(8pt, 80%);
 				}
 			}
 		}

@@ -1478,38 +1478,69 @@ wp.hooks.addAction( 'kompassi_schedule_setup_timetable_layout', 'kompassi_integr
 		schedule.append( table_wrapper );
 
 		let table_start = tables[tbl].start.startOf( 'hour' );
+		let table_minutes_start = {};
+		let table_minutes_end = {};
 
 		// Position programs
 		for( let column in columns ) {
 			for( let program of columns[column]['programs'] ) {
 				let program_start = dayjs( program.dataset.start );
-				let offset_in_rows = Math.round( ( program_start.diff( table_start, 'minute' ) / minutes_in_row ) + 1 );
+				let program_end = dayjs( program.dataset.end );
+				let offset_start = Math.round( ( program_start.diff( table_start, 'minute' ) / minutes_in_row ) + 1 );
+				let offset_end = Math.round( ( program_end.diff( table_start, 'minute' ) / minutes_in_row ) + 1 );
 				if( secondary_grouping ) {
-					offset_in_rows += 1;
+					offset_start += 1;
+					offset_end += 1;
 				}
 				let program_length_in_rows = parseInt( program.dataset.length / minutes_in_row );
 				let col = parseInt( column ) + 2; // column indexing starts at 0, column 1 reserved for times
 				program.style.gridColumn = col + ' / ' + col;
-				program.style.gridRow = offset_in_rows + ' / ' + ( offset_in_rows + program_length_in_rows );
+				program.style.gridRow = offset_start + ' / ' + ( offset_start + program_length_in_rows );
 
 				table.append( program );
 
-				// If the program doesn't start at top of the hour, print an extra time
-				if( program_start.tz( schedule.dataset.timezone ).format( 'm' ) != 0 ) {
-					let time = document.createElement( 'span' );
-					time.innerHTML = '<span>' + program_start.format( 'HH.' ) + '</span>' + program_start.format( 'mm' );
-					time.style.gridColumn = '1 / 1';
-					time.style.gridRow = offset_in_rows + ' / ' + offset_in_rows;
-					time.className = 'time time-minute';
-
-					table.append( time );
+				// start minutes
+				if( program_start.format( 'm' ) != 0 ) {
+					let id = program_start.format( 'HHmm' );
+					let time = {};
+					time.gridRow = offset_start + ' / ' + offset_start;
+					if( program_start.format( 'm' ) != 0 ) {
+						time.innerHTML = program_start.format( 'mm' );
+					} else {
+						time.innerHTML = '&nbsp;';
+					}
+					table_minutes_start[id] = time;
 				}
-				table.addEventListener( 'scrollend', function( event ) {
-					clearTimeout( kompassi_schedule.timeouts['timetable_check_scroll'] );
-					kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50 );
-				} );
+
+				// end minutes
+				if( program_end.format( 'm' ) != 0 ) {
+					let id = program_end.format( 'HHmm' );
+					let time = {};
+					time.gridRow = offset_end + ' / ' + offset_end;
+					if( program_start.format( 'm' ) != 0 ) {
+						time.innerHTML = '<em>' + program_start.format( 'mm' ) + '</em>';
+					} else {
+						time.innerHTML = '&nbsp;';
+					}
+					table_minutes_end[id] = time;
+				}
 			}
 		}
+
+		let table_minutes = {...table_minutes_end, ...table_minutes_start};
+		for( let minute in table_minutes ) {
+			let time = document.createElement( 'span' );
+			time.style.gridColumn = '1 / 1';
+			time.style.gridRow = table_minutes[minute].gridRow;
+			time.innerHTML = table_minutes[minute].innerHTML;
+			time.className = 'time time-minute';
+			table.append( time );
+		}
+
+		table.addEventListener( 'scrollend', function( event ) {
+			clearTimeout( kompassi_schedule.timeouts['timetable_check_scroll'] );
+			kompassi_schedule.timeouts['timetable_check_scroll'] = setTimeout( kompassi_schedule_timetable_check_scroll, 50 );
+		} );
 
 		/* Print headings */
 		if( secondary_grouping ) {
@@ -1591,7 +1622,7 @@ function kompassi_schedule_timetable_table_times( day, table, block_options, min
 			evenodd_class = 'even';
 		}
 		let time = document.createElement( 'span' );
-		time.innerHTML = '<span>' + times.format( 'HH' ) + '</span>';
+		time.innerHTML = '<span>' + times.format( 'HH' ) + '</span>&nbsp;';
 		time.style.gridColumn = '1 / 1';
 		time.style.gridRow = row + ' / ' + ( row + increment );
 		time.className = 'time time-hour time-' + evenodd_class;
@@ -1608,6 +1639,13 @@ function kompassi_schedule_timetable_table_times( day, table, block_options, min
 			time_bar.classList.add( 'first' );
 		}
 		table.append( time_bar );
+
+		let time_minute = document.createElement( 'span' );
+		time_minute.style.gridColumn = '1 / 1';
+		time_minute.style.gridRow = row + ' / ' + row;
+		time_minute.innerHTML = '&nbsp;';
+		time_minute.className = 'time time-minute-zero';
+		table.append(time_minute);
 
 		times = times.add( 1, 'hour' );
 		row += increment;
