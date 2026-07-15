@@ -575,7 +575,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          }
 
          :is(dt, dd) {
-            font-size: 90&;
+            font-size: 90%;
          }
 
          dt {
@@ -595,12 +595,12 @@ body.kompassi-color-scheme-dark .kompassi-provided {
          overflow-y: auto;
          background:
             /* Shadow covers */
-            linear-gradient(hsl(0deg 0% 0% 5%) 30%, rgba(255 255 255 0%)),
-            linear-gradient(rgba(255 255 255 0%), hsl(0deg 0% 0% 5%) 70%) 0 100%,
+            linear-gradient(hsla(0deg, 0%, 0%, 5%) 30%, rgba(255, 255, 255, 0%)),
+            linear-gradient(rgba(255, 255, 255, 0%), hsla(0deg, 0%, 0%, 5%) 70%) 0 100%,
 
             /* Shadows */
-            radial-gradient(farthest-side at 50% 0, rgba(0 0 0 20%), rgba(0 0 0 0%)),
-            radial-gradient(farthest-side at 50% 100%, rgba(0 0 0 20%), rgba(0 0 0 0%)) 0 100%;
+            radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 20%), rgba(0, 0, 0, 0%)),
+            radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 20%), rgba(0, 0, 0, 0%)) 0 100%;
 
          background-repeat: no-repeat;
          background-color: var(--kompassi-palette-5);
@@ -759,7 +759,7 @@ body.kompassi-color-scheme-dark .kompassi-provided {
 
       padding: var(--kompassi-padding);
       color: #fff;
-      background-color: hsl(0deg 0% 0% 20%);
+      background-color: hsl(0deg, 0%, 0%);
       border: none;
       border-radius: var(--kompassi-radius);
       font-family: var(--kompassi-font);

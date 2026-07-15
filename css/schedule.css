@@ -388,9 +388,6 @@ summary {
 		.main {
 			background-color: var(--kompassi-palette-5);
 		}
-
-		/*  Canceled programs  */
-		&
 	}
 }
 
@@ -627,7 +624,7 @@ summary {
 		order: 1 !important;
 		display: inline-block;
 		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
-		background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
+		background-image: linear-gradient(to bottom,rgba(0, 0, 0, 25%),rgba(0, 0, 0, 15%));
 		color: #fff;
 
 		z-index: 5;
@@ -664,8 +661,8 @@ summary {
 
 		&:hover {
 			margin-top: -2px;
-			box-shadow: 0 0 1em rgba(0 0 0 20%);
-			text-shadow: 0.05em 0.05em 0.1em rgba(0 0 0 80%);
+			box-shadow: 0 0 1em rgba(0, 0, 0, 20%);
+			text-shadow: 0.05em 0.05em 0.1em rgba(0, 0, 0, 80%);
 			filter: brightness(1.25);
 			min-width: min-content !important;
 			z-index: 2000;
@@ -760,7 +757,7 @@ summary {
 			&::before {
 				content: '';
 				left: var(--kompassi-schedule-timetable-time-width);
-				background-image: radial-gradient(farthest-side at 0% 50%, rgba(0 0 0 20%), rgba(0 0 0 0%));
+				background-image: radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, 20%), rgba(0, 0, 0, 0%));
 			}
 		}
 
@@ -768,7 +765,7 @@ summary {
 			&::after {
 				content: '';
 				right: 0;
-				background-image: radial-gradient(farthest-side at 100% 50%, rgba(0 0 0 20%), rgba(0 0 0 0%));
+				background-image: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 20%), rgba(0, 0, 0, 0%));
 			}
 		}
 
@@ -839,7 +836,7 @@ summary {
 		margin-bottom: 6px;
 		padding: var(--kompassi-schedule-timetable-program-padding);
 		background-color: var(--kompassi-program-color,var(--kompassi-program-color-default));
-		background-image: linear-gradient(to bottom,rgba(0 0 0 25%),rgba(0 0 0 15%));
+		background-image: linear-gradient(to bottom,rgba(0, 0, 0, 25%),rgba(0, 0, 0, 15%));
 		color: #fff;
 		box-shadow: var(--kompassi-box-shadow);
 		z-index: 2;
@@ -877,7 +874,7 @@ summary {
 		}
 
 		&:hover {
-			text-shadow: 0.05em 0.05em 0.1em rgba(0 0 0 80%);
+			text-shadow: 0.05em 0.05em 0.1em rgba(0, 0, 0, 80%);
 			filter: brightness(1.25);
 			z-index: 2000;
 		}
