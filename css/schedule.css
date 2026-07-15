@@ -558,6 +558,7 @@ summary {
 	.headers {
 		position: absolute;
 		top: 0;
+		z-index: 10000;
 		width: 100%;
 		height: calc(var(--kompassi-schedule-timeline-row-height) * 2);
 		background-color: var(--kompassi-bg);
