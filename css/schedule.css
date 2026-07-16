@@ -875,9 +875,12 @@ summary {
 		}
 
 		&:hover {
-			text-shadow: 0.05em 0.05em 0.1em rgba(0, 0, 0, 80%);
 			filter: brightness(1.25);
 			z-index: 2000;
+
+			&:not([data-iscanceled="true"]) {
+				text-shadow: 0.05em 0.05em 0.1em rgba(0, 0, 0, 80%);
+			}
 		}
 	}
 }

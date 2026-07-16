@@ -40,13 +40,12 @@
    --kompassi-padding-large: 1.5em;
    --kompassi-icon-size: 21px;
    --kompassi-modal-max-width: 1000px;
-}
 
-@media screen and (width < 600px) {
-   :root body {
+   @media screen and (width < 600px) {
       --kompassi-padding-large: 1em;
    }
 }
+
 
 /*
  *  Color scheme support
@@ -70,17 +69,20 @@
 
       /*  Non-main palette colors  */
       --kompassi-note-bg: hsl(50deg 100% 20%);
-   }
-   body:not(.kompassi-color-scheme-light) [class*="kompassi-icon"]::before {
-      filter: invert() !important;
-      opacity: 1 !important;
-   }
-      body:not(.kompassi-color-scheme-light) .is-favorite .kompassi-icon-favorite::before,
-      body:not(.kompassi-color-scheme-light) .kompassi-icon-favorite.active::before {
+
+      [class*="kompassi-icon"]::before {
+         filter: invert() !important;
+         opacity: 1 !important;
+      }
+
+      .is-favorite .kompassi-icon-favorite::before,
+      .kompassi-icon-favorite.active::before {
          filter: none !important;
       }
-   body:not(.kompassi-color-scheme-light) .kompassi-provided {
-      filter: invert() saturate(0%) brightness(200%);
+
+      .kompassi-provided {
+         filter: invert() saturate(0%) brightness(200%);
+      }
    }
 }
 
@@ -99,17 +101,20 @@
 
    /*  Non-main palette colors  */
    --kompassi-note-bg: hsl(50deg 100% 20%);
-}
-body.kompassi-color-scheme-dark [class*="kompassi-icon"]::before {
-   filter: invert() !important;
-   opacity: 1 !important;
-}
-   body.kompassi-color-scheme-dark .is-favorite .kompassi-icon-favorite::before,
-   body.kompassi-color-scheme-dark .kompassi-icon-favorite.active::before {
+
+   [class*="kompassi-icon"]::before {
+      filter: invert() !important;
+      opacity: 1 !important;
+   }
+
+   .is-favorite .kompassi-icon-favorite::before,
+   .kompassi-icon-favorite.active::before {
       filter: none !important;
    }
-body.kompassi-color-scheme-dark .kompassi-provided {
-   filter: invert() saturate(0%) brightness(200%);
+
+   .kompassi-provided {
+      filter: invert() saturate(0%) brightness(200%);
+   }
 }
 
 /*
