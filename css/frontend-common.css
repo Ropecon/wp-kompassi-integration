@@ -537,7 +537,7 @@
          padding: var(--kompassi-padding) var(--kompassi-padding-large);
          margin-right: 0;
          margin-bottom: 0;
-         height: auto; /*calc(var(--kompassi-line-height) + var(--kompassi-padding) *  4); */
+         height: auto;
 
          a::before {
             opacity: 1;
