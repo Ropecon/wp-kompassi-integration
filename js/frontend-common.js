@@ -393,7 +393,9 @@ async function kompassi_ajax( opts ) {
 function kompassi_check_bg_contrast( element ) {
 	if( element ) {
 		let original = element;
-		let ourBackgroundColor = window.getComputedStyle( element ).getPropertyValue( '--kompassi-bg' );
+		let elementComputedStyle = window.getComputedStyle( element );
+
+		let ourBackgroundColor = elementComputedStyle.getPropertyValue( '--kompassi-bg' );
 		let computed;
 		do {
 			computed = window.getComputedStyle( element );
@@ -405,6 +407,27 @@ function kompassi_check_bg_contrast( element ) {
 				element = element.parentNode;
 			}
 		} while( computed.background == 'none' );
+	}
+}
+
+function kompassi_element_background_color_is_dark( original_element ) {
+	let element = original_element;
+	while( element ) {
+		let bg = getComputedStyle( element ).backgroundColor;
+		if( bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent' ) {
+			effectiveBackground = bg;
+			break;
+		}
+		element = element.parentElement;
+	}
+	if( !effectiveBackground ) {
+		effectiveBackground = 'rgb(255, 255, 255)';
+	}
+
+	let [r, g, b] = effectiveBackground.match(/\d+/g).map(Number);
+	let luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+	if( luminance < 0.5 ) {
+		original_element.classList.add('has-dark-background');
 	}
 }
 
