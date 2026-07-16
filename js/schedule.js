@@ -385,6 +385,8 @@ function kompassi_schedule_init_toolbar( is_enabled, forced_filters = false ) {
 		event.target.classList.toggle( 'active' );
 		let filter_popup = document.getElementById( 'kompassi_schedule_filters' );
 		filter_popup.classList.toggle( 'visible' );
+		text_filter = filter_popup.querySelector("[data-filter='text']");
+		text_filter.focus();
 	} );
 
 	/*  More section  */
