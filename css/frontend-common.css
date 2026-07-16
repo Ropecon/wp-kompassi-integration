@@ -15,7 +15,7 @@
    --kompassi-fg-invert: hsla(0deg, 0%, 100%, 100%);
    --kompassi-bg: rgb(255, 255, 255); /* Need to use rgb() value! */
    --kompassi-bg-alt: hsl(var(--kompassi-hue), 30%, 97%);
-   --kompassi-lightness-threshold: 0.8; /* For accessibility, 0.6 is the optimal value */
+   --kompassi-lightness-threshold: 0.6;
 
    /*  Palette  */
    --kompassi-palette-0: hsl(var(--kompassi-hue), 20%, 10%);
