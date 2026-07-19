@@ -758,12 +758,10 @@ class WP_Plugin_Kompassi_Integration {
 									?>
 								</div>
 							</div>
-							<div class="actions" style="grid-area: actions;">
-								<?php
-									$actions = apply_filters( 'kompassi_schedule_scheduleitem_actions', $program_data['actions'], $scheduleItem, $program );
-									echo implode( '', $actions );
-								?>
-							</div>
+							<div class="actions" style="grid-area: actions;"><?php
+								$actions = apply_filters( 'kompassi_schedule_scheduleitem_actions', $program_data['actions'], $scheduleItem, $program );
+								echo implode( '', $actions );
+							?></div>
 						</section>
 					</details>
 				</article>
