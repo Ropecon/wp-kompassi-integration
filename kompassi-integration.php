@@ -616,7 +616,7 @@ class WP_Plugin_Kompassi_Integration {
 			ob_start( );
 			echo '<dl class="kompassi-annotations">';
 			foreach( $annotations as $annotation ) {
-				echo '<dt class="' . $annotation['class'] . '">' . $annotation['title'] . '</dt>';
+				echo '<dt>' . $annotation['title'] . '</dt>';
 				foreach( (array) $annotation['description'] as $desc ) {
 					echo '<dd class="' . $annotation['class'] . '">' . htmlspecialchars( $desc ) . '</dd>';
 				}
