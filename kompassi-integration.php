@@ -655,7 +655,7 @@ class WP_Plugin_Kompassi_Integration {
 		}
 
 		//  Actions
-		$program_data['actions'] = '';
+		$program_data['actions'] = array();
 		foreach( $program['links'] as $link ) {
 			if( $link['type'] == 'GUIDE_V2_EMBEDDED' ) {
 				continue;
@@ -664,7 +664,7 @@ class WP_Plugin_Kompassi_Integration {
 			if( in_array( strtolower( $link['type'] ), $this->icons ) ) {
 				$class .= ' kompassi-icon-' . strtolower( $link['type'] );
 			}
-			$program_data['actions'] .= '<a href="' . esc_attr( $link['href'] ) . '" class="' . $class . '" title="' . esc_attr( $link['title'] ) . '"></a>';
+			$program_data['actions'][] = '<a href="' . esc_attr( $link['href'] ) . '" class="' . $class . '" title="' . esc_attr( $link['title'] ) . '"></a>';
 		}
 
 		// Output
@@ -758,7 +758,12 @@ class WP_Plugin_Kompassi_Integration {
 									?>
 								</div>
 							</div>
-							<div class="actions" style="grid-area: actions;"><?php echo $program_data['actions']; ?></div>
+							<div class="actions" style="grid-area: actions;">
+								<?php
+									$actions = apply_filters( 'kompassi_schedule_scheduleitem_actions', $program_data['actions'], $scheduleItem, $program );
+									echo implode( '', $actions );
+								?>
+							</div>
 						</section>
 					</details>
 				</article>
