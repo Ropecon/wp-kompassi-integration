@@ -452,7 +452,7 @@
       .kompassi-dropdown-menu-items {
          position: absolute;
          display: block;
-         z-index: 3000;
+         z-index: 30000;
       }
 
       > :is(a) {
