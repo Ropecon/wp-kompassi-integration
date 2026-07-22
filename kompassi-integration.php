@@ -701,7 +701,7 @@ class WP_Plugin_Kompassi_Integration {
 			}
 			?>
 				<article id="<?php echo $scheduleItem['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
-					<details>
+					<details name="kompassi-program-details">
 						<summary>
 							<div class="title" style="grid-area: title;"><?php echo htmlspecialchars( $scheduleItem['title'] ); ?></div>
 							<div class="secondary" style="grid-area: secondary;">
