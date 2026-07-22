@@ -457,7 +457,7 @@ summary {
 			bottom: 0;
 			left: 0;
 			background-color: var(--kompassi-program-color, var(--kompassi-program-color-default));
-			background-size: auto calc( 100% - var(--kompassi-padding) * 2 );
+			background-size: 65% calc( 100% - var(--kompassi-padding) * 2 );
 			background-position: 50% 50%;
 			border-top-left-radius: var(--kompassi-radius);
 			border-bottom-left-radius: var(--kompassi-radius);
