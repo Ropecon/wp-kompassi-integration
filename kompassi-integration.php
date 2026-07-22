@@ -614,7 +614,7 @@ class WP_Plugin_Kompassi_Integration {
 		$annotations = apply_filters( 'kompassi_program_annotations', $annotations, $program );
 		if( count( $annotations ) > 0 ) {
 			ob_start( );
-			echo '<dl class="kompassi-annotations">';
+			echo '<dl>';
 			foreach( $annotations as $annotation ) {
 				echo '<dt>' . $annotation['title'] . '</dt>';
 				foreach( (array) $annotation['description'] as $desc ) {
@@ -720,7 +720,7 @@ class WP_Plugin_Kompassi_Integration {
 								<div class="description"><?php echo $program_data['description']; ?></div>
 								<?php
 									if( isset( $program_data['related'] ) ) {
-										echo '<div class="related">';
+										echo '<div class="kompassi-related">';
 										echo '<dl>';
 										echo '<dt>' . __( 'Other schedule items', 'kompassi-integration' ) . '</dt>';
 										echo '<dd>';
@@ -733,7 +733,7 @@ class WP_Plugin_Kompassi_Integration {
 									}
 								?>
 								<?php if( isset( $program_data['annotations'] ) ) { ?>
-									<div class="annotations" style="grid-area: annotations;"><?php echo $program_data['annotations']; ?></div>
+									<div class="kompassi-annotations" style="grid-area: annotations;"><?php echo $program_data['annotations']; ?></div>
 								<?php } ?>
 							</div>
 							<div class="meta" style="grid-area: meta;">
