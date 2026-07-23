@@ -19,6 +19,16 @@ function kompassi_update_storage( ) {
 }
 
 /*
+ *
+ *
+ */
+
+document.addEventListener( 'DOMContentLoaded', function( event ) {
+	let document_title = document.querySelector( 'head title' );
+	document_title.setAttribute( 'document-title', document_title.textContent );
+} );
+
+/*
  *  Dropdown menu
  *
  */
@@ -126,6 +136,9 @@ function kompassi_show_modal( options ) {
 	title.textContent = options.title;
 	header.append( title );
 
+	let document_title = document.querySelector( 'head title' );
+	document_title.textContent = options.title;
+
 	let header_actions = document.createElement( 'div' );
 	header_actions.classList.add( 'actions' );
 	header.append( header_actions );
@@ -181,8 +194,12 @@ function kompassi_close_modal( ) {
 		underlay.remove( );
 	}
 
+	let document_title = document.querySelector( 'head title' );
+	document_title.textContent = document_title.getAttribute( 'document-title' );
+
 	document.body.style.overflow = 'auto';
 	document.body.style.userSelect = null;
+
 }
 
 /*
