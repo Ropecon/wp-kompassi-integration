@@ -669,7 +669,6 @@ class WP_Plugin_Kompassi_Integration {
 
 		// Output
 		foreach( $program['scheduleItems'] as $scheduleItem_index => $scheduleItem ) {
-			ob_start( );
 			// Gather scheduleItem specific data
 			$program_attributes['data-id'] = $scheduleItem['slug'];
 			$program_attributes['data-start'] = $scheduleItem['startTime'];
@@ -699,6 +698,8 @@ class WP_Plugin_Kompassi_Integration {
 			if( !isset( $program_attributes['data-iscanceled'] ) && $scheduleItem['isCancelled'] ) {
 				$html_attrs .= ' data-iscanceled="true"';
 			}
+
+			ob_start( );
 			?>
 				<article id="<?php echo $scheduleItem['slug']; ?>" class="kompassi-program" <?php echo $html_attrs; ?>>
 					<details name="kompassi-program-details">
@@ -766,7 +767,7 @@ class WP_Plugin_Kompassi_Integration {
 					</details>
 				</article>
 			<?php
-			$key = $scheduleItem['startTime'] . '-' . $scheduleItem['title'];
+			$key = $scheduleItem['startTime'] . '-' . $scheduleItem['slug'];
 			$scheduleitems[$key] = ob_get_clean();
 		}
 		return $scheduleitems;
